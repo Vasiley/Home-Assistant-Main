@@ -1,0 +1,98 @@
+homeassistant:
+  customize:
+    script.lamps_on:
+      friendly_name: Sleep
+      icon: mdi:sleep
+      haaska_name: Sleep
+
+#########################################################################################
+#                                                                                   ##### 
+#                   Sleep Mode                                                      #####
+#                                                                                   #####  
+#########################################################################################  
+script:        
+  lamps_on:
+    sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Sleep is Activated Good Night'
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "sleep" 
+      - delay: '00:00:02'
+      - service: media_player.turn_off 
+        data:
+          entity_id: media_player.stereo
+      - delay: '00:00:01'          
+      - service: remote.turn_off
+        data:     
+          entity_id: remote.entertainment
+      - service: fan.turn_off
+        data:
+          entity_id: fan.living_room_fan        
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen
+          color_temp: 426
+          brightness: 125
+      - service: light.turn_on
+        data:
+          entity_id: light.master_hallway
+          color_temp: 426
+          brightness: 125
+      - service: light.turn_on
+        data:
+          entity_id: light.master
+          color_temp: 426
+          brightness: 125    
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 426
+          brightness: 125
+      - service: light.turn_off
+        entity_id: light.bathroom_vanity
+      - service: automation.turn_off
+        entity_id: automation.motion_bathroom_sleep_on       
+      - service: switch.turn_off 
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor 
+      - delay: '00:00:10'
+      - service: light.turn_off
+        data:
+          entity_id: light.lamps
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          color_temp: 426
+          brightness: 125
+      - delay: '00:00:10'    
+      - service: light.turn_off
+        data:
+          entity_id: light.kitchen
+      - delay: '00:00:10'    
+      - service: light.turn_off
+        data:
+          entity_id: light.master_hallway 
+      - delay: '00:00:45'
+      - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
+        timeout: '00:00:30'        
+      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"  
+        timeout: '00:00:30'
+      - wait_template: "{{ states.binary_sensor.bathroom_motion.state == 'off' }}"  
+        timeout: '00:00:30'      
+      - service: light.turn_off
+        data:      
+          entity_id: light.bathroom
+      - delay: '00:00:45'
+      - service: light.turn_off
+        data: 
+          entity_id: light.master    
+      - service: rest_command.sleep
+      - service: rest_command.sleep
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_sleep_on       
+     
+# rest_command changes profile on blue iris

@@ -1,0 +1,107 @@
+homeassistant:
+  customize:
+    sensor.usps_mail_2:
+      friendly_name: Mail Sensor
+    sensor.deliveries_today:
+      icon: mdi:package-variant
+      
+    sensor.packages_in_transit:
+      icon: mdi:truck-fast
+      
+    sensor.fedex:
+      icon: mdi:truck-fast
+    
+    camera.mail_mail:
+      friendly_name: Mail Scan's
+
+group:
+  mailscan_card:
+   name: Mail Scans
+   entities:
+     - camera.mail_mail  
+
+  usps_mail_card:
+   name: Mail
+   entities:
+     - sensor.usps_mail
+     - sensor.usps_mail_2
+     - sensor.usps_packages    
+     - sensor.packages_in_transit
+     - sensor.deliveries_today
+     - sensor.fedex
+     - sensor.ups  
+      
+#usps:
+#  username: !secret usps_username
+#  password: !secret ups_password
+#  name: Mail 
+#  interval: 5     
+      
+############### Mail Sensor   ###############################
+sensor:
+  - platform: usps
+    username: !secret usps_username
+    password: !secret usps_password
+    scan_interval: 1800
+  - platform: ups
+    username: !secret ups_username
+    password: !secret ups_password
+    scan_interval: 1800
+  - platform: fedex
+    username: !secret fedex_username
+    password: !secret fedex_password
+    scan_interval: 1800
+  - platform: template
+    sensors:
+      packages_in_transit:
+        friendly_name: "Packages in Transit"
+        value_template: >
+          {% macro in_transit(sensor) %}
+            {{sensor.state|int - delivered(sensor)|int}}
+          {% endmacro %}
+          {% macro delivered(sensor) %}
+            {% if 'delivered' in sensor.attributes %}
+              {{sensor.attributes.delivered}}
+            {% else %}
+               0
+            {% endif %}
+          {% endmacro %}
+          {{in_transit(states.sensor.usps_packages)|int + in_transit(states.sensor.ups)|int  + in_transit(states.sensor.fedex)|int}}
+      deliveries_today:
+        friendly_name: "Today's Deliveries"
+        value_template: >
+          {% macro delivered(sensor) %}
+            {% if 'delivered' in sensor.attributes %}
+              {{sensor.attributes.delivered}}
+            {% else %}
+               0
+            {% endif %}
+          {% endmacro %}
+          {{delivered(states.sensor.usps_packages)|int + delivered(states.sensor.ups)|int + delivered(states.sensor.fedex)|int}}
+############################################################      
+
+automation:
+  - alias: Tell me I got Mail
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.mail_mail
+        above: 0
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'You Have Mail Today Check Dashboard' 
+          
+  - alias: Tell me I got Packages
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.mail_packages 
+        above: 0
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'You Have a Usps Package On the Way Check Dashboard'      
+   

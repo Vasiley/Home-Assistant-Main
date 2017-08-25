@@ -1,0 +1,79 @@
+homeassistant:
+  customize:
+    media_player.blueiris2:
+      friendly_name: Plex
+
+# grouped each media player so that the would show correctly
+group:
+  Kodi_media_player_card:
+   name: Kodi
+   entities:
+     - media_player.kodi
+  Blue_iris_media_player_card:
+   name: Plex
+   entities:
+     - media_player.blueiris2
+  Samsung_tv_media_player_card:
+   name: Samsung
+   entities:
+     - media_player.smart_tv
+  stereo_avr_card:
+   name: stereo Amp
+   entities:
+     - media_player.stereo
+  Ruths_roku_media_player_card:
+   name: Ruths Roku
+   entities:
+     - media_player.ruths_roku
+  KodiBlueIris_media_player_card:
+   name: Kodi Blue Iris
+   entities:
+     - media_player.kodi_blue_iris
+
+#  haspeaker_media_player_card:
+#   name: Ha Speaker
+#   entities:
+#     - media_player.HA_speaker
+
+media_player:
+#  - platform: kodi
+#    host: 192.168.1.60
+#    port: 8888
+#    username: !secret media_player_kodi_username
+#    password: !secret media_player_kodi_password
+
+  - platform: kodi
+    name: Kodi Blue Iris
+    host: 127.0.0.1
+    port: 8888
+    username: !secret media_player_kodi_username
+    password: !secret media_player_kodi_password
+
+  - platform: samsungtv
+    host: 192.168.1.18
+    port: 8001
+    name: Smart Tv
+  - platform: plex
+    include_non_clients: false
+  - platform: onkyo
+    host: 192.168.1.131
+    name: Stereo
+    sources:
+      dvd: 'Blue Iris'
+      game: 'PS4'
+      pc: 'Kodi'
+      cd: 'PI'
+      tv-cd: 'TV'
+      tuner: 'Radio'
+      net: 'Net'
+
+  - platform: roku
+    host: 192.168.1.228
+#- platform: roku
+#  host: 192.168.1.80
+#  - platform: kodi
+#    host: 192.168.1.80
+#    name: Kodi Blue Iris
+#    port: 8080
+#    username: !secret media_player_kodi1_username
+#    password: !secret media_player_kodi1_password

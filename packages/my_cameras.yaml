@@ -1,0 +1,97 @@
+homeassistant:
+  customize:
+    camera.herb:
+      friendly_name: Herb
+    camera.dawn:
+      friendly_name: Dawn
+
+# group cameras to thier own group for better view
+group:
+  camera12_card:
+   name: Park Driveway Rear
+   entities:
+     - camera.number_12
+  camera_driveway_card:
+   name: Driveway
+   entities:
+     - camera.driveway
+  camera_swamp_card:
+   name: Swamp
+   entities:
+     - camera.swamp
+  camera_yard_card:
+   name: Yard
+   entities:
+     - camera.yard
+  camera_backdoor_card:
+   name: Back Door
+   entities:
+     - camera.back_door
+  camera_livingroom_card:
+   name: Living Room
+   entities:
+     - camera.Living_Room_Camera
+  camera_dawn_card:
+   name: Dawn
+   entities:
+     - camera.dawn
+  camera_herb_card:
+   name: Herb
+   entities:
+     - camera.herb
+  camera_tablet_card:
+   name: Tablet Cam
+   entities:
+     - camera.Tablet_Cam
+camera:
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Number 12
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam4/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Living Room Camera
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Driveway
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam5/video.mjpeg
+    name: Swamp
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam8/video.mjpeg
+    name: Tablet Cam
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: generic
+    still_image_url: http://192.168.1.90/cgi-bin/camera
+    name: Yard
+
+  - platform: generic
+    still_image_url: http://192.168.1.75/now.jpg
+    name: Back Door
+    username: !secret iqeye_username
+    password: !secret iqeye_password
+
+  - platform: generic
+    name: Dawn
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}
+    limit_refetch_to_url_change: true
+
+  - platform: generic
+    name: Herb
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.herb_herb.attributes.latitude }},{{ states.device_tracker.herb_herb.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.herb_herb.attributes.latitude }},{{ states.device_tracker.herb_herb.attributes.longitude }}
+    limit_refetch_to_url_change: true

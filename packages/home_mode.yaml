@@ -1,0 +1,72 @@
+homeassistant:
+  customize:
+    script.home_mode:
+      friendly_name: Home
+      haaska_name: Home
+      icon: mdi:home        
+
+#########################################################################################
+#                                                                                   ##### 
+#                   Home Mode                                                       #####
+#                                                                                   #####  
+#########################################################################################
+script:
+  home_mode:
+    sequence:
+      - service: climate.set_away_mode
+        data:    
+          entity_id: climate.thermostat
+          away_mode: 'off'
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "home"
+      - service: fan.turn_on
+        data:
+          entity_id: fan.living_room_fan 
+      - delay: '00:00:05'
+      - service: wink.refresh_state_from_wink       
+      - service: rest_command.no_motion 
+      - service: rest_command.no_motion       
+      - service: switch.turn_on
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor
+      - delay: '00:00:01'
+      - service: light.turn_on
+        data:
+          entity_id: light.lamps
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen  
+          color_temp: 154
+          brightness: 224
+      - service: light.turn_on
+        data:
+          entity_id: light.master_hallway  
+          color_temp: 154
+          brightness: 224 
+      - service: light.turn_on
+        data:
+          entity_id: light.kids_hallway
+          color_temp: 154
+          brightness: 224          
+      - delay: '00:00:01'
+      - service: light.turn_off
+        data:
+          entity_id: light.master_hallway
+      - delay: '00:00:01'
+      - service: light.turn_off
+        data:
+          entity_id: light.kitchen 
+      - delay: '00:00:01'
+      - service: light.turn_off
+        data:
+          entity_id: light.kids_hallway  
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Home Mode is Activated' 
+          volume_level: '.99'          
+       

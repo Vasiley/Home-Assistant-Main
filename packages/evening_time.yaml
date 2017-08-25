@@ -1,0 +1,72 @@
+homeassistant:
+  customize:
+    script.movie_time:
+      friendly_name: Movie Time
+      haaska_name: Movie Time
+    script.evening_time:
+      friendly_name: Evening Time
+      haaska_name: Evening Time
+    automation.evening_time:
+      haaska_hidden: true
+      friendly_name: Evening Time
+    script.front_cam_dashboard:
+      haaska_hidden: true
+      friendly_name: Switch Dash Board on Motion
+
+
+########## Evening Time ##############
+automation:
+  - alias: Evening Time
+    trigger:
+      - platform: time
+        at: '19:01'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'
+    action:
+     - service: script.evening_time
+     - service: tts.google_say
+       data:
+         entity_id: media_player.kodi_blue_iris
+         message: 'Grandma Mode is Activated'
+         volume_level: '.99'
+
+
+script:
+  movie_time:
+    sequence:
+      - service: switch.turn_off
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'It is Movie Time Be Quiet'
+      - service: light.turn_off
+        data:
+          entity_id: light.door_lamp
+          transition: 10
+      - service: light.turn_on
+        data:
+          entity_id: light.herbs_lamp
+          color_temp: 426
+          brightness: 125
+          transition: 45
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          color_temp: 426
+          brightness: 125
+          transition: 45
+      - service: script.turn_on
+        entity_id: script.blinds_closed
+  evening_time:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.lamps
+          color_temp: 426
+          brightness: 125
+      - service: script.turn_on
+        entity_id: script.blinds_halfway

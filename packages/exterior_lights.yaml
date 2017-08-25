@@ -1,0 +1,140 @@
+################### Porch lights on at night  ###########################
+homeassistant:
+  customize:
+    automation.porch_lights_on:
+      friendly_name: "Porch Lights On"
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      
+    automation.porch_lights_off:
+      friendly_name: "Porch Lights Off"
+      haaska_hidden: true
+      hidden: false   
+      persistence: true
+
+    automation.carport_bright_and_white_on_motion:
+      friendly_name: "Porch Lights White On Motion"
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+
+    automation.back_to_yellow_dim_after_Motion:
+      friendly_name: "Porch Lights Yellow No Motion"
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+
+    script.bright_outside:
+      friendly_name: "Porch Lights Bright"
+      haaska_hidden: false
+      haaska_name: Porch Lights Bright
+
+    script.normal_outside:
+      friendly_name: "Porch Lights Normal"
+      haaska_hidden: false
+      haaska_name: Porch Lights Normal 
+      
+    light.carport:
+      persistence: true    
+      
+
+group:
+  carport_lights:
+   control: hidden
+   name: Carport
+   entities:
+     - light.carport
+     - automation.porch_lights_on
+     - automation.porch_lights_off
+     - automation.carport_bright_and_white_on_motion
+     - automation.back_to_yellow_dim_after_Motion
+     - script.bright_outside
+     - script.normal_outside
+     
+automation:
+  - alias: Porch Lights on
+    initial_state: 'on'
+    trigger:
+      - platform: sun
+        event: sunset
+#      offset: "00:30:00"
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.carport
+          color_temp: 426
+          brightness: 125          
+  - alias: Porch Lights off
+    trigger:
+      - platform: sun
+        event: sunrise
+#      offset: "-00:30:00"
+    action:
+      - service: light.turn_off
+        entity_id: light.carport
+        
+# brigten porch light if motion from shed camera
+
+
+  - alias: Carport bright and white on motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed 
+        to: 'on'
+    condition: 
+      - condition: state
+        entity_id: light.carport
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.carport    
+          color_temp: 154
+          brightness: 255   
+          
+  - alias: Back to yellow dim after Motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed 
+        to: 'off'
+    condition: 
+      - condition: state
+        entity_id: light.carport
+        state: 'on'
+    action:
+      - delay: '00:005:00'
+      - service: light.turn_on
+        data:
+          entity_id: light.carport
+          color_temp: 426
+          brightness: 125 
+
+# Turn Carport lights on bright till i turn off
+script:
+  bright_outside:
+    sequence:
+      - service: automation.turn_off
+        entity_id: automation.carport_bright_and_white_on_motion
+      - service: automation.turn_off
+        entity_id: automation.back_to_yellow_dim_after_Motion
+      - service: light.turn_on
+        data:
+          entity_id: light.carport    
+          color_temp: 154
+          brightness: 255   
+  normal_outside:
+    sequence:
+      - service: automation.turn_on
+        entity_id: automation.carport_bright_and_white_on_motion
+      - service: automation.turn_on
+        entity_id: automation.back_to_yellow_dim_after_Motion
+      - service: light.turn_on
+        data:
+          entity_id: light.carport
+          color_temp: 426
+          brightness: 125    
+
+        

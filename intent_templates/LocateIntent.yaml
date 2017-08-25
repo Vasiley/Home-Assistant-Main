@@ -1,0 +1,9 @@
+  >
+    {%- for state in states.sensor -%}
+    {%- if state.name.lower() == User.lower() -%}
+    {{ state.name }} is at {{ state.state }}
+    {%- elif loop.last -%}
+    {%- endif -%}
+    {%- else -%}
+    Sorry, I don't have any trackers registered.
+    {%- endfor -%}

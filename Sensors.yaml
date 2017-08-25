@@ -1,0 +1,39 @@
+########################################################################
+#### dynamic battery levels
+########################################################################
+- platform: template
+  sensors:
+    kitchen_battery_motion:
+      unit_of_measurement: '%'
+      entity_id: sensor.motion_sensor_kitchen_battery
+      value_template: >
+          {% if states('sensor.motion_sensor_kitchen_battery') != "unknown" %}
+            {{ states('sensor.motion_sensor_kitchen_battery')| int }}
+          {% else %}
+            0
+          {% endif %}
+      icon_template: >-
+          {% if states('sensor.kitchen_battery_motion') != "unknown" %}
+            {% set battery_level = states('sensor.kitchen_battery_motion')|int (-1)%}
+            {% if battery_level == -1 %}
+              mdi:battery-unknown
+            {% else %}
+              {% set battery_round = (battery_level|int / 10)|int * 10 %}
+              {% if battery_round >= 100 %}
+                mdi:battery
+              {% elif battery_round > 0 %}
+                mdi:battery-{{ battery_round }}
+              {% else %}
+                mdi:battery-alert
+              {% endif %}
+            {% endif %}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+
+
+#- platform: mqtt
+#  state_topic: "wallpanel/mywallpanel/sensor/battery"
+#  name: Living Room Tablet Battery
+#  unit_of_measurement: '%'
+#  value_template: "{{ value_json['value'] }}"

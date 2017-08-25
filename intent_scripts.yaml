@@ -1,0 +1,70 @@
+##      type: plaintext causes it to fail
+  WhereAreWeIntent:
+    speech:
+      text: !include intent_templates/WhereAreWeIntent.yaml
+      
+  LocateIntent:
+    speech:
+      text: !include intent_templates/LocateIntent.yaml
+      
+  OverviewIntent:
+    speech:
+      text:  !include intent_templates/OverviewIntent.yaml 
+ 
+  itisyourbirthday:  
+    speech:
+      text: !include intent_templates/birthday_wishes.yaml
+      
+  NetworkIntent:
+    speech:
+      text: !include intent_templates/NetworkIntent.yaml
+   ### called with What is my Network Status
+
+  MediaPlayerSourceIntent:
+    action:
+      - service: media_player.select_source
+        data_template:
+          entity_id: 'media_player.{{player|replace(" ", "_")|lower}}'
+          source: '{{source}}'
+    speech:
+   #   type: plain
+      text: 'OK. Changing {{player}} to {{source}}'   
+   
+  KitchenIntent:
+    speech:
+      text: The Kitchen has a Temperature of {{states('sensor.kitchen_temperature')}}
+              degrees 
+  HallwayIntent:
+    speech:
+      text: The Hallway has a Temperature of {{states('sensor.hallway_temperature')}}
+              degrees 
+  LaundryroomIntent:
+    speech:
+     text: The Laundry Room has a Temperature of {{states('sensor.laundry_temperature')}}
+              degrees 
+  KidsHallwayIntent:
+    speech:
+     text: The Kids Hallway has a Temperature of {{states('sensor.kids_hallway_temperature')}}
+              degrees               
+  BatteryLevelsIntent:
+    speech:
+     text: The Kids Hallway Motion Sensor Battery level is {{states('sensor.motion_sensor_kids_hall_battery')}} percent and Kitchen       Motion Sensor is {{states('sensor.motion_sensor_kitchen_battery')}} percent and the Hallway Battery Level is {{states('sensor.motion_sensor_hallway_battery')}} percent and the Laundry Room battery level is {{states('sensor.motion_sensor_laundry_battery')}} percent
+  ActivateSceneIntent:
+    action:
+      service: scene.turn_on
+      data_template:
+        entity_id: scene.{{ Scene | replace(" ", "_") }}
+    speech:
+     text: !include alexa_confirm.yaml     
+  RunScriptIntent:
+    action:
+      service: script.turn_on
+      data_template:
+        entity_id: script.{{ Script | replace(" ", ".") }}
+    speech:
+     text: !include alexa_confirm.yaml    
+  MailIntent:
+    speech:
+     text: You have {{states('sensor.usps_mail')}} pieces of mail in the mail box 
+        
+        

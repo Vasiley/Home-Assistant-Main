@@ -1,0 +1,291 @@
+homeassistant:
+  customize:
+    sensor.speedtest_download:
+      entity_picture: /local/speedtest.png
+    sensor.speedtest_upload:
+      entity_picture: /local/speedtest.png
+    sensor.speedtest_ping:
+      entity_picture: /local/ping.jpg
+    sensor.download_speed_mean:
+      friendly_name: 'Speedtest Download Average'
+      icon: mdi:speedometer
+    sensor.upload_speed_mean:
+      friendly_name: 'Speedtest Upload Average'
+      icon: mdi:speedometer
+    sensor.ping_time_mean:
+      friendly_name: 'Speedtest Ping Average'
+      icon: mdi:clock-fast
+    camera.living_room_camera:
+      friendly_name: Living Room Camera
+    sensor.shed_camera:
+      friendly_name: Shed Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.driveway_camera:
+      friendly_name: Driveway Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.number12_camera:
+      friendly_name: Number12 Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.swamp_camera:
+      friendly_name: Swamp Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.frontdoor_camera:
+      friendly_name: Front Door Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.backdoor_camera:
+      friendly_name: Back Door Camera
+      entity_picture: /local/ipcameraicon.jpeg
+    sensor.asus_router:
+      friendly_name: Asus Merlin
+      entity_picture: /local/AsusMerlin.jpeg
+    sensor.cisco_router:
+      friendly_name: Cisco Router
+      entity_picture: /local/cisco54.jpeg
+    sensor.switch2:
+      friendly_name: Switch 2
+      entity_picture: /local/8PortSwitch.jpeg
+    sensor.switch1:
+      friendly_name: Switch 1
+      entity_picture: /local/8PortSwitch.jpeg
+    sensor.media_nas:
+      friendly_name: Media Nas
+      entity_picture: /local/Worldbook.jpeg
+    sensor.network_nas:
+      friendly_name: Network Nas
+      entity_picture: /local/Worldbook.jpeg
+    sensor.blue_iris_workstation:
+      friendly_name: Blue Iris Server
+      entity_picture: /local/workstation.jpeg
+    sensor.network_workstation:
+      friendly_name: Network Workstation
+      entity_picture: /local/workstation.jpeg
+    sensor.harmony_hub:
+      friendly_name: Harmony Hub
+      icon: mdi:black-mesa
+    sensor.hue_hub:
+      friendly_name: Hue Hub
+      icon: mdi:black-mesa
+    sensor.wink_hub:
+      friendly_name: Wink Hub
+      icon: mdi:black-mesa
+    sensor.wink_fan_gang:
+      friendly_name: Fan Connection
+      icon: mdi:nfc
+    sensor.myipopendnscom:
+      friendly_name: Wan Ip
+      icon: mdi:wan
+    sensor.esp_kitchen_blinds:
+      friendly_name: Kitchen Blinds Controller
+      entity_picture: /local/nodemcu.jpeg
+
+group:
+  hubs_card:
+   name: Hub's & Bridges
+   entities:
+     - sensor.harmony_hub
+     - sensor.hue_hub
+     - sensor.wink_hub
+
+  linux_server_card:
+   name: Ha Server
+   entities:
+     - sensor.speedtest_download
+     - sensor.speedtest_upload
+     - sensor.speedtest_ping
+     - sensor.cpu_use
+     - sensor.ram_free
+     - sensor.disk_use_home
+#     - sensor.ssl_expire
+     - sensor.myipopendnscom
+     - input_select.log_level
+
+  cameras_status_card:
+    name: Cameras
+    entities:
+     - sensor.number12_camera
+     - sensor.driveway_camera
+     - sensor.shed_camera
+     - sensor.backdoor_camera
+     - sensor.frontdoor_camera
+     - sensor.swamp_camera
+
+  NetworkDrives_status_card:
+   name: Nas Drives
+   entities:
+     - sensor.media_nas
+     - sensor.network_nas
+
+#  Workstations_status_card:
+#   name: Workstations
+#   entities:
+#     - sensor.network_workstation
+# sensor.blue_iris_workstation
+
+  NetworkNmap_status_card:
+   name: Network Equipment
+   entities:
+     - sensor.asus_router
+     - sensor.cisco_router
+     - sensor.switch1
+     - sensor.switch2
+
+  esp_devices_card:
+   name: Esp Controller's
+   entities:
+     - sensor.esp_kitchen_blinds
+
+sensor:
+  ############## Public Ip
+  - platform: dnsip
+
+######## Equipment ########
+  - platform: speedtest
+    minute:
+      - 0
+      - 59
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+      - type: processor_use
+
+##### show devices as online instead of home   ############################
+  - platform: template
+    sensors:
+      shed_camera:
+        value_template: '{% if is_state("binary_sensor.shed_camera", "on") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      driveway_camera:
+        value_template: '{% if is_state("device_tracker.drivewaycamvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      number12_camera:
+        value_template: '{% if is_state("device_tracker.number12vasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      swamp_camera:
+        value_template: '{% if is_state("device_tracker.shedvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      frontdoor_camera:
+        value_template: '{% if is_state("device_tracker.frontdoorvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      backdoor_camera:
+        value_template: '{% if is_state("device_tracker.backdoorvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      asus_router:
+        value_template: '{% if is_state("device_tracker.routerasuscom", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      cisco_router:
+        value_template: '{% if is_state("device_tracker.pan_shedvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      switch2:
+        value_template: '{% if is_state("device_tracker.blueirispcvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      switch1:
+        value_template: '{% if is_state("device_tracker.switch1vasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      media_nas:
+        value_template: '{% if is_state("device_tracker.medianasvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      network_nas:
+        value_template: '{% if is_state("device_tracker.nasnetworkvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      blue_iris_workstation:
+        value_template: '{% if is_state("device_tracker.blueiris2vasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      network_workstation:
+        value_template: '{% if is_state("device_tracker.networkpcvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      wink_fan_gang:
+        value_template: '{% if is_state("binary_sensor.gang", "on") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      harmony_hub:
+        value_template: '{% if is_state("device_tracker.harmonyhubvasiley", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      hue_hub:
+        value_template: '{% if is_state("device_tracker.huebridge", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      wink_hub:
+        value_template: '{% if is_state("binary_sensor.wink_hub_2", "on") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      esp_kitchen_blinds:
+        value_template: '{% if is_state("device_tracker.5ccf7fb19112", "home") %}Online{% else %}Offline{% endif %}'
+
+
+device_tracker:
+  - platform: nmap_tracker
+    home_interval: 10
+    hosts: 192.168.1.1-255
+    consider_home: 180
+    exclude:
+      - 192.168.1.153
+  - platform: owntracks
+
+binary_sensor:
+  - platform: ping
+    host: 192.168.1.90
+    name: Shed Camera
+
+#### Notify if device goes offline
+
+automation:
+  - alias: Notify Device Status
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id:
+        - sensor.wink_fan_gang
+        - sensor.network_workstation
+        - sensor.blue_iris_workstation
+        - sensor.network_nas
+        - sensor.media_nas
+        - sensor.switch1
+        - sensor.switch2
+        - sensor.cisco_router
+        - sensor.asus_router
+        - sensor.backdoor_camera
+        - sensor.frontdoor_camera
+        - sensor.shed_camera
+        - sensor.driveway_camera
+        - sensor.number12_camera
+        - sensor.swamp_camera
+        - sensor.harmony_hub
+        - sensor.hue_hub
+        - sensor.wink_hub
+#        - sensor.esp_kitchen_blinds
+
+    condition:
+      - condition: template
+        value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
+
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.kodi_blue_iris
+          message: >
+            {% if trigger.to_state.state | lower == "offline" %}
+              {{ trigger.to_state.attributes.friendly_name }} has gone offline!
+            {% else %}
+              {{ trigger.to_state.attributes.friendly_name }} has come online!
+            {% endif %}

@@ -1,0 +1,240 @@
+homeassistant:
+  customize:
+    binary_sensor.motion_outdoor_shed:
+      friendly_name: Shed Camera
+      device_class: motion
+    binary_sensor.motion_outdoor_driveway:
+      friendly_name: Driveway
+      device_class: motion
+    binary_sensor.motion_outdoor_frontdoor:
+      friendly_name: Front Door
+      device_class: motion
+    binary_sensor.motion_outdoor_number12:
+      friendly_name: Number 12
+      device_class: motion
+    binary_sensor.motion_outdoor_backdoor:
+      friendly_name: Back Door
+      device_class: motion
+    binary_sensor.motion_outdoor_swamp:
+      friendly_name: Swamp
+      device_class: motion
+    binary_sensor.motion_tablet_camera:
+      friendly_name: Tablet Camera
+      device_class: motion
+    automation.back_to_white_after_motion:
+      friendly_name: Bi White no Motion
+      haaska_hidden: true
+    automation.back_to_yellow_dim_after_motion:
+      friendly_name: Bi Red with Motion
+      haaska_hidden: true
+
+
+group:
+  blue_iris_motion_card:
+   name: Camera Motion
+   entities:
+     - binary_sensor.motion_outdoor_shed
+     - binary_sensor.motion_outdoor_driveway
+     - binary_sensor.motion_outdoor_number12
+     - binary_sensor.motion_outdoor_swamp
+     - binary_sensor.motion_outdoor_frontdoor
+     - binary_sensor.motion_outdoor_backdoor
+     - binary_sensor.motion_tablet_camera
+#######################################################################################################################
+###### Sets profile on blue iris   ####################################################################################
+#######################################################################################################################
+sensor:
+  - platform: rest
+    resource: !secret rest_blue_iris_profile
+    value_template: >-
+       {% if 'profile=1' in value %}
+         No Motion Detection
+       {% elif 'profile=5' in value %}
+         Lockdown Full Motion Detection
+       {% elif 'profile=6' in value %}
+         Sleep
+       {% endif %}
+    name: 'Blue Iris Profile'
+
+#######################################################################################################################
+###### Motion sensor templates for blue Iris  #########################################################################
+#######################################################################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      motion_outdoor_shed:
+#        friendly_name: 'Shed Cam'
+        value_template: >-
+          {% if states('binary_sensor.blueirisshed') %}
+          {% if is_state('binary_sensor.blueirisshed', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueirisshed', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueirisshed') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_driveway:
+#        friendly_name: 'Driveway'
+        value_template: >-
+           {% if states('binary_sensor.blueiriscam2') %}
+           {% if is_state('binary_sensor.blueiriscam2', 'on') %}
+              True
+           {% elif is_state('binary_sensor.blueiriscam2', 'off') %}
+              False
+           {% else %}
+           {{ states('binary_sensor.blueiriscam2') }}
+           {% endif %}
+           {% else %}
+             False
+           {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_number12:
+#        friendly_name: 'Number 12'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam6') %}
+          {% if is_state('binary_sensor.blueiriscam6', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam6', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam6') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_swamp:
+ #       friendly_name: 'Swamp'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam5') %}
+          {% if is_state('binary_sensor.blueiriscam5', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam5', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam5') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_frontdoor:
+#        friendly_name: 'Front Door'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam4') %}
+          {% if is_state('binary_sensor.blueiriscam4', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam4', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam4') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_backdoor:
+#        friendly_name: 'Back Door'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam3') %}
+          {% if is_state('binary_sensor.blueiriscam3', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam3', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam3') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+  - platform: template
+    sensors:
+      motion_tablet_camera:
+#        friendly_name: 'Back Door'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam8') %}
+          {% if is_state('binary_sensor.blueiriscam8', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam8', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam8') }}
+          {% endif %}
+          {% else %}
+            False
+          {% endif %}
+
+
+  ######################################################
+# Flash Door lamp when motion at shed camera
+######################################################
+automation:
+  - alias: Flash Red on Motion
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'
+      - condition: time
+        after: '07:00:00'
+        before: '19:00:00:00'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          flash: short
+          color_name: Red
+      - service: script.turn_on
+        entity_id: script.front_cam_dashboard
+  - alias: Back to White after Motion
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'
+      - condition: time
+        after: '07:00:00'
+        before: '19:00:00'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          color_temp: 154
+          brightness: 255
+#############################################################################
+############3 rest commands to change blue iris profile               #######
+#############################################################################
+rest_command:
+  no_motion:
+    url: !secret rest_command_no_motion
+  lock_down:
+    url: !secret rest_command_lockdown
+  sleep:
+    url: !secret rest_command_sleep
+
+#############################################################################
+############ script to change hadashboard to see camera with motion   #######
+#############################################################################
+script:
+  front_cam_dashboard:
+    sequence:
+      - event: hadashboard
+        event_data:
+          command: navigate
+          timeout: 60
+          target: cameras

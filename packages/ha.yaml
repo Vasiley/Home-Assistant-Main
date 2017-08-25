@@ -1,0 +1,76 @@
+homeassistant:
+  customize:
+    sensor.ha_version:
+      friendly_name: New Ha Release
+      hasska_hidden: true
+    script.update_home_assistant_home:
+      friendly_name: Home Assistant Update
+      icon: mdi:update
+      hasska_hidden: true
+    sensor.hass_uptime:
+      friendly_name: Home Assistant Uptime
+      icon: mdi:home-assistant
+      hasska_hidden: true
+
+
+group:
+  homeass_version_card:
+   name: Home Assistant Info
+   entities:
+     - sensor.hass_uptime
+     - sensor.ha_version
+     - sensor.installed_version
+     - script.update_home_assistant_home
+
+sensor:
+  ###### VERSIONS
+  - platform: command_line
+    command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
+    name: Current Version
+
+  - platform: command_line
+    name: Installed Version
+    command: /usr/local/bin/hass --version
+
+###### CUSTOM HA/Version
+  - platform: template
+    sensors:
+      ha_version:
+        value_template: >-
+          {% if is_state('sensor.current_version', states('sensor.installed_version')) %}
+            {{ states('sensor.installed_version') }}
+          {% else %}
+            {{ states('sensor.current_version') }} Available
+          {% endif %}
+        icon_template: >-
+          {% if is_state('sensor.current_version', states('sensor.installed_version')) %}
+            mdi:checkbox-marked
+          {% else %}
+            mdi:checkbox-blank-outline
+          {% endif %}
+
+  - platform: command_line
+    name: "HASS Uptime"
+    command: echo "$(($(date +%s) - $(date -d "$(head -n1 /root/.homeassistant/home-assistant.log | cut -d' ' -f-2)" +%s)))"
+    scan_interval: 600
+    value_template: >-
+      {% set uptime = value | int %}
+      {% set seconds = uptime % 60 %}
+      {% set minutes = ((uptime % 3600) / 60) | int %}
+      {% set hours = ((uptime % 86400) / 3600) | int %}
+      {% set days = (uptime / 86400) | int %}
+      {%- if days > 0 -%}
+        {%- if days == 1 -%}
+          1 day
+        {%- else -%}
+          {{ days }} days
+        {%- endif -%}
+        {{ ', ' }}
+      {%- endif -%}
+      {{ '%02d' % hours }}:{{ '%02d' % minutes }}
+script:
+  update_home_assistant_home:
+    sequence:
+      - service: shell_command.update_hass
+shell_command:
+  update_hass: hassctl update-hass && hassctl config && hassctl restart

@@ -1,0 +1,12 @@
+  > 
+    Download is {{ states("sensor.speedtest_download") }} megabits and
+    Ping is  {{ states("sensor.speedtest_ping") }} milliseconds
+    {%- set domains = [states.sensor ] %}
+    {%- for domain in domains %}
+    {% for item in domain %}
+    {%- if item.state | lower == 'offline' %}
+    {{- item.attributes.friendly_name }} is {{ item.state }}
+    {% endif %}
+    {%- endfor %}
+    {%- endfor %}  
+    Everything else is Online     

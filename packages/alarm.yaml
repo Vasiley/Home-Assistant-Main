@@ -1,0 +1,248 @@
+homeassistant:
+  customize:
+    script.gone_on:
+      friendly_name: Away   
+      icon: mdi:security-home
+      
+      
+group:
+  alarm_panel_card:
+   name: Alarm
+   entities:
+     - alarm_control_panel.ha_alarm
+     - sensor.blue_iris_profile       
+##############################################################################
+###### see home mode package for setting of the mode house is in      ########
+######   ie sleep home or away  (sets cameras thermostat and some lights  ####
+##############################################################################                                       
+alarm_control_panel:
+  - platform: manual
+#    code:  # move this to secrets when you have time
+    # code: !secret alarm_control_panel_code
+    trigger_time: 1
+    pending_time: 5  
+  
+automation:
+  #- alias: Automation to rerun alarm
+  - alias: rerun alarm
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.ha_alarm
+        to: 'triggered'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'away' 
+      - condition: state
+        entity_id: alarm_control_panel.ha_alarm
+        state: 'triggered'        
+#      entity_id: alarm_control_panel.ha_alarm
+#      state: 'triggered' 
+    action:
+      - delay: '00:00:02' 
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'You are detected and recorded'
+      - service: light.turn_on
+        data:
+          entity_id: group.all_lights
+          flash: short
+      - service: light.turn_off
+        entity_id: light.light_bulb     
+
+########################################################
+#        Alarm setting for away mode 
+########################################################
+  - alias: 'Trigger alarm when house mode is in away mode'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kids_bathroom_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.kids_hallway_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.laundry_room_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.kitchen_motion
+        to: 'on'   
+      - platform: state
+        entity_id: binary_sensor.hallway_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: alarm_control_panel.ha_alarm
+        state: armed_away
+#      entity_id: sensor.set_hold_mode
+#      state: 'away'
+       
+    action:
+      - service: alarm_control_panel.alarm_trigger
+        entity_id: alarm_control_panel.ha_alarm 
+#      data:
+#        code: 9937      
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Motion Detected'
+      - service: light.turn_on
+        data:
+          entity_id: group.all_lights
+          flash: short
+      - service: light.turn_off
+        entity_id: light.light_bulb    
+      - service: notify.Pushbullet
+        data:
+          message: 'An alarm has been Triggered!'
+        data_template:
+          message: >
+            An alarm has been Triggered in the {% if is_state('binary_sensor.kids_bathroom_motion', 'on') %}
+            Kids Bathroom{% elif is_state('binary_sensor.kids_hallway_motion', 'on') %}
+            Kids Hallway{% elif is_state('binary_sensor.kitchen_motion', 'on') %}
+            Kitchen{% elif is_state('binary_sensor.hallway_motion', 'on') %}
+            Hallway{%elif is_state('binary_sensor.bathroom_motion', 'on') %}
+            Master Bath{%elif is_state('binary_sensor.master_motion', 'on') %} 
+            Master{% elif is_state('binary_sensor.laundry_room_motion', 'on') %}
+            Laundry Room{% endif %}
+       
+      
+#################################################
+# triggers for armed home mode
+#################################################
+  - alias: 'Triggers for arm_home'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.laundry_room_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: alarm_control_panel.ha_alarm
+        state: 'armed_home'
+    action:
+      - service: alarm_control_panel.alarm_trigger
+        entity_id: alarm_control_panel.ha_alarm
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Motion Detected in Laundry Room'
+      - service: notify.Pushbullet
+        data:
+          message: 'An alarm has been Triggered! In Laundry Room'
+    
+#################################################
+#             Alarm Auto Arm Away when LEAVE                       #
+#################################################
+  - alias: 'Alarm Away when Leave home'
+    trigger:
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'away'
+    action:
+      - service: alarm_control_panel.alarm_arm_away
+        entity_id: alarm_control_panel.ha_alarm
+#      data: 
+#        code: 9937
+
+#################################################
+#          Alarm Auto DISARM when RETURN                         #
+#################################################
+  - alias: 'Alarm disarm when return home'
+    trigger:
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'home'
+    action:
+      - service: alarm_control_panel.alarm_disarm
+        entity_id: alarm_control_panel.ha_alarm
+      - service: light.turn_off
+        entity_id: light.light_bulb   
+#      data:
+#        code: 9937
+#    - service: script.turn_off
+#      entity_id: script.alarm_flashonoff
+#    - service: script.turn_off
+#      entity_id: script.alarm_repeat
+#    - service: light.turn_off
+#      entity_id: group.all_lights
+######################################################
+#        Alarm auto arm home when house is in sleep   
+######################################################
+  - alias: 'Alarm set armed home'
+    trigger:
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'sleep'
+    action:
+      - service: alarm_control_panel.alarm_arm_home
+        entity_id: alarm_control_panel.ha_alarm
+        
+###################################################################
+####    Scripts for Alarm                                  ########
+###################################################################
+        
+
+######## Away Mode Script   #############
+script:
+  gone_on:
+    sequence:
+      - delay: '00:00:00'
+      - service: light.turn_off
+        data:
+          entity_id: group.all_lights
+      - service: fan.turn_off
+        data:
+          entity_id: fan.living_room_fan    
+      - service: switch.turn_off 
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor  
+      - service: media_player.turn_off 
+        data:
+          entity_id: media_player.onkyo
+      - service: remote.turn_off
+        data:     
+          entity_id: remote.entertainment  
+      - service: climate.set_away_mode
+        data:    
+          entity_id: climate.thermostat
+          away_mode: 'on'
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "away"    
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Away Mode is Activated Have a good day' 
+      - service: rest_command.lock_down
+      - service: rest_command.lock_down      
+  alarm_flashonoff:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_lights
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'You are detected and recorded'
+      - delay: '00:00:03'    
+      - service: light.turn_off
+        data:
+          entity_id: group.all_lights          
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_repeat 
+      - delay: '00:00:03'    
+  alarm_repeat:
+    sequence: 
+      - delay: '00:00:03'
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_flashonoff        

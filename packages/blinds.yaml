@@ -1,0 +1,127 @@
+homeassistant:
+  customize:
+    script.blinds_closed:
+      friendly_name: Blinds Closed
+      haaska_name: Close Blinds
+    script.blinds_halfway:
+      friendly_name: Blinds Halfway
+      haaska_name: Blinds Halfway
+    script.blinds_open:
+      friendly_name: Blinds Open
+      haaska_name: Open Blinds
+    input_select.kitchen_blinds_status:
+      persistent: true
+    sensor.kitchen_blinds_state:
+      persistent: true
+    automation.blinds_closed:
+      haaska_hidden: true
+    automation.blinds_halfway:
+      haaska_hidden: true
+    automation.blinds_open:
+      haaska_hidden: true    
+      
+group:
+  blinds_kitchen_card:
+   control: hidden
+   name: Blinds
+   entities:
+     - input_select.kitchen_blinds_status 
+     - sensor.kitchen_blinds_state
+     - script.blinds_closed
+     - script.blinds_halfway
+     - script.blinds_open    
+     
+input_select:
+  kitchen_blinds_status:
+    name: Kitchen Blinds
+    options:
+     - Open
+     - Halfway
+     - Closed
+#    initial: Closed
+    
+sensor:
+  - platform: template
+    sensors:
+      kitchen_blinds_state:
+        friendly_name: 'Kitchen Blinds Status'
+        value_template: "{{ states('input_select.kitchen_blinds_status') }}"     
+  
+automation:
+  - alias: Blinds Open
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_blinds_state
+        to: 'Open'
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'home' 
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f 
+        below: 85
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'         
+    action:
+      - service: script.turn_on
+        entity_id: script.blinds_open
+     
+  - alias: Blinds Halfway
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_blinds_state
+        to: 'Halfway'
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f 
+        above: 90
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'     
+    action:
+      - service: script.turn_on
+        entity_id: script.blinds_halfway
+      
+  - alias: Blinds Closed
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_blinds_state
+        to: 'Closed'
+      - platform: state
+        entity_id: sensor.set_hold_mode  
+        to: 'sleep'
+      - platform: state
+        entity_id: sensor.set_hold_mode  
+        to: 'away'  
+    action:
+      - service: script.turn_on
+        entity_id: script.blinds_closed
+
+script:
+  blinds_closed:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kitchen_blinds_status
+          option: 'Closed'
+      - service: shell_command.kitchen_blinds_closed    
+  blinds_halfway:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kitchen_blinds_status
+          option: 'Halfway'
+      - service: shell_command.kitchen_blinds_halfway    
+  blinds_open:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kitchen_blinds_status
+          option: 'Open'
+      - service: shell_command.kitchen_blinds_open     
+          
+shell_command:
+  kitchen_blinds_closed: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,35"
+  kitchen_blinds_halfway: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,70"
+  kitchen_blinds_open: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,105" 

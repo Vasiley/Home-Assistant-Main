@@ -1,0 +1,113 @@
+homeassistant:
+  customize:
+    script.knightrider_off:
+      friendly_name: Disable "KnightRiderLights"
+    script.knightrider_on:    
+      friendly_name: Knight Rider Lights
+    script.rerunknightrider_on:
+      friendly_name: Knight Rider RERUN     
+   
+script:
+######## Knight Rider ################- alias: knight rider effect
+  knightrider_on:
+  ####### DOOR LAMP #########
+  ###### Forward #########
+    sequence: 
+      - delay: '00:00:00'
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          xy_color: [0.167,0.04]
+          brightness: 255
+#      - delay: '00:00:01'
+      - service: light.turn_on      
+        data:
+          entity_id: light.door_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+  ####### Dawns LAMP  #######        
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+#      - delay: '00:00:01'
+      - service: light.turn_on      
+        data:
+          entity_id: light.dawns_lamp
+          xy_color: [0.167,0.04]
+          brightness: 255  
+      - service: light.turn_off
+        data:
+          entity_id: light.door_lamp
+   ##### Herbs LAMP   #######           
+      - service: light.turn_on
+        data:
+          entity_id: light.herbs_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+#      - delay: '00:00:01'
+      - service: light.turn_on      
+        data:
+          entity_id: light.herbs_lamp
+          xy_color: [0.167,0.04]
+          brightness: 255
+      - service: light.turn_off
+        data:
+          entity_id: light.dawns_lamp  
+   ###### Backwards ######          
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+      - service: light.turn_on
+        data:
+          entity_id: light.herbs_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+      - service: light.turn_off
+        data: 
+          entity_id: light.herbs_lamp         
+####### Dawns Lamp #####          
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp 
+          xy_color: [0.167,0.04]
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          xy_color: [0.167,0.04]
+          brightness: 125
+      - service: light.turn_off
+        data:
+          entity_id: light.dawns_lamp
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          xy_color: [0.167,0.04]
+          brightness: 255          
+      - service: script.turn_on
+        data:
+          entity_id: script.rerunknightrider_on
+  rerunknightrider_on:
+    sequence:
+      - delay: '00:00:00'   
+      - service: script.turn_on
+        data:
+          entity_id: script.knightrider_on
+          
+  knightrider_off:
+    sequence:
+      - delay: '00:00:00'
+      - service: script.turn_off
+        data:
+          entity_id: script.rerunknightrider_on
+      - service: script.turn_off
+        data:      
+          entity_id: script.knightrider_on
+      - delay: '00:00:01'    
+      - service: script.turn_on    
+        data:
+          entity_id: script.bright_on

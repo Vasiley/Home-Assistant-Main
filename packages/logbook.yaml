@@ -1,0 +1,29 @@
+logbook:
+ exclude:
+   entities:
+      - sensor.snmp_lan_load_in
+      - sensor.snmp_lan_load_out
+      - sensor.snmp_wan_in
+      - sensor.snmp_wan_out
+      - switch.pihole
+      - sensor.ads_blocked_today
+      - sensor.ads_percentage_today
+      - sensor.dns_queries_today
+      - sensor.domains_being_blocked
+      - sensor.ads_blocked_today
+      - sensor.unique_domains
+      - sensor.queries_forwarded
+      - sensor.queries_cached
+      - sensor.pihole_dns
+      - sensor.pihole_blocking      
+      
+   domains:
+      - input_select
+#      - media_player
+      - automation
+      - input_slider
+      - rest_command
+      - camera
+      - notify
+      - scene
+      - sun

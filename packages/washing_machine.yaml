@@ -1,0 +1,57 @@
+homeassistant:
+  customize:
+    script.start_washer:
+      friendly_name: Washer
+
+group:
+  washing_machine_card:
+   name: Washing Machine
+   entities:
+     - input_select.washing_machine_status
+     - sensor.washer_status
+     
+input_select:
+  washing_machine_status:
+    name: Laundry
+    options:
+     - running
+     - clean 
+    initial: clean
+    
+sensor:
+  - platform: template
+    sensors:
+      washer_status:
+        friendly_name: 'Washing Machine Status'
+        value_template: "{{ states('input_select.washing_machine_status') }}"    
+  
+script:    
+  start_washer:
+    sequence:
+      - delay: '00:00:03'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.washing_machine_status
+          option: 'running'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Washer is Started'            
+  
+automation:
+  - alias: Washer Completes Wash
+    trigger:
+      - platform: state
+        entity_id: sensor.washer_status
+        to: 'running'
+        for:
+          minutes: 36
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Washer is Finished'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.washing_machine_status
+          option: 'clean'  

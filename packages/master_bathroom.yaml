@@ -1,0 +1,276 @@
+homeassistant:
+  customize:
+    binary_sensor.kids_bathroom_motion:
+      friendly_name: Kids Bathroom Motion
+      device_class: motion
+    automation.master_bath_light_left_on:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    automation.master_bath_shower_time_off:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    automation.master_bath_shower_time_on:
+      haaska_hidden: true
+      hidden: false
+      persistence: true      
+    automation.motion_bathroom_home_mode_off:
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+    automation.motion_bathroom_home_mode_on:
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+    automation.motion_bathroom_sleep_off:
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+    automation.motion_bathroom_sleep_on:
+      haaska_hidden: true
+      hidden: false 
+      persistence: true
+    sensor.master_bathroom_dimmer_state:
+      icon: mdi:remote 
+      haaska_hidden: true
+    sensor.master_bathroom_dimmer_last_update:
+      icon: mdi:clock  
+    sensor.master_bathroom_dimmer_battery:
+      icon: mdi:battery   
+    binary_sensor.bathroom_motion:
+      friendly_name: Bathroom Motion
+      device_class: motion 
+    sensor.motion_sensor_bathroom_battery:
+      icon: mdi:battery  
+    sensor.bathroom_temperature:
+      friendly_name: Master Bath Temperature
+            
+    script.shower_time_on:
+      friendly_name: Shower Time  
+      haaska_hidden: false
+      haaska_name: Shower Time       
+    script.shower_time_off:
+      friendly_name: Finished Shower
+      haaska_hidden: false
+      haaska_name: Finished Shower
+    light.bathroom:
+      persistence: false
+
+# I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging
+      
+group:
+  master_bath:
+   control: hidden
+   name: Master Bath
+   entities:    
+     - light.bathroom_vanity  
+     - light.bathroom
+     - binary_sensor.bathroom_motion
+     - sensor.bathroom_temperature
+     - sensor.motion_sensor_bathroom_battery
+     - sensor.master_bathroom_dimmer_state
+     - sensor.master_bathroom_dimmer_last_update
+     - sensor.master_bathroom_dimmer_battery
+     - script.shower_time_on
+     - script.shower_time_off
+     - automation.master_bath_light_left_on
+     - automation.master_bath_shower_time_off
+     - automation.master_bath_shower_time_on
+     - automation.motion_bathroom_home_mode_off
+     - automation.motion_bathroom_home_mode_on 
+     - automation.motion_bathroom_sleep_off 
+     - automation.motion_bathroom_sleep_on
+     
+binary_sensor:
+  - platform: rest
+    resource: !secret MS_rest_36
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 1 
+    name: bathroom_motion 
+sensor:
+  - platform: rest
+    resource: !secret dimmer_rest_33
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Master Bathroom Dimmer State'
+  - platform: template
+    sensors:
+      master_bathroom_dimmer_state:
+        friendly_name: 'Master Bath Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.master_bathroom_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %} 
+
+  - platform: rest
+    resource: !secret dimmer_rest_33
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Master Bathroom Dimmer Last Update'
+
+  - platform: template
+    sensors:
+      master_bathroom_dimmer_last_update:
+        friendly_name: 'Master Bath Last Used'
+        value_template: >-
+          {{ as_timestamp(strptime(states('sensor.master_bathroom_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+          
+  - platform: rest
+    resource: !secret dimmer_rest_33
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Master Bathroom Dimmer Battery'    
+  - platform: rest
+    resource: !secret MS_rest_35
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    name: 'Bathroom Temperature'
+  - platform: rest
+    resource: !secret MS_rest_35
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Motion Sensor Bathroom Battery'    
+  
+automation:  
+  - alias: Motion Bathroom Home Mode On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'   
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 154
+          brightness: 255   
+          
+  - alias: Motion Bathroom Home Mode off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'off'
+        for:
+          minutes: 10 
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'  
+    action:
+      - service: light.turn_off
+        entity_id: light.bathroom
+              
+  - alias: Motion Bathroom Sleep On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'sleep'  
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 426
+          brightness: 50   
+          
+  - alias: Motion Bathroom Sleep Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'off'
+        for:
+          minutes: 5
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'sleep'
+    action:
+      - service: light.turn_off
+        entity_id: light.bathroom
+  - alias: Master Bath Shower Time On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_bathroom_dimmer_state
+        to: 'On'
+    action:
+      - service: script.turn_on
+        entity_id: script.shower_time_on         
+ 
+  - alias: Master Bath Shower Time Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_bathroom_dimmer_state
+        to: 'Off'
+    action:
+      - service: script.turn_on
+        entity_id: script.shower_time_off
+ 
+  - alias: Master Bath light left on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: light.bathroom_vanity
+        to: 'on'
+        for:
+          hours: 1
+          minutes: 0
+          seconds: 0
+    action:
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_home_mode_on
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_sleep_on
+      - service: light.turn_off
+        entity_id: light.bathroom_vanity
+      - service: light.turn_off
+        entity_id: light.bathroom    
+        
+script:
+  shower_time_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: automation.turn_off
+        entity_id: automation.motion_bathroom_home_mode_off
+      - service: automation.turn_off
+        entity_id: automation.motion_bathroom_sleep_off  
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom_vanity
+          color_temp: 154
+          brightness: 255  
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 154
+          brightness: 255
+          
+  shower_time_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_home_mode_off  
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_sleep_off  
+      - service: light.turn_off
+        entity_id: light.bathroom_vanity
+      - service: light.turn_off
+        entity_id: light.bathroom    

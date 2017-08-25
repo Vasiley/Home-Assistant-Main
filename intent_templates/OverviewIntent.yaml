@@ -1,0 +1,7 @@
+  >
+    {%- for state in states.sensor -%}
+    {%- if loop.first %}The {% elif loop.last %} and the {% else %}, the {% endif -%}
+    {{ state.name | lower }} is {{state.state}} {{- state.attributes.unit_of_measurement}}
+    {%- endfor -%}
+  
+  

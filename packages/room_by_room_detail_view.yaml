@@ -1,0 +1,24 @@
+##### I use this for a group view with entities are in different packages....If in one package group
+##### view is in there
+
+
+group:
+ livingroom_card:
+    control: hidden
+    name: Living Room
+    entities:
+     - fan.living_room_fan
+     - script.living_room_fan_auto
+     - sensor.fan_speed
+     - binary_sensor.gang
+     - script.refresh_wink
+     - automation.fan_low_with_hvac_automation
+     - automation.fan_medium_with_hvac_automation
+     - light.light_bulb
+     - automation.evening_time
+     - script.evening_time
+     - script.movie_time
+     - automation.back_to_white_after_motion
+     - automation.back_to_yellow_dim_after_motion
+     - script.nap_time
+     - script.front_cam_dashboard

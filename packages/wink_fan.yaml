@@ -1,0 +1,183 @@
+homeassistant:
+  customize:
+    automation.fan_set_speed:
+      friendly_name: "Fan Set Speed"
+      haaska_hidden: true
+      hidden: true
+
+    automation.fan_turn_on:
+      friendly_name: "Fan Turn On"
+      haaska_hidden: true
+      hidden: true
+
+    automation.fan_low_with_hvac_automation:
+      friendly_name: Low with Ac
+      haaska_hidden: true
+
+    automation.fan_medium_with_hvac_automation:
+      friendly_name: Meduim without Ac
+      haaska_hidden: true
+
+    script.living_room_fan_auto:
+      friendly_name: "Breeze"
+      icon: mdi:fan
+      Haaska_hidden: false
+      haaska_name: Breeze
+
+    script.refresh_wink:
+      friendly_name: " Refresh Wink"
+      icon: mdi:update
+
+    sensor.fan_speed:
+      icon: mdi:speedometer
+      haaska_hidden: true
+
+    binary_sensor.gang:
+      friendly_name: Fan Connection
+      icon: mdi:nfc
+      haaska_hidden: true
+
+    light.light_bulb:
+      friendly_name: Living Room Light
+      haaska_hidden: false
+      haaska_name: Living Room Light
+
+group:
+  livingroomfan_card:
+   control: hidden
+   name: Living Room Fan
+   entities:
+     - fan.living_room_fan
+     - script.living_room_fan_auto
+     - sensor.fan_speed
+     - binary_sensor.gang
+     - script.refresh_wink
+     - switch.king_of_fans__inc_hdc52eastwindfan_0016b720_1
+
+
+
+sensor:
+  - platform: template
+    sensors:
+      fan_speed:
+        friendly_name: 'Fan Speed'
+        value_template: "{{ states.fan.living_room_fan.attributes.speed }}"
+
+automation:
+  - alias: fan_set_speed
+    initial_state: 'on'
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: fan
+          service: turn_on
+    condition:
+      - condition: template
+        value_template: "{{ trigger.event.data.service_data.speed is defined }}"
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.fan_set_speed
+            - automation.fan_turn_on
+      - service: fan.set_speed
+        data_template:
+          entity_id: "{{ trigger.event.data.service_data.entity_id }}"
+          speed: "{{ trigger.event.data.service_data.speed }}"
+      - service: fan.turn_on
+        data_template:
+          entity_id: "{{ trigger.event.data.service_data.entity_id }}"
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.fan_set_speed
+            - automation.fan_turn_on
+
+  - alias: fan_turn_on
+    initial_state: 'on'
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: fan
+          service: turn_on
+    condition:
+      - condition: template
+        value_template: "{{ trigger.event.data.service_data.speed is not defined }}"
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id:
+            - automation.fan_set_speed
+            - automation.fan_turn_on
+      - service: fan.set_speed
+        data_template:
+          entity_id: >-
+            {% if trigger.event.data.service_data.entity_id is string %}
+              {{ trigger.event.data.service_data.entity_id }}
+            {% else %}
+              {{ trigger.event.data.service_data.entity_id|join(', ') }}
+            {% endif %}
+          speed: "medium"
+      - service: fan.turn_on
+        data_template:
+          entity_id: >-
+            {% if trigger.event.data.service_data.entity_id is string %}
+              {{ trigger.event.data.service_data.entity_id }}
+            {% else %}
+              {{ trigger.event.data.service_data.entity_id|join(', ') }}
+            {% endif %}
+      - service: automation.turn_on
+        data:
+          entity_id:
+            - automation.fan_set_speed
+            - automation.fan_turn_on
+
+##########################################################################
+############################  cieling fan automation with Hvac    #################
+##########################################################################
+  - alias: Fan low with Hvac automation
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.hvac_fan
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'
+    action:
+      - service: fan.turn_on
+        data:
+          entity_id: fan.living_room_fan
+          speed: 'low'
+
+  - alias: Fan medium with hvac automation
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.hvac_fan
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'home'
+    action:
+      - service: fan.turn_on
+        data:
+          entity_id: fan.living_room_fan
+          speed: 'medium'
+
+
+script:
+  living_room_fan_auto:
+    sequence:
+      - delay: '00:00:01'
+      - service: fan.turn_on
+        data:
+          entity_id: fan.living_room_fan
+          speed: 'auto'
+  refresh_wink:
+    sequence:
+      - service: wink.refresh_state_from_wink

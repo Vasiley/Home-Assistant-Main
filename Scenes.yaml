@@ -1,0 +1,11 @@
+  - name: All On
+    entities:
+      group.all_lights:
+        state: on
+        xy_color: [0.3252,0.3397]
+        brightness: 254 
+  - name: All Off
+    entities:
+      group.all_lights:
+       state: off
+      

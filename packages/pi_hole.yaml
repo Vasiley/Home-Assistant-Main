@@ -1,0 +1,154 @@
+homeassistant:
+  customize:
+    switch.pihole:
+      friendly_name: Pi-Hole
+      entity_picture: /local/pihole.jpg
+    sensor.ads_percentage_today:
+      friendly_name: Percentage of Ad Traffic Blocked
+      unit_of_measurement: '%'
+      icon: mdi:ticket-percent
+    sensor.domains_being_blocked:
+      friendly_name: Total Domains Blocking
+      icon: mdi:do-not-disturb
+    sensor.ads_blocked_today:
+      friendly_name: Ads Blocked Today
+      icon: mdi:do-not-disturb
+    sensor.dns_queries_today:
+      friendly_name: DNS Queries Today
+      icon: mdi:note-text
+    sensor.unique_domains:
+      friendly_name: Unique Domains
+      icon: mdi:approval
+    sensor.queries_forwarded:
+      friendly_name: Queries Forwarded
+      icon: mdi:arrange-send-backward
+    sensor.queries_cached:
+      friendly_name: Queries Cached
+      icon: mdi:animation
+    script.ad_blocker:
+      friendly_name: Ad Blocker
+    script.pihole_off:
+      friendly_name: Turn Pi-Hole Off
+      icon: mdi:do-not-disturb
+    script.pihole_on:
+      friendly_name: Turn Pi-Hole On
+      icon: mdi:power
+    sensor.pihole_dns:
+      friendly_name: DNS Service
+    sensor.pihole_blocking:
+      friendly_name: Ad Blocking
+
+group:
+  Ads_Blocked_card:
+   name: Ads Blocked
+   entities:
+     - switch.pihole
+     - sensor.ads_blocked_today
+     - sensor.ads_percentage_today
+     - sensor.dns_queries_today
+     - sensor.domains_being_blocked
+     - sensor.ads_blocked_today
+     - sensor.unique_domains
+     - sensor.queries_forwarded
+     - sensor.queries_cached
+     - sensor.pihole_dns
+     - sensor.pihole_blocking
+
+###############################################################################
+#### PI Hole sensors                                                       ####
+###############################################################################
+sensor:
+  - platform: rest
+    name: dns_queries_today
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.dns_queries_today }}'
+  - platform: rest
+    name: domains_being_blocked
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.domains_being_blocked }}'
+  - platform: rest
+    name: ads_blocked_today
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.ads_blocked_today }}'
+  - platform: rest
+    name: ads_percentage_today
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.ads_percentage_today }}'
+  - platform: rest
+    name: unique_domains
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.unique_domains }}'
+  - platform: rest
+    name: queries_forwarded
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.queries_forwarded }}'
+  - platform: rest
+    name: queries_cached
+    resource: !secret rest_pi_hole
+    value_template: '{{ value_json.queries_cached }}'
+
+###### I had to provide access in sudoers file for this script to run.
+  - platform: command_line
+    command: 'bash /root/.homeassistant/shell/pihole.sh'
+    name: 'pihole_status_raw'
+    scan_interval: 60
+
+
+  - platform: template
+    sensors:
+      pihole_dns:
+        value_template: "{{ states('sensor.pihole_status_raw').split(':::')[1] }}"
+        icon_template: >-
+          {% if is_state('sensor.pihole_dns', 'DNS service is running') %}
+             mdi:checkbox-marked
+          {% else %}
+             mdi:checkbox-blank-outline
+          {% endif %}
+  - platform: template
+    sensors:
+      pihole_blocking:
+        value_template: "{{ states('sensor.pihole_status_raw').split(':::')[2] }}"
+        icon_template: >-
+          {% if is_state('binary_sensor.pihole_status', 'on') %}
+             mdi:checkbox-blank-outline
+          {% else %}
+             mdi:checkbox-marked
+          {% endif %}
+
+binary_sensor:
+  - platform: template
+    sensors:
+      pihole_status:
+        value_template: "{{ is_state('sensor.pihole_blocking', 'Pi-hole blocking is Enabled') }}"
+
+
+######################### PI Hole switch to turn off and on ####################
+switch:
+  - platform: template
+    switches:
+      pihole:
+        value_template: "{{ is_state('binary_sensor.pihole_status', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.pihole_on
+        turn_off:
+          service: script.turn_on
+          entity_id: script.pihole_off
+
+#################### Pi Hole script for switch    ##################################
+script:
+  ad_blocker:
+    sequence:
+      - service: switch.toggle
+        entity_id: switch.pihole
+  pihole_on:
+    sequence:
+       - service: shell_command.pihole_on
+  pihole_off:
+    sequence:
+       - service: shell_command.pihole_off
+
+###############################  shell_command/pihole   #####################################
+shell_command:
+  pihole_on: !secret pi_hole_on
+  pihole_off: !secret pi_hole_off

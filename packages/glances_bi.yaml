@@ -1,0 +1,56 @@
+homeassistant:
+  customize:
+    sensor.glances_cpu_load_2:
+      friendly_name: Cpu Load
+      icon: mdi:desktop-tower 
+    sensor.glances_disk_free_2:
+      friendly_name: Hard Drive Free Space
+      icon: mdi:harddisk
+    sensor.glances_disk_use_3:
+      friendly_name: Hard Drive Used
+      icon: mdi:harddisk
+    sensor.glances_disk_use_4:
+      friendly_name: Hard Drive Use
+      icon: mdi:harddisk
+    sensor.glances_ram_free_2:
+      friendly_name: Ram Free
+      icon: mdi:chip
+    sensor.glances_ram_use_3:
+      friendly_name: Ram Used
+      icon: mdi:chip
+    sensor.glances_ram_use_4:
+      friendly_name: Ram Used
+      icon: mdi:chip       
+            
+group:
+  blue_iris_info_card:
+   name: Blue Iris Svr Info
+   entities:
+     - sensor.blue_iris_workstation
+     - sensor.glances_cpu_load_2
+     - sensor.glances_disk_use_4
+     - sensor.glances_disk_free_2
+     - sensor.glances_disk_use_3
+     - sensor.glances_ram_use_3
+     - sensor.glances_ram_free_2
+     - sensor.glances_ram_use_4
+     
+sensor:
+  - platform: glances
+    host: !secret glances_blue_iris_workstation
+    resources:
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'memory_use_percent'
+      - 'memory_use'
+      - 'memory_free'
+      - 'swap_use_percent'
+      - 'swap_use'
+      - 'swap_free'
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+     

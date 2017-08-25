@@ -1,0 +1,90 @@
+homeassistant:
+  customize:
+    sensor.remote_entertainment:
+      icon: mdi:theater
+
+group:
+  harmony_card:
+   name: Entertainment Center
+   entities:
+     - remote.entertainment
+     - sensor.remote_entertainment 
+     - input_select.harmony     
+      
+remote:
+  - platform: harmony
+    name: Entertainment
+    host: 192.168.1.193
+
+sensor:
+  - platform: template
+    sensors:
+      remote_entertainment:
+        value_template: '{{ states.remote.entertainment.attributes.current_activity }}'
+        friendly_name: 'Living Room'
+
+input_select:
+  harmony:
+    name: Harmony
+    options:
+      - Select Input
+      - Kodi
+      - Watch Tv
+      - PS4
+      - Blue Iris
+      - Netflix
+      - Classic Music
+      - Amazon
+      - Power Off
+    icon: mdi:monitor
+    
+# Harmony input select Automatisierung
+automation:
+
+  - alias: Harmony Input Select Automation
+    initial_state: on
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.harmony
+        from: 'Select Input'
+    action:
+      - service: remote.turn_on
+        entity_id: remote.entertainment
+        data_template:  
+          activity: >
+            {% if is_state("input_select.harmony", "Kodi") %}
+              25483962
+            {% elif is_state("input_select.harmony", "Watch Tv") %}
+              25482850
+            {% elif is_state("input_select.harmony", "PS4") %}
+              25501031
+            {% elif is_state("input_select.harmony", "Blue Iris") %}
+              25486501
+            {% elif is_state("input_select.harmony", "Netflix") %}
+              25498037
+            {% elif is_state("input_select.harmony", "Classic Music") %}
+              25501845
+            {% elif is_state("input_select.harmony", "Amazon") %}
+              27189210
+            {% else %}
+            {% endif %}
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"
+  - alias: Harmony Off  
+    initial_state: on
+    hide_entity: True
+    trigger:
+      - platform: state
+        entity_id: input_select.harmony
+        to: 'Power Off'
+    action:
+      - service: remote.turn_off
+        entity_id: remote.entertainment
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"    
+        

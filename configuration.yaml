@@ -1,0 +1,119 @@
+homeassistant:
+  name: Vas & Squrriels Castle
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: 1
+  unit_system: imperial
+  time_zone: America/Chicago
+  customize: !include Customize.yaml
+  packages: !include_dir_named packages
+
+####Zone files
+zone: !include zones.yaml
+
+# Enables the frontend
+frontend:
+
+http:
+  # Uncomment this to add a password (recommended!)
+   api_password: !secret http_password
+   ssl_certificate: !secret ssl_certificate
+   ssl_key: !secret ssl_key
+  # base_url: !secret http_base_url
+   use_x_forwarded_for: True
+   trusted_networks:
+     - 127.0.0.1
+     - 192.168.1.0/24
+   ip_ban_enabled: True
+   login_attempts_threshold: 5
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Track the sun
+sun:
+
+# Sensors
+sensor: !include Sensors.yaml
+
+# Text to speech
+tts:
+  - platform: google
+    cache: true
+    cache_dir: /tmp/tts
+    time_memory: 300
+
+group: !include tabs.yaml
+
+mqtt:
+  broker: m10.cloudmqtt.com
+  port: 13636
+  client_id: !secret mqtt_client_id
+  keepalive: 60
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+intent_script: !include intent_scripts.yaml
+alexa:
+
+script: !include scripts.yaml
+
+automation old: !include automations old.yaml
+
+light:
+  platform: hue
+  host: 192.168.1.185
+  allow_unreachable: True
+
+scene: !include Scenes.yaml
+
+notify:
+  - name: Pushbullet
+    platform: pushbullet
+    api_key: !secret pushbullet_api_key
+
+rest_command: !include restcommands.yaml
+
+config:
+
+wink:
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+# Checks for available updates
+#updater:
+# Recorder in a package
+# Discover some devices automatically  (Should not be used in production)
+#discovery:
+#history: #Enables support for tracking state changes over time. In a Package
+#logbook: View all events in a logbook in a package
+#logger: in package
+
+#browser:
+#  url: !secret browser
+
+#media_player: in package
+
+#camera: In packages
+
+#switch: # Moved to packages
+
+#shell_command:
+#  update_git: gitupdate.sh
+
+#zha:
+#  usb_path: /dev/zigbee
+#  database_path: /home/homeassistant/.homeassistant/zigbee.db
+#zigbee:
+#  device: /dev/ttyUSB1
+
+#zwave:
+#  usb_path: /dev/ttyUSB0
+
+# panel_iframe:
+  # home_assistant:
+    # title: 'Home Assistant'
+    # icon: mdi:file-document
+    # url: 'https://home-assistant.io/docs/'
+     # https://github.com/Vasiley/Home-AssistantConfig

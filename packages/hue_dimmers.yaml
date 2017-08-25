@@ -1,0 +1,144 @@
+homeassistant:
+  customize:
+    ############ DIMMERS ################# 
+    sensor.kids_bathroom_dimmer_battery:
+      icon: mdi:battery
+    sensor.kitchen_table_dimmer_battery:
+      icon: mdi:battery
+    sensor.master_closet_dimmer_battery:
+      icon: mdi:battery        
+    sensor.kitchen_table_dimmer_last_update: 
+      icon: mdi:clock     
+    sensor.kitchen_table_dimmer_state:
+      icon: mdi:remote
+    sensor.kids_bathroom_dimmer_last_update:
+      icon: mdi:clock
+    sensor.kids_bathroom_dimmer_state:
+      icon: mdi:remote
+    sensor.master_closet_dimmer_last_update:
+      icon: mdi:clock
+    sensor.master_closet_dimmer_state:
+      icon: mdi:remote
+      
+group:
+  Dimmers_status_card:
+   name: Dimmers
+   entities:
+     - sensor.master_bathroom_dimmer_last_update
+     - sensor.master_bathroom_dimmer_state 
+     - sensor.kitchen_table_dimmer_last_update     
+     - sensor.kitchen_table_dimmer_state
+     - sensor.kids_bathroom_dimmer_last_update
+     - sensor.kids_bathroom_dimmer_state
+     - sensor.master_closet_dimmer_last_update
+     - sensor.master_closet_dimmer_state        
+     
+sensor:     
+      ######## Kids Bathroom
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Kids Bathroom Dimmer Battery'
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Kids Bathroom Dimmer State'
+  - platform: template
+    sensors:
+      kids_bathroom_dimmer_state:
+        friendly_name: 'Kids Bath Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kids_bathroom_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.kids_bathroom_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Kids Bathroom Dimmer Last Update'
+  - platform: template
+    sensors:
+      kids_bathroom_dimmer_last_update:
+        friendly_name: 'Kids Bathroom Last Used'
+        value_template: >-
+          {{ as_timestamp(strptime(states('sensor.kids_bathroom_dimmer_last_update_2')[:19], '%Y-%m-%dT%X'))|timestamp_custom('%a, %B %d') }}
+
+############ Kitchen Table Dimmer
+  - platform: rest
+    resource: !secret dimmer_rest_9
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Kitchen Table Dimmer Battery'
+  - platform: rest
+    resource: !secret dimmer_rest_9
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Kitchen Table Dimmer State'
+  - platform: template
+    sensors:
+      kitchen_table_dimmer_state:
+        friendly_name: 'Kitchen Table Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kitchen_table_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.kitchen_table_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_9
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'kitchen table dimmer last update'
+  - platform: template
+    sensors:
+      kitchen_table_dimmer_last_update:
+        friendly_name: 'Kitchen Table Last Used'
+        value_template: >-
+          {{as_timestamp(strptime(states('sensor.kitchen_table_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+
+###### Master Closet Dimmer
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Master Closet Dimmer Battery'
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Master Closet Dimmer State'
+  - platform: template
+    sensors:
+      master_closet_dimmer_state:
+        friendly_name: 'Master Closet Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.master_closet_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.master_closet_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Master Closet dimmer last update'
+  - platform: template
+    sensors:
+      master_closet_dimmer_last_update:
+        friendly_name: 'Master Closet Last Used'
+        value_template: >-
+         {{as_timestamp(strptime(states('sensor.master_closet_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+      

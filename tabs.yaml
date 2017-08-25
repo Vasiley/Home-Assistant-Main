@@ -1,0 +1,187 @@
+  Default_view:
+   view: yes
+   name: Vas and Squrriels Castle
+   entities:
+     - group.House_mode
+     - light.lamps
+     - light.kitchen
+     - light.master_hallway
+     - light.kitchen_table
+     - light.laundry_room
+     - light.kids_hallway
+     - light.kids_bathroom
+     - light.master
+     - light.carport
+     - light.light_bulb
+     - light.bathroom_vanity
+     - light.bathroom
+     - group.Family
+     - group.climate_temp_card
+     - group.alarm_panel_card
+     - group.usps_mail_card
+     - group.livingroomfan_card
+     - group.washing_machine_card
+     - group.harmony_card
+     - group.blinds_kitchen_card
+     - script.media_player_source
+
+  Devicesview:
+   view: yes
+   name: Equipment
+   entities:
+     - group.linux_server_card
+     - group.Ads_Blocked_card
+     - group.DigitalLoggers_card
+     - group.NetworkNmap_status_card
+     - group.NetworkDrives_status_card
+     - group.Workstations_status_card
+     - group.network_workstation_info_card
+     - group.blue_iris_info_card
+     - group.cameras_status_card
+     - group.hubs_card
+     - group.NetworkSnmp_card
+     - group.esp_devices_card
+     - group.homeass_version_card
+     - script.update_github
+     - group.logger_input_select_card
+
+  media:
+   view: yes
+   name: Media Players
+   entities:
+     - group.Kodi_media_player_card
+     - group.Blue_iris_media_player_card
+     - group.Samsung_tv_media_player_card
+     - group.stereo_avr_card
+     - group.Ruths_roku_media_player_card
+     - group.KodiBlueIris_media_player_card
+#     - group.haspeaker_media_player_card
+
+  Weather_view:
+   view: yes
+   name: Weather
+   entities:
+     - group.Conditions_card
+     - group.ForecastWeather_card
+     - group.animated_radar_card
+     - group.still_image_radar_card
+     - group.3_day_forcast
+#    - weather.weather_today
+
+  RoomSensors:
+   view: yes
+   name: Sensors
+   entities:
+     - group.Temperature_Info
+     - group.ecobee_sensors_card
+     - group.Motion_card
+     - group.Battery
+     - group.room_occupancy_card
+     - group.Dimmers_status_card
+     - group.blue_iris_motion_card
+
+  MyCameras:
+   view: yes
+   name: Cameras
+   entities:
+     - group.camera12_card
+     - group.camera_driveway_card
+     - group.camera_swamp_card
+     - group.camera_yard_card
+     - group.camera_backdoor_card
+     - group.camera_livingroom_card
+     - group.mailscan_card
+     - group.camera_dawn_card
+     - group.camera_herb_card
+     - group.camera_tablet_card
+
+  Roomview:
+   view: yes
+   name: Rooms
+   entities:
+     - group.master_bath
+     - group.master_bedroom
+     - group.carport_lights
+     - group.haaska_sensor_display_card
+     - group.livingroom_card
+
+  Fun_Stuff:
+   view: yes
+   name: Fun Stuff
+   entities:
+     - group.Effects
+     - script.spring
+     - script.savanna
+     - script.arctic
+     - script.tropical
+     - script.supernatural
+     - group.Routines
+
+
+
+  Family:
+    entities:
+     - sensor.herb
+     - sensor.dawn
+
+  Routines:
+    control: hidden
+    entities:
+     - script.lamps_on
+     - script.herbearly_on
+     - script.bright_on
+     - script.gone_on
+     - scene.all_on
+     - scene.all_off
+     - script.alarm_repeat
+     - script.alarm_flashonoff
+     - script.start_washer
+     - script.nap_time
+     - script.movie_time
+     - script.evening_time
+
+  Effects:
+    control: hidden
+    entities:
+     - script.knightrider_off
+     - script.knightrider_on
+     - script.rerunknightrider_on
+     - script.samsungtv_off
+     - script.samsungtv_on
+
+  Temperature_Info:
+   name: Temperature
+   entities:
+     - sensor.kitchen_temperature
+     - sensor.hallway_temperature
+     - sensor.laundry_temperature
+     - sensor.kids_hallway_temperature
+     - sensor.master_temperature
+     - sensor.bathroom_temperature
+     - sensor.kids_bathroom_temperature
+
+  Battery:
+   name: Battery
+   entities:
+     - sensor.motion_sensor_kids_hall_battery
+     - sensor.motion_sensor_laundry_battery
+     - sensor.motion_sensor_hallway_battery
+#     - sensor.motion_sensor_kitchen_battery
+     - sensor.kitchen_battery_motion
+     - sensor.motion_sensor_kids_bathroom_battery
+     - sensor.motion_sensor_master_battery
+     - sensor.motion_sensor_bathroom_battery
+     - sensor.master_bathroom_dimmer_battery
+     - sensor.kids_bathroom_dimmer_battery
+     - sensor.kitchen_table_dimmer_battery
+     - sensor.master_closet_dimmer_battery
+
+  House_mode:
+   name: Home Mode
+   control: hidden
+   entities:
+     - sensor.set_hold_mode
+     - script.lamps_on
+     - script.home_mode
+     - script.gone_on
+     - script.nap_time

@@ -1,0 +1,374 @@
+{
+  "intents": [
+    {
+      "name": "ActivateSceneIntent",
+      "samples": [
+        "activate {Scene}"
+      ],
+      "slots": [
+        {
+          "name": "Scene",
+          "type": "Scenes",
+          "samples": []
+        }
+      ]
+    },
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": []
+    },
+    {
+      "name": "BatteryLevelsIntent",
+      "samples": [
+        "What are Motion Sensor Battery Levels",
+        "What are Battery Levels"
+      ],
+      "slots": []
+    },
+    {
+      "name": "HallwayIntent",
+      "samples": [
+        "Hallway Temperatur",
+        "What is Hallway Temperature"
+      ],
+      "slots": []
+    },
+    {
+      "name": "itisyourbirthday",
+      "samples": [
+        "it is my birthday"
+      ],
+      "slots": []
+    },
+    {
+      "name": "KidsHallwayIntent",
+      "samples": [
+        "Kids Hallway Temperature",
+        "What is Kids Hallway Temperature"
+      ],
+      "slots": []
+    },
+    {
+      "name": "KitchenIntent",
+      "samples": [
+        "Kitchen Temperature",
+        "What is Temperature in Kitchen"
+      ],
+      "slots": []
+    },
+    {
+      "name": "LaundryroomIntent",
+      "samples": [
+        "Laundry Room Temperature",
+        "What is Laundry Room Temperature"
+      ],
+      "slots": []
+    },
+    {
+      "name": "LocateIntent",
+      "samples": [
+        "Where is {User}",
+        "Where's {User}",
+        "Where {User} is",
+        "Where did {User} go"
+      ],
+      "slots": [
+        {
+          "name": "User",
+          "type": "AMAZON.US_FIRST_NAME",
+          "samples": []
+        }
+      ]
+    },
+    {
+      "name": "MailIntent",
+      "samples": [
+        "Do I have Mail"
+      ],
+      "slots": []
+    },
+    {
+      "name": "MediaPlayerSourceIntent",
+      "samples": [
+        "to Change {player} to {source}"
+      ],
+      "slots": [
+        {
+          "name": "player",
+          "type": "player",
+          "samples": []
+        },
+        {
+          "name": "source",
+          "type": "source",
+          "samples": []
+        }
+      ]
+    },
+    {
+      "name": "NetworkIntent",
+      "samples": [
+        "Network Status"
+      ],
+      "slots": []
+    },
+    {
+      "name": "OverviewIntent",
+      "samples": [
+        "Overview"
+      ],
+      "slots": []
+    },
+    {
+      "name": "RunScriptIntent",
+      "samples": [
+        "run {Script}"
+      ],
+      "slots": [
+        {
+          "name": "Script",
+          "type": "Scripts",
+          "samples": []
+        }
+      ]
+    },
+    {
+      "name": "WhereAreWeIntent",
+      "samples": [
+        "where we are"
+      ],
+      "slots": []
+    }
+  ],
+  "types": [
+    {
+      "name": "AMAZON.US_FIRST_NAME",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "Dawn",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Herb",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Baby",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Dawn Baby",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "player",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "Stereo",
+            "synonyms": [
+              "Amp",
+              "Reciever"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Blue Iris",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Blue Iris 2",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Kodi",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Ruths Roku",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Smart Tv",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenes",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "All On",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "All Off",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scripts",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "spring",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "savanna",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "arctic",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "tropical",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "supernatural",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "tv-cd",
+            "synonyms": [
+              "TV",
+              "Samsung"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Net",
+            "synonyms": [
+              "Tune In"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Game",
+            "synonyms": [
+              "PS4",
+              "Playstation"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Pc",
+            "synonyms": [
+              "Kodi"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "Fm",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "cd",
+            "synonyms": [
+              "PI",
+              "Pie"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "dvd",
+            "synonyms": [
+              "Blue Iris",
+              "Plex"
+            ]
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "am",
+            "synonyms": [
+              "wwl radio"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+  >
+    {%- if is_state('sensor.dawn', 'home') and is_state('sensor.herb', 'home') -%}
+    You are both home, you fool
+    {%- else -%}
+    Dawn is at {{ states("sensor.dawn") }}
+    and Herb is at {{ states("sensor.herb") }}
+    {% endif %}

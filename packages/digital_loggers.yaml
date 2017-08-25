@@ -1,0 +1,71 @@
+homeassistant:
+  customize:
+    switch.network_switch_charter_modem:
+      friendly_name: Charter Modem
+    switch.network_switch_blue_iris_monitor:
+      friendly_name: Blue Iris Monitor
+    switch.network_switch_blue_iris_pc:
+      friendly_name: Blue Iris Pc
+    switch.network_switch_asus_router:
+      friendly_name: Asus Router
+    switch.network_switch_comnet_switch:
+      friendly_name: Comnet Switch
+    switch.network_switch_hue:
+      friendly_name: Phillips Hue
+    script.webswitch_reboot:
+      friendly_name: Webswitch Reboot
+      icon: mdi:power-settings
+    script.network_reboot:
+      friendly_name: Network Reboot
+      icon: mdi:power-settings
+
+group:
+  DigitalLoggers_card:
+   name: Network Switch
+   entities:
+     - switch.network_switch_charter_modem
+     - switch.network_switch_asus_router
+     - switch.network_switch_blue_iris_monitor
+     - switch.network_switch_blue_iris_pc
+     - switch.network_switch_comnet_switch
+     - switch.network_switch_hue
+     - script.webswitch_reboot
+     - script.network_reboot
+
+
+switch:
+  - platform: digitalloggers
+    host: 192.168.1.40
+    password: !secret digital_loggers_pass
+    name: Network Switch
+    cycletime: 5
+
+
+script:
+  #### reboot websitch clients  ####################
+  webswitch_reboot:
+    sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'WebSwitch Reboot'
+      - delay: '00:00:05'
+      - service: rest_command.webswitch_reboot
+###### reboot network equipment only    ########
+  network_reboot:
+    sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Network is going down Gabbie and Grandma chill it will be okay'
+      - delay: '00:00:01'
+      - service: rest_command.modem_reboot
+      - delay: '00:01:30'
+      - service: rest_command.router_reboot
+      - delay: '00:02:30'
+      - service: rest_command.switch1_reboot
+      - delay: '00:01:30'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Network is back up'

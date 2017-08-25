@@ -1,0 +1,57 @@
+homeassistant:
+  customize:
+    script.nap_time:
+      friendly_name: Nap     
+      icon: mdi:sleep
+      
+#########################################################################################
+#                                                                                   ##### 
+#                  Nap Time Mode                                                    #####
+#                                                                                   #####  
+#########################################################################################  
+script:
+  nap_time:
+    sequence:
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "sleep" 
+      - delay: '00:00:02'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.kodi_blue_iris
+          message: 'Nap Time'  
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.stereo
+          volume_level: '.99'  
+      - service: switch.turn_off 
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor 
+      - delay: '00:00:45'
+      - service: light.turn_off
+        data:
+          entity_id: light.lamps
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          color_temp: 426
+          brightness: 125
+      - delay: '00:00:10'    
+      - service: light.turn_off
+        data:
+          entity_id: light.kitchen
+      - delay: '00:00:10'    
+      - service: light.turn_off
+        data:
+          entity_id: light.master_hallway 
+      - delay: '00:00:45'          
+      - service: light.turn_off
+        data:      
+          entity_id: light.bathroom
+      - delay: '00:00:45'
+      - service: light.turn_off
+        data: 
+          entity_id: light.master  
+      - service: script.turn_on
+        entity_id: script.blinds_closed    

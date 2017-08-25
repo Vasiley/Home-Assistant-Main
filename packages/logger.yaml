@@ -1,0 +1,72 @@
+
+
+logger:
+  default: warn
+  logs:
+    homeassistant.components.zha: critical
+    homeassistant.components.camera: critical
+    homeassistant.components.sun: critical
+    homeassistant.components.remote: critical
+    homeassistant.components.switch: critical
+    homeassistant.components.sensor: critical
+    homeassistant.components.script: critical
+    homeassistant.components.tts: critical
+    homeassistant.components.media_player: critical
+    homeassistant.components.input_select: critical
+    homeassistant.components.input_slider: critical
+    homeassistant.components.http: critical
+    homeassistant.components.shell_command: critical
+    homeassistant.components.device_tracker: critical
+    homeassistant.components.mqtt: critical
+    homeassistant.components.automation: critical
+    homeassistant.components.websocket: critical
+    homeassistant.components.discovery: critical
+    homeassistant.components.light: critical
+    homeassistant.components.ecobee: critical
+    homeassistant.components.wink: critical
+    homeassistant.custom_components: critical
+    bellows.uart: critical
+    homeassistant.core: critical
+    homeassistant.helpers.script: warn
+    homeassistant.helpers.entity: warn
+    homeassistant.helpers.restore_state: warn
+    homeassistant.loader: warn
+    phue: warn
+    plexapi: warn
+    roku: critical
+    dlipower.dlipower: warn
+    myusps: warn
+    pubnub: warn
+
+group:
+  logger_input_select_card:
+   name: Log Level
+   entities:
+     - input_select.log_level
+
+  ################### Logger level
+input_select:
+  log_level:
+    name: Log Level
+    options:
+     - critical
+     - fatal
+     - error
+     - warning
+     - warn
+     - info
+     - debug
+     - notset
+    initial: warn
+
+
+  ############################# Sets Logging Level
+automation:
+  - alias: Log Level
+    trigger:
+      - platform: state
+        entity_id: input_select.log_level
+    action:
+      - service: logger.set_level
+        data_template:
+          homeassistant.components: "{{ trigger.to_state.state }}"

@@ -1,0 +1,76 @@
+################################################################
+## Package / HAASKA
+################################################################
+
+################################################
+## Customize
+################################################
+
+homeassistant:
+  customize:
+    sensor.haaska_names:   
+      friendly_name: Haaska 
+      icon: mdi:microphone-outline
+        
+  customize_domain:
+    alert:
+      haaska_hidden: false
+
+    automation:
+      haaska_hidden: true
+
+    climate:
+      haaska_hidden: false
+
+    cover:
+      haaska_hidden: false
+
+    fan:
+      haaska_hidden: false
+
+    group:
+      haaska_hidden: true
+
+    input_boolean:
+      haaska_hidden: true
+
+    input_slider:
+      haaska_hidden: true
+
+    light:
+      haaska_hidden: false
+
+    lock:
+      haaska_hidden: false
+
+    media_player:
+      haaska_hidden: false
+
+    scene:
+      haaska_hidden: false
+
+    script:
+      haaska_hidden: false
+
+    switch:
+      haaska_hidden: false
+      
+group:
+  haaska_sensor_display_card:
+   name: Haaska Names
+   entities:
+     - sensor.haaska_names      
+      
+sensor:
+  - platform: template
+    sensors:
+      haaska_names:
+        value_template: >
+         {%- set domains = [states.light, states.switch, states.group, states.script, states.binary_sensor, states.sensor, states.automation ] %}
+         {%- for domain in domains %}
+         {%- for item in domain %}
+         {%- if item.attributes.haaska_name|length >1 %}
+         {{item.attributes.haaska_name}}, 
+         {%- endif -%}
+         {%- endfor %}
+         {%- endfor %}      
