@@ -1,0 +1,69 @@
+homeassistant:
+  customize:
+    script.gone_on:
+      friendly_name: Away
+      icon: mdi:security-home
+
+######## Away Mode Script   #############
+script:
+  gone_on:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_card
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.boolean_away
+      - delay: '00:00:00'
+      - service: light.turn_off
+        data:
+          entity_id: group.all_lights
+      - service: fan.turn_off
+        data:
+          entity_id: fan.living_room_fan
+      - service: switch.turn_off
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor
+      - service: media_player.turn_off
+        data:
+          entity_id: media_player.onkyo
+      - service: remote.turn_off
+        data:
+          entity_id: remote.entertainment
+      - service: climate.set_away_mode
+        data:
+          entity_id: climate.thermostat
+          away_mode: 'on'
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "away"
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Away Mode is Activated Have a good day'
+      - service: rest_command.lock_down
+      - service: rest_command.lock_down
+  alarm_flashonoff:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: group.all_lights
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'You are detected and recorded'
+      - delay: '00:00:03'
+      - service: light.turn_off
+        data:
+          entity_id: group.all_lights
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_repeat
+      - delay: '00:00:03'
+  alarm_repeat:
+    sequence:
+      - delay: '00:00:03'
+      - service: script.turn_on
+        data:
+          entity_id: script.alarm_flashonoff

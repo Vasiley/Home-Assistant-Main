@@ -80,11 +80,11 @@ camera:
     still_image_url: http://192.168.1.90/cgi-bin/camera
     name: Yard
 
-  - platform: generic
-    still_image_url: http://192.168.1.75/now.jpg
-    name: Back Door
-    username: !secret iqeye_username
-    password: !secret iqeye_password
+#  - platform: generic
+#    still_image_url: http://192.168.1.75/now.jpg
+#    name: Back Door
+#    username: !secret iqeye_username
+#    password: !secret iqeye_password
 
   - platform: generic
     name: Dawn

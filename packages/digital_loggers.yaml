@@ -8,10 +8,12 @@ homeassistant:
       friendly_name: Blue Iris Pc
     switch.network_switch_asus_router:
       friendly_name: Asus Router
-    switch.network_switch_comnet_switch:
-      friendly_name: Comnet Switch
-    switch.network_switch_hue:
-      friendly_name: Phillips Hue
+    switch.network_switch_comnet_switches:
+      friendly_name: Comnet Switches
+    switch.network_switch_kodi_server:
+      friendly_name: Kodi Server
+    switch.network_switch_home_assistant_server:
+      friendly_name: HASS Server
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
@@ -27,8 +29,9 @@ group:
      - switch.network_switch_asus_router
      - switch.network_switch_blue_iris_monitor
      - switch.network_switch_blue_iris_pc
-     - switch.network_switch_comnet_switch
-     - switch.network_switch_hue
+     - switch.network_switch_comnet_switches
+     - switch.network_switch_kodi_server
+     - switch.network_switch_home_assistant_server
      - script.webswitch_reboot
      - script.network_reboot
 
@@ -47,7 +50,7 @@ script:
     sequence:
       - service: tts.google_say
         data:
-          entity_id: media_player.kodi_blue_iris
+          entity_id: media_player.ha_speaker
           message: 'WebSwitch Reboot'
       - delay: '00:00:05'
       - service: rest_command.webswitch_reboot
@@ -56,7 +59,7 @@ script:
     sequence:
       - service: tts.google_say
         data:
-          entity_id: media_player.kodi_blue_iris
+          entity_id: media_player.ha_speaker
           message: 'Network is going down Gabbie and Grandma chill it will be okay'
       - delay: '00:00:01'
       - service: rest_command.modem_reboot
@@ -67,5 +70,5 @@ script:
       - delay: '00:01:30'
       - service: tts.google_say
         data:
-          entity_id: media_player.kodi_blue_iris
+          entity_id: media_player.ha_speaker
           message: 'Network is back up'

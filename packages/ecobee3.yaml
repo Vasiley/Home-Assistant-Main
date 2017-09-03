@@ -8,7 +8,7 @@ homeassistant:
 
 ##### Config for ecobee
 ecobee:
-  api_key: !secret ecobee_api_key
+  api_key: X3qzXvoQCrZFLRYF1WIko6NKQkw6vGDF
   hold_temp: True
 
 group:
@@ -31,6 +31,7 @@ group:
    name: Climate
    entities:
      - climate.thermostat
+     - sensor.set_hold_mode
      - sensor.operating_mode
      - sensor.hvac_fan
      - sensor.thermostat_humidity

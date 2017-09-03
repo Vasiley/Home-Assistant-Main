@@ -24,7 +24,9 @@
      - group.harmony_card
      - group.blinds_kitchen_card
      - script.media_player_source
-
+     - weblink.fish_tank_ha
+     - weblink.dashboard
+     - weblink.Plex
   Devicesview:
    view: yes
    name: Equipment
@@ -44,6 +46,7 @@
      - group.homeass_version_card
      - script.update_github
      - group.logger_input_select_card
+     - group.clients_online_card
 
   media:
    view: yes
@@ -54,8 +57,7 @@
      - group.Samsung_tv_media_player_card
      - group.stereo_avr_card
      - group.Ruths_roku_media_player_card
-     - group.KodiBlueIris_media_player_card
-#     - group.haspeaker_media_player_card
+     - group.media_player_ha_speaker_card
 
   Weather_view:
    view: yes
@@ -116,8 +118,14 @@
      - script.tropical
      - script.supernatural
      - group.Routines
+     - group.input_boolean_card
 
-
+  Fish_tank:
+   view: yes
+   name: Small Tank
+   entities:
+     - group.Fish_tank_server_info
+     - group.Fish_tank_server_ext_info
 
   Family:
     entities:
@@ -139,6 +147,7 @@
      - script.nap_time
      - script.movie_time
      - script.evening_time
+     - script.daytime_sleep_mode
 
   Effects:
     control: hidden
@@ -180,8 +189,9 @@
    name: Home Mode
    control: hidden
    entities:
-     - sensor.set_hold_mode
+     - sensor.house_mode_state
      - script.lamps_on
      - script.home_mode
      - script.gone_on
      - script.nap_time
+     - script.daytime_sleep_mode

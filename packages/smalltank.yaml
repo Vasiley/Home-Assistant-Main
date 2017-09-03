@@ -1,0 +1,80 @@
+homeassistant:
+  customize:
+    sensor.fish_tank_cpu_use:
+      friendly_name: Fish Tank Cpu
+      icon: mdi:desktop-tower
+    sensor.fish_tank_disk_use:
+      friendly_name: Fish Tank Disk
+      icon:  mdi:harddisk
+    sensor.fish_tank_ram_free:
+      friendly_name: Ram
+      icon: mdi:memory
+    sensor.fish_tank_ha_version:
+      friendly_name: Fish Tank Ha
+      icon: mdi:home-assistant
+    sensor.fish_tank_ha_uptime:
+      friendly_name: Fish Tank Ha Uptime
+      icon: mdi:home-assistant
+    sensor.ha_temperature:
+      friendly_name: Ha Temperature
+      icon: mdi:temperature-fahrenheit
+      hasska_hidden: true
+    sensor.ha_humidity:
+      friendly_name: Ha Humidity
+      icon: mdi:water-percent
+      hasska_hidden: true
+
+group:
+  Fish_tank_server_info:
+   name: Server Info
+   entities:
+     - sensor.fish_tank_cpu_use
+     - sensor.fish_tank_disk_use
+     - sensor.fish_tank_ram_free
+     - sensor.fish_tank_ha_version
+     - sensor.fish_tank_ha_uptime
+
+  Fish_tank_server_ext_info:
+     name: Server Exterior Info
+     entities:
+       - sensor.ha_temperature
+       - sensor.ha_humidity
+
+sensor:
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.cpu_use
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Cpu Use
+    unit_of_measurement: "%"
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.disk_use_home
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Disk Use
+    unit_of_measurement: "%"
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.ram_free
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Ram Free
+    unit_of_measurement: "Mb"
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.ha_version
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Ha Version
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.hass_uptime
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Ha Uptime
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.dht_sensor_temperature
+    value_template: '{{ value_json.state }}'
+    name: Ha Temperature
+
+  - platform: rest
+    resource: https://vasiley.dns1.us:444/api/states/sensor.dht_sensor_humidity
+    value_template: '{{ value_json.state }}'
+    name: Ha Humidity

@@ -25,29 +25,18 @@ group:
    name: Ruths Roku
    entities:
      - media_player.ruths_roku
-  KodiBlueIris_media_player_card:
-   name: Kodi Blue Iris
+  media_player_ha_speaker_card:
+   name: Ha TTS Speaker
    entities:
-     - media_player.kodi_blue_iris
-
-#  haspeaker_media_player_card:
-#   name: Ha Speaker
-#   entities:
-#     - media_player.HA_speaker
+     - media_player.ha_speaker
 
 media_player:
-#  - platform: kodi
-#    host: 192.168.1.60
-#    port: 8888
-#    username: !secret media_player_kodi_username
-#    password: !secret media_player_kodi_password
-
   - platform: kodi
-    name: Kodi Blue Iris
+    name: Ha Speaker
     host: 127.0.0.1
     port: 8888
-    username: !secret media_player_kodi_username
-    password: !secret media_player_kodi_password
+    username: !secret media_player_kodi1_username
+    password: !secret media_player_kodi1_password
 
   - platform: samsungtv
     host: 192.168.1.18
@@ -69,11 +58,3 @@ media_player:
 
   - platform: roku
     host: 192.168.1.228
-#- platform: roku
-#  host: 192.168.1.80
-#  - platform: kodi
-#    host: 192.168.1.80
-#    name: Kodi Blue Iris
-#    port: 8080
-#    username: !secret media_player_kodi1_username
-#    password: !secret media_player_kodi1_password

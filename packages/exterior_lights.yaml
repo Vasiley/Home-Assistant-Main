@@ -6,23 +6,23 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
-      
+
     automation.porch_lights_off:
       friendly_name: "Porch Lights Off"
       haaska_hidden: true
-      hidden: false   
+      hidden: false
       persistence: true
 
     automation.carport_bright_and_white_on_motion:
       friendly_name: "Porch Lights White On Motion"
       haaska_hidden: true
-      hidden: false 
+      hidden: false
       persistence: true
 
     automation.back_to_yellow_dim_after_Motion:
       friendly_name: "Porch Lights Yellow No Motion"
       haaska_hidden: true
-      hidden: false 
+      hidden: false
       persistence: true
 
     script.bright_outside:
@@ -33,11 +33,11 @@ homeassistant:
     script.normal_outside:
       friendly_name: "Porch Lights Normal"
       haaska_hidden: false
-      haaska_name: Porch Lights Normal 
-      
+      haaska_name: Porch Lights Normal
+
     light.carport:
-      persistence: true    
-      
+      persistence: true
+
 
 group:
   carport_lights:
@@ -51,7 +51,7 @@ group:
      - automation.back_to_yellow_dim_after_Motion
      - script.bright_outside
      - script.normal_outside
-     
+
 automation:
   - alias: Porch Lights on
     initial_state: 'on'
@@ -64,8 +64,9 @@ automation:
         data:
           entity_id: light.carport
           color_temp: 426
-          brightness: 125          
+          brightness: 125
   - alias: Porch Lights off
+    initial_state: 'on'
     trigger:
       - platform: sun
         event: sunrise
@@ -73,7 +74,7 @@ automation:
     action:
       - service: light.turn_off
         entity_id: light.carport
-        
+
 # brigten porch light if motion from shed camera
 
 
@@ -81,26 +82,27 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_outdoor_shed 
+        entity_id: binary_sensor.motion_outdoor_shed
         to: 'on'
-    condition: 
+        for: '00:00:01'
+    condition:
       - condition: state
         entity_id: light.carport
         state: 'on'
     action:
       - service: light.turn_on
         data:
-          entity_id: light.carport    
+          entity_id: light.carport
           color_temp: 154
-          brightness: 255   
-          
+          brightness: 255
+
   - alias: Back to yellow dim after Motion
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_outdoor_shed 
+        entity_id: binary_sensor.motion_outdoor_shed
         to: 'off'
-    condition: 
+    condition:
       - condition: state
         entity_id: light.carport
         state: 'on'
@@ -110,7 +112,7 @@ automation:
         data:
           entity_id: light.carport
           color_temp: 426
-          brightness: 125 
+          brightness: 125
 
 # Turn Carport lights on bright till i turn off
 script:
@@ -122,9 +124,9 @@ script:
         entity_id: automation.back_to_yellow_dim_after_Motion
       - service: light.turn_on
         data:
-          entity_id: light.carport    
+          entity_id: light.carport
           color_temp: 154
-          brightness: 255   
+          brightness: 255
   normal_outside:
     sequence:
       - service: automation.turn_on
@@ -135,6 +137,4 @@ script:
         data:
           entity_id: light.carport
           color_temp: 426
-          brightness: 125    
-
-        
+          brightness: 125
