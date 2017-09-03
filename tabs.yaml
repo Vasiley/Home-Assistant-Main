@@ -26,7 +26,11 @@
      - script.media_player_source
      - weblink.fish_tank_ha
      - weblink.dashboard
+<<<<<<< HEAD
      
+=======
+     - weblink.Plex
+>>>>>>> d1f3af65cd3343df408819b37b2b459544e01980
   Devicesview:
    view: yes
    name: Equipment
