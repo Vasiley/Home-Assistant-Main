@@ -42,6 +42,14 @@
       "slots": []
     },
     {
+      "name": "housemodeintent",
+      "samples": [
+        "What is the House Mode",
+        "What mode is the House In"
+      ],
+      "slots": []
+    },
+    {
       "name": "itisyourbirthday",
       "samples": [
         "it is my birthday"
@@ -189,10 +197,7 @@
           "id": null,
           "name": {
             "value": "Stereo",
-            "synonyms": [
-              "Amp",
-              "Reciever"
-            ]
+            "synonyms": []
           }
         },
         {
@@ -298,38 +303,28 @@
           "id": null,
           "name": {
             "value": "tv-cd",
-            "synonyms": [
-              "TV",
-              "Samsung"
-            ]
+            "synonyms": []
           }
         },
         {
           "id": null,
           "name": {
             "value": "Net",
-            "synonyms": [
-              "Tune In"
-            ]
+            "synonyms": []
           }
         },
         {
           "id": null,
           "name": {
             "value": "Game",
-            "synonyms": [
-              "PS4",
-              "Playstation"
-            ]
+            "synonyms": []
           }
         },
         {
           "id": null,
           "name": {
             "value": "Pc",
-            "synonyms": [
-              "Kodi"
-            ]
+            "synonyms": []
           }
         },
         {
@@ -343,29 +338,21 @@
           "id": null,
           "name": {
             "value": "cd",
-            "synonyms": [
-              "PI",
-              "Pie"
-            ]
+            "synonyms": []
           }
         },
         {
           "id": null,
           "name": {
             "value": "dvd",
-            "synonyms": [
-              "Blue Iris",
-              "Plex"
-            ]
+            "synonyms": []
           }
         },
         {
           "id": null,
           "name": {
             "value": "am",
-            "synonyms": [
-              "wwl radio"
-            ]
+            "synonyms": []
           }
         }
       ]

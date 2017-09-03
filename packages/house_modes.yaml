@@ -1,0 +1,94 @@
+homeassistant:
+  customize:
+    input_boolean.boolean_home:
+      friendly_name: Home
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_away:
+      friendly_name: Away
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_sleep:
+      friendly_name: Sleep
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_evening_time:
+      friendly_name: Evening Time
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_movie_time:
+      friendly_name: Movie Time
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_early_morning:
+      friendly_name: Early Morning
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_nap_time:
+      friendly_name: Nap Time
+      hasska_hidden: true
+#      persistent: true
+    input_boolean.boolean_day_time_sleep:
+      friendly_name: Day Time Sleep
+      hasska_hidden: true
+#      persistent: true
+    sensor.house_mode_state:
+      friendly_name: House Mode
+      hasska_hidden: true
+      icon: mdi:home
+
+group:
+  input_boolean_card:
+    name: Input Boolean House
+    entities:
+      - input_boolean.boolean_home
+      - input_boolean.boolean_away
+      - input_boolean.boolean_movie_time
+      - input_boolean.boolean_early_morning
+      - input_boolean.boolean_sleep
+      - input_boolean.boolean_evening_time
+      - input_boolean.boolean_nap_time
+      - input_boolean.boolean_day_time_sleep
+
+input_boolean:
+  boolean_home:
+    initial: on
+  boolean_away:
+    initial: off
+  boolean_sleep:
+    initial: off
+  boolean_evening_time:
+    initial: off
+  boolean_movie_time:
+    initial: off
+  boolean_early_morning:
+    initial: off
+  boolean_nap_time:
+    initial: off
+  boolean_day_time_sleep:
+    initial: off
+
+sensor:
+  - platform: template
+    sensors:
+      house_mode_state:
+        value_template: >-
+          {% if states('input_boolean.boolean_home') == 'on' %}
+              Home
+          {% elif states('input_boolean.boolean_away') == 'on' %}
+              Away
+          {% elif states('input_boolean.boolean_sleep') == 'on' %}
+              Sleep
+          {% elif states('input_boolean.boolean_evening_time') == 'on' %}
+              Evening Time
+          {% elif states('input_boolean.boolean_movie_time') == 'on' %}
+              Movie Time
+          {% elif states('input_boolean.boolean_early_morning') == 'on' %}
+              Early Morning
+          {% elif states('input_boolean.boolean_nap_time') == 'on' %}
+              Nap Time
+          {% elif states('input_boolean.boolean_day_time_sleep') == 'on' %}
+              Day Time Sleep
+          {% else %}
+              None
+          {% endif %}

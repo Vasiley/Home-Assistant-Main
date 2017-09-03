@@ -81,39 +81,31 @@ wink:
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
-# Checks for available updates
-#updater:
-# Recorder in a package
-# Discover some devices automatically  (Should not be used in production)
+weblink:
+  entities:
+    - name: Fish Tank HA
+      url: https://vasiley.dns1.us:444
+      icon: mdi:fish
+    - name: Dashboard
+      url: http://192.168.1.153:5050/vas
+      icon: mdi:view-dashboard
+    - name: Plex
+      url: https://app.plex.tv/desktop
+      icon: mdi:plex
+
 #discovery:
-#history: #Enables support for tracking state changes over time. In a Package
-#logbook: View all events in a logbook in a package
-#logger: in package
+panel_iframe:
+  home_assistant:
+    title: 'Wind'
+    icon: mdi:weather-windy
+    url: 'https://embed.windy.com/embed2.html?lat=30.422&lon=-90.196&zoom=5&level=surface&overlay=wind&menu=&message=&marker=&forecast=12&calendar=now&location=coordinates&type=map&actualGrid=&metricWind=kt&metricTemp=%C2%B0C'
 
-#browser:
-#  url: !secret browser
+  home_assistant_fishtank:
+    title: 'HA Fishtank'
+    icon: mdi:home-assistant
+    url: 'https://vasiley.dns1.us:444'
 
-#media_player: in package
-
-#camera: In packages
-
-#switch: # Moved to packages
-
-#shell_command:
-#  update_git: gitupdate.sh
-
-#zha:
-#  usb_path: /dev/zigbee
-#  database_path: /home/homeassistant/.homeassistant/zigbee.db
-#zigbee:
-#  device: /dev/ttyUSB1
-
-#zwave:
-#  usb_path: /dev/ttyUSB0
-
-# panel_iframe:
-  # home_assistant:
-    # title: 'Home Assistant'
-    # icon: mdi:file-document
-    # url: 'https://home-assistant.io/docs/'
-     # https://github.com/Vasiley/Home-AssistantConfig
+  plex_web_server:
+    title: 'Plex'
+    icon: mdi:plex
+    url: https://app.plex.tv/desktop

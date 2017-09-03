@@ -77,8 +77,15 @@ homeassistant:
     sensor.esp_kitchen_blinds:
       friendly_name: Kitchen Blinds Controller
       entity_picture: /local/nodemcu.jpeg
-
+    sensor.clients:
+      friendly_name: Clients Tracked
+      icon: mdi:network
 group:
+  clients_online_card:
+    name: Clients Online
+    entities:
+      - sensor.clients
+
   hubs_card:
    name: Hub's & Bridges
    entities:
@@ -140,9 +147,12 @@ sensor:
 
 ######## Equipment ########
   - platform: speedtest
-    minute:
+    minute: 30
+    hour:
       - 0
-      - 59
+      - 6
+      - 12
+      - 18
     monitored_conditions:
       - ping
       - download
@@ -232,14 +242,23 @@ sensor:
       esp_kitchen_blinds:
         value_template: '{% if is_state("device_tracker.5ccf7fb19112", "home") %}Online{% else %}Offline{% endif %}'
 
+  - platform: template
+    sensors:
+      clients:
+        value_template: >-
+            {%- for d in states.device_tracker if d.state == 'home' -%}
+            {{- loop.length if loop.first -}}
+            {%- endfor -%}
 
 device_tracker:
   - platform: nmap_tracker
-    home_interval: 10
+    home_interval: 60
     hosts: 192.168.1.1-255
     consider_home: 180
+    interval_seconds: 120
     exclude:
       - 192.168.1.153
+
   - platform: owntracks
 
 binary_sensor:
@@ -253,36 +272,35 @@ automation:
   - alias: Notify Device Status
     initial_state: 'on'
     trigger:
-      platform: state
-      entity_id:
-        - sensor.wink_fan_gang
-        - sensor.network_workstation
-        - sensor.blue_iris_workstation
-        - sensor.network_nas
-        - sensor.media_nas
-        - sensor.switch1
-        - sensor.switch2
-        - sensor.cisco_router
-        - sensor.asus_router
-        - sensor.backdoor_camera
-        - sensor.frontdoor_camera
-        - sensor.shed_camera
-        - sensor.driveway_camera
-        - sensor.number12_camera
-        - sensor.swamp_camera
-        - sensor.harmony_hub
-        - sensor.hue_hub
-        - sensor.wink_hub
+      - platform: state
+        entity_id:
+          - sensor.wink_fan_gang
+          - sensor.network_workstation
+          - sensor.blue_iris_workstation
+          - sensor.network_nas
+          - sensor.media_nas
+          - sensor.switch1
+          - sensor.switch2
+          - sensor.cisco_router
+          - sensor.asus_router
+          - sensor.backdoor_camera
+          - sensor.frontdoor_camera
+          - sensor.shed_camera
+          - sensor.driveway_camera
+          - sensor.number12_camera
+          - sensor.swamp_camera
+          - sensor.harmony_hub
+          - sensor.hue_hub
+          - sensor.wink_hub
 #        - sensor.esp_kitchen_blinds
-
+#        for: '00:00:01'
     condition:
       - condition: template
         value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
-
     action:
       - service: tts.google_say
         data_template:
-          entity_id: media_player.kodi_blue_iris
+          entity_id: media_player.ha_speaker
           message: >
             {% if trigger.to_state.state | lower == "offline" %}
               {{ trigger.to_state.attributes.friendly_name }} has gone offline!

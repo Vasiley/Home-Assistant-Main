@@ -12,6 +12,7 @@ group:
      - sensor.fan_speed
      - binary_sensor.gang
      - script.refresh_wink
+     - automation.evening_time_turn_on
      - automation.fan_low_with_hvac_automation
      - automation.fan_medium_with_hvac_automation
      - light.light_bulb

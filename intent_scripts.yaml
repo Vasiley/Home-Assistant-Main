@@ -2,23 +2,26 @@
   WhereAreWeIntent:
     speech:
       text: !include intent_templates/WhereAreWeIntent.yaml
-      
+
   LocateIntent:
     speech:
       text: !include intent_templates/LocateIntent.yaml
-      
+
   OverviewIntent:
     speech:
-      text:  !include intent_templates/OverviewIntent.yaml 
- 
-  itisyourbirthday:  
+      text:  !include intent_templates/OverviewIntent.yaml
+
+  itisyourbirthday:
     speech:
       text: !include intent_templates/birthday_wishes.yaml
-      
+
   NetworkIntent:
     speech:
       text: !include intent_templates/NetworkIntent.yaml
    ### called with What is my Network Status
+  housemodeintent:
+    speech:
+      text: The House is in {{states('sensor.house_mode_state')}} mode
 
   MediaPlayerSourceIntent:
     action:
@@ -28,24 +31,24 @@
           source: '{{source}}'
     speech:
    #   type: plain
-      text: 'OK. Changing {{player}} to {{source}}'   
-   
+      text: 'OK. Changing {{player}} to {{source}}'
+
   KitchenIntent:
     speech:
       text: The Kitchen has a Temperature of {{states('sensor.kitchen_temperature')}}
-              degrees 
+              degrees
   HallwayIntent:
     speech:
       text: The Hallway has a Temperature of {{states('sensor.hallway_temperature')}}
-              degrees 
+              degrees
   LaundryroomIntent:
     speech:
      text: The Laundry Room has a Temperature of {{states('sensor.laundry_temperature')}}
-              degrees 
+              degrees
   KidsHallwayIntent:
     speech:
      text: The Kids Hallway has a Temperature of {{states('sensor.kids_hallway_temperature')}}
-              degrees               
+              degrees
   BatteryLevelsIntent:
     speech:
      text: The Kids Hallway Motion Sensor Battery level is {{states('sensor.motion_sensor_kids_hall_battery')}} percent and Kitchen       Motion Sensor is {{states('sensor.motion_sensor_kitchen_battery')}} percent and the Hallway Battery Level is {{states('sensor.motion_sensor_hallway_battery')}} percent and the Laundry Room battery level is {{states('sensor.motion_sensor_laundry_battery')}} percent
@@ -55,16 +58,14 @@
       data_template:
         entity_id: scene.{{ Scene | replace(" ", "_") }}
     speech:
-     text: !include alexa_confirm.yaml     
+     text: !include alexa_confirm.yaml
   RunScriptIntent:
     action:
       service: script.turn_on
       data_template:
         entity_id: script.{{ Script | replace(" ", ".") }}
     speech:
-     text: !include alexa_confirm.yaml    
+     text: !include alexa_confirm.yaml
   MailIntent:
     speech:
-     text: You have {{states('sensor.usps_mail')}} pieces of mail in the mail box 
-        
-        
+     text: You have {{states('sensor.usps_mail')}} pieces of mail in the mail box

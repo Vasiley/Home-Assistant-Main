@@ -1,40 +1,45 @@
 
 
 logger:
-  default: warn
+  default: info
   logs:
-    homeassistant.components.zha: critical
-    homeassistant.components.camera: critical
-    homeassistant.components.sun: critical
-    homeassistant.components.remote: critical
-    homeassistant.components.switch: critical
-    homeassistant.components.sensor: critical
-    homeassistant.components.script: critical
-    homeassistant.components.tts: critical
-    homeassistant.components.media_player: critical
-    homeassistant.components.input_select: critical
-    homeassistant.components.input_slider: critical
-    homeassistant.components.http: critical
-    homeassistant.components.shell_command: critical
-    homeassistant.components.device_tracker: critical
-    homeassistant.components.mqtt: critical
-    homeassistant.components.automation: critical
-    homeassistant.components.websocket: critical
-    homeassistant.components.discovery: critical
-    homeassistant.components.light: critical
-    homeassistant.components.ecobee: critical
-    homeassistant.components.wink: critical
-    homeassistant.custom_components: critical
-    bellows.uart: critical
-    homeassistant.core: critical
+    homeassistant.components.rest: warn
+    homeassistant.components.zha: warn
+    homeassistant.components.camera: warn
+    homeassistant.components.sun: warn
+    homeassistant.components.remote: warn
+    homeassistant.components.switch: warn
+    homeassistant.components.sensor: warn
+    homeassistant.components.script: warn
+    homeassistant.components.tts: warn
+    homeassistant.components.media_player: warn
+    homeassistant.components.input_select: warn
+    homeassistant.components.input_slider: warn
+    homeassistant.components.http: warn
+    homeassistant.components.shell_command: warn
+    homeassistant.components.device_tracker: warn
+    homeassistant.components.mqtt: warn
+    homeassistant.components.automation: warn
+    homeassistant.components.websocket: warn
+    homeassistant.components.discovery: warn
+    homeassistant.components.light: warn
+    homeassistant.components.ecobee: warn
+    homeassistant.components.wink: warn
+    homeassistant.custom_components: warn
+    homeassistant.components.camera.usps: warn
+    homeassistant.components.usps: warn
+    homeassistant.components.sensor.usps: warn
+    bellows.uart: warn
+    homeassistant.core: warn
     homeassistant.helpers.script: warn
     homeassistant.helpers.entity: warn
     homeassistant.helpers.restore_state: warn
-    homeassistant.loader: warn
+    homeassistant.loader: info
+    homeassistant.setup: info
     phue: warn
     plexapi: warn
-    roku: critical
-    dlipower.dlipower: warn
+    roku: warn
+    dlipower.dlipower: error
     myusps: warn
     pubnub: warn
 
@@ -49,7 +54,7 @@ input_select:
   log_level:
     name: Log Level
     options:
-     - critical
+     - warn
      - fatal
      - error
      - warning
@@ -57,7 +62,7 @@ input_select:
      - info
      - debug
      - notset
-    initial: warn
+    initial: info
 
 
   ############################# Sets Logging Level

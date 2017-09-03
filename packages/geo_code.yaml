@@ -6,19 +6,17 @@ homeassistant:
     sensor.herb:
       hasska_hidden: true
       entity_picture: /local/king.jpeg
-      
-      
+
+
 # geo locate for device trackers
 sensor:
   - platform: google_geocode
     name: Dawn
     api_key: !secret family_geo_locate
-    origin: device_tracker.dawn_baby     
-    options: full 
+    origin: device_tracker.dawn_baby
+#    options: full 
   - platform: google_geocode
     name: Herb
     api_key: !secret family_geo_locate
-    origin: device_tracker.herb_herb    
-    options: both
-    
-   
+    origin: device_tracker.herb_herb
+#    options: both

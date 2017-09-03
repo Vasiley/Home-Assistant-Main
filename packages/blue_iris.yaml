@@ -27,6 +27,9 @@ homeassistant:
     automation.back_to_yellow_dim_after_motion:
       friendly_name: Bi Red with Motion
       haaska_hidden: true
+    script.front_cam_dashboard:
+      haaska_hidden: true
+      friendly_name: Switch Dash Board on Motion
 
 
 group:
@@ -179,17 +182,15 @@ binary_sensor:
 ######################################################
 automation:
   - alias: Flash Red on Motion
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
         to: 'on'
     condition:
       - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'
-      - condition: time
-        after: '07:00:00'
-        before: '19:00:00:00'
+        entity_id: input_boolean.boolean_home
+        state: 'on'
     action:
       - service: light.turn_on
         data:
@@ -199,17 +200,15 @@ automation:
       - service: script.turn_on
         entity_id: script.front_cam_dashboard
   - alias: Back to White after Motion
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
         to: 'off'
     condition:
       - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'
-      - condition: time
-        after: '07:00:00'
-        before: '19:00:00'
+        entity_id: input_boolean.boolean_home
+        state: 'on'
     action:
       - service: light.turn_on
         data:

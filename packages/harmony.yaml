@@ -8,9 +8,9 @@ group:
    name: Entertainment Center
    entities:
      - remote.entertainment
-     - sensor.remote_entertainment 
-     - input_select.harmony     
-      
+     - sensor.remote_entertainment
+     - input_select.harmony
+
 remote:
   - platform: harmony
     name: Entertainment
@@ -37,10 +37,9 @@ input_select:
       - Amazon
       - Power Off
     icon: mdi:monitor
-    
+
 # Harmony input select Automatisierung
 automation:
-
   - alias: Harmony Input Select Automation
     initial_state: on
     hide_entity: true
@@ -51,7 +50,7 @@ automation:
     action:
       - service: remote.turn_on
         entity_id: remote.entertainment
-        data_template:  
+        data_template:
           activity: >
             {% if is_state("input_select.harmony", "Kodi") %}
               25483962
@@ -73,7 +72,7 @@ automation:
         entity_id: input_select.harmony
         data_template:
           option: "Select Input"
-  - alias: Harmony Off  
+  - alias: Harmony Off
     initial_state: on
     hide_entity: True
     trigger:
@@ -86,5 +85,5 @@ automation:
       - service: input_select.select_option
         entity_id: input_select.harmony
         data_template:
-          option: "Select Input"    
+          option: "Select Input"
         

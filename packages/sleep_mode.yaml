@@ -6,32 +6,38 @@ homeassistant:
       haaska_name: Sleep
 
 #########################################################################################
-#                                                                                   ##### 
+#                                                                                   #####
 #                   Sleep Mode                                                      #####
-#                                                                                   #####  
-#########################################################################################  
-script:        
+#                                                                                   #####
+#########################################################################################
+script:
   lamps_on:
     sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_card
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.boolean_sleep
       - service: tts.google_say
         data:
-          entity_id: media_player.kodi_blue_iris
+          entity_id: media_player.ha_speaker
           message: 'Sleep is Activated Good Night'
       - service: climate.set_hold_mode
         data:
           entity_id: climate.thermostat
-          hold_mode: "sleep" 
+          hold_mode: "sleep"
       - delay: '00:00:02'
-      - service: media_player.turn_off 
+      - service: media_player.turn_off
         data:
           entity_id: media_player.stereo
-      - delay: '00:00:01'          
+      - delay: '00:00:01'
       - service: remote.turn_off
-        data:     
+        data:
           entity_id: remote.entertainment
       - service: fan.turn_off
         data:
-          entity_id: fan.living_room_fan        
+          entity_id: fan.living_room_fan
       - service: light.turn_on
         data:
           entity_id: light.kitchen
@@ -46,7 +52,7 @@ script:
         data:
           entity_id: light.master
           color_temp: 426
-          brightness: 125    
+          brightness: 125
       - service: light.turn_on
         data:
           entity_id: light.bathroom
@@ -55,10 +61,10 @@ script:
       - service: light.turn_off
         entity_id: light.bathroom_vanity
       - service: automation.turn_off
-        entity_id: automation.motion_bathroom_sleep_on       
-      - service: switch.turn_off 
+        entity_id: automation.motion_bathroom_sleep_on
+      - service: switch.turn_off
         data:
-          entity_id: switch.network_switch_blue_iris_monitor 
+          entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:10'
       - service: light.turn_off
         data:
@@ -68,31 +74,31 @@ script:
           entity_id: light.dawns_lamp
           color_temp: 426
           brightness: 125
-      - delay: '00:00:10'    
+      - delay: '00:00:10'
       - service: light.turn_off
         data:
           entity_id: light.kitchen
-      - delay: '00:00:10'    
+      - delay: '00:00:10'
       - service: light.turn_off
         data:
-          entity_id: light.master_hallway 
+          entity_id: light.master_hallway
       - delay: '00:00:45'
       - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
-        timeout: '00:00:30'        
-      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"  
         timeout: '00:00:30'
-      - wait_template: "{{ states.binary_sensor.bathroom_motion.state == 'off' }}"  
-        timeout: '00:00:30'      
+      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
+        timeout: '00:00:30'
+      - wait_template: "{{ states.binary_sensor.bathroom_motion.state == 'off' }}"
+        timeout: '00:00:30'
       - service: light.turn_off
-        data:      
+        data:
           entity_id: light.bathroom
       - delay: '00:00:45'
       - service: light.turn_off
-        data: 
-          entity_id: light.master    
+        data:
+          entity_id: light.master
       - service: rest_command.sleep
       - service: rest_command.sleep
       - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_on       
-     
+        entity_id: automation.motion_bathroom_sleep_on
+
 # rest_command changes profile on blue iris

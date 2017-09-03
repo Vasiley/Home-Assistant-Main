@@ -1,0 +1,40 @@
+homeassistant:
+  customize:
+    script.movie_time:
+      friendly_name: Movie Time
+      haaska_name: Movie Time
+
+script:
+  movie_time:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_card          
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.boolean_movie_time
+      - service: switch.turn_off
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'It is Movie Time Be Quiet'
+      - service: light.turn_off
+        data:
+          entity_id: light.door_lamp
+          transition: 10
+      - service: light.turn_on
+        data:
+          entity_id: light.herbs_lamp
+          color_temp: 426
+          brightness: 125
+          transition: 45
+      - service: light.turn_on
+        data:
+          entity_id: light.dawns_lamp
+          color_temp: 426
+          brightness: 125
+          transition: 45
+      - service: script.turn_on
+        entity_id: script.blinds_closed

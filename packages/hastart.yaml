@@ -1,0 +1,24 @@
+homeassistant:
+  customize:
+    automation.Ha_Start:
+      friendly_name: Ha Start
+      haaska_hidden: true
+
+automation:
+  - alias: Ha Start
+    initial_state: 'on'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: media_player.turn_on
+        entity_id: media_player.ha_speaker
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.ha_speaker
+          volume_level: '.99'
+      - delay: '00:00:20'    
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Ha is up Volume Set at Full'

@@ -9,21 +9,21 @@ homeassistant:
       friendly_name: Master Motion
       device_class: motion
     sensor.motion_sensor_master_battery:
-      icon: mdi:battery 
-      
-# I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging      
+      icon: mdi:battery
+
+# I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging
 group:
   master_bedroom:
    control: hidden
    name: Master Bedroom
-   entities: 
+   entities:
      - light.master
      - binary_sensor.master_motion
      - sensor.master_bedroom_temperature
      - sensor.motion_sensor_master_battery
      - automation.motion_master_bedroom
      - binary_sensor.master_bedroom_occupancy
-   
+
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_40
@@ -36,8 +36,8 @@ sensor:
     resource: !secret MS_rest_39
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
-    name: 'Master Temperature'     
-  
+    name: 'Master Temperature'
+
   - platform: rest
     resource: !secret MS_rest_39
     value_template: '{{ value_json.config.battery }}'
@@ -45,7 +45,7 @@ sensor:
     scan_interval: 1800
     name: 'Motion Sensor Master Battery'
 #######################################################################################################
-#####    When home mode set on ecobee then master light turns on in bedroom (not while sleeping  ###### 
+#####    When home mode set on ecobee then master light turns on in bedroom (not while sleeping  ######
 #####    ie house is in sleep mode                                                               ######
 #####    use case app only allows set times and we go to bed at diff times                       ######
 #######################################################################################################
@@ -58,12 +58,23 @@ automation:
         entity_id: binary_sensor.master_motion
         to: 'on'
     condition:
+      condition: or
+      conditions:
       - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'  
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_movie_time
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_evening_time
+        state: 'on'
+#      - condition: state
+#        entity_id: sensor.set_hold_mode
+#        state: 'home'
     action:
       - service: light.turn_on
         data:
           entity_id: light.master
           color_temp: 154
-          brightness: 255     
+          brightness: 255
