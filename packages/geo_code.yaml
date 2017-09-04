@@ -14,9 +14,9 @@ sensor:
     name: Dawn
     api_key: !secret family_geo_locate
     origin: device_tracker.dawn_baby
-#    options: full 
+#    options: full
   - platform: google_geocode
     name: Herb
     api_key: !secret family_geo_locate
-    origin: device_tracker.herb_herb
+    origin: device_tracker.lsp_herb
 #    options: both
