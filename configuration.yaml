@@ -46,8 +46,8 @@ tts:
 group: !include tabs.yaml
 
 mqtt:
-  broker: m10.cloudmqtt.com
-  port: 13636
+  broker: 192.168.1.153
+  port: 1883
   client_id: !secret mqtt_client_id
   keepalive: 60
   username: !secret mqtt_username

@@ -42,39 +42,39 @@ group:
 
 sensor:
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.cpu_use
+    resource: !secret sensor_fish_tank_url
     value_template: '{{ value_json.state }}'
     name: Fish Tank Cpu Use
     unit_of_measurement: "%"
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.disk_use_home
+    resource: !secret fish_tank_disk_use
     value_template: '{{ value_json.state }}'
     name: Fish Tank Disk Use
     unit_of_measurement: "%"
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.ram_free
+    resource: !secret fish_tank_ram_free
     value_template: '{{ value_json.state }}'
     name: Fish Tank Ram Free
     unit_of_measurement: "Mb"
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.ha_version
+    resource: !secret fish_tank_ha_version
     value_template: '{{ value_json.state }}'
     name: Fish Tank Ha Version
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.hass_uptime
+    resource: !secretfish_tank_ha_uptime
     value_template: '{{ value_json.state }}'
     name: Fish Tank Ha Uptime
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.dht_sensor_temperature
+    resource: !secret ha_temperature
     value_template: '{{ value_json.state }}'
     name: Ha Temperature
 
   - platform: rest
-    resource: https://vasiley.dns1.us:444/api/states/sensor.dht_sensor_humidity
+    resource: !secret ha_humidity
     value_template: '{{ value_json.state }}'
     name: Ha Humidity
