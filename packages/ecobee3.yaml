@@ -8,7 +8,7 @@ homeassistant:
 
 ##### Config for ecobee
 ecobee:
-  api_key: X3qzXvoQCrZFLRYF1WIko6NKQkw6vGDF
+  api_key: !secret ecobee_api_key
   hold_temp: True
 
 group:

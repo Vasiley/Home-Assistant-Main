@@ -112,11 +112,7 @@
    name: Fun Stuff
    entities:
      - group.Effects
-     - script.spring
-     - script.savanna
-     - script.arctic
-     - script.tropical
-     - script.supernatural
+     - group.hue_scenes_card
      - group.Routines
      - group.input_boolean_card
 

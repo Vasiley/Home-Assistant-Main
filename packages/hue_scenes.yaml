@@ -1,0 +1,71 @@
+homeassistant:
+  customize:
+    script.spring:
+      friendly_name: Spring
+      haaska_hidden: false
+      haaska_name: Spring
+    script.savanna:
+      friendly_name: Savanna
+      haaska_hidden: false
+      haaska_name: Savanna
+    script.arctic:
+      friendly_name: Northern Lights
+      haaska_hidden: false
+      haaska_name: Northern Lights
+    script.tropical:
+      friendly_name: Tropical
+      haaska_hidden: false
+      haaska_name: Tropical
+    script.supernatural:
+      friendly_name: Supernatural
+      haaska_hidden: false
+
+group:
+  hue_scenes_card:
+   control: hidden
+   name: Hue Scenes
+   entities:
+     - script.spring
+     - script.savanna
+     - script.arctic
+     - script.tropical
+     - script.supernatural
+
+script:
+      ####### Hue Scenes ##########
+
+  spring:
+    sequence:
+      - delay: '00:00:01'
+      - service: light.hue_activate_scene
+        data:
+          group_name: "Lamps"
+          scene_name: "Spring blossom"
+  savanna:
+    sequence:
+      - delay: '00:00:01'
+      - service: light.hue_activate_scene
+        data:
+          group_name: "Lamps"
+          scene_name: "Savanna sunset"
+  arctic:
+    sequence:
+      - delay: '00:00:01'
+      - service: light.hue_activate_scene
+        data:
+          group_name: "Lamps"
+          scene_name: "Arctic aurora"
+  tropical:
+    sequence:
+      - delay: '00:00:01'
+      - service: light.hue_activate_scene
+        data:
+          group_name: "Lamps"
+          scene_name: "Tropical twilight"
+  supernatural:
+    sequence:
+      - delay: '00:00:01'
+      - service: light.hue_activate_scene
+        data:
+          group_name: "Lamps"
+          scene_name: "Supernatural"

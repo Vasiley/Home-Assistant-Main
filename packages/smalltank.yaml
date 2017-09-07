@@ -65,7 +65,7 @@ sensor:
     name: Fish Tank Ha Version
 
   - platform: rest
-    resource: !secretfish_tank_ha_uptime
+    resource: !secret fish_tank_ha_uptime
     value_template: '{{ value_json.state }}'
     name: Fish Tank Ha Uptime
 

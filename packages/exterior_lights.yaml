@@ -84,7 +84,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
         to: 'on'
-        for: '00:00:01'
+        for: '00:00:10'
     condition:
       - condition: state
         entity_id: light.carport
