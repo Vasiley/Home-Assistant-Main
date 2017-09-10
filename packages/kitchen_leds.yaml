@@ -1,0 +1,175 @@
+homeassistant:
+  customize:
+    light.kitchen_under_cabinet:
+      friendly_name: Kitchen Cabinets
+      haaska_hidden: false
+    input_slider.led_animation_speed:
+      friendly_name: Kitchen Cabinets Speed
+      haaska_hidden: true
+    script.led_white:
+      friendly_name: Kitchen Led White
+      haaska_hidden: false
+    script.led_yellow:
+      friendly_name: Ktichen Led Yellow
+      haaska_hidden: false
+    script.led_off:
+      friendly_name: Kitchen Led Off
+      haaska_hidden: false
+    automation.kitchen_lights_off_with_dimmer:
+      friendly_name: Kitchen Leds Off
+      haaska_hidden: true
+    automation.kitchen_lights_on_white_with_dimmer:
+      friendly_name: Kitchen Leds White
+      haaska_hidden: true
+    automation.led_animation_speed:
+      friendly_name: Leds Kitchen Animation Speed
+      haaska_hidden: true
+
+
+group:
+  kitchen_leds_card:
+#   control: hidden
+   name: Kitchen Under Cabinets
+   entities:
+     - light.kitchen_under_cabinet
+     - input_slider.led_animation_speed
+     - light.kitchen_white
+     - script.led_white
+     - script.led_yellow
+     - script.led_off
+     - automation.kitchen_lights_off_with_dimmer
+     - automation.kitchen_lights_on_white_with_dimmer
+     - automation.led_animation_speed
+
+light:
+  - platform: mqtt_json
+    name: kitchen_under_cabinet
+    state_topic: "vasiley/kitchen"
+    command_topic: "vasiley/kitchen/set"
+    effect: true
+    effect_list:
+      - bpm
+      - candy cane
+      - confetti
+      - cyclon rainbow
+      - dots
+      - fire
+      - glitter
+      - juggle
+      - lightning
+      - noise
+      - police all
+      - police one
+      - rainbow
+      - rainbow with glitter
+      - ripple
+      - sinelon
+      - solid
+      - twinkle
+    brightness: true
+    flash: true
+    rgb: true
+    optimistic: false
+    qos: 0
+
+input_slider:
+  led_animation_speed:
+    name: Kitchen Animation Speed
+    initial: 150
+    min: 1
+    max: 150
+    step: 10
+
+###### Master Closet Dimmer
+sensor:
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Kitchen Led Dimmer Battery'
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Kitchen Led Dimmer State'
+  - platform: template
+    sensors:
+      kitchen_led_dimmer_state:
+        friendly_name: 'Kitchen Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kitchen_led_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.kitchen_led_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_46
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Kitchen Led Dimmer last update'
+  - platform: template
+    sensors:
+      kitchen_led_dimmer_last_update:
+        friendly_name: Kitchen Led Last Used'
+        value_template: >-
+         {{as_timestamp(strptime(states('sensor.kitchen_led_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+
+automation:
+  - alias: "LED Animation Speed"
+    initial_state: true
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_slider.led_animation_speed
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "vasiley/kitchen/set"
+          payload: '{"transition":{{ trigger.to_state.state | int }}}'
+
+  - alias: Kitchen Lights On White with Dimmer
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_led_dimmer_state
+        to: 'On'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_white
+
+  - alias: Kitchen Lights Off with Dimmer
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_led_dimmer_state
+        to: 'Off'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_off
+
+script:
+  led_white:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen_under_cabinet
+          effect: solid
+          brightness: 255
+          rgb_color: [ 245,254,255]
+  led_yellow:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen_under_cabinet
+          effect: solid
+          brightness: 125
+          rgb_color: [255,255,0]
+  led_off:
+    sequence:
+      - service: light.turn_off
+        entity_id: light.kitchen_under_cabinet
+      - service: light.turn_off
+        entity_id: light.kitchen_under_cabinet

@@ -84,7 +84,7 @@ ffmpeg:
 weblink:
   entities:
     - name: Fish Tank HA
-      url: https://vasiley.dns1.us:444
+      url: !secret fish_tank_url
       icon: mdi:fish
     - name: Dashboard
       url: http://192.168.1.153:5050/vas

@@ -26,6 +26,7 @@
      - script.media_player_source
      - weblink.fish_tank_ha
      - weblink.dashboard
+     - group.kitchen_leds_card
 
   Devicesview:
    view: yes
