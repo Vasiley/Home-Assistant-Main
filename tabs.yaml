@@ -102,11 +102,12 @@
    view: yes
    name: Rooms
    entities:
-     - group.master_bath
-     - group.master_bedroom
-     - group.carport_lights
+     - group.master_bath_card
+     - group.master_bedroom_card
+     - group.carport_lights_card
      - group.haaska_sensor_display_card
      - group.livingroom_card
+     - group.kitchen_card
 
   Fun_Stuff:
    view: yes
@@ -123,6 +124,9 @@
    entities:
      - group.Fish_tank_server_info
      - group.Fish_tank_server_ext_info
+     - group.water_sensors
+     - group.controls
+     - group.fish_leds_card
 
   Family:
     entities:

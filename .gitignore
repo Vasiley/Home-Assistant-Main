@@ -49,3 +49,5 @@ zwscene.xml
 zigbee.db
 *.ca-bundle
 *.ca-bundle.txt
+usps_cache.sqlite
+*.sqlite

@@ -23,3 +23,73 @@ group:
      - automation.back_to_yellow_dim_after_motion
      - script.nap_time
      - script.front_cam_dashboard
+     - script.vas_dashboard
+
+ master_bedroom_card:
+    control: hidden
+    name: Master Bedroom
+    entities:
+     - light.master
+     - binary_sensor.master_motion
+     - sensor.master_bedroom_temperature
+     - sensor.motion_sensor_master_battery
+     - automation.motion_master_bedroom
+     - binary_sensor.master_bedroom_occupancy
+
+ master_bath_card:
+    control: hidden
+    name: Master Bath
+    entities:
+     - light.bathroom_vanity
+     - light.bathroom
+     - binary_sensor.bathroom_motion
+     - sensor.bathroom_temperature
+     - sensor.motion_sensor_bathroom_battery
+     - sensor.master_bathroom_dimmer_state
+     - sensor.master_bathroom_dimmer_last_update
+     - sensor.master_bathroom_dimmer_battery
+     - script.shower_time_on
+     - script.shower_time_off
+     - automation.master_bath_light_left_on
+     - automation.master_bath_shower_time_off
+     - automation.master_bath_shower_time_on
+     - automation.motion_bathroom_home_mode_off
+     - automation.motion_bathroom_home_mode_on
+     - automation.motion_bathroom_sleep_off
+     - automation.motion_bathroom_sleep_on
+
+ carport_lights_card:
+    control: hidden
+    name: Carport
+    entities:
+      - light.carport
+      - automation.porch_lights_on
+      - automation.porch_lights_off
+      - automation.carport_bright_and_white_on_motion
+      - automation.back_to_yellow_dim_after_Motion
+      - script.bright_outside
+      - script.normal_outside
+ kitchen_card:
+   control: hidden
+   name: kitchen
+   entities:
+      - light.kitchen_under_cabinet
+      - light.kitchen
+      - light.kitchen_table
+      - input_number.led_animation_speed
+      - light.kitchen_white
+      - script.led_white
+      - script.led_yellow
+      - script.led_off
+      - automation.kitchen_lights_off_with_dimmer
+      - automation.kitchen_lights_on_white_with_dimmer
+      - automation.led_animation_speed
+      - automation.kitchen_leds_low_light_on
+      - automation.kitchen_leds_low_light_off
+      - sensor.Kitchen_dimmer_test
+      - sensor.motion_sensor_kitchen_lux
+      - input_select.kitchen_blinds_status
+      - sensor.kitchen_blinds_state
+      - script.blinds_closed
+      - script.blinds_halfway
+      - script.blinds_open

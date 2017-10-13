@@ -30,10 +30,3 @@
           {% else %}
             mdi:battery-alert
           {% endif %}
-
-
-#- platform: mqtt
-#  state_topic: "wallpanel/mywallpanel/sensor/battery"
-#  name: Living Room Tablet Battery
-#  unit_of_measurement: '%'
-#  value_template: "{{ value_json['value'] }}"

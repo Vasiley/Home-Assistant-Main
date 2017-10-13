@@ -77,6 +77,12 @@ homeassistant:
     sensor.esp_kitchen_blinds:
       friendly_name: Kitchen Blinds Controller
       entity_picture: /local/nodemcu.jpeg
+    sensor.esp_kitchen_led:
+      friendly_name: Kitchen Led Controller
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_smallfishtank_led:
+      friendly_name: Small Fish Tank Led Controller
+      entity_picture: /local/nodemcu.jpeg
     sensor.clients:
       friendly_name: Clients Tracked
       icon: mdi:network
@@ -140,7 +146,8 @@ group:
    name: Esp Controller's
    entities:
      - sensor.esp_kitchen_blinds
-
+     - sensor.esp_kitchen_led
+     - sensor.esp_smallfishtank_led
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -241,7 +248,14 @@ sensor:
     sensors:
       esp_kitchen_blinds:
         value_template: '{% if is_state("device_tracker.5ccf7fb19112", "home") %}Online{% else %}Offline{% endif %}'
-
+  - platform: template
+    sensors:
+      esp_kitchen_led:
+        value_template: '{% if is_state("device_tracker.600194316a56", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      esp_smallfishtank_led:
+        value_template: '{% if is_state("device_tracker.2c3ae8062e63", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       clients:
@@ -293,7 +307,9 @@ automation:
           - sensor.harmony_hub
           - sensor.hue_hub
           - sensor.wink_hub
-#        - sensor.esp_kitchen_blinds
+          - sensor.esp_kitchen_blinds
+          - sensor.esp_kitchen_led1
+          - sensor.esp_smallfishtank_led
 #        for: '00:00:01'
     condition:
       - condition: template

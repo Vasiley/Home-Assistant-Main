@@ -12,7 +12,7 @@
   results using `jq`. This is helpful for debugging configuration changes.
 - Color temperature can now be incremented and decremented (*"Alexa, make lamp
   cooler"*, *"Alexa, make lamp warmer"*).
-- `input_slider`, `automation`, and `alert` entities are now supported.
+- `input_number`, `automation`, and `alert` entities are now supported.
 - There's now a configuration option to hide Home Assistant entities by default.
 
 ### Changed

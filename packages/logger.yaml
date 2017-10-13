@@ -14,7 +14,7 @@ logger:
     homeassistant.components.tts: warn
     homeassistant.components.media_player: warn
     homeassistant.components.input_select: warn
-    homeassistant.components.input_slider: warn
+    homeassistant.components.input_number: warn
     homeassistant.components.http: warn
     homeassistant.components.shell_command: warn
     homeassistant.components.device_tracker: warn

@@ -38,20 +38,6 @@ homeassistant:
     light.carport:
       persistence: true
 
-
-group:
-  carport_lights:
-   control: hidden
-   name: Carport
-   entities:
-     - light.carport
-     - automation.porch_lights_on
-     - automation.porch_lights_off
-     - automation.carport_bright_and_white_on_motion
-     - automation.back_to_yellow_dim_after_Motion
-     - script.bright_outside
-     - script.normal_outside
-
 automation:
   - alias: Porch Lights on
     initial_state: 'on'

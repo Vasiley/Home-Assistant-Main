@@ -25,20 +25,31 @@ automation:
        data:
          entity_id: media_player.ha_speaker
          message: 'Grandma Mode is Activated'
-         
+
 script:
-  evening_time:
-    sequence:
-      - service: input_boolean.turn_off
-        data:
-          entity_id: group.input_boolean_card
-      - service: input_boolean.turn_on
-        data:
-          entity_id: input_boolean.boolean_evening_time
-      - service: light.turn_on
-        data:
-          entity_id: light.lamps
-          color_temp: 426
-          brightness: 125
-      - service: script.turn_on
-        entity_id: script.blinds_halfway
+#  - alias: Evening Time
+    evening_time:
+      sequence:
+        - service: input_boolean.turn_off
+          data:
+            entity_id: group.input_boolean_card
+        - service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.boolean_evening_time
+        - service: light.turn_on
+          data:
+            entity_id: light.lamps
+            color_temp: 426
+            brightness: 125
+        - service: script.turn_on
+          entity_id: script.blinds_halfway
+        - service: script.turn_on
+          entity_id: script.vas_dashboard
+#  - alias: Navigate Dashboard to Vas
+    vas_dashboard:
+      sequence:
+        - event: hadashboard
+          event_data:
+            command: navigate
+#          timeout: 60
+            target: vas

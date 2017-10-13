@@ -4,7 +4,7 @@ recorder:
       - input_select
       - media_player
       - automation
-      - input_slider
+      - input_number
       - rest_command
       - camera
       - notify
@@ -40,4 +40,5 @@ recorder:
       - camera.radar
       - sun.sun
   db_url: !secret recorder_db_url
-  purge_days: 10
+  purge_interval: 2
+  purge_keep_days: 5

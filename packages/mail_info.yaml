@@ -72,18 +72,18 @@ sensor:
                0
             {% endif %}
           {% endmacro %}
-          {{in_transit(states.sensor.usps_packages)|int + in_transit(states.sensor.ups)|int  + in_transit(states.sensor.fedex)|int}}
+          {{in_transit(states.sensor.usps_mail_packages)|int + in_transit(states.sensor.ups)|int  + in_transit(states.sensor.fedex)|int}}
       deliveries_today:
         friendly_name: "Today's Deliveries"
         value_template: >
           {% macro delivered(sensor) %}
-            {% if 'delivered' in sensor.attributes %}
-              {{sensor.attributes.delivered}}
+            {% if 'out_for_delivery' in sensor.attributes %}
+              {{sensor.attributes.out_for_delivery}}
             {% else %}
                0
             {% endif %}
           {% endmacro %}
-          {{delivered(states.sensor.usps_packages)|int + delivered(states.sensor.ups)|int + delivered(states.sensor.fedex)|int}}
+          {{delivered(states.sensor.usps_mail_packages)|int + delivered(states.sensor.ups)|int + delivered(states.sensor.fedex)|int}}
 ############################################################
 
 automation:

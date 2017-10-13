@@ -1,31 +1,31 @@
 homeassistant:
   customize:
-  
- 
+
+
   ################################################
   ## Binary Sensor
   ################################################
-  
+
     binary_sensor.kitchen_motion:
       friendly_name: Kitchen Motion
       device_class: motion
     binary_sensor.hallway_motion:
       friendly_name: Hallway Motion
-      device_class: motion 
+      device_class: motion
     binary_sensor.laundry_room_motion:
       friendly_name: Laundry Room Motion
-      device_class: motion       
+      device_class: motion
     binary_sensor.kids_hallway_motion:
       friendly_name: Kids Hallway Motion
       device_class: motion
-    
+
   ################################################
   ##  Sensor Battery Icon
-  ################################################    
+  ################################################
     sensor.motion_sensor_kids_hall_battery:
-      icon: mdi:battery     
+      icon: mdi:battery
     sensor.motion_sensor_laundry_battery:
-      icon: mdi:battery    
+      icon: mdi:battery
     sensor.motion_sensor_hallway_battery:
       icon: mdi:battery
 #     sensor.motion_sensor_kitchen_battery:
@@ -34,7 +34,15 @@ homeassistant:
       friendly_name: Kitchen Motion Battery
     sensor.motion_sensor_kids_bathroom_battery:
       icon: mdi:battery
-    
+
+##################################################
+#### Sensor Lux Levels
+##################################################
+    sensor.motion_sensor_kitchen_lux:
+      friendly_name: Kitchen Light Level
+#      icon: mdi:
+
+
 group:
   Motion_card:
    name: Motion
@@ -45,45 +53,45 @@ group:
      - binary_sensor.kids_hallway_motion
      - binary_sensor.kids_bathroom_motion
      - binary_sensor.bathroom_motion
-     - binary_sensor.master_motion     
-    
-####### Binary sensor motion   #############  
-binary_sensor:  
+     - binary_sensor.master_motion
+
+####### Binary sensor motion   #############
+binary_sensor:
   - platform: rest
     resource: !secret MS_rest_6
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
-    name: kitchen_motion 
+    name: kitchen_motion
   - platform: rest
     resource: !secret MS_rest_12
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
-    name: hallway_motion    
+    name: hallway_motion
   - platform: rest
     resource: !secret MS_rest_20
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
-    name: laundry_room_motion 
+    name: laundry_room_motion
   - platform: rest
     resource: !secret MS_rest_24
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
-    name: kids_hallway_motion   
+    name: kids_hallway_motion
   - platform: rest
     resource: !secret MS_rest_30
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
-    name: kids_bathroom_motion  
-   
+    name: kids_bathroom_motion
+
 ################# sensor temp ########################
 sensor:
-     
+
 
   - platform: rest
     resource: !secret MS_rest_23
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
-    name: 'Kids Hallway Temperature'    
+    name: 'Kids Hallway Temperature'
   - platform: rest
     resource: !secret MS_rest_11
     value_template: '{{ value_json.state.temperature | float / 100 }}'
@@ -93,12 +101,12 @@ sensor:
     resource: !secret MS_rest_5
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
-    name: 'Kitchen Temperature' 
+    name: 'Kitchen Temperature'
   - platform: rest
     resource: !secret MS_rest_29
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
-    name: 'Kids Bathroom Temperature'    
+    name: 'Kids Bathroom Temperature'
 
 ##################### sensor battery   ##############################
   - platform: rest
@@ -137,12 +145,11 @@ sensor:
     scan_interval: 1800
     name: 'Motion Sensor Kids Bathroom Battery'
 
-    
-    
+#################   Kitchen Lux Level     #########################
 
-    
-                  
-         
-                        
-          
-          
+  - platform: rest
+    resource: !secret MS_rest_7
+    value_template: '{{ value_json.state.lightlevel }}'
+    unit_of_measurement: Lux
+    scan_interval: 5
+    name: 'Motion Sensor Kitchen Lux'

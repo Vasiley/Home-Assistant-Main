@@ -103,7 +103,7 @@ panel_iframe:
   home_assistant_fishtank:
     title: 'HA Fishtank'
     icon: mdi:home-assistant
-    url: 'https://vasiley.dns1.us:444'
+    url: !secret fish_tank_url
 
   plex_web_server:
     title: 'Plex'

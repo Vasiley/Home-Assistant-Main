@@ -54,8 +54,6 @@ group:
      - script.refresh_wink
      - switch.king_of_fans__inc_hdc52eastwindfan_0016b720_1
 
-
-
 sensor:
   - platform: template
     sensors:
@@ -135,7 +133,7 @@ automation:
             - automation.fan_turn_on
 
 ##########################################################################
-############################  cieling fan automation with Hvac    #################
+############################  cieling fan automation with Hvac    ########
 ##########################################################################
   - alias: Fan low with Hvac automation
     initial_state: 'on'
@@ -151,7 +149,11 @@ automation:
       - service: fan.turn_on
         data:
           entity_id: fan.living_room_fan
-          speed: 'low'
+          speed: "low"
+      - service: fan.turn_on   # gotta hit fan twice dont know why
+        data:
+          entity_id: fan.living_room_fan
+          speed: "low"
 
   - alias: Fan medium with hvac automation
     initial_state: 'on'
@@ -167,7 +169,11 @@ automation:
       - service: fan.turn_on
         data:
           entity_id: fan.living_room_fan
-          speed: 'medium'
+          speed: "medium"
+      - service: fan.turn_on        #gotta hit twice dont know why
+        data:
+          entity_id: fan.living_room_fan
+          speed: "medium"
 
 
 script:

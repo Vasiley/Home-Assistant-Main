@@ -11,19 +11,6 @@ homeassistant:
     sensor.motion_sensor_master_battery:
       icon: mdi:battery
 
-# I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging
-group:
-  master_bedroom:
-   control: hidden
-   name: Master Bedroom
-   entities:
-     - light.master
-     - binary_sensor.master_motion
-     - sensor.master_bedroom_temperature
-     - sensor.motion_sensor_master_battery
-     - automation.motion_master_bedroom
-     - binary_sensor.master_bedroom_occupancy
-
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_40

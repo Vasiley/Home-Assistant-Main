@@ -15,13 +15,13 @@ logbook:
       - sensor.queries_forwarded
       - sensor.queries_cached
       - sensor.pihole_dns
-      - sensor.pihole_blocking      
-      
+      - sensor.pihole_blocking
+
    domains:
       - input_select
 #      - media_player
       - automation
-      - input_slider
+      - input_number
       - rest_command
       - camera
       - notify

@@ -59,28 +59,7 @@ homeassistant:
 
 # I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging
 
-group:
-  master_bath:
-   control: hidden
-   name: Master Bath
-   entities:
-     - light.bathroom_vanity
-     - light.bathroom
-     - binary_sensor.bathroom_motion
-     - sensor.bathroom_temperature
-     - sensor.motion_sensor_bathroom_battery
-     - sensor.master_bathroom_dimmer_state
-     - sensor.master_bathroom_dimmer_last_update
-     - sensor.master_bathroom_dimmer_battery
-     - script.shower_time_on
-     - script.shower_time_off
-     - automation.master_bath_light_left_on
-     - automation.master_bath_shower_time_off
-     - automation.master_bath_shower_time_on
-     - automation.motion_bathroom_home_mode_off
-     - automation.motion_bathroom_home_mode_on
-     - automation.motion_bathroom_sleep_off
-     - automation.motion_bathroom_sleep_on
+
 
 binary_sensor:
   - platform: rest

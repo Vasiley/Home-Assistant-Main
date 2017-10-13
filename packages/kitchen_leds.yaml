@@ -1,9 +1,11 @@
 homeassistant:
   customize:
     light.kitchen_under_cabinet:
-      friendly_name: Kitchen Cabinets
+      friendly_name: Kitchen Under Cabinets
       haaska_hidden: false
-    input_slider.led_animation_speed:
+  #  light.kitchen_under_cabinet1:
+  #    haaska_hidden: false
+    input_number.led_animation_speed:
       friendly_name: Kitchen Cabinets Speed
       haaska_hidden: true
     script.led_white:
@@ -32,20 +34,16 @@ group:
    name: Kitchen Under Cabinets
    entities:
      - light.kitchen_under_cabinet
-     - input_slider.led_animation_speed
-     - light.kitchen_white
-     - script.led_white
-     - script.led_yellow
-     - script.led_off
-     - automation.kitchen_lights_off_with_dimmer
-     - automation.kitchen_lights_on_white_with_dimmer
-     - automation.led_animation_speed
+#     - light.kitchen_under_cabinet1
+     - input_number.led_animation_speed
+
 
 light:
+################## Microwave side
   - platform: mqtt_json
     name: kitchen_under_cabinet
-    state_topic: "vasiley/kitchen"
-    command_topic: "vasiley/kitchen/set"
+    state_topic: "vasiley/kitchenled"
+    command_topic: "vasiley/kitchenled/set"
     effect: true
     effect_list:
       - bpm
@@ -69,10 +67,11 @@ light:
     brightness: true
     flash: true
     rgb: true
+    color_temp: true
     optimistic: false
     qos: 0
 
-input_slider:
+input_number:
   led_animation_speed:
     name: Kitchen Animation Speed
     initial: 150
@@ -93,6 +92,20 @@ sensor:
     value_template: '{{ value_json.state.buttonevent }}'
     scan_interval: 1
     name: 'Kitchen Led Dimmer State'
+
+  - platform: rest
+    name: Kitchen_dimmer_test
+    resource: !secret dimmer_rest_46
+    scan_interval: 2
+    value_template: >-
+      {% set last_updated = as_timestamp(value_json.state.lastupdated ~ '-00:00')|int %}
+      {% if as_timestamp(now())|int - last_updated > 10 %}
+        idle
+      {% else %}
+        {% set button_event = value_json.state.buttonevent|string %}
+        {{ ('hold' if button_event[3]|int % 2 == 1 else 'click') ~ '_' ~ button_event[0] }}
+      {% endif %}
+
   - platform: template
     sensors:
       kitchen_led_dimmer_state:
@@ -123,12 +136,16 @@ automation:
     hide_entity: true
     trigger:
       - platform: state
-        entity_id: input_slider.led_animation_speed
+        entity_id: input_number.led_animation_speed
     action:
       - service: mqtt.publish
         data_template:
           topic: "vasiley/kitchen/set"
           payload: '{"transition":{{ trigger.to_state.state | int }}}'
+#      - service: mqtt.publish
+#        data_template:
+#          topic: "vasiley/kitchen1/set"
+#          payload: '{"transition":{{ trigger.to_state.state | int }}}'
 
   - alias: Kitchen Lights On White with Dimmer
     initial_state: 'on'
@@ -150,6 +167,38 @@ automation:
       - service: script.turn_on
         entity_id: script.led_off
 
+
+  - alias: Kitchen Leds low light ON
+    initial_state: 'on'
+    trigger:
+     - platform: numeric_state
+       entity_id: sensor.motion_sensor_kitchen_lux
+       below: 10000
+    condition:
+     - condition: state
+       entity_id: input_boolean.boolean_home
+       state: 'on'
+    action:
+     - service: script.turn_on
+       entity_id: script.led_white
+
+  - alias: Kitchen Leds low light OFF
+    initial_state: 'on'
+    trigger:
+     - platform: numeric_state
+       entity_id: sensor.motion_sensor_kitchen_lux
+       above: 9001
+       for: '00:05:00'
+    condition:
+     - condition: state
+       entity_id: input_boolean.boolean_home
+       state: 'on'
+    action:
+     - service: script.turn_on
+       entity_id: script.led_off
+
+
+
 script:
   led_white:
     sequence:
@@ -158,15 +207,17 @@ script:
           entity_id: light.kitchen_under_cabinet
           effect: solid
           brightness: 255
-          rgb_color: [ 245,254,255]
+          rgb_color: [255,166,87]
+
   led_yellow:
     sequence:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
           effect: solid
-          brightness: 125
-          rgb_color: [255,255,0]
+          brightness: 255
+          rgb_color: [255,136,13]
+
   led_off:
     sequence:
       - service: light.turn_off

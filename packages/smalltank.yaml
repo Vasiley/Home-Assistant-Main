@@ -23,7 +23,18 @@ homeassistant:
       friendly_name: Ha Humidity
       icon: mdi:water-percent
       hasska_hidden: true
-
+    sensor.small_tank_water_temperature:
+      friendly_name: Water Temperature
+      icon: mdi:temperature-fahrenheit
+      hasska_hidden: true
+    sensor.small_tank_heater:
+      icon: mdi:thermometer-lines
+      friendly_name: Heater
+      hasska_hidden: true
+    sensor.small_tank_white_lights:
+      icon: mdi:led-strip
+      friendly_name: Small Tank White Lights
+      hasska_hidden: true
 group:
   Fish_tank_server_info:
    name: Server Info
@@ -40,6 +51,18 @@ group:
        - sensor.ha_temperature
        - sensor.ha_humidity
 
+  water_sensors:
+   name: Small Tank Sensors
+   entities:
+     - sensor.small_tank_water_temperature
+
+  controls:
+   name: Controls
+   entities:
+    - sensor.small_tank_heater
+    - sensor.small_tank_white_lights
+    - sensor.small_tank_lighting_mode
+    - sensor.small_tank_weather_mode
 sensor:
   - platform: rest
     resource: !secret sensor_fish_tank_url
@@ -73,8 +96,45 @@ sensor:
     resource: !secret ha_temperature
     value_template: '{{ value_json.state }}'
     name: Ha Temperature
+    unit_of_measurement: '°F'
 
   - platform: rest
     resource: !secret ha_humidity
     value_template: '{{ value_json.state }}'
     name: Ha Humidity
+
+  - platform: rest
+    resource: !secret small_tank_water_temperature
+    value_template: '{{ value_json.state }}'
+    name: Small Tank Water Temperature
+    unit_of_measurement: '°F'
+
+  - platform: rest
+    resource: !secret small_relay_one
+    value_template: '{{ value_json.state }}'
+    name: Relay One
+
+  - platform: rest
+    resource: !secret small_relay_three
+    value_template: '{{ value_json.state }}'
+    name: Small Tank White Lights
+
+  - platform: rest
+    resource: !secret small_relay_two
+    value_template: '{{ value_json.state }}'
+    name: Relay Two
+
+  - platform: rest
+    resource: !secret small_relay_four
+    value_template: '{{ value_json.state }}'
+    name: Small Tank Heater
+
+  - platform: rest
+    resource: !secret fish_tank_sensor_light_mode
+    value_template: '{{ value_json.state }}'
+    name: Small Tank Lighting Mode
+
+  - platform: rest
+    resource: !secret fish_tank_sensor_light_weather
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Weather Mode

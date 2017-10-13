@@ -18,7 +18,7 @@ script:
         data:
           entity_id: input_boolean.boolean_early_morning
       - service: script.turn_on
-        entity_id: script.led_white    
+        entity_id: script.led_white
       - service: switch.turn_on
         data:
           entity_id: switch.network_switch_blue_iris_monitor
@@ -45,5 +45,8 @@ script:
           brightness: 175
       - service: rest_command.no_motion
       - service: rest_command.no_motion
-
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "home"
 # rest_command sets profile of blue iris software

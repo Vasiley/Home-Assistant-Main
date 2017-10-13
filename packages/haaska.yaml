@@ -34,7 +34,7 @@ homeassistant:
     input_boolean:
       haaska_hidden: true
 
-    input_slider:
+    input_number:
       haaska_hidden: true
 
     light:

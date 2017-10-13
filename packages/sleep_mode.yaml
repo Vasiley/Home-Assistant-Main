@@ -82,13 +82,13 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.master_hallway
-      - delay: '00:00:45'
       - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
         timeout: '00:00:30'
       - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
         timeout: '00:00:30'
       - wait_template: "{{ states.binary_sensor.bathroom_motion.state == 'off' }}"
         timeout: '00:00:30'
+      - delay: '00:01:15'  
       - service: light.turn_off
         data:
           entity_id: light.bathroom

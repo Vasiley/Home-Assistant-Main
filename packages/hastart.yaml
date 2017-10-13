@@ -17,8 +17,8 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker
           volume_level: '.99'
-      - delay: '00:00:20'    
+      - delay: '00:00:20'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Ha is up Volume Set at Full'
+          message: 'Home assistant is up Volume Set at Full'
