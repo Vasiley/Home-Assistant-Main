@@ -27,19 +27,17 @@
      - weblink.fish_tank_ha
      - weblink.dashboard
      - group.kitchen_leds_card
+     - group.zombu
+
 
   Devicesview:
    view: yes
    name: Equipment
    entities:
-     - group.linux_server_card
      - group.Ads_Blocked_card
      - group.DigitalLoggers_card
      - group.NetworkNmap_status_card
      - group.NetworkDrives_status_card
-     - group.Workstations_status_card
-     - group.network_workstation_info_card
-     - group.blue_iris_info_card
      - group.cameras_status_card
      - group.hubs_card
      - group.NetworkSnmp_card
@@ -48,6 +46,15 @@
      - script.update_github
      - group.logger_input_select_card
      - group.clients_online_card
+     
+  Serversview:
+   view: yes
+   name: Servers
+   entities:
+     - group.linux_server_card
+     - group.blue_iris_info_card
+#     - group.Workstations_status_card
+     - group.network_workstation_info_card
 
   media:
    view: yes

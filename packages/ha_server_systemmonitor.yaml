@@ -1,0 +1,64 @@
+homeassistant:
+  customize:
+    sensor.average_load_15m:
+      friendly_name: Cpu load_15m
+      icon: mdi:speedometer
+
+
+group:
+  linux_server_card:
+   name: Ha Server
+   entities:
+     - sensor.speedtest_download
+     - sensor.speedtest_upload
+     - sensor.speedtest_ping
+     - sensor.cpu_used
+     - sensor.average_load_15m
+     - sensor.disk_free_home
+     - sensor.disk_used_home_2
+     - sensor.disk_used_home
+     - sensor.ram_available
+     - sensor.ram_used_2
+     - sensor.ram_used
+     - sensor.swap_free
+     - sensor.swap_used
+     - sensor.swap_used_2
+     - sensor.received_enp2s0
+     - sensor.sent_enp2s0
+     - sensor.packets_received_enp2s0
+     - sensor.packets_sent_enp2s0
+     - sensor.ipv4_address_enp2s0
+     - sensor.last_boot
+     - sensor.since_last_boot
+     - sensor.myipopendnscom
+
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /home
+      - type: disk_use
+        arg: /home
+      - type: disk_free
+        arg: /home
+      - type: memory_free
+      - type: memory_use_percent
+      - type: memory_use
+      - type: swap_use_percent
+      - type: swap_use
+      - type: swap_free
+      - type: load_15m
+      - type: network_in
+        arg: enp2s0
+      - type: network_out
+        arg: enp2s0
+      - type: packets_in
+        arg: enp2s0
+      - type: packets_out
+        arg: enp2s0
+      - type: ipv4_address
+        arg: enp2s0
+      - type: last_boot
+      - type: since_last_boot
+     

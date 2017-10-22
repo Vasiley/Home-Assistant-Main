@@ -1,0 +1,5 @@
+sensor:
+  - platform: rest
+    resource: https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/21348928?api_key=RGAPI-3bd93322-e0ed-4256-abd6-5dc984f30a02
+    value_template: "{{ value_json[0].leaguePoints }}"
+    name: League Points

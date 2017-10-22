@@ -1,0 +1,148 @@
+group:
+  zombu:
+   name: Zombu
+   entities:
+      - sensor.zombu_fan_mode
+      - sensor.zombu_system_mode
+      - sensor.zombu_indoor_temperature
+#      - sensor.zombu_operation_cool
+#      - sensor.zombu_operation_heat
+#      - sensor.zombu_operation_fan
+      - sensor.zombu_operation_set_point
+      - sensor.fan_on
+      - sensor.operation_mode
+      - input_select.heat_cool
+      - input_select.temp
+#      - script.run
+
+input_select:
+  heat_cool:
+    name: Heat Cool
+    options:
+     - HEAT
+     - COOL
+     - OFF
+    initial: COOL
+
+  temp:
+    options:
+      - '65'
+      - '66'
+      - '67'
+      - '68'
+      - '69'
+      - '70'
+      - '71'
+      - '72'
+      - '73'
+      - '74'
+      - '75'
+      - '76'
+      - '77'
+      - '78'
+      - '79'
+      - '80'
+    initial: '74'
+
+automation:
+  - alias: "Change Thermostat"
+    trigger:
+      - platform: state
+        entity_id: input_select.heat_cool
+      - platform: state
+        entity_id: input_select.temp
+    action:
+      - service: script.turn_on
+        entity_id: script.run
+
+  - alias: "Change input select of temp if Thermostat is changed manully"
+    trigger:
+      - platform: state
+        entity_id: sensor.zombu_operation_set_point
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: input_select.temp
+          option: '{{ states.sensor.zombu_operation_set_point.state }}'
+
+  - alias: "Change input select of mode if Thermostat is changed manully"
+    trigger:
+      - platform: state
+        entity_id: sensor.zombu_system_mode
+    action:
+      - service: input_select.select_option
+        data_template:
+          entity_id: input_select.heat_cool
+          option: '{{ states.sensor.zombu_system_mode.state }}'
+
+
+script:
+  run:
+    sequence:
+      - service: shell_command.heat_cool_select
+
+shell_command:
+  heat_cool_select: curl -d "mode={{ states.input_select.heat_cool.state }}&target={{ states.input_select.temp.state }}" -X POST http://73.54.53.122:8880/system
+
+
+sensor:
+  - platform: scrape
+    resource: http://73.54.53.122:8880/_liveUpdate
+    select: '#fanModeContainer'
+    name: Zombu Fan Mode
+    icon: mdi:fan
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/_liveUpdate
+    select: '#systemModeContainer'
+    name: Zombu System Mode
+    icon: mdi:nest-thermostat
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/_liveUpdate
+    select: '#indoorTempContainer'
+    name: Zombu Indoor Temperature
+    icon: mdi:thermometer
+    unit_of_measurement: °F
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/info
+    select: '#cool'
+    name: Zombu Operation Cool
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/info
+    select: '#heat'
+    name: Zombu Operation Heat
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/info
+    select: '#fan'
+    name: Zombu Operation Fan
+
+  - platform: scrape
+    resource: http://73.54.53.122:8880/_liveUpdate
+    select: '#targetTemps'
+    name: Zombu Operation Set Point
+    unit_of_measurement: °F
+
+  - platform: template
+    sensors:
+      fan_on:
+        friendly_name: "Fan Running"
+#      device_class: motion
+        value_template:  "{{ 'ON' if 'ON' in states.sensor.zombu_operation_fan.state | upper else 'OFF' }}"
+
+  - platform: template
+    sensors:
+      operation_mode:
+        friendly_name: "Operation Mode"
+#      device_class: motion
+        value_template: >-
+                      {% if states.sensor.zombu_operation_cool.state.split(':')[1] |trim | upper == 'ON' %}
+                         COOL
+                      {% elif states.sensor.zombu_operation_heat.state.split(':')[1] |trim | upper == 'ON' %}
+                         HEAT
+                      {% else %}
+                         OFF
+                      {% endif %}

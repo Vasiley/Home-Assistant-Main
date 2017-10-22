@@ -13,7 +13,7 @@ zone: !include zones.yaml
 
 # Enables the frontend
 frontend:
-
+map:
 http:
   # Uncomment this to add a password (recommended!)
    api_password: !secret http_password

@@ -99,19 +99,6 @@ group:
      - sensor.hue_hub
      - sensor.wink_hub
 
-  linux_server_card:
-   name: Ha Server
-   entities:
-     - sensor.speedtest_download
-     - sensor.speedtest_upload
-     - sensor.speedtest_ping
-     - sensor.cpu_use
-     - sensor.ram_free
-     - sensor.disk_use_home
-#     - sensor.ssl_expire
-     - sensor.myipopendnscom
-     - input_select.log_level
-
   cameras_status_card:
     name: Cameras
     entities:
@@ -127,12 +114,6 @@ group:
    entities:
      - sensor.media_nas
      - sensor.network_nas
-
-#  Workstations_status_card:
-#   name: Workstations
-#   entities:
-#     - sensor.network_workstation
-# sensor.blue_iris_workstation
 
   NetworkNmap_status_card:
    name: Network Equipment
@@ -164,13 +145,7 @@ sensor:
       - ping
       - download
       - upload
-  - platform: systemmonitor
-    resources:
-      - type: disk_use_percent
-        arg: /home
-      - type: memory_free
-      - type: processor_use
-
+  
 ##### show devices as online instead of home   ############################
   - platform: template
     sensors:

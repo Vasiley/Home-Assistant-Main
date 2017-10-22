@@ -20,6 +20,7 @@ group:
      - sensor.hass_uptime
      - sensor.ha_version
      - sensor.installed_version
+     - input_select.log_level
      - script.update_home_assistant_home
 
 sensor:
