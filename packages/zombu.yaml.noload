@@ -1,19 +1,47 @@
+homeassistant:
+  customize:
+    sensor.fan_mode:
+      friendly_name: Fan
+      haaska_hidden: true
+      icon: mdi:fan
+
+    sensor.system_mode:
+      friendly_name: Mode
+      haaska_hidden: true
+      icon: mdi:settings
+
+    sensor.indoor_temperature:
+      friendly_name: Indoor Temp
+      haaska_hidden: true
+      icon: mdi:thermometer-lines
+
+    sensor.operation_set_point:
+      friendly_name: Setpoint
+      haaska_hidden: true
+      icon: mdi:oil-temperature
+
+    sensor.fan_on:
+      friendly_name: Fan Status
+      haaska_hidden: true
+      icon: mdi:fan
+
+    sensor.operation_mode:
+      friendly_name: Operation Mode
+      haaska_hidden: true
+      icon: mdi:air-conditioner
+
 group:
-  zombu:
-   name: Zombu
+  thermos:
+   name: thermos
    entities:
-      - sensor.zombu_fan_mode
-      - sensor.zombu_system_mode
-      - sensor.zombu_indoor_temperature
-#      - sensor.zombu_operation_cool
-#      - sensor.zombu_operation_heat
-#      - sensor.zombu_operation_fan
-      - sensor.zombu_operation_set_point
+      - sensor.fan_mode
+      - sensor.system_mode
+      - sensor.indoor_temperature
+      - sensor.operation_set_point
       - sensor.fan_on
       - sensor.operation_mode
       - input_select.heat_cool
       - input_select.temp
-#      - script.run
 
 input_select:
   heat_cool:
@@ -58,22 +86,22 @@ automation:
   - alias: "Change input select of temp if Thermostat is changed manully"
     trigger:
       - platform: state
-        entity_id: sensor.zombu_operation_set_point
+        entity_id: sensor.operation_set_point
     action:
       - service: input_select.select_option
         data_template:
           entity_id: input_select.temp
-          option: '{{ states.sensor.zombu_operation_set_point.state }}'
+          option: '{{ states.sensor.operation_set_point.state }}'
 
   - alias: "Change input select of mode if Thermostat is changed manully"
     trigger:
       - platform: state
-        entity_id: sensor.zombu_system_mode
+        entity_id: sensor.system_mode
     action:
       - service: input_select.select_option
         data_template:
           entity_id: input_select.heat_cool
-          option: '{{ states.sensor.zombu_system_mode.state }}'
+          option: '{{ states.sensor.system_mode.state }}'
 
 
 script:
@@ -87,61 +115,59 @@ shell_command:
 
 sensor:
   - platform: scrape
-    resource: http://xx.xx.xxx/_liveUpdate
+    resource: http://10.1.10.183/_liveUpdate
     select: '#fanModeContainer'
-    name: Zombu Fan Mode
+    name: Fan Mode
     icon: mdi:fan
 
   - platform: scrape
-    resource: http://xx.xx.xxx/_liveUpdate
+    resource: http://10.1.10.183/_liveUpdate
     select: '#systemModeContainer'
-    name: Zombu System Mode
+    name: System Mode
     icon: mdi:nest-thermostat
 
   - platform: scrape
-    resource: http://xx.xx.xxx/_liveUpdate
+    resource: http://10.1.10.183/_liveUpdate
     select: '#indoorTempContainer'
-    name: Zombu Indoor Temperature
+    name: Indoor Temperature
     icon: mdi:thermometer
     unit_of_measurement: °F
 
   - platform: scrape
-    resource: http://xx.xx.xxx/info
+    resource: http://10.1.10.183/info
     select: '#cool'
-    name: Zombu Operation Cool
+    name: Operation Cool
 
   - platform: scrape
-    resource: http://xx.xx.xxx/info
+    resource: http://10.1.10.183/info
     select: '#heat'
-    name: Zombu Operation Heat
+    name: Operation Heat
 
   - platform: scrape
-    resource: http://xx.xx.xxx/info
+    resource: http://10.1.10.183/info
     select: '#fan'
-    name: Zombu Operation Fan
+    name: Operation Fan
 
   - platform: scrape
-    resource: http://xx.xx.xxx/_liveUpdate
+    resource: http://10.1.10.183/_liveUpdate
     select: '#targetTemps'
-    name: Zombu Operation Set Point
+    name: Operation Set Point
     unit_of_measurement: °F
 
   - platform: template
     sensors:
       fan_on:
         friendly_name: "Fan Running"
-#      device_class: motion
-        value_template:  "{{ 'ON' if 'ON' in states.sensor.zombu_operation_fan.state | upper else 'OFF' }}"
+        value_template:  "{{ 'ON' if 'ON' in states.sensor.operation_fan.state | upper else 'OFF' }}"
 
   - platform: template
     sensors:
       operation_mode:
         friendly_name: "Operation Mode"
-#      device_class: motion
         value_template: >-
-                      {% if states.sensor.zombu_operation_cool.state.split(':')[1] |trim | upper == 'ON' %}
+                      {% if states.sensor.operation_cool.state.split(':')[1] |trim | upper == 'ON' %}
                          COOL
-                      {% elif states.sensor.zombu_operation_heat.state.split(':')[1] |trim | upper == 'ON' %}
+                      {% elif states.sensor.operation_heat.state.split(':')[1] |trim | upper == 'ON' %}
                          HEAT
                       {% else %}
                          OFF

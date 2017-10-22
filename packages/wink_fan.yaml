@@ -62,75 +62,75 @@ sensor:
         value_template: "{{ states.fan.living_room_fan.attributes.speed }}"
 
 automation:
-  - alias: fan_set_speed
-    initial_state: 'on'
-    trigger:
-      - platform: event
-        event_type: call_service
-        event_data:
-          domain: fan
-          service: turn_on
-    condition:
-      - condition: template
-        value_template: "{{ trigger.event.data.service_data.speed is defined }}"
-    action:
-      - service: automation.turn_off
-        data:
-          entity_id:
-            - automation.fan_set_speed
-            - automation.fan_turn_on
-      - service: fan.set_speed
-        data_template:
-          entity_id: "{{ trigger.event.data.service_data.entity_id }}"
-          speed: "{{ trigger.event.data.service_data.speed }}"
-      - service: fan.turn_on
-        data_template:
-          entity_id: "{{ trigger.event.data.service_data.entity_id }}"
-      - service: automation.turn_on
-        data:
-          entity_id:
-            - automation.fan_set_speed
-            - automation.fan_turn_on
-
-  - alias: fan_turn_on
-    initial_state: 'on'
-    trigger:
-      - platform: event
-        event_type: call_service
-        event_data:
-          domain: fan
-          service: turn_on
-    condition:
-      - condition: template
-        value_template: "{{ trigger.event.data.service_data.speed is not defined }}"
-    action:
-      - service: automation.turn_off
-        data:
-          entity_id:
-            - automation.fan_set_speed
-            - automation.fan_turn_on
-      - service: fan.set_speed
-        data_template:
-          entity_id: >-
-            {% if trigger.event.data.service_data.entity_id is string %}
-              {{ trigger.event.data.service_data.entity_id }}
-            {% else %}
-              {{ trigger.event.data.service_data.entity_id|join(', ') }}
-            {% endif %}
-          speed: "medium"
-      - service: fan.turn_on
-        data_template:
-          entity_id: >-
-            {% if trigger.event.data.service_data.entity_id is string %}
-              {{ trigger.event.data.service_data.entity_id }}
-            {% else %}
-              {{ trigger.event.data.service_data.entity_id|join(', ') }}
-            {% endif %}
-      - service: automation.turn_on
-        data:
-          entity_id:
-            - automation.fan_set_speed
-            - automation.fan_turn_on
+  # - alias: fan_set_speed
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: event
+  #       event_type: call_service
+  #       event_data:
+  #         domain: fan
+  #         service: turn_on
+  #   condition:
+  #     - condition: template
+  #       value_template: "{{ trigger.event.data.service_data.speed is defined }}"
+  #   action:
+  #     - service: automation.turn_off
+  #       data:
+  #         entity_id:
+  #           - automation.fan_set_speed
+  #           - automation.fan_turn_on
+  #     - service: fan.set_speed
+  #       data_template:
+  #         entity_id: "{{ trigger.event.data.service_data.entity_id }}"
+  #         speed: "{{ trigger.event.data.service_data.speed }}"
+  #     - service: fan.turn_on
+  #       data_template:
+  #         entity_id: "{{ trigger.event.data.service_data.entity_id }}"
+  #     - service: automation.turn_on
+  #       data:
+  #         entity_id:
+  #           - automation.fan_set_speed
+  #           - automation.fan_turn_on
+  #
+  # - alias: fan_turn_on
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: event
+  #       event_type: call_service
+  #       event_data:
+  #         domain: fan
+  #         service: turn_on
+  #   condition:
+  #     - condition: template
+  #       value_template: "{{ trigger.event.data.service_data.speed is not defined }}"
+  #   action:
+  #     - service: automation.turn_off
+  #       data:
+  #         entity_id:
+  #           - automation.fan_set_speed
+  #           - automation.fan_turn_on
+  #     - service: fan.set_speed
+  #       data_template:
+  #         entity_id: >-
+  #           {% if trigger.event.data.service_data.entity_id is string %}
+  #             {{ trigger.event.data.service_data.entity_id }}
+  #           {% else %}
+  #             {{ trigger.event.data.service_data.entity_id|join(', ') }}
+  #           {% endif %}
+  #         speed: "medium"
+  #     - service: fan.turn_on
+  #       data_template:
+  #         entity_id: >-
+  #           {% if trigger.event.data.service_data.entity_id is string %}
+  #             {{ trigger.event.data.service_data.entity_id }}
+  #           {% else %}
+  #             {{ trigger.event.data.service_data.entity_id|join(', ') }}
+  #           {% endif %}
+  #     - service: automation.turn_on
+  #       data:
+  #         entity_id:
+  #           - automation.fan_set_speed
+  #           - automation.fan_turn_on
 
 ##########################################################################
 ############################  cieling fan automation with Hvac    ########
