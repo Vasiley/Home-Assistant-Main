@@ -87,41 +87,41 @@ shell_command:
 
 sensor:
   - platform: scrape
-    resource: http://73.54.53.122:8880/_liveUpdate
+    resource: http://xx.xx.xxx/_liveUpdate
     select: '#fanModeContainer'
     name: Zombu Fan Mode
     icon: mdi:fan
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/_liveUpdate
+    resource: http://xx.xx.xxx/_liveUpdate
     select: '#systemModeContainer'
     name: Zombu System Mode
     icon: mdi:nest-thermostat
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/_liveUpdate
+    resource: http://xx.xx.xxx/_liveUpdate
     select: '#indoorTempContainer'
     name: Zombu Indoor Temperature
     icon: mdi:thermometer
     unit_of_measurement: °F
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/info
+    resource: http://xx.xx.xxx/info
     select: '#cool'
     name: Zombu Operation Cool
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/info
+    resource: http://xx.xx.xxx/info
     select: '#heat'
     name: Zombu Operation Heat
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/info
+    resource: http://xx.xx.xxx/info
     select: '#fan'
     name: Zombu Operation Fan
 
   - platform: scrape
-    resource: http://73.54.53.122:8880/_liveUpdate
+    resource: http://xx.xx.xxx/_liveUpdate
     select: '#targetTemps'
     name: Zombu Operation Set Point
     unit_of_measurement: °F
