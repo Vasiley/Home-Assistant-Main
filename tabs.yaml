@@ -27,8 +27,7 @@
      - weblink.fish_tank_ha
      - weblink.dashboard
      - group.kitchen_leds_card
-     - group.zombu
-
+     
 
   Devicesview:
    view: yes
@@ -46,7 +45,7 @@
      - script.update_github
      - group.logger_input_select_card
      - group.clients_online_card
-     
+
   Serversview:
    view: yes
    name: Servers

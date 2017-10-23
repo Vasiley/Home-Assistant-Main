@@ -1,5 +1,34 @@
-sensor:
-  - platform: rest
-    resource: https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/21348928?api_key=RGAPI-3bd93322-e0ed-4256-abd6-5dc984f30a02
-    value_template: "{{ value_json[0].leaguePoints }}"
-    name: League Points
+###### Help with info from Api
+
+#sensor:
+#  - platform: rest
+#    resource: https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/21348928?api_key=RGAPI-3bd93322-e0ed-4256-abd6-5dc984f30a02
+#    value_template: "{{ value_json[0].leaguePoints }}"
+#    name: League Points
+
+############ lock with random key generator
+# guest_code:
+#     alias: "Generate Guest Code"
+#     sequence:
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.guest_code
+#           value: "{{ (range(1, 9)|random|int) }}{{ (range(0, 9)|random|int) }}{{ (range(0, 9)|random|int) }}{{ (range(0, 9)|random|int) }}"
+#       - service: lock.set_usercode
+#         data_template:
+#           node_id: 17
+#           code_slot: 10
+#           usercode: '{{ states.input_number.guest_code.state | int }}'
+#
+#
+# input_number:
+#   guest_code:
+#     name: "Guest Lock Code"
+#     initial: 0
+#     min: 0
+#     max: 9999
+#     step: 1
+#
+# Put these in group file
+#####  - script.guest_code
+##### - input_number.guest_code

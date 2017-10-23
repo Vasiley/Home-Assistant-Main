@@ -102,6 +102,7 @@ sensor:
     resource: !secret ha_humidity
     value_template: '{{ value_json.state }}'
     name: Ha Humidity
+    unit_of_measurement: "%"
 
   - platform: rest
     resource: !secret small_tank_water_temperature
