@@ -110,7 +110,7 @@ script:
       - service: shell_command.heat_cool_select
 
 shell_command:
-  heat_cool_select: curl -d "mode={{ states.input_select.heat_cool.state }}&target={{ states.input_select.temp.state }}" -X POST http://73.54.53.122:8880/system
+  heat_cool_select: curl -d "mode={{ states.input_select.heat_cool.state }}&target={{ states.input_select.temp.state }}" -X POST http://xx.xxx.xx/system
 
 
 sensor:
