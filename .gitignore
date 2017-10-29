@@ -51,3 +51,5 @@ zigbee.db
 *.ca-bundle.txt
 usps_cache.sqlite
 *.sqlite
+html5.push_registrations.conf
+*.pickle

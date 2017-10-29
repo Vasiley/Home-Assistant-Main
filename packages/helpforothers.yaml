@@ -32,3 +32,21 @@
 # Put these in group file
 #####  - script.guest_code
 ##### - input_number.guest_code
+
+  # alias: "Changes made to Fan"
+  # hide_entity: True
+  # initial_state: 'on'
+  # trigger:
+  #   - platform: state
+  #     entity_id: input_select.fan_mode
+  # action:
+  #   - service_template: >-
+  #      {%- if trigger.to_state == 'Off' -%}
+  #       shell_command.fanpower
+  #      {%- elif trigger.to_state == 'Low' -%}
+  #       shell_command.fanlow
+  #      {%- elif trigger.to_state == 'Med' -%}
+  #       shell_command.fanmed
+  #      {%- elif trigger.to_state == 'High' -%}
+  #       shell_command.fanhigh
+  #      {%- endif -%}

@@ -27,7 +27,9 @@
      - weblink.fish_tank_ha
      - weblink.dashboard
      - group.kitchen_leds_card
-     
+     - persistent_notification.update_available
+     - persistent_notification.small_tank_temperature_problem
+
 
   Devicesview:
    view: yes

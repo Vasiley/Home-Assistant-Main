@@ -35,6 +35,15 @@ homeassistant:
       icon: mdi:led-strip
       friendly_name: Small Tank White Lights
       hasska_hidden: true
+    sensor.small_tank_temp_ok:
+      icon: mdi:thermometer-lines
+      friendly_name: Small Tank Temp Warning
+      hasska_hidden: true
+    sensor.small_tank_temp_reading:
+      icon: mdi:thermometer-lines
+      friendly_name: Small Tank Temp Reading Status
+      hasska_hidden: true
+
 group:
   Fish_tank_server_info:
    name: Server Info
@@ -55,6 +64,8 @@ group:
    name: Small Tank Sensors
    entities:
      - sensor.small_tank_water_temperature
+     - sensor.small_tank_temp_ok
+     - sensor.small_tank_temp_reading
 
   controls:
    name: Controls
@@ -139,3 +150,45 @@ sensor:
     resource: !secret fish_tank_sensor_light_weather
     value_template: '{{ value_json.state}}'
     name: Small Tank Weather Mode
+
+  - platform: rest
+    resource: !secret fish_tank_temp_ok
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Temp Ok
+
+  - platform: rest
+    resource: !secret fish_tank_temp_reading
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Temp Reading
+
+automation:
+  - alias: Tank Temp Problem
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.small_tank_temp_ok
+        to: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.small_tank_temp_reading
+        to: "Unknown"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Fish Tank Temperature Problem'
+      - service: notify.Pushbullet
+        data:
+          message: 'There is Problem with Fish Tank Temperature'
+      - service: notify.chrome_push
+        data_template:
+          title: "Warning Small Tank Temp"
+          message: "Tank Temperature Problem - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_fishtank"
+
+      - service: persistent_notification.create
+        data_template:
+          title: "Small Tank Fish Tank Temperature Problem"
+          message: "Warning Check Tank - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Small Tank Temperature Problem"
