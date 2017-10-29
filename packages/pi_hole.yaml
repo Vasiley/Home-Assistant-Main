@@ -162,5 +162,5 @@ shell_command:
   pihole_off: !secret pi_hole_off
 
 ### example for shell commands
-## pi_hole_on: /usr/bin/curl -k "http://<your ip of pihole>/admin/api.php?enable&auth=<api key of pihole"
+## pi_hole_on: /usr/bin/curl -k "http://<your ip of pihole>/admin/api.php?enable&auth=600&auth=<api key of pihole"
 ## pi_hole_off: /usr/bin/curl -k "http://<your ip of pihole>/admin/api.php?disable=600&auth=<api key of pihole>"
