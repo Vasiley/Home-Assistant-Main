@@ -87,7 +87,15 @@ sensor:
     resource: !secret rest_pi_hole
     value_template: '{{ value_json.queries_cached }}'
 
-###### I had to provide access in sudoers file for this script to run.
+###### I had to provide access in sudoers file for this script to run
+# "example of what to enter in cli"
+#   sudo visudo
+#   "then in that file add below"
+#   homeassistant ALL=(ALL) NOPASSWD: /home/homeassistant/.homeassistant/shell/pihole.sh
+#
+#   homeassistant ALL=(ALL) NOPASSWD: ALL
+###### This is risky do so as it allows sudo rights
+
   - platform: command_line
     command: 'bash /root/.homeassistant/shell/pihole.sh'
     name: 'pihole_status_raw'
