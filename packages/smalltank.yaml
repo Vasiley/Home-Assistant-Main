@@ -39,10 +39,17 @@ homeassistant:
       icon: mdi:thermometer-lines
       friendly_name: Small Tank Temp Warning
       hasska_hidden: true
-    sensor.small_tank_temp_reading:
-      icon: mdi:thermometer-lines
-      friendly_name: Small Tank Temp Reading Status
-      hasska_hidden: true
+    sensor.small_tank_water_level:
+      icon: mdi:gauge
+      friendly_name: Small Tank Water Level
+      haaska_hidden: true
+    sensor.small_tank_water_level_ok:
+      icon: mdi:gauge
+      friendly_name: Small Tank Water Level Warning
+      haaska_hidden: true
+    sensor.small_tank_warning:
+      friendly_name: Small Tank Warning
+      haaska_hidden: true
 
 group:
   Fish_tank_server_info:
@@ -66,6 +73,9 @@ group:
      - sensor.small_tank_water_temperature
      - sensor.small_tank_temp_ok
      - sensor.small_tank_temp_reading
+     - sensor.small_tank_water_level
+     - sensor.small_tank_water_level_ok
+     - binary_sensor.small_tank_warning
 
   controls:
    name: Controls
@@ -74,6 +84,7 @@ group:
     - sensor.small_tank_white_lights
     - sensor.small_tank_lighting_mode
     - sensor.small_tank_weather_mode
+
 sensor:
   - platform: rest
     resource: !secret sensor_fish_tank_url
@@ -161,6 +172,22 @@ sensor:
     value_template: '{{ value_json.state}}'
     name: Small Tank Temp Reading
 
+  - platform: rest
+    resource: !secret fish_tank_water_level
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Water Level
+
+  - platform: rest
+    resource: !secret fish_tank_water_level_ok
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Water Level Ok
+
+binary_sensor:
+  - platform: rest
+    resource: !secret fish_tank_warning
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Warning
+
 automation:
   - alias: Tank Temp Problem
     initial_state: 'on'
@@ -168,7 +195,6 @@ automation:
       - platform: state
         entity_id: sensor.small_tank_temp_ok
         to: 'on'
-    trigger:
       - platform: state
         entity_id: sensor.small_tank_temp_reading
         to: "Unknown"
@@ -192,3 +218,57 @@ automation:
           title: "Small Tank Fish Tank Temperature Problem"
           message: "Warning Check Tank - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
           notification_id: "Small Tank Temperature Problem"
+
+  - alias: Tank Water Level Problem
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.small_tank_water_level_ok
+        to: 'on'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Fish Tank Water Level Problem'
+      - service: notify.Pushbullet
+        data:
+          message: 'There is Problem with Fish Tank Water Level'
+      - service: notify.chrome_push
+        data_template:
+          title: "Warning Small Tank Water Level"
+          message: "Tank Water Level Problem - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_fishtank"
+
+      - service: persistent_notification.create
+        data_template:
+          title: "Small Tank Fish Tank Water Level Problem"
+          message: "Warning Check Tank - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Small Tank Water Level Problem"
+
+  - alias: Tank Warning
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.small_tank_warning
+        to: 'on'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Fish Tank Warning'
+      - service: notify.Pushbullet
+        data:
+          message: 'There is Problem with The Fish Tank'
+      - service: notify.chrome_push
+        data_template:
+          title: "Warning Small Tank Water Problem"
+          message: "Small Tank Problem - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_fishtank"
+
+      - service: persistent_notification.create
+        data_template:
+          title: "Small Tank Fish Tank Problem"
+          message: "Warning Check Tank - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Small Tank Warning"

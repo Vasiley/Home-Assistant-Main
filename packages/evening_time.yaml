@@ -45,6 +45,8 @@ script:
           entity_id: script.blinds_halfway
         - service: script.turn_on
           entity_id: script.vas_dashboard
+        - service: script.turn_on
+          entity_id: script.led_off  
 #  - alias: Navigate Dashboard to Vas
     vas_dashboard:
       sequence:

@@ -29,6 +29,7 @@
      - group.kitchen_leds_card
      - persistent_notification.update_available
      - persistent_notification.small_tank_temperature_problem
+     - persistent_notification.small_tank_water_level_problem
 
 
   Devicesview:

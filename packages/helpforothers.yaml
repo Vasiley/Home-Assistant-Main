@@ -50,3 +50,45 @@
   #      {%- elif trigger.to_state == 'High' -%}
   #       shell_command.fanhigh
   #      {%- endif -%}
+
+# 
+# - alias: 'theme_light'
+#     initial_state: 'on'
+#     trigger:
+#       - platform: sun
+#         event: sunset
+#     action:
+#       - service: light.turn_on
+#         data:
+#           entity_id:
+#             - light.hue_go
+#           brightness: 250
+#         data_template:
+#           rgb_color: [ "{{ states.sensor.theme_color.state.split(',')[0]|int }}", "{{ states.sensor.theme_color.state.split(',')[1]|int }}", "{{ states.sensor.theme_color.state.split(',')[2]|int }}" ]
+#
+# sensor:
+#   - platform: template
+#     sensors:
+#       theme_color:
+#         value_template: >
+#             {%- if is_state('input_select.theme', "New Year's Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Groundhog Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Valentine's Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "St. Patrick's Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Good Friday") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Easter Sunday") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Earth Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Mother's Day") -%} 255,0,0
+#             {% elif is_state('input_select.theme', "Victoria Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Father's Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Canada Day") -%}  255,0,0
+#             {%- elif is_state('input_select.theme', "Labour Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Thanksgiving Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Halloween") -%} 255,168,39
+#             {%- elif is_state('input_select.theme', "Remembrance Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Christmas Eve") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Christmas Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "Boxing Day") -%} 255,0,0
+#             {%- elif is_state('input_select.theme', "New Year's Eve") -%} 255,0,0
+#             {%- else -%} 255,0,0
+#             {%- endif -%}

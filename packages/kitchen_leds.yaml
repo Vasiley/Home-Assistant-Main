@@ -15,7 +15,7 @@ homeassistant:
       friendly_name: Ktichen Led Yellow
       haaska_hidden: false
     script.led_off:
-      friendly_name: Kitchen Led Off
+      friendly_name: Kitchen Cabinets Off
       haaska_hidden: false
     automation.kitchen_lights_off_with_dimmer:
       friendly_name: Kitchen Leds Off

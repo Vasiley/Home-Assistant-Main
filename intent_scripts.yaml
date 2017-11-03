@@ -69,3 +69,6 @@
   MailIntent:
     speech:
      text: You have {{states('sensor.usps_mail')}} pieces of mail in the mail box
+  smalltankIntent:
+    speech:
+      text: !include intent_templates/small_tank_intent.yaml
