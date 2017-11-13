@@ -27,11 +27,19 @@ homeassistant:
       friendly_name: Water Temperature
       icon: mdi:temperature-fahrenheit
       hasska_hidden: true
-    sensor.small_tank_heater:
+    binary_sensor.small_tank_heater:
       icon: mdi:thermometer-lines
       friendly_name: Heater
       hasska_hidden: true
-    sensor.small_tank_white_lights:
+    binary_sensor.small_tank_hob_filter:
+      icon: mdi:water-pump
+      friendly_name: Filter Pump
+      hasska_hidden: true
+    binary_sensor.small_tank_controller:
+      icon: mdi:led-strip
+      friendly_name: Controller
+      hasska_hidden: true
+    binary_sensor.small_tank_white_lights:
       icon: mdi:led-strip
       friendly_name: Small Tank White Lights
       hasska_hidden: true
@@ -50,16 +58,31 @@ homeassistant:
     sensor.small_tank_warning:
       friendly_name: Small Tank Warning
       haaska_hidden: true
+    sensor.small_tank_server_temperature:
+      friendly_name: Small Tank Server Temperature
+      icon: mdi:temperature-fahrenheit
+      hasska_hidden: true
+    sensor.small_tank_link:
+      friendly_name: Small Tank Server Link
+      icon: mdi:link-variant
+      hasska_hidden: true
+    sensor.small_tank_signal:
+      friendly_name: Small Tank Signal Strength
+      icon: mdi:signal
+      hasska_hidden: true
 
 group:
   Fish_tank_server_info:
    name: Server Info
    entities:
+     - sensor.small_tank_server_temperature
      - sensor.fish_tank_cpu_use
      - sensor.fish_tank_disk_use
      - sensor.fish_tank_ram_free
      - sensor.fish_tank_ha_version
      - sensor.fish_tank_ha_uptime
+     - sensor.small_tank_link
+     - sensor.small_tank_signal
 
   Fish_tank_server_ext_info:
      name: Server Exterior Info
@@ -80,8 +103,10 @@ group:
   controls:
    name: Controls
    entities:
-    - sensor.small_tank_heater
-    - sensor.small_tank_white_lights
+    - binary_sensor.small_tank_heater
+    - binary_sensor.small_tank_white_lights
+    - binary_sensor.small_tank_controller
+    - binary_sensor.small_tank_hob_filter
     - sensor.small_tank_lighting_mode
     - sensor.small_tank_weather_mode
 
@@ -133,26 +158,6 @@ sensor:
     unit_of_measurement: '°F'
 
   - platform: rest
-    resource: !secret small_relay_one
-    value_template: '{{ value_json.state }}'
-    name: Relay One
-
-  - platform: rest
-    resource: !secret small_relay_three
-    value_template: '{{ value_json.state }}'
-    name: Small Tank White Lights
-
-  - platform: rest
-    resource: !secret small_relay_two
-    value_template: '{{ value_json.state }}'
-    name: Relay Two
-
-  - platform: rest
-    resource: !secret small_relay_four
-    value_template: '{{ value_json.state }}'
-    name: Small Tank Heater
-
-  - platform: rest
     resource: !secret fish_tank_sensor_light_mode
     value_template: '{{ value_json.state }}'
     name: Small Tank Lighting Mode
@@ -182,11 +187,49 @@ sensor:
     value_template: '{{ value_json.state}}'
     name: Small Tank Water Level Ok
 
+  - platform: rest
+    resource: !secret fish_tank_cpu_temp
+    value_template: '{{ value_json.state}}'
+    name: Small Tank Server Temperature
+    unit_of_measurement: '°F'
+
+  - platform: rest
+    resource: !secret small_signal
+    value_template: '{{ value_json.state }}'
+    name: small_tank_signal
+    unit_of_measurement: 'dBm'
+
+  - platform: rest
+    resource: !secret small_link
+    value_template: '{{ value_json.state }}'
+    name: small_tank_link
+
 binary_sensor:
   - platform: rest
     resource: !secret fish_tank_warning
     value_template: '{{ value_json.state}}'
     name: Small Tank Warning
+
+  - platform: rest
+    resource: !secret small_relay_one
+    value_template: '{{ value_json.state }}'
+    name: small_tank_white_lights
+
+  - platform: rest
+    resource: !secret small_relay_three
+    value_template: '{{ value_json.state }}'
+    name: small_tank_hob_filter
+
+  - platform: rest
+    resource: !secret small_relay_two
+    value_template: '{{ value_json.state }}'
+    name: small_tank_heater
+
+  - platform: rest
+    resource: !secret small_relay_four
+    value_template: '{{ value_json.state }}'
+    name: small_tank_controller
+
 
 automation:
   - alias: Tank Temp Problem
@@ -212,12 +255,6 @@ automation:
           message: "Tank Temperature Problem - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
           data:
             url: "/home_assistant_fishtank"
-
-      - service: persistent_notification.create
-        data_template:
-          title: "Small Tank Fish Tank Temperature Problem"
-          message: "Warning Check Tank - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
-          notification_id: "Small Tank Temperature Problem"
 
   - alias: Tank Water Level Problem
     initial_state: 'on'

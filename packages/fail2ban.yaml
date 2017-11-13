@@ -1,0 +1,15 @@
+group:
+  fail2ban_card:
+   name: Hackers
+   entities:
+     - sensor.hacks_failed_hassiptables
+     - sensor.hacks_failed_ssh
+
+sensor:
+  - platform: fail2ban
+    name: Hacks Failed
+    jails:
+      - ssh
+      - hass-iptables
+    file_path: /var/log/fail2ban.log
+    scan_interval: 120

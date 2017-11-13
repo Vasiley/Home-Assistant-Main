@@ -1,7 +1,5 @@
-
-
 logger:
-  default: info
+  default: warning
   logs:
     homeassistant.components.rest: warn
     homeassistant.components.zha: warn
@@ -29,19 +27,22 @@ logger:
     homeassistant.components.camera.usps: warn
     homeassistant.components.usps: warn
     homeassistant.components.sensor.usps: warn
+    homeassistant.components.feedreader: warn
+    homeassistant.components: warn
     bellows.uart: warn
     homeassistant.core: warn
     homeassistant.helpers.script: warn
     homeassistant.helpers.entity: warn
     homeassistant.helpers.restore_state: warn
-    homeassistant.loader: info
-    homeassistant.setup: info
+    homeassistant.loader: warn
+    homeassistant.setup: warn
     phue: warn
     plexapi: warn
     roku: warn
     dlipower.dlipower: error
     myusps: warn
     pubnub: warn
+    homeassistant.components.http.ban: warning
 
 group:
   logger_input_select_card:
@@ -62,7 +63,7 @@ input_select:
      - info
      - debug
      - notset
-    initial: info
+    initial: warning
 
 
   ############################# Sets Logging Level

@@ -1,45 +1,88 @@
 homeassistant:
   customize:
-    sensor.glances_cpu_load_2:
+    # sensor.glances_cpu_load_2:
+    #   friendly_name: Cpu Load
+    #   icon: mdi:desktop-tower
+    # sensor.glances_disk_free_2:
+    #   friendly_name: Hard Drive Free Space
+    #   icon: mdi:harddisk
+    # sensor.glances_disk_used_3:
+    #   friendly_name: Hard Drive Used
+    #   icon: mdi:harddisk
+    # sensor.glances_disk_used_4:
+    #   friendly_name: Hard Drive Use
+    #   icon: mdi:harddisk
+    # sensor.glances_ram_free_2:
+    #   friendly_name: Ram Free
+    #   icon: mdi:chip
+    # sensor.glances_ram_used_3:
+    #   friendly_name: Ram Used
+    #   icon: mdi:chip
+    # sensor.glances_ram_used_4:
+    #   friendly_name: Ram Used
+    #   icon: mdi:chip
+    # sensor.glances_running_2:
+    #   friendly_name: Running Threads
+    #   icon: mdi:chart-line
+    # sensor.glances_sleeping_2:
+    #   friendly_name: Sleeping
+    #   icon: mdi:chart-line
+    # sensor.glances_swap_free_2:
+    #   friendly_name: Swap Free
+    #   icon: mdi:harddisk
+    # sensor.glances_swap_used_3:
+    #   friendly_name: Swap Use
+    #   icon: mdi:harddisk
+    # sensor.glances_swap_used_4:
+    #   friendly_name: Swap Used
+    #   icon: mdi:harddisk
+    # sensor.glances_thread_2:
+    #   friendly_name: Threads
+    #   icon: mdi:chart-line
+    # sensor.glances_total_2:
+    #   friendly_name: Total
+    #   icon: mdi:chart-line
+
+    sensor.glances_cpu_load:
       friendly_name: Cpu Load
       icon: mdi:desktop-tower
-    sensor.glances_disk_free_2:
+    sensor.glances_disk_free:
       friendly_name: Hard Drive Free Space
       icon: mdi:harddisk
-    sensor.glances_disk_used_3:
+    sensor.glances_disk_used:
       friendly_name: Hard Drive Used
       icon: mdi:harddisk
-    sensor.glances_disk_used_4:
+    sensor.glances_disk_used_2:
       friendly_name: Hard Drive Use
       icon: mdi:harddisk
-    sensor.glances_ram_free_2:
+    sensor.glances_ram_free:
       friendly_name: Ram Free
       icon: mdi:chip
-    sensor.glances_ram_used_3:
+    sensor.glances_ram_used:
       friendly_name: Ram Used
       icon: mdi:chip
-    sensor.glances_ram_used_4:
+    sensor.glances_ram_used_2:
       friendly_name: Ram Used
       icon: mdi:chip
-    sensor.glances_running_2:
+    sensor.glances_running:
       friendly_name: Running Threads
       icon: mdi:chart-line
-    sensor.glances_sleeping_2:
+    sensor.glances_sleeping:
       friendly_name: Sleeping
       icon: mdi:chart-line
-    sensor.glances_swap_free_2:
+    sensor.glances_swap_free:
       friendly_name: Swap Free
       icon: mdi:harddisk
-    sensor.glances_swap_used_3:
+    sensor.glances_swap_used:
       friendly_name: Swap Use
       icon: mdi:harddisk
-    sensor.glances_swap_used_4:
+    sensor.glances_swap_used_2:
       friendly_name: Swap Used
       icon: mdi:harddisk
-    sensor.glances_thread_2:
+    sensor.glances_thread:
       friendly_name: Threads
       icon: mdi:chart-line
-    sensor.glances_total_2:
+    sensor.glances_total:
       friendly_name: Total
       icon: mdi:chart-line
 
@@ -47,21 +90,22 @@ group:
   blue_iris_info_card:
    name: Blue Iris Svr Info
    entities:
-     - sensor.blue_iris_workstation
-     - sensor.glances_cpu_load_2
-     - sensor.glances_disk_free_2
-     - sensor.glances_disk_used_3
-     - sensor.glances_disk_used_4
-     - sensor.glances_swap_free_2
-     - sensor.glances_swap_used_3
-     - sensor.glances_swap_used_4
-     - sensor.glances_ram_used_3
-     - sensor.glances_ram_free_2
-     - sensor.glances_ram_used_4
-     - sensor.glances_running_2
-     - sensor.glances_sleeping_2
-     - sensor.glances_thread_2
-     - sensor.glances_total_2
+    - sensor.network_workstation
+    - sensor.glances_cpu_load
+    - sensor.glances_disk_used
+    - sensor.glances_disk_free
+    - sensor.glances_disk_used_2
+    - sensor.glances_swap_free
+    - sensor.glances_swap_used
+    - sensor.glances_swap_used_2
+    - sensor.glances_ram_used
+    - sensor.glances_ram_free
+    - sensor.glances_ram_used_2
+    - sensor.glances_running
+    - sensor.glances_sleeping
+    - sensor.glances_thread
+    - sensor.glances_total
+
 
 
 

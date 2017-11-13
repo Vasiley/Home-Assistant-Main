@@ -1,0 +1,38 @@
+homeassistant:
+  customize:
+    sensor.season:
+      friendly_name: season
+      icon: mdi:calendar-clock
+
+group:
+  season_card:
+   name: Season
+   entities:
+     - sensor.season
+
+
+sensor:
+  - platform: season
+    type: astronomical
+
+automation:
+
+  - alias: Season Change Notification
+    initial_state: true
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: sensor.season
+    condition:
+      - condition: template
+        value_template: '{{ tigger.from_state.state | lower != "unknown" }}'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: >
+            Good bye {{ tigger.from_state.state }}!, and Say Hello to {{ tigger.from_state.state }}.
+      - service: notify.Pushbullet
+        data_template:
+           message: >
+             Good bye {{ tigger.from_state.state }}!, and Say Hello to {{ tigger.from_state.state }}.

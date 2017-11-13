@@ -1,0 +1,15 @@
+panel_iframe:
+  home_assistant:
+    title: 'Wind'
+    icon: mdi:weather-windy
+    url: 'https://embed.windy.com/embed2.html?lat=30.422&lon=-90.196&zoom=5&level=surface&overlay=wind&menu=&message=&marker=&forecast=12&calendar=now&location=coordinates&type=map&actualGrid=&metricWind=kt&metricTemp=%C2%B0C'
+
+  home_assistant_fishtank:
+    title: 'HA Fishtank'
+    icon: mdi:home-assistant
+    url: !secret fish_tank_url
+
+  plex_web_server:
+    title: 'Plex'
+    icon: mdi:plex
+    url: https://app.plex.tv/desktop

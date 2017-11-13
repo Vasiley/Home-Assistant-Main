@@ -30,7 +30,7 @@
      - persistent_notification.update_available
      - persistent_notification.small_tank_temperature_problem
      - persistent_notification.small_tank_water_level_problem
-
+     - group.season_card
 
   Devicesview:
    view: yes
@@ -48,6 +48,7 @@
      - script.update_github
      - group.logger_input_select_card
      - group.clients_online_card
+     - group.fail2ban_card
 
   Serversview:
    view: yes
@@ -57,6 +58,7 @@
      - group.blue_iris_info_card
 #     - group.Workstations_status_card
      - group.network_workstation_info_card
+     - group.network_backup_ups_card
 
   media:
    view: yes

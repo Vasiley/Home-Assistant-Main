@@ -37,6 +37,9 @@ homeassistant:
       friendly_name: DNS Service
     sensor.pihole_blocking:
       friendly_name: Ad Blocking
+    sensor.pi_hole_version:
+      friendly_name: Version
+  
 
 group:
   Ads_Blocked_card:
@@ -53,6 +56,7 @@ group:
      - sensor.queries_cached
      - sensor.pihole_dns
      - sensor.pihole_blocking
+     - sensor.pi_hole_version
 
 ###############################################################################
 #### PI Hole sensors                                                       ####
@@ -101,17 +105,17 @@ sensor:
     name: 'pihole_status_raw'
     scan_interval: 60
 
-
   - platform: template
     sensors:
       pihole_dns:
-        value_template: "{{ states('sensor.pihole_status_raw').split(':::')[1] }}"
+        value_template: "{{states.sensor.pihole_status_raw.state.split(':::')[1]}}"
         icon_template: >-
-          {% if is_state('sensor.pihole_dns', 'DNS service is running') %}
-             mdi:checkbox-marked
-          {% else %}
-             mdi:checkbox-blank-outline
-          {% endif %}
+          {%- if states.sensor.pihole_status_raw.state.split(':::')[1][1:-1] == 'DNS service is running' -%}
+            mdi:checkbox-marked
+          {%- else -%}
+            mdi:checkbox-blank-outline
+          {%- endif -%}
+
   - platform: template
     sensors:
       pihole_blocking:
@@ -123,12 +127,37 @@ sensor:
              mdi:checkbox-marked
           {% endif %}
 
+######Custom Version sensor
+  - platform: command_line
+    command: "pihole -v -p -c"
+    name: 'pihole_version_current'
+    value_template: '{{ value[28:] }}'
+    scan_interval: 86400
+
+  - platform: command_line
+    command: "pihole -v -p -l"
+    name: 'pihole_version_latest'
+    value_template: '{{ value[27:] }}'
+    scan_interval: 86400
+
+  - platform: template
+    sensors:
+      pi_hole_version:
+        value_template: "{%- if states.sensor.pihole_version_current.state == states.sensor.pihole_version_latest.state -%}{{states.sensor.pihole_version_current.state}} {% else %}{{states.sensor.pihole_version_latest.state}} Available{% endif%}"
+        icon_template: >-
+          {% if states.sensor.pihole_version_current.state == states.sensor.pihole_version_latest.state %}
+            mdi:checkbox-marked
+          {% else %}
+            mdi:checkbox-blank-outline
+          {% endif %}
+
+
+
 binary_sensor:
   - platform: template
     sensors:
       pihole_status:
         value_template: "{{ is_state('sensor.pihole_blocking', 'Pi-hole blocking is Enabled') }}"
-
 
 ######################### PI Hole switch to turn off and on ####################
 switch:
