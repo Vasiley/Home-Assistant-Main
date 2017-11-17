@@ -1,0 +1,274 @@
+###############################################################################
+# Feel free to add/modify and customize the themes below to your heart's content
+# Some of the themes I made, some I stole from online :)
+group:
+  theme_input_select_card:
+   name: Themes
+   entities:
+     - input_select.theme_select
+
+  ################### Logger level
+input_select:
+  theme_select:
+    name: Theme Select
+    options:
+     - halloween
+     - dark_teal
+     - dark_orange
+     - dark_red
+     - dark_cyan
+     - light_beach
+     - light_green
+     - light_pink
+     - default
+    initial: default
+
+frontend:
+  themes:
+    halloween:
+      # orange: dd5800; black: 000000; white: ffffff; coffee: 7a4901
+      primary-color: "#dd5800"
+      disabled-text-color: "#242424"
+      divider-color: "rgba(255, 0, 0, 0.12)"
+      paper-card-background-color: "#000000"
+      paper-grey-200: "#4e4e4e"
+      paper-item-icon-color: "#FFFFFF"
+      paper-listbox-background-color: "#202020"
+      paper-listbox-color: "#FFFFFF"
+      primary-background-color: "#2b2b2b" # For dialogs and popups...etc
+      primary-text-color: "#dd5800"
+      secondary-background-color: "#2b2b2b"
+      secondary-text-color: "#dd5800"
+      text-primary-color: "#000000"
+      dark-primary-color: "#7a4901"
+      light-primary-color: "#ff8f45"
+      paper-toggle-button-checked-ink-color: "#ff8f45"
+      paper-toggle-button-checked-button-color: "#dd5800"
+      paper-toggle-button-checked-bar-color: "#ff8f45"
+      paper-slider-knob-color: "#dd5800"
+      paper-slider-knob-start-color: "#dd5800"
+      paper-slider-pin-color: "#dd5800"
+      paper-slider-active-color: "#dd5800"
+      paper-slider-secondary-color: "#ff8f45"
+
+      label-badge-background-color: "var(--secondary-background-color)"
+      label-badge-text-color: "var(--text-primary-color)"
+      paper-card-header-color: "#var(--paper-item-icon-color)"
+      paper-grey-50: "var(--primary-text-color)"
+      paper-item-icon-active-color: "#ff0000" #var(--primary-color)
+      paper-item-icon_-_color: "var(--primary-text-color)"
+      paper-toggle-button-unchecked-bar-color: "var(--primary-text-color)"
+
+    dark_teal:
+      # Main Stuff #
+      primary-color: "#1DE9B6" # Primary (most of the UI)
+      primary-background-color: "#303030" # Primary background colour (dialogs, e.t.c)
+      secondary-background-color: "#303030" # Secondary background colour (main UI background)
+      paper-card-background-color: "#424242" # Card background colour
+      paper-item-icon-color: "#1DE9B6" # Icon colour
+      primary-text-color: "#FFFFFF" # Primary text colour
+      secondary-text-color: "rgba(255, 255, 255, 0.7)" # Secondary text colour
+      disabled-text-color: "rgba(255, 255, 255, 0.5)" # Disabled text colour
+      divider-color: "rgba(255, 255, 255, 0.12)" # Divider colour
+      paper-card-header-color: "#FFFFFF" # Card header text colour
+      # Nav Menu #
+      paper-listbox-background-color: "#424242" # Listbox background colour
+      paper-listbox-color: "#FFFFFF" # Listbox text colour
+      paper-grey-200: "#616161" # Listbox selected item background colour
+      # Switches #
+      paper-toggle-button-checked-ink-color: "#1DE9B6"
+      paper-toggle-button-checked-button-color: "#1DE9B6"
+      paper-toggle-button-checked-bar-color: "#1DE9B6"
+      # Sliders #
+      paper-slider-knob-color: "#1DE9B6"
+      paper-slider-knob-start-color: "#1DE9B6"
+      paper-slider-pin-color: "#1DE9B6"
+      paper-slider-active-color: "#1DE9B6"
+      paper-slider-secondary-color: "#33F2D8"
+    dark_orange:
+      primary-color: "#ff9800"
+      light-primary-color: "#ffc947"
+      dark-primary-color: "#c66900"
+      text-primary-color: "#ffffff"
+      primary-background-color: "#37464f"
+      sidebar-text_-_background: "#62717b"
+      paper-card-background-color: "#263137"
+      paper-card-header-color: "var(--text-primary-color)"
+      secondary-background-color: "var(--primary-background-color)"
+      primary-text-color: "var(--text-primary-color)"
+      secondary-text-color: "var(--primary-color)"
+      paper-listbox-background-color: "var(--sidebar-text_-_background)"
+      paper-toggle-button-checked-ink-color: "var(--dark-primary-color)"
+      paper-toggle-button-checked-button-color: "var(--dark-primary-color)"
+      paper-toggle-button-checked-bar-color: "var(--dark-primary-color)"
+      paper-slider-knob-color: "var(--primary-color)"
+      paper-slider-knob-start-color: "var(--primary-color)"
+      paper-slider-pin-color: "var(--primary-color)"
+      paper-slider-active-color: "var(--primary-color)"
+      paper-slider-secondary-color: "var(--light-primary-color)"
+      paper-slider-container-color: "var(--sidebar-text_-_background)"
+      paper-progress-secondary-color: "var(--sidebar-text_-_background)"
+      paper-item-selected_-_background-color: "var(--primary-color)"
+      paper-item-icon_-_color: "var(--text-primary-color)"
+      paper-item-icon-color: "var(--sidebar-text_-_background)"
+      paper-item-icon-active-color: "var(--primary-color)"
+      paper-grey-50: "var(--sidebar-text_-_background)"
+      paper-grey-200: "var(--primary-background-color)"
+      label-badge-background-color: "var(--sidebar-text_-_background)"
+      label-badge-text-color: "var(--text-primary-color)"
+      label-badge-red: "var(--primary-color)"
+      label-badge-blue: "var(--light-primary-color)"
+      label-badge-green: "var(--dark-primary-color)"
+      label-badge-yellow: "var(--text-primary-color)"
+      label-badge-grey: "var(--paper-grey-500)"
+      table-row-background-color: "var(--paper-card-background-color)"
+      table-row-alternative-background-color: "var(--sidebar-text_-_background)"
+    dark_red:
+    # Main colors that can be changed
+      dark-primary-color: "#c66900"
+      disabled-text-color: "#545454"
+      divider-color: "rgba(255, 255, 255, 0.12)"
+      light-primary-color: "#e06c6c"
+      paper-card-background-color: "#1d1d1d"
+      paper-grey-200: "#191919"
+      paper-item-icon-color: "#d3d3d3"
+      paper-listbox-background-color: "#202020"
+      primary-background-color: "#303030"
+      primary-color: "#d32f2f"
+      primary-text-color: "#cfcfcf"
+      secondary-background-color: "#131313"
+      sidebar-text_-_background: "#62717b"
+    # Colors based on variables, see above
+      paper-card-header-color: "var(--paper-item-icon-color)"
+      paper-item-icon-active-color: "var(--primary-color)"
+      paper-item-icon_-_color: "var(--primary-text-color)"
+      paper-listbox-color: "var(--primary-text-color)"
+      paper-grey-50: "var(--primary-text-color)"
+      paper-slider-active-color: "var(--primary-color)"
+      paper-slider-knob-color: "var(--primary-color)"
+      paper-slider-knob-start-color: "var(--primary-color)"
+      paper-slider-pin-color: "var(--primary-color)"
+      paper-slider-secondary-color: "var(--light-primary-color)"
+      paper-toggle-button-checked-ink-color: "var(--dark-primary-color)"
+      paper-toggle-button-checked-button-color: "var(--primary-color)"
+      paper-toggle-button-checked-bar-color: "var(--light-primary-color)"
+      paper-toggle-button-unchecked-bar-color: "var(--primary-text-color)"
+      secondary-text-color: "var(--primary-color)"
+      table-row-background-color: "var(--paper-card-background-color)"
+      table-row-alternative-background-color: "var(--sidebar-text_-_background)"
+    dark_cyan:
+    # Main colors that can be changed
+      primary-color: "#00bcd4"
+      disabled-text-color: "#545454"
+      divider-color: "rgba(255, 255, 255, 0.12)"
+      paper-card-background-color: "#4e4e4e"
+      paper-grey-200: "#191919"
+      paper-item-icon-color: "#d3d3d3"
+      paper-listbox-background-color: "#202020"
+      paper-listbox-color: "#FFFFFF"
+      primary-background-color: "#303030"
+      primary-text-color: "#cfcfcf"
+      secondary-background-color: "#2b2b2b"
+      secondary-text-color: "#04a7bc"
+    # Colors based on variables, see above
+      label-badge-background-color: "var(--secondary-background-color)"
+      label-badge-text-color: "var(--text-primary-color)"
+      paper-card-header-color: "#var(--paper-item-icon-color)"
+      paper-grey-50: "var(--primary-text-color)"
+      paper-item-icon-active-color: "var(--primary-color)"
+      paper-item-icon_-_color: "var(--primary-text-color)"
+      paper-slider-active-color: "var(--primary-color)"
+      paper-slider-knob-color: "var(--primary-color)"
+      paper-slider-knob-start-color: "var(--primary-color)"
+      paper-slider-pin-color: "var(--primary-color)"
+      paper-slider-secondary-color: "var(--light-primary-color)"
+      paper-toggle-button-checked-ink-color: "var(--dark-primary-color)"
+      paper-toggle-button-checked-button-color: "var(--primary-color)"
+      paper-toggle-button-checked-bar-color: "var(--light-primary-color)"
+      paper-toggle-button-unchecked-bar-color: "var(--primary-text-color)"
+    light_beach:
+      dark-primary-color: "#88d8b0"
+      primary-color: "#ff6f69"
+      light-primary-color: "#ffcc5c"
+      paper-toggle-button-checked-ink-color: "#ff6f69"
+      paper-toggle-button-checked-button-color: "#88d8b0"
+      paper-toggle-button-checked-bar-color: "#ffcc5c"
+      paper-slider-knob-color: "#88d8b0"
+      paper-slider-knob-start-color: "#88d8b0"
+      paper-slider-pin-color: "#88d8b0"
+      paper-slider-active-color: "#88d8b0"
+      paper-slider-secondary-color: "#ffeead"
+    light_green:
+      dark-primary-color: "#009688"
+      primary-color: "#009688"
+      light-primary-color: "#009688"
+      paper-toggle-button-checked-ink-color: "#009688"
+      paper-toggle-button-checked-button-color: "#009688"
+      paper-toggle-button-checked-bar-color: "#99d5cf"
+      paper-slider-knob-color: "#66c0b7"
+      paper-slider-knob-start-color: "#32ab9f"
+      paper-slider-pin-color: "#66c0b7"
+      paper-slider-active-color: "#009688"
+      paper-slider-secondary-color: "#009688"
+    light_pink:
+      dark-primary-color: "#ff084a"
+      primary-color: "#fc3468"
+      light-primary-color: "#ffc2cd"
+      paper-toggle-button-checked-ink-color: "#ff6289"
+      paper-toggle-button-checked-button-color: "#ff084a"
+      paper-toggle-button-checked-bar-color: "#ffc2cd"
+      paper-slider-knob-color: "#ff084a"
+      paper-slider-knob-start-color: "#ff084a"
+      paper-slider-pin-color: "#ff084a"
+      paper-slider-active-color: "#ff084a"
+      paper-slider-secondary-color: "#ff93ac"
+
+###############################################################################
+# Automations
+###############################################################################
+automation:
+
+  - alias: Random Theme At Startup
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+       - service_template: frontend.set_theme
+         data_template:
+           name: >
+             {% if states.sun.sun.state == "above_horizon" %}
+             {{ ["light_beach", "light_green", "light_pink", "default"] | random  }}
+             {% else %}
+             {{ ["dark_cyan", "dark_red", "dark_orange", "dark_cyan"] | random  }}
+             {% endif %}
+
+  - alias: Random Darker Theme At Sunset
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: sun
+      event: sunset
+    action:
+      - service: frontend.set_theme
+        data_template:
+          name: '{{ ["dark_cyan", "dark_red", "dark_orange", "dark_cyan"] | random  }}'
+
+  - alias: Random Lighter Theme At Sunrise
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: sun
+      event: sunrise
+    action:
+      - service: frontend.set_theme
+        data_template:
+          name: '{{ ["light_beach", "light_green", "light_pink", "default"] | random  }}'
+
+  - alias: Theme set automation
+    trigger:
+      - platform: state
+        entity_id: input_select.theme_select
+    action:
+      - service: frontend.set_theme
+        data_template:
+          name: "{{ trigger.to_state.state }}"
