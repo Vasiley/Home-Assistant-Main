@@ -45,15 +45,16 @@ homeassistant:
       icon: mdi:battery
     sensor.bathroom_temperature:
       friendly_name: Master Bath Temperature
-
     script.shower_time_on:
+      friendly_name: Shower Time Script
+      haaska_hidden: true
+    script.shower_time_off:
+      friendly_name: Finished Shower Script
+      haaska_hidden: true
+    switch.shower_time:
       friendly_name: Shower Time
       haaska_hidden: false
-      haaska_name: Shower Time
-    script.shower_time_off:
-      friendly_name: Finished Shower
-      haaska_hidden: false
-      haaska_name: Finished Shower
+      haaska_name: Shower TIme
     light.bathroom:
       persistence: false
 
@@ -285,3 +286,17 @@ script:
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
+
+switch:
+  - platform: template
+    switches:
+      shower_time:
+        value_template: "{{ is_state('light.bathroom_vanity', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.shower_time_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.shower_time_off

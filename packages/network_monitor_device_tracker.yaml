@@ -145,7 +145,7 @@ sensor:
       - ping
       - download
       - upload
-  
+
 ##### show devices as online instead of home   ############################
   - platform: template
     sensors:
@@ -289,6 +289,9 @@ automation:
     condition:
       - condition: template
         value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
     action:
       - service: tts.google_say
         data_template:

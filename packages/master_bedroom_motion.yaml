@@ -4,7 +4,12 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
-      friendly_name: Master Bedroom Automate
+      friendly_name: Master Bedroom Automate On
+    automation.motion_master_bedroom_motion_off:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Automate Off
     binary_sensor.master_motion:
       friendly_name: Master Motion
       device_class: motion
@@ -56,12 +61,20 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_evening_time
         state: 'on'
-#      - condition: state
-#        entity_id: sensor.set_hold_mode
-#        state: 'home'
     action:
       - service: light.turn_on
         data:
           entity_id: light.master
           color_temp: 154
           brightness: 255
+
+  - alias: Motion Master Bedroom Motion Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'off'
+        for: '00:05:00'
+    action:
+      - service: light.turn_off
+        entity_id: light.master

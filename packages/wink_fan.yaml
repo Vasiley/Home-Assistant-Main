@@ -18,6 +18,10 @@ homeassistant:
       friendly_name: Meduim without Ac
       haaska_hidden: true
 
+    automation.reenable_fan_automation:
+      friendly_name: Reenable Fan automation
+      haaska_hidden: true
+
     script.living_room_fan_auto:
       friendly_name: "Breeze"
       icon: mdi:fan
@@ -27,6 +31,12 @@ homeassistant:
     script.refresh_wink:
       friendly_name: " Refresh Wink"
       icon: mdi:update
+
+    switch.fan_override:
+      friendly_name: Fan Auto
+      icon: mdi:fan
+      haaska_hidden: false
+      haaska_name: Fan Auto
 
     sensor.fan_speed:
       icon: mdi:speedometer
@@ -48,11 +58,11 @@ group:
    name: Living Room Fan
    entities:
      - fan.living_room_fan
+     - switch.fan_override
      - script.living_room_fan_auto
      - sensor.fan_speed
      - binary_sensor.gang
      - script.refresh_wink
-     - switch.king_of_fans__inc_hdc52eastwindfan_0016b720_1
 
 sensor:
   - platform: template
@@ -170,11 +180,22 @@ automation:
         data:
           entity_id: fan.living_room_fan
           speed: "medium"
-      - service: fan.turn_on        #gotta hit twice dont know why
+      - service: fan.turn_on
         data:
           entity_id: fan.living_room_fan
           speed: "medium"
 
+# if wife turns disables fan automation this reenables it
+  - alias: Reenable Fan Automation
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '23:59:00'
+    action:
+      - service: automation.turn_on
+        entity_id: automation.fan_low_with_hvac_automation
+      - service: automation.turn_on
+        entity_id: automation.fan_medium_with_hvac_automation
 
 script:
   living_room_fan_auto:
@@ -187,3 +208,22 @@ script:
   refresh_wink:
     sequence:
       - service: wink.refresh_state_from_wink
+switch:
+  - platform: template
+    switches:
+      fan_override:
+        value_template: "{{ is_state('fan.living_room_fan', 'on') }}"
+        turn_on:
+          - service: fan.turn_on
+            data:
+              entity_id: fan.living_room_fan
+          - service: automation.turn_on
+            data:
+              entity_id: automation.fan_low_with_hvac_automation, automation.fan_medium_with_hvac_automation
+        turn_off:
+          - service: fan.turn_off
+            data:
+              entity_id: fan.living_room_fan
+          - service: automation.turn_off
+            data:
+              entity_id: automation.fan_low_with_hvac_automation, automation.fan_medium_with_hvac_automation
