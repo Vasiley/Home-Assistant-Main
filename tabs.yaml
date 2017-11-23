@@ -78,10 +78,9 @@
    entities:
      - group.Conditions_card
      - group.ForecastWeather_card
+     - group.daily_forecast_card
      - group.animated_radar_card
      - group.still_image_radar_card
-     - group.3_day_forcast
-#    - weather.weather_today
 
   RoomSensors:
    view: yes

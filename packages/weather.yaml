@@ -61,7 +61,7 @@ group:
   ForecastWeather_card:
    name: Predication
    entities:
-     - sensor.dark_sky_summary 
+     - sensor.dark_sky_summary
      - sensor.dark_sky_daily_summary
      - sensor.dark_sky_hourly_summary
      - sensor.dark_sky_minutely_summary
@@ -70,6 +70,18 @@ group:
      - sensor.dark_sky_precip_probability
      - sensor.dark_sky_nearest_storm_bearing
      - sensor.dark_sky_nearest_storm_distance
+
+  daily_forecast_card:
+    name: Daily Forecast
+    entities:
+      - sensor.pws_weather_1d
+      - sensor.pws_weather_1n
+      - sensor.pws_weather_2d
+      - sensor.pws_weather_2n
+      - sensor.pws_weather_3d
+      - sensor.pws_weather_3n
+      - sensor.pws_weather_4d
+      - sensor.pws_weather_4n
 
   Conditions_card:
    name: Current Weather
@@ -88,19 +100,6 @@ group:
      - sensor.pws_visibility_mi
      - sun.sun
 
-  3_day_forcast:
-   name: 3 day
-   entities:
-     - sensor.yw_day1_condition
-     - sensor.yw_day1_temperature_max
-     - sensor.yw_day1_temperature_min
-     - sensor.yw_day2_condition
-     - sensor.yw_day2_temperature_max
-     - sensor.yw_day2_temperature_min
-     - sensor.yw_day3_condition
-     - sensor.yw_day3_temperature_max
-     - sensor.yw_day3_temperature_min
-
   animated_radar_card:
    name: Animated Radar
    entities:
@@ -110,9 +109,6 @@ group:
    name: Still Radar
    entities:
      - camera.radar
-
-#weather:
-# - platform: yweather
 
 camera:
   - platform: generic
@@ -139,13 +135,18 @@ sensor:
       - wind_dir
       - wind_gust_mph
       - wind_mph
-
+      - weather_1d
+      - weather_1n
+      - weather_2d
+      - weather_2n
+      - weather_3d
+      - weather_3n
+      - weather_4d
+      - weather_4n
 
   - platform: darksky
     api_key: !secret darksky_api
-#  forecast:
-#  - 1
-#  - 2
+
     monitored_conditions:
       - summary
       - nearest_storm_distance
@@ -165,26 +166,3 @@ sensor:
       - wind_bearing
       - apparent_temperature
       - icon
-
-
-  - platform: yweather
-    forecast: 1
-    name: yw_day1
-    monitored_conditions:
-      - weather
-      - temp_min
-      - temp_max
-  - platform: yweather
-    forecast: 2
-    name: yw_day2
-    monitored_conditions:
-      - weather
-      - temp_min
-      - temp_max
-  - platform: yweather
-    forecast: 3
-    name: yw_day3
-    monitored_conditions:
-      - weather
-      - temp_min
-      - temp_max

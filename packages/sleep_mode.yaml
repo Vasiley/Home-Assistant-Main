@@ -19,18 +19,24 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_sleep
+      - service: media_player.turn_off
+        data:
+          entity_id: media_player.stereo
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Sleep is Activated Good Night'
+      - delay: '00:00:05'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Alexa Good Night'
       - service: climate.set_hold_mode
         data:
           entity_id: climate.thermostat
           hold_mode: "sleep"
       - delay: '00:00:02'
-      - service: media_player.turn_off
-        data:
-          entity_id: media_player.stereo
+
       - delay: '00:00:01'
       - service: remote.turn_off
         data:
@@ -75,24 +81,30 @@ script:
           color_temp: 426
           brightness: 125
       - delay: '00:00:10'
+      - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
+#      - wait_template: "{{is_state('binary_sensor.kitchen.motion.state', 'off' )}}"
       - service: light.turn_off
         data:
           entity_id: light.kitchen
       - delay: '00:00:10'
+#      - wait_template: "{{is_state('binary_sensor.hallway_motion.state', 'off' )}}"
+#        timeout: '00:02:00'
+      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.master_hallway
-      - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
-        timeout: '00:00:30'
-      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
-        timeout: '00:00:30'
+#      - wait_template: "{{is_state('binary_sensor.bathroom_motion.state', 'off' )}}"
+#        timeout: '00:00:30'
+      - delay: '00:01:15'
       - wait_template: "{{ states.binary_sensor.bathroom_motion.state == 'off' }}"
-        timeout: '00:00:30'
-      - delay: '00:01:15'  
+      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.bathroom
       - delay: '00:00:45'
+#      - wait_template: "{{is_state('binary_sensor.master_motion.state', 'off' )}}"
+#        timeout: '00:00:30'
+      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.master

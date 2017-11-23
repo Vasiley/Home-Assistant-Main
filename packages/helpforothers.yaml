@@ -51,7 +51,7 @@
   #       shell_command.fanhigh
   #      {%- endif -%}
 
-# 
+#
 # - alias: 'theme_light'
 #     initial_state: 'on'
 #     trigger:
@@ -92,3 +92,32 @@
 #             {%- elif is_state('input_select.theme', "New Year's Eve") -%} 255,0,0
 #             {%- else -%} 255,0,0
 #             {%- endif -%}
+
+# script:
+#   house_mode_away:
+#     sequence:
+#       - service: light.turn_off
+#         data_template:
+#           entity_id: >
+#             {%- for state in states.light if state.entity_id != 'light.front_door' -%}
+#             {{- "," if not loop.first-}}{{ state.entity_id }}{{-endif-}}
+#             {%- endfor -%}
+#       - service: switch.turn_off
+#         data_template:
+#           entity_id: >
+#             {%- for state in states.switch if
+#             state.entity_id != 'switch.washing_machine' and
+#             state.entity_id != 'switch.dehumidifier' and
+#             state.entity_id != 'switch.pihole'-%}
+#             {{- "," if not loop.first-}}{{ state.entity_id }}{{-endif-}}
+#             {%- endfor -%}
+#       - service: media_player.turn_off
+#         data_template:
+#           entity_id: >
+#             {%- for state in states.media_player -%}
+#             {{- "," if not loop.first-}}{{ state.entity_id }}{{-endif-}}
+#             {%- endfor -%}
+#       - service: climate.set_away_mode
+#         data:
+#           entity_id: climate.hallway
+#           away_mode: 'true'

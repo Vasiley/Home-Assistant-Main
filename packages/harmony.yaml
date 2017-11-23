@@ -38,7 +38,7 @@ input_select:
       - Power Off
     icon: mdi:monitor
 
-# Harmony input select Automatisierung
+# Harmony input select Automation
 automation:
   - alias: Harmony Input Select Automation
     initial_state: on
@@ -86,4 +86,3 @@ automation:
         entity_id: input_select.harmony
         data_template:
           option: "Select Input"
-        

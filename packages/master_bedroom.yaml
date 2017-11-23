@@ -1,0 +1,179 @@
+homeassistant:
+  customize:
+    automation.motion_master_bedroom:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Automate On
+    automation.motion_master_bedroom_motion_off:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Automate Off
+    automation.candle_on_during_home_mode:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Candle On
+    automation.candle_off_when_not_home_mode:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Candle Off
+    automation.fan_on_during_sleep_mode:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Small Fan On
+    automation.fan_off_when_home_mode:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+      friendly_name: Master Bedroom Small Fan Off
+    binary_sensor.master_motion:
+      friendly_name: Master Motion
+      device_class: motion
+    sensor.motion_sensor_master_battery:
+      icon: mdi:battery
+    sensor.dawns_controller_wifi_signal:
+      icon: mdi:signal
+    switch.dawn_day:
+      friendly_name: Dawns controls Day
+      haaska_name: Bedroom Candle
+    switch.dawn_night:
+      friendly_name: Dawns controls Night
+      haaska_name: Bedroom Fan
+
+binary_sensor:
+  - platform: rest
+    resource: !secret MS_rest_40
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 1
+    name: master_motion
+
+sensor:
+  - platform: rest
+    resource: !secret MS_rest_39
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    name: 'Master Temperature'
+
+  - platform: rest
+    resource: !secret MS_rest_39
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Motion Sensor Master Battery'
+
+  - platform: mqtt
+    state_topic: "dawns/Wifi Connect/wifi"
+    unit_of_measurement: 'dbm'
+    name: Dawns Controller Wifi Signal
+
+switch:
+  - platform: mqtt
+    name: "dawn_day"
+    state_topic: "dawns/relay/state"
+    command_topic: "dawns/gpio/14"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+
+  - platform: mqtt
+    name: "dawn_night"
+    state_topic: "dawns/relay1/state"
+    command_topic: "dawns/gpio/12"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+
+# shell_command:
+#   fan_on: "curl -X GET http://192.168.1.167/control?cmd=GPIO,14,1"
+#   fan_off: "curl -X GET http://192.168.1.167/control?cmd=GPIO,14,0"
+
+#######################################################################################################
+#####    When home mode set on ecobee then master light turns on in bedroom (not while sleeping  ######
+#####    ie house is in sleep mode                                                               ######
+#####    use case app only allows set times and we go to bed at diff times                       ######
+#######################################################################################################
+
+automation:
+  - alias: Motion Master Bedroom
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'on'
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_movie_time
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_evening_time
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.master
+          color_temp: 154
+          brightness: 255
+
+  - alias: Motion Master Bedroom Motion Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'off'
+        for: '00:05:00'
+    action:
+      - service: light.turn_off
+        entity_id: light.master
+
+  - alias: Candle On during Home mode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.dawn_day
+
+  - alias: Candle Off when not Home mode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.dawn_day
+
+  - alias: Fan On during Sleep mode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_sleep
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.dawn_night
+
+  - alias: Fan Off when Home mode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.dawn_night

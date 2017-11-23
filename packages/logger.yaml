@@ -12,7 +12,7 @@ logger:
     homeassistant.components.tts: warn
     homeassistant.components.media_player: warn
     homeassistant.components.input_select: warn
-    homeassistant.components.input_number: warn
+    homeassistant.components.input_number: critical
     homeassistant.components.http: warn
     homeassistant.components.shell_command: warn
     homeassistant.components.device_tracker: warn
@@ -42,7 +42,7 @@ logger:
     dlipower.dlipower: error
     myusps: warn
     pubnub: warn
-    homeassistant.components.http.ban: warning
+    homeassistant.components.http.ban: debug
 
 group:
   logger_input_select_card:

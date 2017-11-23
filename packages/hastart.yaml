@@ -11,8 +11,10 @@ automation:
       - platform: homeassistant
         event: start
     action:
-      - service: media_player.turn_on
-        entity_id: media_player.ha_speaker
+      # - service: media_player.turn_on
+      #   data:
+      #     entity_id: media_player.ha_speaker
+      #     
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker

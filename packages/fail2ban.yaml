@@ -4,6 +4,8 @@ group:
    entities:
      - sensor.hacks_failed_hassiptables
      - sensor.hacks_failed_ssh
+     - sensor.total_bans_ip
+     - sensor.total_bans_ssh
 
 sensor:
   - platform: fail2ban
@@ -13,3 +15,45 @@ sensor:
       - hass-iptables
     file_path: /var/log/fail2ban.log
     scan_interval: 120
+
+  - platform: template
+    sensors:
+      total_bans_ip:
+        friendly_name: 'Total IP Banned'
+        value_template: '{{ states.sensor.hacks_failed_hassiptables.attributes.total_bans }}'
+
+  - platform: template
+    sensors:
+      total_bans_ssh:
+        friendly_name: 'Total SSH Banned'
+        value_template: '{{ states.sensor.hacks_failed_ssh.attributes.total_bans }}'
+
+automation:
+  - alias: Notify on Failed Login
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.hacks_failed_hassiptables
+      - platform: state
+        entity_id: sensor.hacks_failed_ssh
+    condition:
+      condition: or
+      conditions:
+        - condition: template
+          value_template: '{{ states.sensor.hacks_failed_hassiptables.state != "None" }}'
+        - condition: template
+          value_template: '{{ states.sensor.hacks_failed_ssh.state != "None" }}'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Failed Login Attempt'
+      - service: notify.Pushbullet
+        data:
+          message: 'Failed Login Attempt'
+      - service: notify.chrome_push
+        data_template:
+          title: "Failed Login Attempt"
+          message: "Failed Login Attempt - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_equipment"

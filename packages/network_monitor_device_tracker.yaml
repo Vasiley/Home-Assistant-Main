@@ -83,6 +83,9 @@ homeassistant:
     sensor.esp_smallfishtank_led:
       friendly_name: Small Fish Tank Led Controller
       entity_picture: /local/nodemcu.jpeg
+    sensor.esp_dawns_controller:
+      friendly_name: Dawns Contoller
+      entity_picture: /local/nodemcu.jpeg
     sensor.clients:
       friendly_name: Clients Tracked
       icon: mdi:network
@@ -129,6 +132,9 @@ group:
      - sensor.esp_kitchen_blinds
      - sensor.esp_kitchen_led
      - sensor.esp_smallfishtank_led
+     - sensor.esp_dawns_controller
+     - sensor.dawns_controller_wifi_signal
+
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -233,6 +239,10 @@ sensor:
         value_template: '{% if is_state("device_tracker.2c3ae8062e63", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      esp_dawns_controller:
+        value_template: '{% if is_state("device_tracker.dawns_controller", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       clients:
         value_template: >-
             {%- for d in states.device_tracker if d.state == 'home' -%}
@@ -287,11 +297,13 @@ automation:
           - sensor.esp_smallfishtank_led
 #        for: '00:00:01'
     condition:
-      - condition: template
-        value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
+      condition: and
+      conditions:
+        - condition: template
+          value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
     action:
       - service: tts.google_say
         data_template:

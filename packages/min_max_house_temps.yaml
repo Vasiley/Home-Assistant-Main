@@ -1,0 +1,31 @@
+group:
+  avg_temp_card:
+   name: Average Temperature
+   entities:
+     - sensor.house_avg_temperature  # added to ecobee package only
+     - sensor.house_avg_humidity # added to ecobee package only
+
+sensor:
+  - platform: min_max
+    type: mean
+    name: House Avg Temperature
+    entity_ids:
+      - sensor.kitchen_temperature
+      - sensor.hallway_temperature
+      - sensor.laundry_temperature
+      - sensor.kids_hallway_temperature
+      - sensor.master_temperature
+      - sensor.bathroom_temperature
+      - sensor.kids_bathroom_temperature
+      - sensor.master_bedroom_temperature
+      - sensor.living_room_temperature
+      - sensor.ruths_room_temperature
+      - sensor.thermostat_temperature
+      - sensor.ha_temperature
+
+  - platform: min_max
+    type: mean
+    name: House Avg Humidity
+    entity_ids:
+      - sensor.thermostat_humidity
+      - sensor.ha_humidity

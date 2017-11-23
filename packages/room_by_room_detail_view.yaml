@@ -38,6 +38,13 @@ group:
      - automation.motion_master_bedroom
      - automation.motion_master_bedroom_motion_off
      - binary_sensor.master_bedroom_occupancy
+     - switch.fan_on
+     - switch.dawn_day
+     - switch.dawn_night
+     - automation.candle_on_during_home_mode
+     - automation.candle_off_when_not_home_mode
+     - automation.fan_on_during_sleep_mode
+     - automation.fan_off_when_home_mode
 
  master_bath_card:
     control: hidden

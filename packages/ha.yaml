@@ -11,7 +11,14 @@ homeassistant:
       friendly_name: Home Assistant Uptime
       icon: mdi:home-assistant
       hasska_hidden: true
-
+    sensor.ha_github_version:
+      friendly_name: "GitHub Version"
+      icon: mdi:github-box
+      hasska_hidden: true
+    sensor.ha_pypi_version:
+      friendly_name: "PyPi Version"
+      icon: mdi:language-python
+      hasska_hidden: true
 
 group:
   homeass_version_card:
@@ -20,6 +27,8 @@ group:
      - sensor.hass_uptime
      - sensor.ha_version
      - sensor.installed_version
+     - sensor.ha_github_version
+     - sensor.ha_pypi_version
      - input_select.log_level
      - script.update_home_assistant_home
 
@@ -32,6 +41,25 @@ sensor:
   - platform: command_line
     name: Installed Version
     command: /usr/local/bin/hass --version
+
+  - platform: rest
+    name: ha_github_version
+    resource: 'https://api.github.com/repos/home-assistant/home-assistant/releases/latest'
+    headers:
+      accept: application/vnd.github.v3+json
+      content-type: application/json
+      user-agent: home-assistant/rest-sensor
+    value_template: >-
+      {{ value_json.tag_name if value_json.tag_name.split('.')|length != 2 else value_json.tag_name ~ '.0' }}
+    scan_interval: 1800
+
+  - platform: rest
+    name: ha_pypi_version
+    resource: 'https://pypi.python.org/pypi/homeassistant/json'
+    value_template: >-
+      {{ value_json.info.version }}
+    scan_interval: 1800
+
 
 ###### CUSTOM HA/Version
   - platform: template
@@ -75,3 +103,32 @@ script:
       - service: shell_command.update_hass
 shell_command:
   update_hass: hassctl update-hass && hassctl config && hassctl restart
+
+automation:
+  - alias: update_notification
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.ha_github_version
+      - platform: state
+        entity_id: sensor.ha_pypi_version
+    condition:
+      - condition: template
+        value_template: >-
+          {{ trigger.to_state.state }}
+      - condition: template
+        value_template: >-
+          {{ trigger.to_state.state != states('sensor.ha_version') }}
+      - condition: template
+        value_template: >-
+          {{ trigger.to_state.state != 'unknown' }}
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'New Home Assitant Version'
+      - service: notify.chrome_push
+        data_template:
+          title: "Home Assistant"
+          message: >-
+            Home Assistant {{ trigger.to_state.state }} is now available on {{ trigger.to_state.name.split(' ')[0] }}.

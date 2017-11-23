@@ -98,25 +98,25 @@ input_number:
   internet_traffic_delta_in:
     name: "Traffic IN Delta"
     initial: 0
-    min: 0
+    min: -100
     max: 1000000000000
 
   internet_traffic_delta_out:
     name: "Traffic OUT Delta"
     initial: 0
-    min: 0
+    min: -100
     max: 1000000000000
 
   lan_load_delta_in:
     name: "Lan IN Delta"
     initial: 0
-    min: 0
+    min: -100
     max: 1000000000000
 
   lan_load_delta_out:
     name: "Lan OUT Delta"
     initial: 0
-    min: 0
+    min: -100
     max: 1000000000000
 
 automation:

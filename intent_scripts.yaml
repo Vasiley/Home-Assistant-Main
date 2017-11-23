@@ -72,3 +72,9 @@
   smalltankIntent:
     speech:
       text: !include intent_templates/small_tank_intent.yaml
+  housetempIntent:
+    speech:
+      text: The House Temperature is {{states('sensor.house_avg_temperature')}} degrees
+  househumdityIntent:
+    speech:
+      text: The House Humidity is {{states('sensor.house_avg_humidity')}} percent      

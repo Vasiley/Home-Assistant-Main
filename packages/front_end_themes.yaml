@@ -24,6 +24,7 @@ input_select:
     initial: default
 
 frontend:
+  javascript_version: latest
   themes:
     halloween:
       # orange: dd5800; black: 000000; white: ffffff; coffee: 7a4901
