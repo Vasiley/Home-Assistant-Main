@@ -53,3 +53,5 @@ usps_cache.sqlite
 *.sqlite
 html5.push_registrations.conf
 *.pickle
+google_calenders.yaml
+.google.token

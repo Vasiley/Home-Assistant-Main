@@ -33,7 +33,7 @@ input_select:
       - PS4
       - Blue Iris
       - Netflix
-      - Classic Music
+      - Classical Music
       - Amazon
       - Power Off
     icon: mdi:monitor
@@ -62,7 +62,7 @@ automation:
               25486501
             {% elif is_state("input_select.harmony", "Netflix") %}
               25498037
-            {% elif is_state("input_select.harmony", "Classic Music") %}
+            {% elif is_state("input_select.harmony", "Classical Music") %}
               25501845
             {% elif is_state("input_select.harmony", "Amazon") %}
               27189210

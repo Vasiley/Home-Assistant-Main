@@ -1,0 +1,258 @@
+homeassistant:
+  customize:
+    calendar.main_calender:
+      friendly_name: Our Calender
+      icon: mdi:calendar-clock
+    calendar.holidays_in_united_states:
+      friendly_name: Holidays Binary
+      icon: mdi:calendar-clock
+    sensor.days_to_next_holiday:
+      icon: mdi:calendar-clock
+    sensor.next_holiday:
+      friendly_name: Holiday
+      icon: mdi:emoticon-happy
+    sensor.next_holiday_date_time:
+      icon: mdi:calendar-clock
+    sensor.next_birthday:
+      icon: mdi:cake-variant
+    sensor.days_to_next_birthday:
+      icon: mdi:calendar-clock
+    sensor.next_birthday_date_time:
+      icon: mdi:calendar-clock
+
+group:
+  google_calender_card:
+   name: Calender
+   entities:
+#     - calendar.dawns_calender
+     - sensor.next_appt_message
+     - sensor.next_appt_description
+     - sensor.next_appt_date_time
+#     - calendar.main_calender
+     - sensor.next_holiday
+     - sensor.next_holiday_date_time
+     - sensor.days_to_next_holiday
+#     - calendar.holidays_in_united_states
+#     - calendar.contacts
+     - sensor.next_birthday
+     - sensor.next_birthday_date_time
+     - sensor.days_to_next_birthday
+#     - sensor.date
+#     - sensor.time
+#     - automation.birthday_countdown_30_days
+#     - automation.random_birthday_wishes
+#     - automation.holiday_countdown_30_days
+#     - automation.holiday
+#     - automation.dr_appontments
+
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
+sensor:
+
+######################## Holidays #########################################
+
+  - platform: template
+    sensors:
+      next_holiday:
+        friendly_name: "Next Holiday"
+        value_template: "{{ states.calendar.holidays_in_united_states.attributes.message }}"
+
+  - platform: template
+    sensors:
+      next_holiday_date_time:
+        friendly_name: "Next Holiday"
+        value_template: "{{ as_timestamp(states.calendar.holidays_in_united_states.attributes.start_time) | timestamp_custom('%D %-I:%M %P') }}"
+
+  - platform: template
+    sensors:
+      days_to_next_holiday:
+        friendly_name: "Days to Next Holiday"
+        value_template: >-
+              {% set year = states.sensor.date.state.split('-')[0] %}
+              {% set month = states.sensor.date.state.split('-')[1] %}
+              {% set date = states.sensor.date.state.split('-')[2] %}
+              {%- set Month = states.calendar.holidays_in_united_states.attributes.start_time.split('-')[1] -%}
+              {%- set DayDate = states.calendar.holidays_in_united_states.attributes.start_time.split('-')[2] -%}
+              {%- set numOfDays = ((as_timestamp(strptime(year ~ '-' ~ Month ~ '-' ~ DayDate , '%Y-%m-%d')) | timestamp_custom('%j', true) | int ) - (as_timestamp(strptime(year ~ '-' ~ month~ '-' ~ date , '%Y-%m-%d')) | timestamp_custom('%j', true) | int)) -%}
+              {%- if numOfDays < 0 -%}
+                {{ numOfDays + 365 }}
+              {%- else -%}
+                {{ numOfDays }}
+              {%- endif -%}
+
+######################### Birthdays ####################################
+
+  - platform: template
+    sensors:
+      next_birthday_date_time:
+        friendly_name: "Next Birthday Date Time"
+        value_template: "{{ as_timestamp(states.calendar.contacts.attributes.start_time) | timestamp_custom('%D %-I:%M %P') }}"
+
+  - platform: template
+    sensors:
+      next_birthday:
+        friendly_name: "Next Birthday"
+        value_template: "{{ states.calendar.contacts.attributes.message }}"
+
+  - platform: template
+    sensors:
+      days_to_next_birthday:
+        friendly_name: "Days to Next Birthday"
+        value_template: >-
+              {% set year = states.sensor.date.state.split('-')[0] %}
+              {% set month = states.sensor.date.state.split('-')[1] %}
+              {% set date = states.sensor.date.state.split('-')[2] %}
+              {%- set Month = states.calendar.contacts.attributes.start_time.split('-')[1] -%}
+              {%- set DayDate = states.calendar.contacts.attributes.start_time.split('-')[2] -%}
+              {%- set numOfDays = ((as_timestamp(strptime(year ~ '-' ~ Month ~ '-' ~ DayDate , '%Y-%m-%d')) | timestamp_custom('%j', true) | int ) - (as_timestamp(strptime(year ~ '-' ~ month~ '-' ~ date , '%Y-%m-%d')) | timestamp_custom('%j', true) | int)) -%}
+              {%- if numOfDays < 0 -%}
+                {{ numOfDays + 365 }}
+              {%- else -%}
+                {{ numOfDays }}
+              {%- endif -%}
+
+################# Appontments ####################################
+
+  - platform: template
+    sensors:
+      next_appt_date_time:
+        friendly_name: "Next Appt Date Time"
+        value_template: "{{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%D %-I:%M %P') }}"
+
+  - platform: template
+    sensors:
+      next_appt_message:
+        friendly_name: "Next Appt Type"
+        value_template: "{{ states.calendar.dawns_calender.attributes.message }}"
+
+  - platform: template
+    sensors:
+      next_appt_description:
+        friendly_name: "Next Appt Description"
+        value_template: "{{ states.calendar.dawns_calender.attributes.description }}"
+
+################# Time Date Sensor ####################################
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
+
+automation:
+
+########################## Birthdays #######################################
+
+  - alias: Birthday Countdown 30 Days
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    condition:
+      - condition: template
+        value_template: "{{ states.sensor.days_to_next_birthday.state | int > 0 and states.sensor.days_to_next_birthday.state | int < 30 }}"
+    action:
+      - delay: '00:01:00'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'BIRTHDAY COUNTDOWN {{states.sensor.next_birthday.state}} is {{states.sensor.days_to_next_birthday.state}} days away'
+
+  - alias: Random Birthday Wishes
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      platform: time
+      hours: '/1'
+      minutes: 3
+      seconds: 00
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+        - condition: state
+          entity_id: calendar.contacts
+          state: 'On'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: !include ../intent_templates/birthday_wishes.yaml
+
+####### Holiday Announcment ################
+
+  - alias: Holiday Countdown 30 Days
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    condition:
+      - condition: template
+        value_template: "{{ states.sensor.days_to_next_holiday.state | int > 0 and states.sensor.days_to_next_holiday.state | int < 30 }}"
+    action:
+      - delay: '00:01:15'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'Holiday COUNTDOWN {{states.sensor.next_holiday.state}} is {{states.sensor.days_to_next_holiday.state}} days away'
+
+  - alias: Holiday
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      platform: time
+      hours: '/1'
+      minutes: 3
+      seconds: 00
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+        - condition: state
+          entity_id: calendar.holidays_in_united_states
+          state: 'On'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'Today is {{ states.calendar.holidays_in_united_states.attributes.message }}'
+
+##### appointment Announcment   ###################
+
+  - alias: Dr Appontments
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      platform: time
+      hours: '/1'
+      minutes: 3
+      seconds: 00
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+        - condition: state
+          entity_id: calendar.dawns_calender
+          state: 'On'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: >-
+            Dr appointment today {{states.calendar.dawns_calender.attributes.description}}
+            at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}

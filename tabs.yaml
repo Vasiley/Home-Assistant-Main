@@ -32,6 +32,8 @@
      - persistent_notification.small_tank_water_level_problem
      - group.season_card
      - group.theme_input_select_card
+     - group.google_calender_card
+
 
   Devicesview:
    view: yes
@@ -50,6 +52,7 @@
      - group.logger_input_select_card
      - group.clients_online_card
      - group.fail2ban_card
+     - group.iboot_card
 
   Serversview:
    view: yes

@@ -1,5 +1,7 @@
 homeassistant:
   customize:
+    sensor.blinds_controller_wifi_signal:
+      icon: mdi:signal
     script.blinds_closed:
       friendly_name: Blinds Closed
       haaska_name: Close Blinds
@@ -46,6 +48,11 @@ sensor:
       kitchen_blinds_state:
         friendly_name: 'Kitchen Blinds Status'
         value_template: "{{ states('input_select.kitchen_blinds_status') }}"
+
+  - platform: mqtt
+    state_topic: "kitchenblinds/Blinds Wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Blinds Controller Wifi Signal
 
 automation:
   - alias: Blinds Open

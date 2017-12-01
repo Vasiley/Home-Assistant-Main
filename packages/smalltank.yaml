@@ -109,6 +109,17 @@ group:
     - binary_sensor.small_tank_hob_filter
     - sensor.small_tank_lighting_mode
     - sensor.small_tank_weather_mode
+    - history_graph.tank_graph
+
+
+history_graph:
+  tank_temps:
+    name: Tank Graph
+    entities:
+      - sensor.small_tank_water_temperature
+      - sensor.ha_temperature
+    hours_to_show: 72
+    refresh: 180
 
 sensor:
   - platform: rest

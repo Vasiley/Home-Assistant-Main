@@ -32,6 +32,8 @@ group:
     name: Master Bedroom
     entities:
      - light.master
+     - light.dawns_bedside_lamp
+     - light.herbs_bedside_lamp
      - binary_sensor.master_motion
      - sensor.master_bedroom_temperature
      - sensor.motion_sensor_master_battery

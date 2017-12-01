@@ -130,6 +130,7 @@ group:
    name: Esp Controller's
    entities:
      - sensor.esp_kitchen_blinds
+     - sensor.blinds_controller_wifi_signal
      - sensor.esp_kitchen_led
      - sensor.esp_smallfishtank_led
      - sensor.esp_dawns_controller

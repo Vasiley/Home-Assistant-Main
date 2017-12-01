@@ -25,19 +25,13 @@ script:
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Sleep is Activated Good Night'
-      - delay: '00:00:05'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Alexa Good Night'
+          message: 'Sleep is Activated Alexa Good Night'
+      - delay: '00:00:03'
       - service: climate.set_hold_mode
         data:
           entity_id: climate.thermostat
           hold_mode: "sleep"
       - delay: '00:00:02'
-
-      - delay: '00:00:01'
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment

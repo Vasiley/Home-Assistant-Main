@@ -20,7 +20,7 @@ sensor:
     sensors:
       total_bans_ip:
         friendly_name: 'Total IP Banned'
-        value_template: '{{ states.sensor.hacks_failed_hassiptables.attributes.total_bans }}'
+        value_template: "{{states.sensor.hacks_failed_hassiptables.attributes.total_bans}}"
 
   - platform: template
     sensors:

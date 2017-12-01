@@ -1,0 +1,51 @@
+
+group:
+  iboot_card:
+   name: Iboots
+   entities:
+     - switch.ibootone
+     - switch.iboottwo
+
+switch:
+  - platform: command_line
+    switches:
+      ibootone:
+        command_on: !secret iboot1_on
+        command_off: !secret iboot1_off
+        #command_example: 'curl --data "A=POWERON" --anyauth --user <username>:<pass> <ip>/P0.HTML'
+  - platform: command_line
+    switches:
+      iboottwo:
+        command_on: !secret iboot2_on
+        command_off: !secret iboot2_off
+
+automation:
+  - alias: Xmas Lights On
+    trigger:
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Early Morning'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.ibootone
+      - service: switch.turn_on
+        entity_id: switch.ibootone
+      - service: switch.turn_on
+        entity_id: switch.iboottwo
+      - service: switch.turn_on
+        entity_id: switch.iboottwo
+
+  - alias: Xmas Lights Off
+    trigger:
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Sleep'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.ibootone
+      - service: switch.turn_off
+        entity_id: switch.ibootone
+      - service: switch.turn_off
+        entity_id: switch.iboottwo
+      - service: switch.turn_off
+        entity_id: switch.iboottwo

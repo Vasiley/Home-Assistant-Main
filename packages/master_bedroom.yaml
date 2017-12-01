@@ -37,6 +37,10 @@ homeassistant:
       icon: mdi:battery
     sensor.dawns_controller_wifi_signal:
       icon: mdi:signal
+    light.dawns_bedside_lamp:
+      friendly_name: Dawns Side
+    light.herbs_bedside_lamp:
+      friendly_name: Herbs Side
     switch.dawn_day:
       friendly_name: Dawns controls Day
       haaska_name: Bedroom Candle

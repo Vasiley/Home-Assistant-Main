@@ -27,17 +27,24 @@ script:
         data_template:
           entity_id: media_player.ha_speaker
           message: 'Good Morning Herb how are you this morning The weather for today is{{states.sensor.dark_sky_daily_summary.state}}'
-      - service: script.blinds_halfway
       - delay: '00:00:10'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'I am turning on some Classical Music for your pleasure'
+      - delay: '00:00:01'
+      - service: script.blinds_halfway
+      - delay: '00:00:07'
       - service: input_select.select_option
         data:
           entity_id: input_select.harmony
-          option: 'Classic Music'
-      - delay: '00:00:04'
+          option: 'Classical Music'
+      - delay: '00:00:10'
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.stereo
           volume_level: '.60'
+      - delay: '00:00:15'
       - service: light.turn_on
         data:
           entity_id: light.herbs_lamp
