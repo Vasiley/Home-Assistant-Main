@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'iboot)hack'
+        
     script.gone_on:
       friendly_name: Away
       icon: mdi:security-home
@@ -8,7 +13,7 @@ homeassistant:
       haaska_hidden: true
     script.alarm_repeat:
       friendly_name: Alarm Repeat
-      haaska_hidden: true    
+      haaska_hidden: true
 
 ######## Away Mode Script   #############
 script:

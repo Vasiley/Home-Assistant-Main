@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'blue_iris'
+        
     binary_sensor.motion_outdoor_shed:
       friendly_name: Shed Camera
       device_class: motion

@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'blinds'
+        
     sensor.blinds_controller_wifi_signal:
       icon: mdi:signal
     script.blinds_closed:

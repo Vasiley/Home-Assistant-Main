@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'daytime_sleep'
+            
     script.daytime_sleep_mode:
       haaska_hidden: false
       hidden: false

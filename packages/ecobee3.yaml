@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+        
+    package.node_anchors:
+      customize: &customize
+        package: 'ecobee'
+
     sensor.set_hold_mode:
       icon: mdi:home
     sensor.hvac_fan:

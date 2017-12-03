@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'small_tank'
+            
     sensor.fish_tank_cpu_use:
       friendly_name: Fish Tank Cpu
       icon: mdi:desktop-tower

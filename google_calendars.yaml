@@ -19,8 +19,8 @@
 
 - cal_id: addressbook#contacts@group.v.calendar.google.com
   entities:
-  - device_id: contacts
-    name: Contacts
+  - device_id: address_book_contacts
+    name: Address book Contacts
     track: true
 
 - cal_id: '#contacts@group.v.calendar.google.com'

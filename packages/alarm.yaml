@@ -1,4 +1,9 @@
+homeassistant:
+  customize:
 
+    package.node_anchors:
+      customize: &customize
+        package: 'alarm'
 
 group:
   alarm_panel_card:

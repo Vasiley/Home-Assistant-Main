@@ -1,12 +1,21 @@
 ##### I use this for a group view with entities are in different packages....If in one package group
 ##### view is in there
+homeassistant:
+  customize:
 
+    package.node_anchors:
+      customize: &customize
+        package: 'room_room_groups'
 
 group:
  livingroom_card:
     control: hidden
     name: Living Room
     entities:
+     - light.lamps
+     - light.herbs_lamp
+     - light.dawns_lamp
+     - light.door_lamp
      - fan.living_room_fan
      - script.living_room_fan_auto
      - sensor.fan_speed

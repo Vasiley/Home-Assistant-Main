@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'digital_loggers'
+            
     switch.network_switch_charter_modem:
       friendly_name: Charter Modem
     switch.network_switch_blue_iris_monitor:

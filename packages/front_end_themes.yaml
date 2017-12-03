@@ -1,3 +1,5 @@
+
+
 ###############################################################################
 # Feel free to add/modify and customize the themes below to your heart's content
 # Some of the themes I made, some I stole from online :)
@@ -24,7 +26,7 @@ input_select:
     initial: default
 
 frontend:
-  javascript_version: latest
+#  javascript_version: latest
   themes:
     halloween:
       # orange: dd5800; black: 000000; white: ffffff; coffee: 7a4901

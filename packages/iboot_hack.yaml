@@ -1,3 +1,14 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'iboot_hack'
+
+    switch.ibootone:
+      persistent: true
+    switch.iboottwo:
+      persistent: true
 
 group:
   iboot_card:

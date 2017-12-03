@@ -47,6 +47,7 @@
      - group.hubs_card
      - group.NetworkSnmp_card
      - group.esp_devices_card
+     - group.hp_printer_card
      - group.homeass_version_card
      - script.update_github
      - group.logger_input_select_card

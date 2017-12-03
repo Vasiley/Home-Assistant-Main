@@ -1,3 +1,9 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'apcups_network_backup'
 
 group:
   network_backup_ups_card:

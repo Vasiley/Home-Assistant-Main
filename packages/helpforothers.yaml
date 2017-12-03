@@ -121,3 +121,10 @@
 #         data:
 #           entity_id: climate.hallway
 #           away_mode: 'true'
+ # binary_sensor:
+ #   - platform: template
+ #     sensors:
+ #       people_home:
+ #         friendly_name: Anyone Home
+ #        #device_class: occupancy
+ #         value_template: "{{ is_state('device_tracker.dawn_baby', 'home') }}"
