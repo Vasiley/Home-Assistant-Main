@@ -14,7 +14,7 @@ homeassistant:
       entity_picture: /local/magneta.jpeg
     sensor.black_ink_level:
       entity_picture: /local/lightblack.jpeg
-    sensor.light_black_ink_level:
+    sensor.photo_black_ink_level:
       entity_picture: /local/lightblack.jpeg
     sensor.yellow_ink_level:
       entity_picture: /local/yellow.jpeg
@@ -28,7 +28,7 @@ group:
      - sensor.yellow_ink_level
      - sensor.cyan_ink_level
      - sensor.magenta_ink_level
-     - sensor.light_black_ink_level
+     - sensor.photo_black_ink_level
 
 sensor:
   - platform: snmp
@@ -68,7 +68,7 @@ sensor:
     unit_of_measurement: '%'
 
   - platform: snmp
-    name: 'Light Black Ink Level'
+    name: 'Photo Black Ink Level'
     host: 192.168.1.30
     baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.5
     accept_errors: true

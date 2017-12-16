@@ -86,6 +86,12 @@ homeassistant:
     sensor.esp_dawns_controller:
       friendly_name: Dawns Contoller
       entity_picture: /local/nodemcu.jpeg
+    sensor.gabbies_laptop:
+      friendly_name: Gabbies Laptop
+      icon: mdi:laptop
+    sensor.dashboard_tablet_lv:
+      friendly_name: Dashboard Tablet
+      icon: mdi:tablet-android
     sensor.clients:
       friendly_name: Clients Tracked
       icon: mdi:network
@@ -135,6 +141,12 @@ group:
      - sensor.esp_smallfishtank_led
      - sensor.esp_dawns_controller
      - sensor.dawns_controller_wifi_signal
+
+  etc_devices_card:
+   name: Tracked Network Devices
+   entities:
+     - sensor.gabbies_laptop
+     - sensor.dashboard_tablet_lv
 
 sensor:
   ############## Public Ip
@@ -244,6 +256,14 @@ sensor:
         value_template: '{% if is_state("device_tracker.dawns_controller", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      gabbies_laptop:
+        value_template: '{% if is_state("device_tracker.f82819c42847", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      dashboard_tablet_lv:
+        value_template: '{% if is_state("device_tracker.androida64e0f70e33eb022", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       clients:
         value_template: >-
             {%- for d in states.device_tracker if d.state == 'home' -%}
@@ -296,6 +316,7 @@ automation:
           - sensor.esp_kitchen_blinds
           - sensor.esp_kitchen_led1
           - sensor.esp_smallfishtank_led
+          - sensor.gabbies_laptop
 #        for: '00:00:01'
     condition:
       condition: and

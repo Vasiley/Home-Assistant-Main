@@ -34,7 +34,6 @@
      - group.theme_input_select_card
      - group.google_calender_card
 
-
   Devicesview:
    view: yes
    name: Equipment
@@ -54,6 +53,7 @@
      - group.clients_online_card
      - group.fail2ban_card
      - group.iboot_card
+     - group.etc_devices_card
 
   Serversview:
    view: yes

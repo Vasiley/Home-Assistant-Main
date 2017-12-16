@@ -1,5 +1,13 @@
 homeassistant:
   customize:
+    sensor.days_to_next_appointment:
+      icon: mdi:calendar-clock
+    sensor.next_appt_description:
+      icon: mdi:note
+    sensor.next_appt_message:
+      icon: mdi:note
+    sensor.next_appt_date_time:
+      icon: mdi:calendar-clock
     calendar.main_calender:
       friendly_name: Our Calender
       icon: mdi:calendar-clock
@@ -28,6 +36,7 @@ group:
      - sensor.next_appt_message
      - sensor.next_appt_description
      - sensor.next_appt_date_time
+     - sensor.days_to_next_appointment
 #     - calendar.main_calender
      - sensor.next_holiday
      - sensor.next_holiday_date_time
@@ -43,6 +52,7 @@ group:
 #     - automation.random_birthday_wishes
 #     - automation.holiday_countdown_30_days
 #     - automation.holiday
+#     - automation.dr_appointment_reminder_3_days
 #     - automation.dr_appontments
 
 google:
@@ -133,6 +143,22 @@ sensor:
         friendly_name: "Next Appt Description"
         value_template: "{{ states.calendar.dawns_calender.attributes.description }}"
 
+  - platform: template
+    sensors:
+      days_to_next_appointment:
+        friendly_name: "Days to Next Appointment"
+        value_template: >-
+              {% set year = states.sensor.date.state.split('-')[0] %}
+              {% set month = states.sensor.date.state.split('-')[1] %}
+              {% set date = states.sensor.date.state.split('-')[2] %}
+              {%- set Month = states.calendar.dawns_calender.attributes.start_time.split('-')[1] -%}
+              {%- set DayDate = states.calendar.dawns_calender.attributes.start_time.split('-')[2] -%}
+              {%- set numOfDays = ((as_timestamp(strptime(year ~ '-' ~ Month ~ '-' ~ DayDate , '%Y-%m-%d')) | timestamp_custom('%j', true) | int ) - (as_timestamp(strptime(year ~ '-' ~ month~ '-' ~ date , '%Y-%m-%d')) | timestamp_custom('%j', true) | int)) -%}
+              {%- if numOfDays < 0 -%}
+                {{ numOfDays + 365 }}
+              {%- else -%}
+                {{ numOfDays }}
+              {%- endif -%}
 ################# Time Date Sensor ####################################
 
   - platform: time_date
@@ -201,7 +227,7 @@ automation:
       - condition: template
         value_template: "{{ states.sensor.days_to_next_holiday.state | int > 0 and states.sensor.days_to_next_holiday.state | int < 30 }}"
     action:
-      - delay: '00:01:15'
+      - delay: '00:01:00'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker
@@ -232,27 +258,72 @@ automation:
 
 ##### appointment Announcment   ###################
 
+  - alias: Dr Appointment Reminder 3 days
+    initial_state: 'on'
+    hide_entity: false
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    condition:
+      - condition: template
+        value_template: "{{ states.sensor.days_to_next_appointment.state | int > 0 and states.sensor.days_to_next_appointment.state | int < 3 }}"
+    action:
+      - delay: '00:01:15'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: >-
+            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
+            with {{ states.calendar.dawns_calender.attributes.description }} is
+            {{ states.sensor.days_to_next_appointment.state }} days away
+      - service: notify.Pushbullet
+        data_template:
+          message: >-
+            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
+            with {{ states.calendar.dawns_calender.attributes.description }} is
+            {{states.sensor.days_to_next_appointment.state}} days away
+      - service: notify.chrome_push
+        data_template:
+          title: "Appointment Reminder"
+          message: >-
+            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
+            with {{ states.calendar.dawns_calender.attributes.description }} is
+            {{states.sensor.days_to_next_appointment.state}} days away
+
   - alias: Dr Appontments
     initial_state: 'on'
     hide_entity: false
     trigger:
-      platform: time
-      hours: '/1'
-      minutes: 3
-      seconds: 00
+      platform: state
+      entity_id: input_boolean.boolean_home
+      to: 'on'
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.boolean_home
           state: 'on'
-        - condition: state
-          entity_id: calendar.dawns_calender
-          state: 'On'
+        - condition: template
+          value_template: "{{ states.sensor.days_to_next_appointment.state | int == 0 }}"
     action:
+      - delay: '00:01:30'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker
           message: >-
-            Dr appointment today {{states.calendar.dawns_calender.attributes.description}}
+            Dr appointment today {{ states.calendar.dawns_calender.attributes.description }}
             at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
+      - service: notify.Pushbullet
+        data_template:
+          message: >-
+            Appointment Today {{ states.calendar.dawns_calender.attributes.message }}
+            with {{ states.calendar.dawns_calender.attributes.description }}
+            at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
+      - service: notify.chrome_push
+        data_template:
+          title: "Appointment Reminder"
+          message: >-
+            Appointment Today {{ states.calendar.dawns_calender.attributes.message }}
+            with {{ states.calendar.dawns_calender.attributes.description }} at
+            {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}

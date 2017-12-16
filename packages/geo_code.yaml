@@ -19,4 +19,5 @@ sensor:
     name: Herb
     api_key: !secret family_geo_locate
     origin: device_tracker.lsp_herb
-#    options: both
+    scan_interval: 30
+      #    options: both

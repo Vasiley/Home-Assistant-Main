@@ -43,10 +43,12 @@ group:
      - light.master
      - light.dawns_bedside_lamp
      - light.herbs_bedside_lamp
+     - light.master_table_lamps
      - binary_sensor.master_motion
      - sensor.master_bedroom_temperature
      - sensor.motion_sensor_master_battery
-     - automation.motion_master_bedroom
+     - automation.motion_master_bedroom_homemode
+     - automation.motion_master_bedroom_evening_and_movie_time_on
      - automation.motion_master_bedroom_motion_off
      - binary_sensor.master_bedroom_occupancy
      - switch.fan_on
@@ -56,7 +58,7 @@ group:
      - automation.candle_off_when_not_home_mode
      - automation.fan_on_during_sleep_mode
      - automation.fan_off_when_home_mode
-
+          
  master_bath_card:
     control: hidden
     name: Master Bath
@@ -77,6 +79,7 @@ group:
      - automation.master_bath_shower_time_on
      - automation.motion_bathroom_home_mode_off
      - automation.motion_bathroom_home_mode_on
+     - automation.motion_bathroom_evening_mode_on
      - automation.motion_bathroom_sleep_off
      - automation.motion_bathroom_sleep_on
 

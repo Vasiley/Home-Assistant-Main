@@ -50,9 +50,8 @@ script:
           brightness: 125
       - service: light.turn_on
         data:
-          entity_id: light.master
-          color_temp: 426
-          brightness: 125
+          entity_id: light.master_table_lamps
+          brightness: 255
       - service: light.turn_on
         data:
           entity_id: light.bathroom
@@ -80,6 +79,8 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.kitchen
+      - service: script.turn_on
+        entity_id: script.led_off
       - delay: '00:00:10'
 #      - wait_template: "{{is_state('binary_sensor.hallway_motion.state', 'off' )}}"
 #        timeout: '00:02:00'
@@ -101,7 +102,7 @@ script:
       - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
         data:
-          entity_id: light.master
+          entity_id: light.master_table_lamps
       - service: rest_command.sleep
       - service: rest_command.sleep
       - service: automation.turn_on

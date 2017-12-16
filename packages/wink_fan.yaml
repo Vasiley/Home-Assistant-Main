@@ -160,10 +160,10 @@ automation:
         data:
           entity_id: fan.living_room_fan
           speed: "low"
-      - service: fan.turn_on   # gotta hit fan twice dont know why
-        data:
-          entity_id: fan.living_room_fan
-          speed: "low"
+      # - service: fan.turn_on   # gotta hit fan twice dont know why
+      #   data:
+      #     entity_id: fan.living_room_fan
+      #     speed: "lowest"
 
   - alias: Fan medium with hvac automation
     initial_state: 'on'
@@ -180,10 +180,10 @@ automation:
         data:
           entity_id: fan.living_room_fan
           speed: "medium"
-      - service: fan.turn_on
-        data:
-          entity_id: fan.living_room_fan
-          speed: "medium"
+      # - service: fan.turn_on
+      #   data:
+      #     entity_id: fan.living_room_fan
+      #     speed: "low"
 
 # if wife turns disables fan automation this reenables it
   - alias: Reenable Fan Automation

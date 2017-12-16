@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'pihole'
+
     switch.pihole:
       friendly_name: Pi-Hole
       entity_picture: /local/pihole.jpg
@@ -39,7 +44,7 @@ homeassistant:
       friendly_name: Ad Blocking
     sensor.pi_hole_version:
       friendly_name: Version
-  
+
 
 group:
   Ads_Blocked_card:
@@ -108,9 +113,9 @@ sensor:
   - platform: template
     sensors:
       pihole_dns:
-        value_template: "{{states.sensor.pihole_status_raw.state.split(':::')[1]}}"
+        value_template: "{{states.sensor.pihole_status_raw.state.split('[✓]')[1][1:-3]}}"
         icon_template: >-
-          {%- if states.sensor.pihole_status_raw.state.split(':::')[1][1:-1] == 'DNS service is running' -%}
+          {%- if states.sensor.pihole_status_raw.state.split('[✓]')[1][1:-3] == 'DNS service is running' -%}
             mdi:checkbox-marked
           {%- else -%}
             mdi:checkbox-blank-outline
@@ -119,9 +124,9 @@ sensor:
   - platform: template
     sensors:
       pihole_blocking:
-        value_template: "{{ states('sensor.pihole_status_raw').split(':::')[2] }}"
+        value_template:  "{{states.sensor.pihole_status_raw.state.split('[✓]')[2][1:]}}"
         icon_template: >-
-          {% if is_state('binary_sensor.pihole_status', 'on') %}
+          {% if states.sensor.pihole_blocking.state == 'Pi-hole blocking is Enabled' %}
              mdi:checkbox-blank-outline
           {% else %}
              mdi:checkbox-marked

@@ -1,5 +1,10 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'Master Bathroom'
+
     binary_sensor.kids_bathroom_motion:
       friendly_name: Kids Bathroom Motion
       device_class: motion
@@ -20,6 +25,10 @@ homeassistant:
       hidden: false
       persistence: true
     automation.motion_bathroom_home_mode_on:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    automation.motion_bathroom_evening_mode_on:
       haaska_hidden: true
       hidden: false
       persistence: true
@@ -126,10 +135,29 @@ automation:
         entity_id: binary_sensor.bathroom_motion
         to: 'on'
     condition:
-      condition: or
+      condition: and
       conditions:
       - condition: state
         entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 154
+          brightness: 255
+
+  - alias: Motion Bathroom Evening Mode On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.bathroom_motion
+        to: 'on'
+    condition:
+      condition: or
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_early_morning
         state: 'on'
       - condition: state
         entity_id: input_boolean.boolean_movie_time
@@ -137,15 +165,12 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_evening_time
         state: 'on'
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'
     action:
       - service: light.turn_on
         data:
           entity_id: light.bathroom
-          color_temp: 154
-          brightness: 255
+          color_temp: 392
+          brightness: 74
 
   - alias: Motion Bathroom Home Mode off
     initial_state: 'on'
@@ -158,6 +183,9 @@ automation:
     condition:
       condition: or
       conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_early_morning
+        state: 'on'
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'

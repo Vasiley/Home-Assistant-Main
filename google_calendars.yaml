@@ -33,4 +33,5 @@
   entities:
   - device_id: dawns_calender
     name: Dawns Calender
+    offset: "!!-480"
     track: true

@@ -14,7 +14,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: time
-        at: '19:01'
+        at: '18:01'
     condition:
       - condition: state
         entity_id: sensor.house_mode_state
@@ -46,7 +46,7 @@ script:
         - service: script.turn_on
           entity_id: script.vas_dashboard
         - service: script.turn_on
-          entity_id: script.led_off  
+          entity_id: script.led_off
 #  - alias: Navigate Dashboard to Vas
     vas_dashboard:
       sequence:

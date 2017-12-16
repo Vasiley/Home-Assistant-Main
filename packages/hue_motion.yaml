@@ -6,9 +6,9 @@ homeassistant:
   ## Binary Sensor
   ################################################
 
-    binary_sensor.kitchen_motion:
-      friendly_name: Kitchen Motion
-      device_class: motion
+    # binary_sensor.kitchen_motion:
+    #   friendly_name: Kitchen Motion
+    #   device_class: motion
     binary_sensor.hallway_motion:
       friendly_name: Hallway Motion
       device_class: motion
@@ -30,17 +30,17 @@ homeassistant:
       icon: mdi:battery
 #     sensor.motion_sensor_kitchen_battery:
 #        icon: mdi:battery
-    sensor.kitchen_battery_motion:
-      friendly_name: Kitchen Motion Battery
+    # sensor.kitchen_battery_motion:
+    #   friendly_name: Kitchen Motion Battery
     sensor.motion_sensor_kids_bathroom_battery:
       icon: mdi:battery
 
 ##################################################
 #### Sensor Lux Levels
 ##################################################
-    sensor.motion_sensor_kitchen_lux:
-      friendly_name: Kitchen Light Level
-#      icon: mdi:
+#     sensor.motion_sensor_kitchen_lux:
+#       friendly_name: Kitchen Light Level
+# #      icon: mdi:
 
 
 group:
@@ -57,11 +57,11 @@ group:
 
 ####### Binary sensor motion   #############
 binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_6
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: kitchen_motion
+  # - platform: rest
+  #   resource: !secret MS_rest_6
+  #   value_template: '{{ value_json.state.presence }}'
+  #   scan_interval: 2
+  #   name: kitchen_motion
   - platform: rest
     resource: !secret MS_rest_12
     value_template: '{{ value_json.state.presence }}'
@@ -95,11 +95,11 @@ sensor:
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     name: 'Hallway Temperature'
-  - platform: rest
-    resource: !secret MS_rest_5
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Kitchen Temperature'
+  # - platform: rest
+  #   resource: !secret MS_rest_5
+  #   value_template: '{{ value_json.state.temperature | float / 100 }}'
+  #   unit_of_measurement: °C
+  #   name: 'Kitchen Temperature'
   - platform: rest
     resource: !secret MS_rest_29
     value_template: '{{ value_json.state.temperature | float / 100 }}'
@@ -145,9 +145,9 @@ sensor:
 
 #################   Kitchen Lux Level     #########################
 
-  - platform: rest
-    resource: !secret MS_rest_7
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Motion Sensor Kitchen Lux'
+  # - platform: rest
+  #   resource: !secret MS_rest_7
+  #   value_template: '{{ value_json.state.lightlevel }}'
+  #   unit_of_measurement: Lux
+  #   scan_interval: 5
+  #   name: 'Motion Sensor Kitchen Lux'

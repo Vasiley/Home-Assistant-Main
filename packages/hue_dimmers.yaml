@@ -5,8 +5,6 @@ homeassistant:
       icon: mdi:battery
     sensor.kitchen_table_dimmer_battery:
       icon: mdi:battery
-    sensor.master_closet_dimmer_battery:
-      icon: mdi:battery
     sensor.kitchen_table_dimmer_last_update:
       icon: mdi:clock
     sensor.kitchen_table_dimmer_state:

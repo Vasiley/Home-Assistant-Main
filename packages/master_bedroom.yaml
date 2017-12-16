@@ -1,10 +1,16 @@
 homeassistant:
   customize:
-    automation.motion_master_bedroom:
+    package.node_anchors:
+      customize: &customize
+        package: 'Master Bedroom'
+    automation.motion_master_bedroom_homemode:
       haaska_hidden: true
       hidden: false
       persistence: true
-      friendly_name: Master Bedroom Automate On
+      friendly_name: Master Lights Home Mode
+    automation.motion_master_bedroom_evening_and_movie_time_on:
+      haaska_hidden: true
+      friendly_name: Master Lights Evening
     automation.motion_master_bedroom_motion_off:
       haaska_hidden: true
       hidden: false
@@ -106,7 +112,7 @@ switch:
 #######################################################################################################
 
 automation:
-  - alias: Motion Master Bedroom
+  - alias: Motion Master Bedroom Homemode
     initial_state: 'on'
     trigger:
       - platform: state
@@ -118,6 +124,26 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.master
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.master_table_lamps
+          brightness: 255
+
+  - alias: Motion Master Bedroom evening and movie time on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'on'
+    condition:
+      condition: or
+      conditions:
       - condition: state
         entity_id: input_boolean.boolean_movie_time
         state: 'on'
@@ -127,8 +153,7 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.master
-          color_temp: 154
+          entity_id: light.master_table_lamps
           brightness: 255
 
   - alias: Motion Master Bedroom Motion Off
@@ -141,6 +166,8 @@ automation:
     action:
       - service: light.turn_off
         entity_id: light.master
+      - service: light.turn_off
+        entity_id: light.master_table_lamps
 
   - alias: Candle On during Home mode
     initial_state: 'on'

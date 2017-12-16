@@ -4,7 +4,7 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'daytime_sleep'
-            
+
     script.daytime_sleep_mode:
       haaska_hidden: false
       hidden: false
@@ -29,3 +29,6 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.master
+      - service: light.turn_off
+        data:
+          entity_id: light.master_table_lamps
