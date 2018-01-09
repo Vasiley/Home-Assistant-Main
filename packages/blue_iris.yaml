@@ -4,7 +4,7 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'blue_iris'
-        
+
     binary_sensor.motion_outdoor_shed:
       friendly_name: Shed Camera
       device_class: motion
@@ -202,8 +202,8 @@ automation:
           entity_id: light.door_lamp
           flash: short
           color_name: Red
-      - service: script.turn_on
-        entity_id: script.front_cam_dashboard
+#      - service: script.turn_on
+#        entity_id: script.front_cam_dashboard
   - alias: Back to White after Motion
     initial_state: 'on'
     trigger:
@@ -234,11 +234,11 @@ rest_command:
 #############################################################################
 ############ script to change hadashboard to see camera with motion   #######
 #############################################################################
-script:
-  front_cam_dashboard:
-    sequence:
-      - event: hadashboard
-        event_data:
-          command: navigate
-          timeout: 60
-          target: cameras
+# script:
+#   front_cam_dashboard:
+#     sequence:
+#       - event: hadashboard
+#         event_data:
+#           command: navigate
+#           timeout: 60
+#           target: cameras

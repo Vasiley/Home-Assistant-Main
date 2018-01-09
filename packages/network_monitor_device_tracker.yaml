@@ -77,6 +77,9 @@ homeassistant:
     sensor.esp_kitchen_blinds:
       friendly_name: Kitchen Blinds Controller
       entity_picture: /local/nodemcu.jpeg
+    sensor.esp_kitchen_sink_blinds:
+      friendly_name: Kitchen Sink Blinds Controller
+      entity_picture: /local/nodemcu.jpeg
     sensor.esp_kitchen_led:
       friendly_name: Kitchen Led Controller
       entity_picture: /local/nodemcu.jpeg
@@ -91,6 +94,9 @@ homeassistant:
       icon: mdi:laptop
     sensor.dashboard_tablet_lv:
       friendly_name: Dashboard Tablet
+      icon: mdi:tablet-android
+    sensor.dashboard_tablet_bedroom:
+      friendly_name: Dashboard Tablet Bedroom
       icon: mdi:tablet-android
     sensor.clients:
       friendly_name: Clients Tracked
@@ -137,6 +143,8 @@ group:
    entities:
      - sensor.esp_kitchen_blinds
      - sensor.blinds_controller_wifi_signal
+     - sensor.esp_kitchen_sink_blinds
+     - sensor.sink_blinds_controller_wifi_signal
      - sensor.esp_kitchen_led
      - sensor.esp_smallfishtank_led
      - sensor.esp_dawns_controller
@@ -147,6 +155,7 @@ group:
    entities:
      - sensor.gabbies_laptop
      - sensor.dashboard_tablet_lv
+     - sensor.dashboard_tablet_bedroom
 
 sensor:
   ############## Public Ip
@@ -244,16 +253,20 @@ sensor:
         value_template: '{% if is_state("device_tracker.5ccf7fb19112", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      esp_kitchen_sink_blinds:
+        value_template: '{% if is_state("device_tracker.2c3ae805f66b", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       esp_kitchen_led:
         value_template: '{% if is_state("device_tracker.600194316a56", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       esp_smallfishtank_led:
-        value_template: '{% if is_state("device_tracker.2c3ae8062e63", "home") %}Online{% else %}Offline{% endif %}'
+        value_template: '{% if is_state("device_tracker.600194316502", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       esp_dawns_controller:
-        value_template: '{% if is_state("device_tracker.dawns_controller", "home") %}Online{% else %}Offline{% endif %}'
+        value_template: '{% if is_state("device_tracker.5ccf7fb565ff", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       gabbies_laptop:
@@ -262,6 +275,10 @@ sensor:
     sensors:
       dashboard_tablet_lv:
         value_template: '{% if is_state("device_tracker.androida64e0f70e33eb022", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      dashboard_tablet_bedroom:
+        value_template: '{% if is_state("device_tracker.4ca56d68487b", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       clients:
@@ -314,9 +331,11 @@ automation:
           - sensor.hue_hub
           - sensor.wink_hub
           - sensor.esp_kitchen_blinds
+          - sensor.esp_kitchen_sink_blinds
           - sensor.esp_kitchen_led1
           - sensor.esp_smallfishtank_led
           - sensor.gabbies_laptop
+          - sensor.dashboard_tablet_bedroom
 #        for: '00:00:01'
     condition:
       condition: and

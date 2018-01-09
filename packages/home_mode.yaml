@@ -47,7 +47,7 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.lamps
-          color_temp: 154
+          color_temp: 162
           brightness: 255
       - service: light.turn_on
         data:

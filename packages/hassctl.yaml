@@ -1,0 +1,49 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'Hassctl'
+
+    sensor.hassctl_version:
+      friendly_name: Version
+    script.update_home_assistant_home:
+      friendly_name: Home Assistant Update
+      icon: mdi:update
+      hasska_hidden: true
+
+group:
+  hassctl_card:
+    name: Hassctl
+    control: hidden
+    entities:
+      - script.update_home_assistant_home
+      - sensor.hassctl_version
+sensor:
+  ###### VERSIONS
+    - platform: command_line
+      name: hassctl Current Version
+      command: curl -s  https://raw.githubusercontent.com/dale3h/hassctl/master/hassctl 2> /dev/null | head -3 | tail -1 | cut -d# -f2
+      value_template: '{{value[17:-1]}}'
+    - platform: command_line
+      name: hassctl Installed Version
+      command: cat /usr/local/bin/hassctl | head -3 | tail -1 | cut -d# -f2
+      value_template: '{{value[17:-1]}}'
+  ###### Single line Version
+    - platform: template
+      sensors:
+        hassctl_version:
+          value_template: "{%- if states.sensor.hassctl_current_version.state == states.sensor.hassctl_installed_version.state-%}{{states.sensor.hassctl_installed_version.state}} {% else %}{{states.sensor.hassctl_current_version.state}} Available{% endif%}"
+          icon_template: >-
+            {% if states.sensor.hassctl_current_version.state == states.sensor.hassctl_installed_version.state %}
+              mdi:checkbox-marked
+            {% else %}
+              mdi:checkbox-blank-outline
+            {% endif %}
+
+script:
+  update_home_assistant_home:
+    sequence:
+      - service: shell_command.update_hass
+shell_command:
+  update_hass: hassctl update-hass && hassctl config && hassctl restart

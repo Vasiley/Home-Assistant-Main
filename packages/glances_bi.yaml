@@ -90,7 +90,7 @@ group:
   blue_iris_info_card:
    name: Blue Iris Svr Info
    entities:
-    - sensor.network_workstation
+    - sensor.blue_iris_workstation
     - sensor.glances_cpu_load
     - sensor.glances_disk_used
     - sensor.glances_disk_free

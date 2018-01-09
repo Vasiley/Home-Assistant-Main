@@ -20,7 +20,7 @@
      - group.alarm_panel_card
      - group.usps_mail_card
      - group.livingroomfan_card
-     - group.washing_machine_card
+     - group.washing_machine_card_frontend
      - group.harmony_card
      - group.blinds_kitchen_card
      - script.media_player_source
@@ -48,6 +48,7 @@
      - group.esp_devices_card
      - group.hp_printer_card
      - group.homeass_version_card
+     - group.hassctl_card
      - script.update_github
      - group.logger_input_select_card
      - group.clients_online_card
@@ -123,6 +124,7 @@
      - group.haaska_sensor_display_card
      - group.livingroom_card
      - group.kitchen_card
+     - group.laundry_room_card
 
   Fun_Stuff:
    view: yes
@@ -200,7 +202,7 @@
      - sensor.kids_bathroom_dimmer_battery
      - sensor.kitchen_table_dimmer_battery
      - sensor.master_closet_dimmer_battery
-
+     - sensor.bedroom_wallpanel_battery
   House_mode:
    name: Home Mode
    control: hidden

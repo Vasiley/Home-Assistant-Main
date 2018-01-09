@@ -45,8 +45,12 @@ group:
      - light.herbs_bedside_lamp
      - light.master_table_lamps
      - binary_sensor.master_motion
+     - binary_sensor.bedroom_motion
      - sensor.master_bedroom_temperature
      - sensor.motion_sensor_master_battery
+     - sensor.motion_sensor_master_lux
+     - sensor.bedroom_wallpanel_battery
+     - sensor.bedroom_wallpanel_brightness
      - automation.motion_master_bedroom_homemode
      - automation.motion_master_bedroom_evening_and_movie_time_on
      - automation.motion_master_bedroom_motion_off
@@ -58,7 +62,7 @@ group:
      - automation.candle_off_when_not_home_mode
      - automation.fan_on_during_sleep_mode
      - automation.fan_off_when_home_mode
-          
+
  master_bath_card:
     control: hidden
     name: Master Bath
@@ -118,3 +122,21 @@ group:
       - script.blinds_closed
       - script.blinds_halfway
       - script.blinds_open
+ laundry_room_card:
+   control: hidden
+   name: Laundry Room
+   entities:
+      - switch.wemo_washing_machine
+      - sensor.washing_machine_watts
+      - sensor.washing_machine_power_up
+      - sensor.washing_machine_power_down
+      - input_boolean.stopwatch
+      - input_boolean.dummy
+      - input_boolean.washer_switch
+      - sensor.stopwatch
+      - sensor.washer_status
+      - automation.washer_start
+      - automation.washer_done
+      - automation.stopwatch_start
+      - automation.stopwatch_stop
+      - automation.stopwatch_update

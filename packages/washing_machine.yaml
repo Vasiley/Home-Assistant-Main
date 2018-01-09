@@ -1,58 +1,147 @@
 homeassistant:
   customize:
-    script.start_washer:
-      friendly_name: Washer
+
+    package.node_anchors:
+      customize: &customize
+        package: 'Washing machine'
+
+    sensor.washing_machine_watts:
+      friendly_name: Wattage of Washing machine
+      icon: mdi:power-plug
+    sensor.washing_machine_power_up:
+      friendly_name: Washer Running
+      icon: mdi:power-plug
+    sensor.washing_machine_power_down:
+      friendly_name: Washer Off
+      icon: mdi:power-plug
+    sensor.washer_status:
+      friendly_name: Washer Status
+      icon: mdi:power-settings
+    sensor.stopwatch:
+      friendly_name: Cycle TIme
+      icon: mdi:timer
 
 group:
-  washing_machine_card:
+
+  washing_machine_card_frontend:
    name: Washing Machine
    entities:
-     - input_select.washing_machine_status
-     - sensor.washer_status
+    - sensor.washer_status
+    - sensor.stopwatch
 
-input_select:
-  washing_machine_status:
-    name: Laundry
-    options:
-     - running
-     - clean
-    initial: clean
+wemo:
+  static:
+    - 192.168.1.204
+
+input_boolean:
+  washer_switch:
+    initial: off
+    icon: mdi:water
+  stopwatch:
+    name: Stopwatch
+    initial: off
+  dummy:
+    name: Dummy
+    initial: off
 
 sensor:
   - platform: template
     sensors:
+      washing_machine_watts:
+        value_template: '{{ states.switch.wemo_washing_machine.attributes["current_power_w"] | replace(" W", "") | float }}'
+        unit_of_measurement: 'W'
+      washing_machine_power_down:
+        value_template: "{{ states('sensor.washing_machine_watts') | int < 3.4 }}"
+      washing_machine_power_up:
+        value_template: "{{ states('sensor.washing_machine_watts') | int > 3.4 }}"
       washer_status:
-        friendly_name: 'Washing Machine Status'
-        value_template: "{{ states('input_select.washing_machine_status') }}"
-
-script:
-  start_washer:
-    sequence:
-      - delay: '00:00:03'
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.washing_machine_status
-          option: 'running'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Washer is Started'
+        value_template: '{% if is_state("sensor.washing_machine_power_up", "True") %}Cleaning{% else %}Idle{% endif %}'
+      stopwatch:
+        value_template: >
+                {% if is_state('input_boolean.stopwatch', 'on') %}
+                {{ relative_time(states.automation.stopwatch_start.attributes.last_triggered) }}
+                {% elif is_state('sensor.stopwatch', 'unknown') %}
+                  0 seconds
+                {% else %}
+                {{ states('sensor.stopwatch') }}
+                {% endif %}
+        entity_id:
+              - automation.stopwatch_start
+              - automation.stopwatch_update
+              - automation.stopwatch_stop
 
 automation:
-  - alias: Washer Completes Wash
-    initial_state: 'on'
+  - alias: 'Washer Start'
     trigger:
       - platform: state
-        entity_id: sensor.washer_status
-        to: 'running'
+        entity_id: sensor.washing_machine_power_down
+        from: 'True'
+        to: 'False'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.washer_switch
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.stopwatch
+
+  - alias: 'Washer Done'
+    trigger:
+      - platform: state
+        entity_id: sensor.washing_machine_power_down
+        from: 'False'
+        to: 'True'
         for:
-          minutes: 36
+          minutes: 3
+    condition:
+      - condition: state
+        entity_id: input_boolean.washer_switch
+        state: 'on'
     action:
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Washer is Finished'
-      - service: input_select.select_option
+          message: 'Check the Clothes Washer Is Done'
+      - service: notify.Pushbullet
         data:
-          entity_id: input_select.washing_machine_status
-          option: 'clean'
+          message: 'Check the Clothes Washer Is Done'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.washer_switch
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.stopwatch
+
+  - alias: 'Stopwatch start'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.stopwatch
+        to: 'on'
+    action:
+      - service: input_boolean.toggle
+        entity_id: input_boolean.dummy
+
+  - alias: Stopwatch stop
+    trigger:
+      - platform: state
+        entity_id: input_boolean.stopwatch
+        to: 'off'
+    action:
+      - service: input_boolean.toggle
+        entity_id: input_boolean.dummy
+
+  - alias: Stopwatch update
+    trigger:
+      - platform: time
+        seconds: '/1'
+    condition:
+      - condition: state
+        entity_id: input_boolean.stopwatch
+        state: 'on'
+    action:
+      - service: input_boolean.toggle
+        entity_id: input_boolean.dummy
+# Code for seconds only
+  # {% if is_state('input_boolean.stopwatch', 'on') %}
+  #   {{ (now() - states.automation.stopwatch_start.attributes.last_triggered).total_seconds() | int }}
+  # {% elif is_state('sensor.stopwatch', 'unknown') %}
+  #   0
+  # {% else %}
+  #   {{ states('sensor.stopwatch') }}
+  # {% endif %}

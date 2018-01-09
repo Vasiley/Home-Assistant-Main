@@ -37,35 +37,35 @@ script:
   spring:
     sequence:
       - delay: '00:00:01'
-      - service: light.hue_activate_scene
+      - service: hue.hue_activate_scene
         data:
           group_name: "Lamps"
           scene_name: "Spring blossom"
   savanna:
     sequence:
       - delay: '00:00:01'
-      - service: light.hue_activate_scene
+      - service: hue.hue_activate_scene
         data:
           group_name: "Lamps"
           scene_name: "Savanna sunset"
   arctic:
     sequence:
       - delay: '00:00:01'
-      - service: light.hue_activate_scene
+      - service: hue.hue_activate_scene
         data:
           group_name: "Lamps"
           scene_name: "Arctic aurora"
   tropical:
     sequence:
       - delay: '00:00:01'
-      - service: light.hue_activate_scene
+      - service: hue.hue_activate_scene
         data:
           group_name: "Lamps"
           scene_name: "Tropical twilight"
   supernatural:
     sequence:
       - delay: '00:00:01'
-      - service: light.hue_activate_scene
+      - service: hue.hue_activate_scene
         data:
           group_name: "Lamps"
           scene_name: "Supernatural"

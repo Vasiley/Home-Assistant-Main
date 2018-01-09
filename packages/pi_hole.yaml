@@ -44,11 +44,15 @@ homeassistant:
       friendly_name: Ad Blocking
     sensor.pi_hole_version:
       friendly_name: Version
+    script.pihole_update:
+      friendly_name: Update Pi-Hole
+      icon: mdi:package-variant
 
 
 group:
   Ads_Blocked_card:
    name: Ads Blocked
+   control: hidden
    entities:
      - switch.pihole
      - sensor.ads_blocked_today
@@ -62,6 +66,7 @@ group:
      - sensor.pihole_dns
      - sensor.pihole_blocking
      - sensor.pi_hole_version
+     - script.pihole_update
 
 ###############################################################################
 #### PI Hole sensors                                                       ####
@@ -189,11 +194,15 @@ script:
   pihole_off:
     sequence:
        - service: shell_command.pihole_off
+  pihole_update:
+    sequence:
+       - service: shell_command.pihole_update
 
 ###############################  shell_command/pihole   #####################################
 shell_command:
   pihole_on: !secret pi_hole_on
   pihole_off: !secret pi_hole_off
+  pihole_update: "pihole -up"
 
 ### example for shell commands
 ## pi_hole_on: /usr/bin/curl -k "http://<your ip of pihole>/admin/api.php?enable&auth=600&auth=<api key of pihole"

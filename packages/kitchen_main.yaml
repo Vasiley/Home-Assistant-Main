@@ -52,6 +52,9 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.motion_sensor_kitchen_lux
+        below: '14000'  
     action:
       - service: light.turn_on
         data:

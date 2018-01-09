@@ -179,7 +179,7 @@ automation:
         entity_id: binary_sensor.bathroom_motion
         to: 'off'
         for:
-          minutes: 10
+          minutes: 3
     condition:
       condition: or
       conditions:

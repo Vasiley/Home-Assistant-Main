@@ -3,10 +3,7 @@ homeassistant:
     sensor.ha_version:
       friendly_name: New Ha Release
       hasska_hidden: true
-    script.update_home_assistant_home:
-      friendly_name: Home Assistant Update
-      icon: mdi:update
-      hasska_hidden: true
+    
     sensor.hass_uptime:
       friendly_name: Home Assistant Uptime
       icon: mdi:home-assistant
@@ -30,7 +27,7 @@ group:
      - sensor.ha_github_version
      - sensor.ha_pypi_version
      - input_select.log_level
-     - script.update_home_assistant_home
+
 
 sensor:
   ###### VERSIONS
@@ -97,12 +94,7 @@ sensor:
         {{ ', ' }}
       {%- endif -%}
       {{ '%02d' % hours }}:{{ '%02d' % minutes }}
-script:
-  update_home_assistant_home:
-    sequence:
-      - service: shell_command.update_hass
-shell_command:
-  update_hass: hassctl update-hass && hassctl config && hassctl restart
+
 
 automation:
   - alias: update_notification

@@ -38,10 +38,10 @@ media_player:
     username: !secret media_player_kodi1_username
     password: !secret media_player_kodi1_password
 
-  # - platform: samsungtv
-  #   host: 192.168.1.18
-  #   port: 8001
-  #   name: Smart Tv
+  - platform: samsungtv
+    host: 192.168.1.18
+    port: 8001
+    name: Smart Tv
   - platform: plex
     include_non_clients: false
   - platform: onkyo

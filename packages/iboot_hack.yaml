@@ -7,66 +7,47 @@ homeassistant:
 
     switch.ibootone:
       persistent: true
-    switch.iboottwo:
+    switch.dawns_scent:
+      haaska_name: Dawns Scent
+      friendly_name: Dawns Scent
+      icon: mdi:flower
       persistent: true
-    switch.rearnetwork:
-      persistent: true
-      friendly_name: Rear Network Reboot
 
 group:
   iboot_card:
    name: Iboots
    entities:
-     - switch.ibootone
-     - switch.iboottwo
-     - switch.rearnetwork
+     - switch.dawns_scent
+
 
 switch:
-  - platform: command_line
-    switches:
-      ibootone:
-        command_on: !secret iboot1_on
-        command_off: !secret iboot1_off
+
         #command_example: 'curl --data "A=POWERON" --anyauth --user <username>:<pass> <ip>/P0.HTML'
   - platform: command_line
     switches:
-      iboottwo:
+      dawns_scent:
         command_on: !secret iboot2_on
         command_off: !secret iboot2_off
 
-  - platform: command_line
-    switches:
-      rearnetwork:
-        command_on: !secret iboot_rearnetwork_on
-        command_off: !secret iboot_rearnetwork_off
-
 automation:
-  - alias: Xmas Lights On
+  - alias: dawns_scent_on
     trigger:
       - platform: state
         entity_id: sensor.house_mode_state
-        to: 'Early Morning'
+        to: 'Home'
     action:
       - service: switch.turn_on
-        entity_id: switch.ibootone
+        entity_id: switch.dawns_scent
       - service: switch.turn_on
-        entity_id: switch.ibootone
-      - service: switch.turn_on
-        entity_id: switch.iboottwo
-      - service: switch.turn_on
-        entity_id: switch.iboottwo
+        entity_id: switch.dawns_scent
 
-  - alias: Xmas Lights Off
+  - alias: dawns_scent_off
     trigger:
       - platform: state
         entity_id: sensor.house_mode_state
-        to: 'Sleep'
+        to: 'Evening Time'
     action:
       - service: switch.turn_off
-        entity_id: switch.ibootone
+        entity_id: switch.dawns_scent
       - service: switch.turn_off
-        entity_id: switch.ibootone
-      - service: switch.turn_off
-        entity_id: switch.iboottwo
-      - service: switch.turn_off
-        entity_id: switch.iboottwo
+        entity_id: switch.dawns_scent

@@ -53,10 +53,10 @@ script: !include scripts.yaml
 
 automation old: !include automations old.yaml
 
-light:
-  platform: hue
-  host: 192.168.1.185
-  allow_unreachable: True
+hue:
+  bridges:
+    - host: 192.168.1.185
+      allow_unreachable: True
 
 scene: !include Scenes.yaml
 

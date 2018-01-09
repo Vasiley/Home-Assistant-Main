@@ -39,10 +39,19 @@ homeassistant:
     binary_sensor.master_motion:
       friendly_name: Master Motion
       device_class: motion
+    binary_sensor.bedroom_motion:
+      friendly_name: Master Dash motion
+      device_class: motion
     sensor.motion_sensor_master_battery:
       icon: mdi:battery
     sensor.dawns_controller_wifi_signal:
       icon: mdi:signal
+    sensor.bedroom_wallpanel_battery:
+      icon: mdi:battery
+    sensor.bedroom_wallpanel_brightness:
+      friendly_name: Master Bedroom Lux
+    sensor.motion_sensor_master_lux:
+      friendly_name: Master Motion Lux
     light.dawns_bedside_lamp:
       friendly_name: Dawns Side
     light.herbs_bedside_lamp:
@@ -61,7 +70,26 @@ binary_sensor:
     scan_interval: 1
     name: master_motion
 
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/motion"
+    name: "Bedroom Motion"
+    payload_on: '{"value":true}'
+    payload_off: '{"value":false}'
+    device_class: motion
+
 sensor:
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/battery"
+    name: "Bedroom wallpanel battery"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/light"
+    name: "Bedroom wallpanel brightness"
+    unit_of_measurement: "Lux"
+    value_template: '{{ value_json.value }}'
+
   - platform: rest
     resource: !secret MS_rest_39
     value_template: '{{ value_json.state.temperature | float / 100 }}'
@@ -74,6 +102,13 @@ sensor:
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Motion Sensor Master Battery'
+
+  - platform: rest
+    resource: !secret MS_rest_41
+    value_template: '{{ value_json.state.lightlevel }}'
+    unit_of_measurement: Lux
+    scan_interval: 5
+    name: 'Motion Sensor Master Lux'
 
   - platform: mqtt
     state_topic: "dawns/Wifi Connect/wifi"
@@ -162,7 +197,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.master_motion
         to: 'off'
-        for: '00:05:00'
+        for: '00:03:00'
     action:
       - service: light.turn_off
         entity_id: light.master

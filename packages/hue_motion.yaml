@@ -54,6 +54,7 @@ group:
      - binary_sensor.kids_bathroom_motion
      - binary_sensor.bathroom_motion
      - binary_sensor.master_motion
+     - binary_sensor.bedroom_motion
 
 ####### Binary sensor motion   #############
 binary_sensor:
