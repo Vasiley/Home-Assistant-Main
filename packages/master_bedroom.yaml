@@ -154,11 +154,14 @@ automation:
         entity_id: binary_sensor.master_motion
         to: 'on'
     condition:
-      condition: or
+      condition: and
       conditions:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.motion_sensor_master_lux
+        below: '15000'
     action:
       - service: light.turn_on
         data:

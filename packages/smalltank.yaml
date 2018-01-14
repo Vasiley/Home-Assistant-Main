@@ -4,7 +4,7 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'small_tank'
-            
+
     sensor.fish_tank_cpu_use:
       friendly_name: Fish Tank Cpu
       icon: mdi:desktop-tower
@@ -12,7 +12,10 @@ homeassistant:
       friendly_name: Fish Tank Disk
       icon:  mdi:harddisk
     sensor.fish_tank_ram_free:
-      friendly_name: Ram
+      friendly_name: Ram Free
+      icon: mdi:memory
+    sensor.fish_tank_ram_used:
+      friendly_name: Ram Used
       icon: mdi:memory
     sensor.fish_tank_ha_version:
       friendly_name: Fish Tank Ha
@@ -84,6 +87,7 @@ group:
      - sensor.fish_tank_cpu_use
      - sensor.fish_tank_disk_use
      - sensor.fish_tank_ram_free
+     - sensor.fish_tank_ram_used
      - sensor.fish_tank_ha_version
      - sensor.fish_tank_ha_uptime
      - sensor.small_tank_link
@@ -143,6 +147,12 @@ sensor:
     resource: !secret fish_tank_ram_free
     value_template: '{{ value_json.state }}'
     name: Fish Tank Ram Free
+    unit_of_measurement: "Mb"
+
+  - platform: rest
+    resource: !secret fish_tank_ram_used
+    value_template: '{{ value_json.state }}'
+    name: Fish Tank Ram Used
     unit_of_measurement: "Mb"
 
   - platform: rest

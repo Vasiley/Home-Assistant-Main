@@ -12,13 +12,32 @@ homeassistant:
       friendly_name: Dawns Scent
       icon: mdi:flower
       persistent: true
+    switch.rear_network:
+      friendly_name: Rear Network
+      haaska_name: Rear Network Switch
+      icon: mdi:power-settings
+      persistent: true
+    switch.rear_bedroom:
+      friendly_name: Rear Bedroom reboot
+      haaska_name: Rear Network Switch
+      icon: mdi:power-settings
+      persistent: true
+    script.rear_network_reboot:
+      friendly_name: Rear Network Reboot
+      haaska_name: Rear Network Reboot
+      icon: mdi:access-point-network
+      persistent: true
+    script.rear_bedroom_reboot:
+      friendly_name: Camera 12 Reboot
+      haaska_name: Camera 12 Reboot
+      icon: mdi:access-point-network
+      persistent: true
 
 group:
   iboot_card:
    name: Iboots
    entities:
      - switch.dawns_scent
-
 
 switch:
 
@@ -28,6 +47,18 @@ switch:
       dawns_scent:
         command_on: !secret iboot2_on
         command_off: !secret iboot2_off
+
+  - platform: command_line
+    switches:
+      rear_network:
+        command_on: !secret iboot_rearnetwork_on
+        command_off: !secret iboot_rearnetwork_off
+
+  - platform: command_line
+    switches:
+      rear_bedroom:
+        command_on: !secret iboot_rearbedroom_on
+        command_off: !secret iboot_rearbedroom_off
 
 automation:
   - alias: dawns_scent_on
@@ -51,3 +82,36 @@ automation:
         entity_id: switch.dawns_scent
       - service: switch.turn_off
         entity_id: switch.dawns_scent
+
+script:
+  rear_network_reboot:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.rear_network
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rear Network Going Down'
+      - delay: '00:01:00'
+      - service: switch.turn_on
+        entity_id: switch.rear_network
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rear Network Back Up'
+
+  rear_bedroom_reboot:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.rear_bedroom
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Driveway Camera Going Down'
+      - delay: '00:01:00'
+      - service: switch.turn_on
+        entity_id: switch.rear_bedroom
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Driveway Camera Back Up'

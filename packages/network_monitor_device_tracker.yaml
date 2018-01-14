@@ -41,6 +41,9 @@ homeassistant:
     sensor.cisco_router:
       friendly_name: Cisco Router
       entity_picture: /local/cisco54.jpeg
+    sensor.netgear_router:
+      friendly_name: Netgear Router
+      entity_picture: /local/netgear.jpeg  
     sensor.switch2:
       friendly_name: Switch 2
       entity_picture: /local/8PortSwitch.jpeg
@@ -135,6 +138,7 @@ group:
    entities:
      - sensor.asus_router
      - sensor.cisco_router
+     - sensor.netgear_router
      - sensor.switch1
      - sensor.switch2
 
@@ -281,6 +285,10 @@ sensor:
         value_template: '{% if is_state("device_tracker.4ca56d68487b", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      netgear_router:
+        value_template: '{% if is_state("device_tracker.e8fcaf8a04de", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       clients:
         value_template: >-
             {%- for d in states.device_tracker if d.state == 'home' -%}
@@ -336,6 +344,7 @@ automation:
           - sensor.esp_smallfishtank_led
           - sensor.gabbies_laptop
           - sensor.dashboard_tablet_bedroom
+          - sensor.netgear_router
 #        for: '00:00:01'
     condition:
       condition: and

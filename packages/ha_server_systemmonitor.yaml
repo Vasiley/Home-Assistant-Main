@@ -3,7 +3,9 @@ homeassistant:
     sensor.average_load_15m:
       friendly_name: Cpu load_15m
       icon: mdi:speedometer
-
+    sensor.ha_cpu_temperature:
+      friendly_name: Ha Cpu Temperature
+      icon: mdi:oil-temperature
 
 group:
   linux_server_card:
@@ -14,6 +16,7 @@ group:
      - sensor.speedtest_ping
      - sensor.cpu_used
      - sensor.average_load_15m
+     - sensor.ha_cpu_temperature
      - sensor.disk_free_home
      - sensor.disk_used_home_2
      - sensor.disk_used_home
@@ -61,4 +64,9 @@ sensor:
         arg: enp2s0
       - type: last_boot
       - type: since_last_boot
-     
+
+  - platform: command_line
+    name: Ha Cpu Temperature
+    command: cat /sys/class/thermal/thermal_zone2/temp
+    unit_of_measurement: '°C'
+    value_template: '{{ (value|int / 1000 )|round(1) }}'

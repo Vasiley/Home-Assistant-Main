@@ -4,7 +4,7 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'digital_loggers'
-            
+
     switch.network_switch_charter_modem:
       friendly_name: Charter Modem
     switch.network_switch_blue_iris_monitor:
@@ -28,6 +28,7 @@ homeassistant:
 
 group:
   DigitalLoggers_card:
+   control: hidden
    name: Network Switch
    entities:
      - switch.network_switch_charter_modem
@@ -37,9 +38,12 @@ group:
      - switch.network_switch_comnet_switches
      - switch.network_switch_kodi_server
      - switch.network_switch_home_assistant_server
+     - switch.rear_network
      - script.webswitch_reboot
      - script.network_reboot
-
+     - script.rear_network_reboot
+     - switch.rear_bedroom
+     - script.rear_bedroom_reboot
 
 switch:
   - platform: digitalloggers
