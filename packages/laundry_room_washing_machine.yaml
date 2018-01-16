@@ -66,9 +66,9 @@ sensor:
                 {{ states('sensor.stopwatch') }}
                 {% endif %}
         entity_id:
-              - automation.stopwatch_start
-              - automation.stopwatch_update
-              - automation.stopwatch_stop
+             - automation.stopwatch_start
+             - automation.stopwatch_update
+             - automation.stopwatch_stop
 
 automation:
   - alias: 'Washer Start'
@@ -145,3 +145,5 @@ automation:
   # {% else %}
   #   {{ states('sensor.stopwatch') }}
   # {% endif %}
+#    trying a diff way
+# {{ (as_timestamp(now()) - as_timestamp(states.automation.stopwatch_start.attributes.last_triggered)) }}

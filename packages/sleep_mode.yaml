@@ -103,7 +103,7 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.master_table_lamps
-          transition: 120
+          transition: 45
       - service: rest_command.sleep
       - service: rest_command.sleep
       - service: automation.turn_on

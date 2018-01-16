@@ -1,0 +1,43 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Kids Hallway'
+  ################################################
+  ## Binary Sensor
+  ################################################
+    binary_sensor.kids_hallway_motion:
+      friendly_name: Kids Hallway Motion
+      device_class: motion
+
+  ################################################
+  ##  Sensor Battery Icon
+  ################################################
+    sensor.motion_sensor_kids_hall_battery:
+      icon: mdi:battery
+
+####### Binary sensor motion   #############
+binary_sensor:
+  - platform: rest
+    resource: !secret MS_rest_24
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 2
+    name: kids_hallway_motion
+
+################# sensor temp ########################
+sensor:
+  - platform: rest
+    resource: !secret MS_rest_23
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    name: 'Kids Hallway Temperature'
+
+##################### sensor battery   ##############################
+
+
+  - platform: rest
+    resource: !secret MS_rest_23
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Motion Sensor Kids Hall Battery'

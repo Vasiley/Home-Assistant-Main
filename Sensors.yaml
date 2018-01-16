@@ -5,7 +5,7 @@
   sensors:
     kitchen_battery_motion:
       unit_of_measurement: '%'
-      entity_id: sensor.motion_sensor_kitchen_battery
+#      entity_id: sensor.motion_sensor_kitchen_battery
       value_template: >
           {% if states('sensor.motion_sensor_kitchen_battery') != "unknown" %}
             {{ states('sensor.motion_sensor_kitchen_battery')| int }}

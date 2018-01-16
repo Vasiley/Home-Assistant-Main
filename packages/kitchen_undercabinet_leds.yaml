@@ -30,7 +30,11 @@ homeassistant:
     automation.led_animation_speed:
       friendly_name: Leds Kitchen Animation Speed
       haaska_hidden: true
-
+      icon: mdi:remote
+    sensor.kitchen_led_dimmer_last_update:
+      icon: mdi:clock
+    sensor.kitchen_led_dimmer_state:
+      icon: mdi:remote
 
 group:
   kitchen_leds_card:

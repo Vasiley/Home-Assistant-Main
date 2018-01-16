@@ -1,0 +1,66 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Kids Bathroom Room'
+    ############ DIMMERS #################
+    sensor.kids_bathroom_dimmer_battery:
+      icon: mdi:battery
+    sensor.kids_bathroom_dimmer_last_update:
+      icon: mdi:clock
+    sensor.kids_bathroom_dimmer_state:
+      icon: mdi:remote
+
+binary_sensor:
+  - platform: rest
+    resource: !secret MS_rest_30
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 2
+    name: kids_bathroom_motion
+sensor:
+      ######## Kids Bathroom
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Kids Bathroom Dimmer Battery'
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Kids Bathroom Dimmer State'
+  - platform: template
+    sensors:
+      kids_bathroom_dimmer_state:
+        friendly_name: 'Kids Bath Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kids_bathroom_dimmer_state_2')[0] == "1" %}
+                        On
+                      {% elif states('sensor.kids_bathroom_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Kids Bathroom Dimmer Last Update'
+  - platform: template
+    sensors:
+      kids_bathroom_dimmer_last_update:
+        friendly_name: 'Kids Bathroom Last Used'
+        value_template: >-
+          {{ as_timestamp(strptime(states('sensor.kids_bathroom_dimmer_last_update_2')[:19], '%Y-%m-%dT%X'))|timestamp_custom('%a, %B %d') }}
+  - platform: rest
+    resource: !secret MS_rest_29
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    name: 'Kids Bathroom Temperature'
+  - platform: rest
+    resource: !secret MS_rest_30
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Motion Sensor Kids Bathroom Battery'

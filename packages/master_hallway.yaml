@@ -1,0 +1,110 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Master Hallway'
+    sensor.motion_sensor_hallway_battery:
+      icon: mdi:battery
+    binary_sensor.hallway_motion:
+      friendly_name: Hallway Motion
+      device_class: motion
+############################################################################
+###### In a package of room views
+############################################################################
+# group:
+#   master_hallway_card:
+#     name: Master Hallway
+#     entities:
+#       - light.master_hallway
+#       - sensor.motion_sensor_hallway_battery
+#       - binary_sensor.hallway_motion
+#       - sensor.hallway_temperature
+#       - sensor.master_hallway_motion_sensor_lux
+#       - automation.motion_master_hallway_motion_homemode
+#       - automation.motion_master_hallway_motion_not_homemode
+#       - automation.motion_master_hallway_motion_off
+
+
+sensor:
+  - platform: rest
+    resource: !secret MS_rest_11
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Motion Sensor Hallway Battery'
+
+  - platform: rest
+    resource: !secret MS_rest_11
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    name: 'Hallway Temperature'
+
+  - platform: rest
+    resource: !secret MS_rest_13
+    value_template: '{{ value_json.state.lightlevel }}'
+    unit_of_measurement: Lux
+    scan_interval: 5
+    name: 'Master Hallway Motion Sensor Lux'
+
+
+binary_sensor:
+  - platform: rest
+    resource: !secret MS_rest_12
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 2
+    name: hallway_motion
+
+automation:
+  - alias: Motion Master Hallway Motion HomeMode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_motion
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.master_hallway_motion_sensor_lux
+        below: '10000'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.master_hallway
+          color_temp: 154
+          brightness: 255
+
+  - alias: Motion Master Hallway Motion not HomeMode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_motion
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.master_hallway
+          color_temp: 154
+          brightness: 125
+
+  - alias: Motion Master Hallway Motion Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.hallway_motion
+        to: 'off'
+        for: '00:01:00'
+    action:
+      - service: light.turn_off
+        data:
+          entity_id: light.master_hallway
+          transition: 15

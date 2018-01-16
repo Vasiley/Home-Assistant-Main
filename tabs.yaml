@@ -125,6 +125,7 @@
      - group.livingroom_card
      - group.kitchen_card
      - group.laundry_room_card
+     - group.master_hallway_card
 
   Fun_Stuff:
    view: yes
@@ -203,6 +204,19 @@
      - sensor.kitchen_table_dimmer_battery
      - sensor.master_closet_dimmer_battery
      - sensor.bedroom_wallpanel_battery
+
+  Motion_card:
+   name: Motion
+   entities:
+     - binary_sensor.kitchen_motion
+     - binary_sensor.hallway_motion
+     - binary_sensor.laundry_room_motion
+     - binary_sensor.kids_hallway_motion
+     - binary_sensor.kids_bathroom_motion
+     - binary_sensor.bathroom_motion
+     - binary_sensor.master_motion
+     - binary_sensor.bedroom_motion
+
   House_mode:
    name: Home Mode
    control: hidden
@@ -213,3 +227,15 @@
      - script.gone_on
      - script.nap_time
      - script.daytime_sleep_mode
+
+  Dimmers_status_card:
+   name: Dimmers
+   entities:
+     - sensor.master_bathroom_dimmer_last_update
+     - sensor.master_bathroom_dimmer_state
+     - sensor.kitchen_table_dimmer_last_update
+     - sensor.kitchen_table_dimmer_state
+     - sensor.kids_bathroom_dimmer_last_update
+     - sensor.kids_bathroom_dimmer_state
+     - sensor.kitchen_led_dimmer_last_update
+     - sensor.kitchen_led_dimmer_state

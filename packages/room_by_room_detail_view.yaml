@@ -100,7 +100,7 @@ group:
       - script.normal_outside
  kitchen_card:
    control: hidden
-   name: kitchen
+   name: Kitchen
    entities:
       - light.kitchen_under_cabinet
       - light.kitchen
@@ -122,10 +122,19 @@ group:
       - script.blinds_closed
       - script.blinds_halfway
       - script.blinds_open
+
  laundry_room_card:
    control: hidden
    name: Laundry Room
    entities:
+      - light.laundry_room
+      - binary_sensor.laundry_room_motion
+      - sensor.motion_sensor_laundry_battery
+      - sensor.laundry_temperature
+      - sensor.motion_sensor_laundry_lux
+      - automation.laundry_motion_homeMode
+      - automation.laundry_motion_not_homeMode
+      - automation.laundry_motion_off
       - switch.wemo_washing_machine
       - sensor.washing_machine_watts
       - sensor.washing_machine_power_up
@@ -140,3 +149,16 @@ group:
       - automation.stopwatch_start
       - automation.stopwatch_stop
       - automation.stopwatch_update
+
+ master_hallway_card:
+   control: hidden
+   name: Master Hallway
+   entities:
+     - light.master_hallway
+     - sensor.motion_sensor_hallway_battery
+     - binary_sensor.hallway_motion
+     - sensor.hallway_temperature
+     - sensor.master_hallway_motion_sensor_lux
+     - automation.motion_master_hallway_motion_homemode
+     - automation.motion_master_hallway_motion_not_homemode
+     - automation.motion_master_hallway_motion_off
