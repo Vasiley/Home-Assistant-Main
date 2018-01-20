@@ -35,6 +35,7 @@ group:
      - script.nap_time
      - script.front_cam_dashboard
      - script.vas_dashboard
+     - switch.dawns_scent
 
  master_bedroom_card:
     control: hidden
@@ -69,6 +70,7 @@ group:
     entities:
      - light.bathroom_vanity
      - light.bathroom
+     - switch.master_bath
      - binary_sensor.bathroom_motion
      - sensor.bathroom_temperature
      - sensor.motion_sensor_bathroom_battery
@@ -86,6 +88,31 @@ group:
      - automation.motion_bathroom_evening_mode_on
      - automation.motion_bathroom_sleep_off
      - automation.motion_bathroom_sleep_on
+
+ kids_bath_card:
+    control: hidden
+    name: Kids Bath
+    entities:
+     - light.kids_bathroom
+     - switch.kids_bathroom_scent
+     - binary_sensor.kids_bathroom_motion
+     - sensor.kids_bathroom_temperature
+     - sensor.kids_bathroom_motion_sensor_lux
+     - sensor.motion_sensor_kids_bathroom_battery
+     - sensor.kids_bathroom_dimmer_state
+     - sensor.kids_bathroom_dimmer_last_update
+     - sensor.kids_bathroom_dimmer_battery
+     - script.kids_shower_time_on
+     - script.kids_shower_time_off
+#     - switch.kids_shower_time
+     - automation.kids_bath_light_left_on
+     - automation.kids_bath_shower_time_off
+     - automation.kids_bath_shower_time_on
+     - automation.motion_kids_bathroom_home_mode_off
+     - automation.motion_kids_bathroom_home_mode_on
+     - automation.motion_kids_bathroom_evening_mode_on
+     - automation.motion_kids_bathroom_sleep_off
+     - automation.motion_kids_bathroom_sleep_on
 
  carport_lights_card:
     control: hidden
@@ -162,3 +189,16 @@ group:
      - automation.motion_master_hallway_motion_homemode
      - automation.motion_master_hallway_motion_not_homemode
      - automation.motion_master_hallway_motion_off
+
+ kids_hallway_card:
+   control: hidden
+   name: Kids Hallway
+   entities:
+     - light.kids_hallway
+     - sensor.motion_sensor_hallway_battery
+     - binary_sensor.kids_hallway_motion
+     - sensor.kids_hallway_temperature
+     - sensor.kids_hallway_motion_sensor_lux
+     - automation.motion_kids_hallway_motion_homemode
+     - automation.motion_kids_hallway_motion_not_homemode
+     - automation.motion_kids_hallway_motion_off

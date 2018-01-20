@@ -8,6 +8,9 @@ homeassistant:
     binary_sensor.hallway_motion:
       friendly_name: Hallway Motion
       device_class: motion
+    sensor.master_hallway_motion_sensor_lux:
+      friendly_name: Master Hallway Light Level
+      icon: mdi:theme-light-dark  
 ############################################################################
 ###### In a package of room views
 ############################################################################

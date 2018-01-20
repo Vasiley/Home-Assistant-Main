@@ -29,10 +29,6 @@ group:
     - sensor.washer_status
     - sensor.stopwatch
 
-wemo:
-  static:
-    - 192.168.1.204
-
 input_boolean:
   washer_switch:
     initial: off
@@ -60,15 +56,16 @@ sensor:
         value_template: >
                 {% if is_state('input_boolean.stopwatch', 'on') %}
                 {{ relative_time(states.automation.stopwatch_start.attributes.last_triggered) }}
+                {# states.automation.stopwatch_update #}
                 {% elif is_state('sensor.stopwatch', 'unknown') %}
                   0 seconds
                 {% else %}
                 {{ states('sensor.stopwatch') }}
                 {% endif %}
-        entity_id:
-             - automation.stopwatch_start
-             - automation.stopwatch_update
-             - automation.stopwatch_stop
+#        entity_id:
+#             - automation.stopwatch_start
+#             - automation.stopwatch_update
+#             - automation.stopwatch_stop
 
 automation:
   - alias: 'Washer Start'

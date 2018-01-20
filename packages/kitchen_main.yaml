@@ -12,6 +12,7 @@ homeassistant:
       friendly_name: Kitchen Motion Battery
     sensor.motion_sensor_kitchen_lux:
       friendly_name: Kitchen Light Level
+      icon: mdi:theme-light-dark
     sensor.kitchen_table_dimmer_battery:
       icon: mdi:battery
     sensor.kitchen_table_dimmer_last_update:

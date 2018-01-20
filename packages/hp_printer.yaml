@@ -18,17 +18,27 @@ homeassistant:
       entity_picture: /local/lightblack.jpeg
     sensor.yellow_ink_level:
       entity_picture: /local/yellow.jpeg
+    automation.restart_printer:
+      friendly_name: Auto Restart Printer
+    script.printer_powercycle:
+      friendly_name: Printer Script
 
 group:
   hp_printer_card:
+   control: hidden
    name: Printers
    entities:
+     - switch.hp_printer
      - sensor.printer_uptime
      - sensor.black_ink_level
      - sensor.yellow_ink_level
      - sensor.cyan_ink_level
      - sensor.magenta_ink_level
      - sensor.photo_black_ink_level
+     - automation.restart_printer
+     - script.printer_powercycle
+
+
 
 sensor:
   - platform: snmp
@@ -73,3 +83,22 @@ sensor:
     baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.5
     accept_errors: true
     unit_of_measurement: '%'
+
+automation:
+  - alias: restart_printer
+    trigger:
+      - platform: state
+        entity_id: sensor.printer_uptime
+        to: 'Unknown'
+    action:
+      - service: script.turn_on
+        entity_id: script.printer_powercycle
+
+script:
+  printer_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.hp_printer
+      - delay: '00:00:45'
+      - service: switch.turn_on
+        entity_id: switch.hp_printer

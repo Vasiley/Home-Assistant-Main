@@ -67,10 +67,6 @@ homeassistant:
     light.bathroom:
       persistence: false
 
-# I use the group here for a seperate tab to show everthing by room not for main viewing since automations are only for debugging
-
-
-
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_36

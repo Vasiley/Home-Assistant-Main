@@ -7,11 +7,6 @@ homeassistant:
 
     switch.ibootone:
       persistent: true
-    switch.dawns_scent:
-      haaska_name: Dawns Scent
-      friendly_name: Dawns Scent
-      icon: mdi:flower
-      persistent: true
     switch.rear_network:
       friendly_name: Rear Network
       haaska_name: Rear Network Switch
@@ -33,12 +28,6 @@ homeassistant:
       icon: mdi:access-point-network
       persistent: true
 
-group:
-  iboot_card:
-   name: Iboots
-   entities:
-     - switch.dawns_scent
-
 switch:
 
         #command_example: 'curl --data "A=POWERON" --anyauth --user <username>:<pass> <ip>/P0.HTML'
@@ -59,29 +48,6 @@ switch:
       rear_bedroom:
         command_on: !secret iboot_rearbedroom_on
         command_off: !secret iboot_rearbedroom_off
-
-automation:
-  - alias: dawns_scent_on
-    trigger:
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Home'
-    action:
-      - service: switch.turn_on
-        entity_id: switch.dawns_scent
-      - service: switch.turn_on
-        entity_id: switch.dawns_scent
-
-  - alias: dawns_scent_off
-    trigger:
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Evening Time'
-    action:
-      - service: switch.turn_off
-        entity_id: switch.dawns_scent
-      - service: switch.turn_off
-        entity_id: switch.dawns_scent
 
 script:
   rear_network_reboot:

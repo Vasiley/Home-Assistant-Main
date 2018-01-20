@@ -70,3 +70,10 @@ ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
 #discovery:
+wemo:
+  static:
+    - 192.168.1.254  #hp printer
+    - 192.168.1.204  #washer
+    - 192.168.1.146  #Master Bath Scent
+    - 192.168.1.126  #Kids Bathroom Scent
+    - 192.168.1.218  #Ruths Room Scent

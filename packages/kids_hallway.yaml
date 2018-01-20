@@ -3,18 +3,16 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Kids Hallway'
-  ################################################
-  ## Binary Sensor
-  ################################################
     binary_sensor.kids_hallway_motion:
       friendly_name: Kids Hallway Motion
       device_class: motion
-
-  ################################################
-  ##  Sensor Battery Icon
-  ################################################
     sensor.motion_sensor_kids_hall_battery:
       icon: mdi:battery
+    sensor.kids_hallway_motion_sensor_lux:
+      friendly_name: Kids Hallway Light Level
+      icon: mdi:theme-light-dark
+    sensor.kids_hallway_temperature:
+      friendly_name: Kids Hallway Temperature
 
 ####### Binary sensor motion   #############
 binary_sensor:
@@ -31,13 +29,85 @@ sensor:
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     name: 'Kids Hallway Temperature'
-
-##################### sensor battery   ##############################
-
-
   - platform: rest
     resource: !secret MS_rest_23
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Motion Sensor Kids Hall Battery'
+  - platform: rest
+    resource: !secret MS_rest_25
+    value_template: '{{ value_json.state.lightlevel }}'
+    unit_of_measurement: Lux
+    scan_interval: 5
+    name: 'Kids Hallway Motion Sensor Lux'
+############################################################################
+###### In a package of room views
+############################################################################
+# group:
+#   kids_hallway_card:
+#     name: Kids Hallway
+#     entities:
+#       - light.kids_hallway
+#       - sensor.motion_sensor_hallway_battery
+#       - binary_sensor.kids_hallway_motion
+#       - sensor.kids_hallway_temperature
+#       - sensor.kids_hallway_motion_sensor_lux
+#       - automation.motion_kids_hallway_motion_homemode
+#       - automation.motion_kids_hallway_motion_not_homemode
+#       - automation.motion_kids_hallway_motion_off
+
+automation:
+  - alias: Motion Kids Hallway Motion HomeMode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kids_hallway_motion
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.kids_hallway_motion_sensor_lux
+        below: '10000'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.kids_hallway
+          color_temp: 154
+          brightness: 255
+
+  - alias: Motion kids Hallway Motion not HomeMode
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kids_hallway_motion
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.kids_hallway
+          color_temp: 154
+          brightness: 125
+
+  - alias: Motion Kids Hallway Motion Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kids_hallway_motion
+        to: 'off'
+        for: '00:01:00'
+    action:
+      - service: light.turn_off
+        data:
+          entity_id: light.kids_hallway
+          transition: 15

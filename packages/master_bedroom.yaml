@@ -49,16 +49,16 @@ homeassistant:
     sensor.bedroom_wallpanel_battery:
       icon: mdi:battery
     sensor.bedroom_wallpanel_brightness:
-      friendly_name: Master Bedroom Lux
+      friendly_name: Master Bedroom Dash Light Level
+      icon: mdi:theme-light-dark
     sensor.motion_sensor_master_lux:
-      friendly_name: Master Motion Lux
+      friendly_name: Master Bedroom Light Level
+      icon: mdi:theme-light-dark
     light.dawns_bedside_lamp:
       friendly_name: Dawns Side
     light.herbs_bedside_lamp:
       friendly_name: Herbs Side
-    switch.dawn_day:
-      friendly_name: Dawns controls Day
-      haaska_name: Bedroom Candle
+    
     switch.dawn_night:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan

@@ -9,9 +9,8 @@ homeassistant:
     sensor.motion_sensor_laundry_battery:
       icon: mdi:battery
     sensor.motion_sensor_laundry_lux:
-      friendly_name: Laundry Room Motion Lux
-
-
+      friendly_name: Laundry Room Light Level
+      icon: mdi:theme-light-dark
 
 sensor:
   - platform: rest

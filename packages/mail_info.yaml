@@ -1,17 +1,16 @@
 homeassistant:
   customize:
-    sensor.usps_mail_mail:
+    sensor.usps_mail:
       friendly_name: Mail
-
+      icon: mdi:mailbox
+    sensor.usps_packages:
+      icon: mdi:package-variant
     sensor.deliveries_today:
       icon: mdi:package-variant
-
     sensor.packages_in_transit:
       icon: mdi:truck-fast
-
     sensor.fedex:
       icon: mdi:truck-fast
-
     camera.mail:
       friendly_name: Mail Scan's
 
@@ -24,27 +23,36 @@ group:
   usps_mail_card:
    name: Mail
    entities:
-     - sensor.usps_mail_mail
-     - sensor.usps_mail_packages
+     - sensor.usps_mail
+     - sensor.usps_packages
+#     - sensor.usps_mail_mail
+#     - sensor.usps_mail_packages
      - sensor.packages_in_transit
      - sensor.deliveries_today
      - sensor.fedex
      - sensor.ups
-
-
-usps:
-  username: !secret usps_username
-  password: !secret usps_password
-  name: Usps Mail
+#usps:
+#  username: !secret usps_username
+#  password: !secret usps_password
+#  name: Usps Mail
 #  scan_interval: 1800
 
-camera:
-  - platform: usps
-    name: Mail
-    interval: 5
+# camera:
+#   - platform: usps
+#     name: Mail
+#     interval: 5
 
 ############### Mail Sensor   ###############################
 sensor:
+  - platform: command_line
+    name: 'USPS Mail'
+    command: '/root/.homeassistant/python_scripts/check_mail.py letters'
+    scan_interval: 3600
+  - platform: command_line
+    name: 'USPS Packages'
+    command: 'root/.homeassistant/python_scripts/check_mail.py packages'
+    scan_interval: 3600
+
 #  - platform: usps
 #    username: !secret usps_username
 #    password: !secret usps_password
@@ -72,7 +80,7 @@ sensor:
                0
             {% endif %}
           {% endmacro %}
-          {{in_transit(states.sensor.usps_mail_packages)|int + in_transit(states.sensor.ups)|int  + in_transit(states.sensor.fedex)|int}}
+          {{in_transit(states.sensor.usps_packages)|int + in_transit(states.sensor.ups)|int  + in_transit(states.sensor.fedex)|int}}
       deliveries_today:
         friendly_name: "Today's Deliveries"
         value_template: >
@@ -91,7 +99,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.usps_mail_mail
+        entity_id: sensor.usps_mail
         above: 0
     action:
       - service: tts.google_say

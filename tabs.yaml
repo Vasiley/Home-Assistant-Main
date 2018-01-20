@@ -98,6 +98,7 @@
      - group.room_occupancy_card
      - group.Dimmers_status_card
      - group.blue_iris_motion_card
+     - group.lux_card
 
   MyCameras:
    view: yes
@@ -126,6 +127,8 @@
      - group.kitchen_card
      - group.laundry_room_card
      - group.master_hallway_card
+     - group.kids_bath_card
+     - group.kids_hallway_card
 
   Fun_Stuff:
    view: yes
@@ -135,6 +138,8 @@
      - group.hue_scenes_card
      - group.Routines
      - group.input_boolean_card
+     - group.smellgood_card
+
 
   Fish_tank:
    view: yes
@@ -174,8 +179,6 @@
      - script.knightrider_off
      - script.knightrider_on
      - script.rerunknightrider_on
-     - script.samsungtv_off
-     - script.samsungtv_on
 
   Temperature_Info:
    name: Temperature
@@ -216,6 +219,17 @@
      - binary_sensor.bathroom_motion
      - binary_sensor.master_motion
      - binary_sensor.bedroom_motion
+
+  lux_card:
+   name: House Light Levels
+   entities:
+     - sensor.bedroom_wallpanel_brightness
+     - sensor.motion_sensor_master_lux
+     - sensor.master_hallway_motion_sensor_lux
+     - sensor.motion_sensor_kitchen_lux
+     - sensor.motion_sensor_laundry_lux
+     - sensor.kids_bathroom_motion_sensor_lux
+     - sensor.kids_hallway_motion_sensor_lux
 
   House_mode:
    name: Home Mode

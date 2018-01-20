@@ -7,7 +7,8 @@ logger:
     homeassistant.components.sun: warn
     homeassistant.components.remote: warn
     homeassistant.components.switch: warn
-    homeassistant.components.sensor: warn
+    homeassistant.components.sensor: error
+    homeassistant.components.sensor.snmp: critical
     homeassistant.components.script: warn
     homeassistant.components.tts: warn
     homeassistant.components.media_player: warn
