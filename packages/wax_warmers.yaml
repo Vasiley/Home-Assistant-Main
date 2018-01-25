@@ -70,6 +70,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Evening Time'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Away'  
     action:
       - service: switch.turn_off
         entity_id: switch.dawns_scent

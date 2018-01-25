@@ -1,0 +1,120 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'network reboot'
+
+    script.webswitch_reboot:
+      friendly_name: Webswitch Reboot
+      icon: mdi:power-settings
+    script.network_reboot:
+      friendly_name: Network Reboot
+      icon: mdi:power-settings
+    script.driveway_cam_powercycle:
+      friendly_name: Driveway Cam Reboot
+      icon: mdi:access-point-network
+    switch.driveway_camera:
+      friendly_name: Driveway Camera
+      icon: mdi:power-settings
+    automation.reboot_driveway_camera:
+      friendly_name: Driveway Cam Auto Reboot
+    automation.reboot_masterbedroom_network:
+      friendly_name: Master Bedroom Auto Reboot
+
+group:
+  equip_reboots_card:
+   control: hidden
+   name: Equipment Reboots
+   entities:
+     - switch.rear_network
+     - script.webswitch_reboot
+     - script.network_reboot
+     - script.rear_network_reboot
+     - script.masterbedroom_reboot
+     - switch.driveway_camera
+     - script.driveway_cam_powercycle
+     - automation.reboot_driveway_camera
+     - automation.reboot_masterbedroom_network
+
+script:
+  #### reboot websitch clients  ####################
+  webswitch_reboot:
+    sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'WebSwitch Reboot'
+      - delay: '00:00:05'
+      - service: rest_command.webswitch_reboot
+###### reboot network equipment only    ########
+  network_reboot:
+    sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Network is going down Gabbie and Grandma chill it will be okay'
+      - delay: '00:00:01'
+      - service: rest_command.modem_reboot
+      - delay: '00:01:30'
+      - service: rest_command.router_reboot
+      - delay: '00:02:30'
+      - service: switch.turn_off
+        entity_id: switch.network_switch_comnet_switches
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.network_switch_comnet_switches
+      - service: automation.trigger
+        entity_id: automation.reboot_driveway_camera
+      - service: automation.trigger
+        entity_id: automation.reboot_masterbedroom_network
+      - service: script.turn_on
+        entity_id: script.rear_network_reboot    
+      - delay: '00:01:30'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Network is back up'
+
+  driveway_cam_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.driveway_camera
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.driveway_camera
+
+automation:
+  - alias: reboot_driveway_camera
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.driveway_camera
+        to: 'Offline'
+        for: '00:05:00'
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: state
+        entity_id: sensor.driveway_camera
+        state: 'Offline'
+    action:
+      - service: script.turn_on
+        entity_id: script.driveway_cam_powercycle
+
+  - alias: reboot_masterbedroom_network
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.netgear_router
+        to: 'Offline'
+        for: '00:05:00'
+      - platform: homeassistant
+        event: start
+    condition:
+      - condition: state
+        entity_id: sensor.netgear_router
+        state: 'Offline'
+    action:
+      - service: script.turn_on
+        entity_id: script.masterbedroom_reboot

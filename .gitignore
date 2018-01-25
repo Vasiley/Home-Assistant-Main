@@ -26,8 +26,6 @@ harmony_media_room.conf
 harmony_entertainment.conf
 harmony_harmony_hub.conf
 master.zip
-vasiley.dns1.us.ca-bundle
-vasiley.dns1.us.crt
 pyozw.sqlite
 .*
 !/.gitignore
@@ -57,3 +55,5 @@ google_calenders.yaml
 .google.token
 *.py
 get_mail.py
+.ca-bundle
+.crt

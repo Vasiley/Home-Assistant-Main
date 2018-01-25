@@ -72,7 +72,7 @@ ffmpeg:
 #discovery:
 wemo:
   static:
-    - 192.168.1.254  #hp printer
+    - 192.168.1.254  #Driveway Camera
     - 192.168.1.204  #washer
     - 192.168.1.146  #Master Bath Scent
     - 192.168.1.126  #Kids Bathroom Scent

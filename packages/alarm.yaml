@@ -11,6 +11,7 @@ group:
    entities:
      - alarm_control_panel.ha_alarm
      - sensor.blue_iris_profile
+
 ##############################################################################
 ###### see home mode package for setting of the mode house is in      ########
 ######   ie sleep home or away  (sets cameras thermostat and some lights  ####
@@ -76,6 +77,9 @@ automation:
       - platform: state
         entity_id: binary_sensor.master_motion
         to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_tablet_camera
+        to: 'on'
     condition:
       - condition: state
         entity_id: alarm_control_panel.ha_alarm
@@ -101,13 +105,22 @@ automation:
         data_template:
           message: >
             An alarm has been Triggered in the {% if is_state('binary_sensor.kids_bathroom_motion', 'on') %}
-            Kids Bathroom{% elif is_state('binary_sensor.kids_hallway_motion', 'on') %}
-            Kids Hallway{% elif is_state('binary_sensor.kitchen_motion', 'on') %}
-            Kitchen{% elif is_state('binary_sensor.hallway_motion', 'on') %}
-            Hallway{%elif is_state('binary_sensor.bathroom_motion', 'on') %}
-            Master Bath{%elif is_state('binary_sensor.master_motion', 'on') %}
-            Master{% elif is_state('binary_sensor.laundry_room_motion', 'on') %}
-            Laundry Room{% endif %}
+            Kids Bathroom
+            {% elif is_state('binary_sensor.kids_hallway_motion', 'on') %}
+            Kids Hallway
+            {% elif is_state('binary_sensor.kitchen_motion', 'on') %}
+            Kitchen
+            {% elif is_state('binary_sensor.hallway_motion', 'on') %}
+            Hallway
+            {%elif is_state('binary_sensor.bathroom_motion', 'on') %}
+            Master Bath
+            {%elif is_state('binary_sensor.master_motion', 'on') %}
+            Master
+            {% elif is_state('binary_sensor.laundry_room_motion', 'on') %}
+            Laundry Room
+            {% elif is_state('binary_sensor.motion_tablet_camera', 'on') %}
+            Living Room
+            {% endif %}
 
 
 #################################################
@@ -119,6 +132,9 @@ automation:
       - platform: state
         entity_id: binary_sensor.laundry_room_motion
         to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_tablet_camera
+        to: 'on'
     condition:
       - condition: state
         entity_id: alarm_control_panel.ha_alarm
@@ -127,12 +143,23 @@ automation:
       - service: alarm_control_panel.alarm_trigger
         entity_id: alarm_control_panel.ha_alarm
       - service: tts.google_say
-        data:
+        data_template:
           entity_id: media_player.ha_speaker
-          message: 'Motion Detected in Laundry Room'
+          message: >
+            An alarm has been Triggered in the {% if is_state('binary_sensor.laundry_room_motion', 'on') %}
+            Laundry Room
+            {% elif is_state('binary_sensor.motion_tablet_camera', 'on') %}
+            Living Room
+            {% endif %}
+
       - service: notify.Pushbullet
-        data:
-          message: 'An alarm has been Triggered! In Laundry Room'
+        data_template:
+          message: >
+             An alarm has been Triggered in the {% if is_state('binary_sensor.laundry_room_motion', 'on') %}
+             Laundry Room
+             {% elif is_state('binary_sensor.motion_tablet_camera', 'on') %}
+             Living Room
+             {% endif %}
 
 #################################################
 #             Alarm Auto Arm Away when LEAVE                       #

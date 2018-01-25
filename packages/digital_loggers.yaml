@@ -19,13 +19,7 @@ homeassistant:
       friendly_name: Kodi Server
     switch.network_switch_home_assistant_server:
       friendly_name: HASS Server
-    script.webswitch_reboot:
-      friendly_name: Webswitch Reboot
-      icon: mdi:power-settings
-    script.network_reboot:
-      friendly_name: Network Reboot
-      icon: mdi:power-settings
-
+    
 group:
   DigitalLoggers_card:
    control: hidden
@@ -38,12 +32,7 @@ group:
      - switch.network_switch_comnet_switches
      - switch.network_switch_kodi_server
      - switch.network_switch_home_assistant_server
-     - switch.rear_network
-     - script.webswitch_reboot
-     - script.network_reboot
-     - script.rear_network_reboot
-     - switch.rear_bedroom
-     - script.rear_bedroom_reboot
+
 
 switch:
   - platform: digitalloggers
@@ -51,33 +40,3 @@ switch:
     password: !secret digital_loggers_pass
     name: Network Switch
     cycletime: 5
-
-
-script:
-  #### reboot websitch clients  ####################
-  webswitch_reboot:
-    sequence:
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'WebSwitch Reboot'
-      - delay: '00:00:05'
-      - service: rest_command.webswitch_reboot
-###### reboot network equipment only    ########
-  network_reboot:
-    sequence:
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Network is going down Gabbie and Grandma chill it will be okay'
-      - delay: '00:00:01'
-      - service: rest_command.modem_reboot
-      - delay: '00:01:30'
-      - service: rest_command.router_reboot
-      - delay: '00:02:30'
-      - service: rest_command.switch1_reboot
-      - delay: '00:01:30'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Network is back up'

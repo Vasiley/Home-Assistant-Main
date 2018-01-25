@@ -38,6 +38,7 @@
    view: yes
    name: Equipment
    entities:
+     - group.equip_reboots_card
      - group.Ads_Blocked_card
      - group.DigitalLoggers_card
      - group.NetworkNmap_status_card
@@ -251,5 +252,6 @@
      - sensor.kitchen_table_dimmer_state
      - sensor.kids_bathroom_dimmer_last_update
      - sensor.kids_bathroom_dimmer_state
-     - sensor.kitchen_led_dimmer_last_update
      - sensor.kitchen_led_dimmer_state
+     - sensor.kitchen_blinds_state
+     - sensor.kitchen_led_dimmer_last_update

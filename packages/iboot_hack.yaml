@@ -12,21 +12,26 @@ homeassistant:
       haaska_name: Rear Network Switch
       icon: mdi:power-settings
       persistent: true
-    switch.rear_bedroom:
-      friendly_name: Rear Bedroom reboot
-      haaska_name: Rear Network Switch
+    switch.masterbedroom_network:
+      friendly_name: Master Bedroom reboot
+      haaska_name: Master Bedroom Switch
       icon: mdi:power-settings
       persistent: true
+    switch.masterbedroom_toggle:
+      friendly_name: Master Bedroom Network Switch
+      haaska_name: Master Bedrrom Network Switch
+      icon: mdi:power-setting
     script.rear_network_reboot:
       friendly_name: Rear Network Reboot
       haaska_name: Rear Network Reboot
       icon: mdi:access-point-network
       persistent: true
-    script.rear_bedroom_reboot:
-      friendly_name: Camera 12 Reboot
-      haaska_name: Camera 12 Reboot
+    script.masterbedroom_reboot:
+      friendly_name: Master Bedroom Network
+      haaska_name: Master Bedroom Network
       icon: mdi:access-point-network
       persistent: true
+
 
 switch:
 
@@ -45,9 +50,16 @@ switch:
 
   - platform: command_line
     switches:
-      rear_bedroom:
-        command_on: !secret iboot_rearbedroom_on
-        command_off: !secret iboot_rearbedroom_off
+      masterbedroom_network:
+        command_on: !secret iboot_masterbedroom_on
+        command_off: !secret iboot_masterbedroom_off
+
+  - platform: command_line
+    switches:
+      masterbedroom_toggle:
+        command_on: !secret iboot_masterbedroom_toggle
+        command_off: !secret iboot_masterbedroom_toggle
+
 
 script:
   rear_network_reboot:
@@ -66,18 +78,13 @@ script:
           entity_id: media_player.ha_speaker
           message: 'Rear Network Back Up'
 
-  rear_bedroom_reboot:
+  masterbedroom_reboot:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.rear_bedroom
+        entity_id: switch.masterbedroom_toggle
+      - service: switch.turn_off
+        entity_id: switch.masterbedroom_toggle  
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Driveway Camera Going Down'
-      - delay: '00:01:00'
-      - service: switch.turn_on
-        entity_id: switch.rear_bedroom
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Driveway Camera Back Up'
+          message: 'Master Bedroom Is Rebooting'

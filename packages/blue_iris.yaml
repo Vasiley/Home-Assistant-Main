@@ -84,22 +84,22 @@ binary_sensor:
           {% else %}
             False
           {% endif %}
-#   - platform: template
-#     sensors:
-#       motion_outdoor_driveway:
-# #        friendly_name: 'Driveway'
-#         value_template: >-
-#            {% if states('binary_sensor.blueiriscam2') %}
-#            {% if is_state('binary_sensor.blueiriscam2', 'on') %}
-#               True
-#            {% elif is_state('binary_sensor.blueiriscam2', 'off') %}
-#               False
-#            {% else %}
-#            {{ states('binary_sensor.blueiriscam2') }}
-#            {% endif %}
-#            {% else %}
-#              False
-#            {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_driveway:
+#        friendly_name: 'Driveway'
+        value_template: >-
+           {% if states('binary_sensor.blueiriscam2') %}
+           {% if is_state('binary_sensor.blueiriscam2', 'on') %}
+              True
+           {% elif is_state('binary_sensor.blueiriscam2', 'off') %}
+              False
+           {% else %}
+           {{ states('binary_sensor.blueiriscam2') }}
+           {% endif %}
+           {% else %}
+             False
+           {% endif %}
   - platform: template
     sensors:
       motion_outdoor_number12:
