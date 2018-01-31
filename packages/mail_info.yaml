@@ -1,5 +1,8 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'mail_info'
     sensor.usps_mail:
       friendly_name: Mail
       icon: mdi:mailbox
@@ -11,47 +14,46 @@ homeassistant:
       icon: mdi:truck-fast
     sensor.fedex:
       icon: mdi:truck-fast
-    camera.mail:
+    camera.camera_mail:
       friendly_name: Mail Scan's
 
 group:
   mailscan_card:
    name: Mail Scans
    entities:
-     - camera.usps_mail_mail
+    - camera.camera_mail
 
   usps_mail_card:
    name: Mail
    entities:
      - sensor.usps_mail
      - sensor.usps_packages
-#     - sensor.usps_mail_mail
-#     - sensor.usps_mail_packages
      - sensor.packages_in_transit
      - sensor.deliveries_today
      - sensor.fedex
      - sensor.ups
-#usps:
-#  username: !secret usps_username
-#  password: !secret usps_password
-#  name: Usps Mail
-#  scan_interval: 1800
-
-# camera:
-#   - platform: usps
-#     name: Mail
-#     interval: 5
 
 ############### Mail Sensor   ###############################
 sensor:
-  - platform: command_line
+
+  - platform: mqtt
     name: 'USPS Mail'
-    command: '/root/.homeassistant/python_scripts/check_mail.py letters'
-    scan_interval: 3600
-  - platform: command_line
-    name: 'USPS Packages'
-    command: 'root/.homeassistant/python_scripts/check_mail.py packages'
-    scan_interval: 3600
+    state_topic: '/usps/mails'
+    value_template: "{{ value }}"
+
+  - platform: mqtt
+    name: USPS Packages
+    state_topic: '/usps/packages'
+    value_template: "{{ value }}"
+
+  # - platform: command_line
+  #   name: 'USPS Mail'
+  #   command: '/root/.homeassistant/python_scripts/check_mail.py letters'
+  #   scan_interval: 3600
+  # - platform: command_line
+  #   name: 'USPS Packages'
+  #   command: 'root/.homeassistant/python_scripts/check_mail.py packages'
+  #   scan_interval: 3600
 
 #  - platform: usps
 #    username: !secret usps_username
@@ -118,3 +120,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'You Have a Usps Package On the Way Check Dashboard'
+camera:
+  - platform: generic
+    name: Camera Mail
+    still_image_url: !secret mail_scan_ip

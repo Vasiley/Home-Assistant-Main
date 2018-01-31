@@ -69,7 +69,7 @@ script:
       - service: automation.trigger
         entity_id: automation.reboot_masterbedroom_network
       - service: script.turn_on
-        entity_id: script.rear_network_reboot    
+        entity_id: script.rear_network_reboot
       - delay: '00:01:30'
       - service: tts.google_say
         data:
@@ -83,6 +83,10 @@ script:
       - delay: '00:00:30'
       - service: switch.turn_on
         entity_id: switch.driveway_camera
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rebooting Driveway Camera'  
 
 automation:
   - alias: reboot_driveway_camera

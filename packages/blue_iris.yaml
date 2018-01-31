@@ -167,7 +167,6 @@ binary_sensor:
   - platform: template
     sensors:
       motion_tablet_camera:
-#        friendly_name: 'Back Door'
         value_template: >-
           {% if states('binary_sensor.blueiriscam8') %}
           {% if is_state('binary_sensor.blueiriscam8', 'on') %}
@@ -202,8 +201,7 @@ automation:
           entity_id: light.door_lamp
           flash: short
           color_name: Red
-#      - service: script.turn_on
-#        entity_id: script.front_cam_dashboard
+
   - alias: Back to White after Motion
     initial_state: 'on'
     trigger:
@@ -220,6 +218,7 @@ automation:
           entity_id: light.door_lamp
           color_temp: 154
           brightness: 255
+
 #############################################################################
 ############3 rest commands to change blue iris profile               #######
 #############################################################################
@@ -230,15 +229,3 @@ rest_command:
     url: !secret rest_command_lockdown
   sleep:
     url: !secret rest_command_sleep
-
-#############################################################################
-############ script to change hadashboard to see camera with motion   #######
-#############################################################################
-# script:
-#   front_cam_dashboard:
-#     sequence:
-#       - event: hadashboard
-#         event_data:
-#           command: navigate
-#           timeout: 60
-#           target: cameras

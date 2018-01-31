@@ -216,7 +216,7 @@ automation:
 
 ####### Holiday Announcment ################
 
-  - alias: Holiday Countdown 30 Days
+  - alias: Holiday Countdown 7 Days
     initial_state: 'on'
     hide_entity: false
     trigger:
@@ -225,7 +225,7 @@ automation:
         to: 'on'
     condition:
       - condition: template
-        value_template: "{{ states.sensor.days_to_next_holiday.state | int > 0 and states.sensor.days_to_next_holiday.state | int < 30 }}"
+        value_template: "{{ states.sensor.days_to_next_holiday.state | int > 0 and states.sensor.days_to_next_holiday.state | int < 8 }}"
     action:
       - delay: '00:01:00'
       - service: tts.google_say
@@ -267,7 +267,7 @@ automation:
         to: 'on'
     condition:
       - condition: template
-        value_template: "{{ states.sensor.days_to_next_appointment.state | int > 0 and states.sensor.days_to_next_appointment.state | int < 3 }}"
+        value_template: "{{ states.sensor.days_to_next_appointment.state | int > 0 and states.sensor.days_to_next_appointment.state | int < 4 }}"
     action:
       - delay: '00:01:15'
       - service: tts.google_say

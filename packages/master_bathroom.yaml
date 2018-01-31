@@ -63,7 +63,7 @@ homeassistant:
     switch.shower_time:
       friendly_name: Shower Time
       haaska_hidden: false
-      haaska_name: Shower TIme
+      haaska_name: Shower Time
     light.bathroom:
       persistence: false
 

@@ -205,9 +205,9 @@ automation:
   - alias: 'Alarm set armed home'
     initial_state: 'on'
     trigger:
-      - platform: state
-        entity_id: sensor.set_hold_mode
-        to: 'sleep'
+#      - platform: state
+#        entity_id: sensor.set_hold_mode
+#        to: 'sleep'
       - platform: state
         entity_id: input_boolean.boolean_sleep
         to: 'on'

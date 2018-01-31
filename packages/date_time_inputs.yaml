@@ -1,0 +1,18 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'date_time_inputs'
+
+group:
+  big_tank_reminder_card:
+   name: Big Tank
+   entities:
+     - input_datetime.canister_filter_reminder
+
+input_datetime:
+
+  canister_filter_reminder:
+    name: Canister Filter Reminder
+    has_date: true
+    has_time: false

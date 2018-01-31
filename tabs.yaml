@@ -130,6 +130,7 @@
      - group.master_hallway_card
      - group.kids_bath_card
      - group.kids_hallway_card
+     - group.ruths_room_card
 
   Fun_Stuff:
    view: yes
@@ -151,6 +152,20 @@
      - group.water_sensors
      - group.controls
      - group.fish_leds_card
+
+  dashboard:
+   view: yes
+   name: Dashboards
+   entities:
+     - group.lv_room_dashboard
+     - group.master_bedroom_dashboard
+     - group.all_dashboards       
+
+  reminders:
+   view: yes
+   name: Maintanence
+   entities:
+     - group.big_tank_reminder_card
 
   Family:
     entities:

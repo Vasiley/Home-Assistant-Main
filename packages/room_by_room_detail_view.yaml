@@ -202,3 +202,14 @@ group:
      - automation.motion_kids_hallway_motion_homemode
      - automation.motion_kids_hallway_motion_not_homemode
      - automation.motion_kids_hallway_motion_off
+
+ ruths_room_card:
+   control: hidden
+   name: Ruths Room
+   entities:
+     - sensor.ruths_room_temperature
+     - binary_sensor.ruths_room_occupancy
+     - switch.ruths_room_scent
+     - switch.driveway_camera
+     - script.driveway_cam_powercycle
+     - automation.reboot_driveway_camera

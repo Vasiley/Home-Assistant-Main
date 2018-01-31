@@ -1,0 +1,146 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'dashboards'
+    binary_sensor.bedroom_motion:
+      friendly_name: Master Dash motion
+      device_class: motion
+    sensor.bedroom_wallpanel_battery:
+      icon: mdi:battery
+    sensor.bedroom_wallpanel_brightness:
+      friendly_name: Master Bedroom Dash Light Level
+      icon: mdi:theme-light-dark
+    script.dash_refresh:
+      friendly_name: All Dashboards Refresh
+      haaska_name: Dashboards Refresh
+      icon: mdi:refresh
+    script.dash_frontdoor_cam:
+      friendly_name: Front Door Dash
+      haaska_name: Front Door Dash
+      icon: mdi:chevron-right
+    script.dash_vas_dash:
+      friendly_name: Main Dash
+      haaska_name: Main Dash
+      icon: mdi:chevron-left
+    automation.dashboards_refresh:
+      haaska_hidden: true
+      friendly_name: Refresh Dashboards
+    automation.navigate_to_lv_cameradash_camera_motion:
+      haaska_hidden: true
+      friendly_name: Navigate to Camera On Motion
+    automation.back_to_lv_main_dash_motion:
+      haaska_hidden: true
+      friendly_name: Navigate to Main Dash
+
+group:
+  lv_room_dashboard:
+   control: hidden
+   name: Living Room Dashboard
+   entities:
+     - sensor.dashboard_tablet_lv
+     - binary_sensor.motion_tablet_camera
+     - script.dash_frontdoor_cam
+     - script.dash_vas_dash
+     - automation.navigate_to_lv_cameradash_camera_motion
+     - automation.back_to_lv_main_dash_motion
+
+  master_bedroom_dashboard:
+   control: hidden
+   name: Master Bedroom Dashboard
+   entities:
+     - sensor.dashboard_tablet_bedroom
+     - binary_sensor.bedroom_motion
+     - sensor.bedroom_wallpanel_battery
+     - sensor.bedroom_wallpanel_brightness
+
+  all_dashboards:
+   control: hidden
+   name: All Dashboards
+   entities:
+     - script.dash_refresh
+     - automation.dashboards_refresh
+
+sensor:
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/battery"
+    name: "Bedroom wallpanel battery"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/light"
+    name: "Bedroom wallpanel brightness"
+    unit_of_measurement: "Lux"
+    value_template: '{{ value_json.value }}'
+
+binary_sensor:
+  - platform: mqtt
+    state_topic: "wallpanel/mybedroom_dash/sensor/motion"
+    name: "Bedroom Motion"
+    payload_on: '{"value":true}'
+    payload_off: '{"value":false}'
+    device_class: motion
+
+automation:
+  - alias: dashboards_refresh
+    trigger:
+      - platform: time
+        hours: '/1'
+        minutes: 00
+        seconds: 00
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_refresh
+
+
+  - alias: navigate_to_lv_cameradash_camera_motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_frontdoor_cam
+
+  - alias: back_to_lv_main_dash_motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed
+        to: 'off'
+        for: '00:05:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_vas_dash
+
+script:
+  dash_refresh:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_dash_refresh
+      - service: shell_command.master_dash_refresh
+  dash_frontdoor_cam:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_frontdoor_cam
+  dash_vas_dash:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_vas
+
+shell_command:
+#  lv_room_dash: '/usr/bin/curl -d '{"relaunch": true}' -H "Content-Type: application/json" -X POST http://192.168.1.15:2971/api/command'
+   lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+   master_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+#   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d '{'url': http://192.168.1.153:5050/cameras?skin=default}'"
+   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
+   lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
