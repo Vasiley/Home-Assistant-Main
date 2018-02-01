@@ -20,6 +20,12 @@ homeassistant:
     sensor.living_room_wallpanel_ac_plugged:
       friendly_name: Living Room Dash Ac Power
       icon: mdi:power
+    binary_sensor.lv_ac_power:
+      friendly_name: Living Room Dash Power
+      icon: mdi:power
+    binary_sensor.master_ac_power:
+      friendly_name: Master Dash Power
+      icon: mdi:power
     sensor.bedroom_wallpanel_charging:
       friendly_name: Master Bedroom Dash Battery Charging
       icon: mdi:battery
@@ -59,7 +65,9 @@ homeassistant:
     automation.master_dash_early_wakeup:
       friendly_name: Early Wake of Dashboard
       haaska_hidden: true
-
+    automation.power_lost_to_dashboards:
+      friendly_name: Power Lost To Dashboard
+      haaska_hidden: true
 group:
   lv_room_dashboard:
    control: hidden
@@ -71,10 +79,8 @@ group:
      - binary_sensor.motion_tablet_camera
      - sensor.living_room_wallpanel_battery
      - sensor.living_room_wallpanel_charging
-     - sensor.living_room_wallpanel_ac_plugged
-
-
-
+#     - sensor.living_room_wallpanel_ac_plugged
+     - binary_sensor.lv_ac_power
 
   master_bedroom_dashboard:
    control: hidden
@@ -86,7 +92,8 @@ group:
      - binary_sensor.bedroom_motion
      - sensor.bedroom_wallpanel_battery
      - sensor.bedroom_wallpanel_charging
-     - sensor.bedroom_wallpanel_ac_plugged
+#     - sensor.bedroom_wallpanel_ac_plugged
+     - binary_sensor.master_ac_power
      - sensor.bedroom_wallpanel_brightness
      - script.master_dash_wake_up
      - automation.master_dash_early_wakeup
@@ -101,6 +108,7 @@ group:
      - automation.back_to_main_dash_motion
      - script.dash_frontdoor_cam
      - script.dash_reset_after_motion
+     - automation.power_lost_to_dashboards
 
 sensor:
 ####### BEDROOM ##################################
@@ -122,7 +130,7 @@ sensor:
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/battery"
     name: "Bedroom wallpanel Ac Plugged"
-    value_template: '{{ value_json.acPlugged }}'
+    value_template: '{{ value_json.usbPlugged }}'
   - platform: rest
     resource: http://192.168.1.108:2971/api/state
     value_template: '{{ value_json.currentUrl }}'
@@ -205,6 +213,7 @@ sensor:
 
 #### Binary's For Master and Living Room
 binary_sensor:
+####### Bedroom ###############
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/motion"
     name: "Bedroom Motion"
@@ -212,6 +221,7 @@ binary_sensor:
     payload_off: '{"value":false}'
     device_class: motion
 
+######### Living Room   ##############
   - platform: rest
     resource: http://192.168.1.108:2971/api/state
     value_template: '{{ value_json.screenOn }}'
@@ -220,6 +230,18 @@ binary_sensor:
     resource: http://192.168.1.15:2971/api/state
     value_template: '{{ value_json.screenOn }}'
     name: 'Living Room Screen On'
+  - platform: template
+    sensors:
+      lv_ac_power:
+        device_class: power
+        friendly_name: "Living Dash Power"
+        value_template: "{{ states.sensor.living_room_wallpanel_ac_plugged.state == 'True' }}"
+  - platform: template
+    sensors:
+      master_ac_power:
+        device_class: power
+        friendly_name: "Master Dash Power"
+        value_template: "{{ states. sensor.bedroom_wallpanel_ac_plugged.state == 'True' }}"
 
 automation:
   - alias: dashboards_refresh
@@ -275,6 +297,26 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.master_dash_wake_up
+  - alias: power_lost_to_dashboards
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_ac_power
+        from: 'On'
+        to: 'Off'
+        for: '00:10:00'
+      - platform: state
+        entity_id: binary_sensor.lv_ac_power
+        from: 'On'
+        to: 'Off'
+        for: '00:10:00'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Power is Lost to A Dashboard Please Check'
+      - service: notify.Pushbullet
+        data:
+          message: 'Power has been Lost to a Dashboard'
 
 script:
   dash_refresh:
@@ -286,7 +328,9 @@ script:
     sequence:
       - delay: '00:00:01'
       - service: shell_command.lv_room_frontdoor_cam
+      - service: shell_command.lv_room_dash_wake_up
       - service: shell_command.master_dash_frontdoor_cam
+      - service: shell_command.master_dash_wake_up
   dash_reset_after_motion:
     sequence:
       - delay: '00:00:01'
@@ -305,3 +349,4 @@ shell_command:
    lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
    master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
    master_dash: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
+   lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
