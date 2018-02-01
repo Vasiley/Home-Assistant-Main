@@ -40,7 +40,7 @@ homeassistant:
       friendly_name: Front Door Dash
       haaska_name: Front Door Dash
       icon: mdi:chevron-right
-    script.dash_vas_dash:
+    script.dash_reset_after_motion:
       friendly_name: Main Dash
       haaska_name: Main Dash
       icon: mdi:chevron-left
@@ -50,10 +50,10 @@ homeassistant:
     automation.dashboards_refresh:
       haaska_hidden: true
       friendly_name: Refresh Dashboards
-    automation.navigate_to_lv_cameradash_camera_motion:
+    automation.navigate_cameradash_camera_motion:
       haaska_hidden: true
       friendly_name: Navigate to Camera On Motion
-    automation.back_to_lv_main_dash_motion:
+    automation.back_to_main_dash_motion:
       haaska_hidden: true
       friendly_name: Navigate to Main Dash
     automation.master_dash_early_wakeup:
@@ -72,10 +72,9 @@ group:
      - sensor.living_room_wallpanel_battery
      - sensor.living_room_wallpanel_charging
      - sensor.living_room_wallpanel_ac_plugged
-     - script.dash_frontdoor_cam
-     - script.dash_vas_dash
-     - automation.navigate_to_lv_cameradash_camera_motion
-     - automation.back_to_lv_main_dash_motion
+
+
+
 
   master_bedroom_dashboard:
    control: hidden
@@ -98,6 +97,10 @@ group:
    entities:
      - script.dash_refresh
      - automation.dashboards_refresh
+     - automation.navigate_cameradash_camera_motion
+     - automation.back_to_main_dash_motion
+     - script.dash_frontdoor_cam
+     - script.dash_reset_after_motion
 
 sensor:
 ####### BEDROOM ##################################
@@ -129,13 +132,23 @@ sensor:
       current_dash_master:
         value_template: >-
           {% if states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_bedroom?skin=default" %}
-              Master Dash
+               Master Dash
           {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_bedroom" %}
-              Master Dash
+               Master Dash
           {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_controls?skin=default" %}
-              Master Controls Dash
+               Master Controls Dash
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_cameras?skin=default" %}
+               Master Yard Camera Dash
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_driveway?skin=default" %}
+               Master Driveway Dash
+          {% elif states.sensor.current_url.master.state == "http://192.168.1.153:5050/master_number12?skin=default" %}
+               Master Driveway 2 Dash
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_backdoor?skin=default" %}
+               Master BackDoor Dash
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_swamp?skin=default" %}
+               Swamp Dash
           {% else %}
-              Unknown
+               Unknown
           {% endif %}
 
 ############ LIVING ROOOM ##########################
@@ -206,7 +219,7 @@ binary_sensor:
   - platform: rest
     resource: http://192.168.1.15:2971/api/state
     value_template: '{{ value_json.screenOn }}'
-    name: 'Living Room Screen On'               
+    name: 'Living Room Screen On'
 
 automation:
   - alias: dashboards_refresh
@@ -220,7 +233,7 @@ automation:
         entity_id: script.dash_refresh
 
 
-  - alias: navigate_to_lv_cameradash_camera_motion
+  - alias: navigate_cameradash_camera_motion
     initial_state: 'on'
     trigger:
       - platform: state
@@ -234,7 +247,7 @@ automation:
       - service: script.turn_on
         entity_id: script.dash_frontdoor_cam
 
-  - alias: back_to_lv_main_dash_motion
+  - alias: back_to_main_dash_motion
     initial_state: 'on'
     trigger:
       - platform: state
@@ -247,7 +260,7 @@ automation:
         state: 'on'
     action:
       - service: script.turn_on
-        entity_id: script.dash_vas_dash
+        entity_id: script.dash_reset_after_motion
 
   - alias: master_dash_early_wakeup
     initial_state: 'on'
@@ -273,10 +286,12 @@ script:
     sequence:
       - delay: '00:00:01'
       - service: shell_command.lv_room_frontdoor_cam
-  dash_vas_dash:
+      - service: shell_command.master_dash_frontdoor_cam
+  dash_reset_after_motion:
     sequence:
       - delay: '00:00:01'
       - service: shell_command.lv_room_vas
+      - service: shell_command.master_dash
   master_dash_wake_up:
     sequence:
       - delay: '00:00:01'
@@ -288,3 +303,5 @@ shell_command:
    master_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
    lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
    lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
+   master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
+   master_dash: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
