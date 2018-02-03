@@ -115,41 +115,41 @@ shell_command:
 
 sensor:
   - platform: scrape
-    resource: http://10.1.10.183/_liveUpdate
+    resource: http://xxxxxx/_liveUpdate
     select: '#fanModeContainer'
     name: Fan Mode
     icon: mdi:fan
 
   - platform: scrape
-    resource: http://10.1.10.183/_liveUpdate
+    resource: http://xxxxxxxx/_liveUpdate
     select: '#systemModeContainer'
     name: System Mode
     icon: mdi:nest-thermostat
 
   - platform: scrape
-    resource: http://10.1.10.183/_liveUpdate
+    resource: http://xxxxxxx/_liveUpdate
     select: '#indoorTempContainer'
     name: Indoor Temperature
     icon: mdi:thermometer
     unit_of_measurement: °F
 
   - platform: scrape
-    resource: http://10.1.10.183/info
+    resource: http://xxxxxxxx/info
     select: '#cool'
     name: Operation Cool
 
   - platform: scrape
-    resource: http://10.1.10.183/info
+    resource: http://xxxxxxxxx/info
     select: '#heat'
     name: Operation Heat
 
   - platform: scrape
-    resource: http://10.1.10.183/info
+    resource: http://xxxxxxxxx/info
     select: '#fan'
     name: Operation Fan
 
   - platform: scrape
-    resource: http://10.1.10.183/_liveUpdate
+    resource: http://xxxxxxxx/_liveUpdate
     select: '#targetTemps'
     name: Operation Set Point
     unit_of_measurement: °F

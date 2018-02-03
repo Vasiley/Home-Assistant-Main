@@ -108,6 +108,9 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'You Have Mail Today Check Dashboard'
+      - service: shell_command.lv_room_mail ## In dashboard package
+      - delay: '00:05:00'
+      - service: shell_command.lv_room_vas    # in dashboard package
 
   - alias: Tell me I got Packages
     initial_state: 'on'

@@ -1,11 +1,24 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Ha Server Monitor'
     sensor.average_load_15m:
       friendly_name: Cpu load_15m
       icon: mdi:speedometer
     sensor.ha_cpu_temperature:
       friendly_name: Ha Cpu Temperature
       icon: mdi:oil-temperature
+    script.ha_dash_usage:
+      friendly_name: BI Svr Notify Issue
+      icon: mdi:chip
+      haaska_hidden: true
+    automation.ha_ram_overload:
+      friendly_name: HA Svr Automation for Ram
+    automation.ha_disk_overload:
+      friendly_name: HA Svr Automation for Disk Space
+    automation.ha_cpu_overload:
+      friendly_name: HA Svr Automation for Cpu Load
 
 group:
   linux_server_card:
@@ -34,6 +47,15 @@ group:
      - sensor.last_boot
      - sensor.since_last_boot
      - sensor.myipopendnscom
+
+  ha_server_automations:
+   control: hidden
+   name: HA Server Alerts
+   entities:
+    - script.ha_dash_usage
+    - automation.ha_ram_overload
+    - automation.ha_disk_overload
+    - automation.ha_cpu_overload
 
 sensor:
   - platform: systemmonitor
@@ -70,3 +92,94 @@ sensor:
     command: cat /sys/class/thermal/thermal_zone2/temp
     unit_of_measurement: '°C'
     value_template: '{{ (value|int / 1000 )|round(1) }}'
+
+automation:
+############# Ram usuage high on BI server #####################################
+  - alias: ha_ram_overload
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.ram_used_2
+        above: '85'    # set high because I need ram
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Ram Usage On HA Server is Excessive'
+      - service: notify.Pushbullet
+        data:
+          message: 'Ram Usage Is Excessive On HA Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "HA Server"
+          message: "Ram Usage On HA Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "HA Server Ram Alert"
+          message: "Check HA Server Ram Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Ram On HA Server"
+      - service: script.ha_dash_usage
+
+############# Disk usuage high on BI server #####################################
+  - alias: ha_disk_overload
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.disk_used_home
+        above: '85'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Disk Usage On HA Server is Excessive'
+      - service: notify.Pushbullet
+        data:
+          message: 'Disk Usage Is Excessive On HA Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "HA Server"
+          message: "Disk Usage On HA Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "HA Server Disk Alert"
+          message: "Check HA Server Disk Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Disk On HA Server"
+      - service: script.ha_dash_usage
+
+####################### High Cpu Usage #########################################
+  - alias: ha_cpu_overload
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.cpu_used
+        above: '85'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Cpu Usage On HA Server is Excessive'
+      - service: notify.Pushbullet
+        data:
+          message: 'Disk Usage Is Excessive On HA Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "HA Server"
+          message: "CPU Usage On HA Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "HA Server CPU Alert"
+          message: "Check HA Server CPU Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "CPU On HA Server"
+      - service: script.ha_dash_usage
+
+script:
+  ha_dash_usage:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_dash_wake_up   # in dashboard package
+      - service: shell_command.server_alert_dash_lv # in dashboard package
+      - delay: '00:05:00'
+      - service: shell_command.lv_dash_vas   # in dashboard package

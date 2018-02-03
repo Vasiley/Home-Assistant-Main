@@ -66,6 +66,8 @@
 #     - group.Workstations_status_card
      - group.network_workstation_info_card
      - group.network_backup_ups_card
+     - group.bi_server_automations
+     - group.ha_server_automations
 
   media:
    view: yes
@@ -159,7 +161,7 @@
    entities:
      - group.lv_room_dashboard
      - group.master_bedroom_dashboard
-     - group.all_dashboards       
+     - group.all_dashboards
 
   reminders:
    view: yes
