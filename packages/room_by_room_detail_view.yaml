@@ -98,6 +98,7 @@ group:
     name: Kids Bath
     entities:
      - light.kids_bathroom
+     - light.kids_bathroom_vanity
      - switch.kids_bathroom_scent
      - binary_sensor.kids_bathroom_motion
      - sensor.kids_bathroom_temperature
@@ -108,7 +109,7 @@ group:
      - sensor.kids_bathroom_dimmer_battery
      - script.kids_shower_time_on
      - script.kids_shower_time_off
-#     - switch.kids_shower_time
+     - switch.kids_shower_time
      - automation.kids_bath_light_left_on
      - automation.kids_bath_shower_time_off
      - automation.kids_bath_shower_time_on
@@ -123,12 +124,15 @@ group:
     name: Carport
     entities:
       - light.carport
+      - light.front_steps
+      - light.rear_steps
       - automation.porch_lights_on
       - automation.porch_lights_off
-      - automation.carport_bright_and_white_on_motion
-      - automation.back_to_yellow_dim_after_Motion
-      - script.bright_outside
-      - script.normal_outside
+      - automation.front_carport_bright_and_white_on_motion
+      - automation.front_back_to_yellow_dim_after_Motion
+      - script.front_bright_outside
+      - script.front_normal_outside
+      
  kitchen_card:
    control: hidden
    name: Kitchen

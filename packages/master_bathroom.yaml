@@ -269,8 +269,8 @@ automation:
         to: 'on'
         for:
           hours: 1
-          minutes: 0
-          seconds: 0
+          minutes: 00
+          seconds: 00
     action:
       - service: automation.turn_on
         entity_id: automation.motion_bathroom_home_mode_on

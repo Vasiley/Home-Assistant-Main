@@ -10,6 +10,7 @@
      - light.laundry_room
      - light.kids_hallway
      - light.kids_bathroom
+     - light.kids_bathroom_vanity
      - light.master
      - light.carport
      - light.light_bulb

@@ -13,29 +13,31 @@ homeassistant:
       hidden: false
       persistence: true
 
-    automation.carport_bright_and_white_on_motion:
-      friendly_name: "Porch Lights White On Motion"
+    automation.front_carport_bright_and_white_on_motion:
+      friendly_name: "Front Porch Lights White On Motion"
       haaska_hidden: true
       hidden: false
       persistence: true
 
-    automation.back_to_yellow_dim_after_Motion:
-      friendly_name: "Porch Lights Yellow No Motion"
+    automation.front_back_to_yellow_dim_after_Motion:
+      friendly_name: "Front Porch Lights Yellow No Motion"
       haaska_hidden: true
       hidden: false
       persistence: true
 
-    script.bright_outside:
-      friendly_name: "Porch Lights Bright"
+    script.front_bright_outside:
+      friendly_name: "Front Porch Lights Bright"
       haaska_hidden: false
-      haaska_name: Porch Lights Bright
+      haaska_name: Front Porch Lights Bright
 
-    script.normal_outside:
-      friendly_name: "Porch Lights Normal"
+    script.front_normal_outside:
+      friendly_name: "Front Porch Lights Normal"
       haaska_hidden: false
-      haaska_name: Porch Lights Normal
+      haaska_name: Front Porch Lights Normal
 
-    light.carport:
+    light.front_steps:
+      persistence: true
+    light.rear_steps:
       persistence: true
 
 automation:
@@ -61,10 +63,10 @@ automation:
       - service: light.turn_off
         entity_id: light.carport
 
-# brigten porch light if motion from shed camera
+# brigten front porch light if motion from shed camera
 
 
-  - alias: Carport bright and white on motion
+  - alias: Front Carport bright and white on motion
     initial_state: 'on'
     trigger:
       - platform: state
@@ -73,16 +75,16 @@ automation:
         for: '00:00:10'
     condition:
       - condition: state
-        entity_id: light.carport
+        entity_id: light.front_steps
         state: 'on'
     action:
       - service: light.turn_on
         data:
-          entity_id: light.carport
+          entity_id: light.front_steps
           color_temp: 154
           brightness: 255
 
-  - alias: Back to yellow dim after Motion
+  - alias: Front Back to yellow dim after Motion
     initial_state: 'on'
     trigger:
       - platform: state
@@ -90,37 +92,37 @@ automation:
         to: 'off'
     condition:
       - condition: state
-        entity_id: light.carport
+        entity_id: light.front_steps
         state: 'on'
     action:
       - delay: '00:005:00'
       - service: light.turn_on
         data:
-          entity_id: light.carport
+          entity_id: light.front_steps
           color_temp: 426
           brightness: 125
 
-# Turn Carport lights on bright till i turn off
+# Turn Front  lights on bright till i turn off
 script:
-  bright_outside:
+  front_bright_outside:
     sequence:
       - service: automation.turn_off
-        entity_id: automation.carport_bright_and_white_on_motion
+        entity_id: automation.front_carport_bright_and_white_on_motion
       - service: automation.turn_off
-        entity_id: automation.back_to_yellow_dim_after_Motion
+        entity_id: automation.front_back_to_yellow_dim_after_Motion
       - service: light.turn_on
         data:
-          entity_id: light.carport
+          entity_id: light.front_steps
           color_temp: 154
           brightness: 255
-  normal_outside:
+  front_normal_outside:
     sequence:
       - service: automation.turn_on
-        entity_id: automation.carport_bright_and_white_on_motion
+        entity_id: automation.front_carport_bright_and_white_on_motion
       - service: automation.turn_on
-        entity_id: automation.back_to_yellow_dim_after_Motion
+        entity_id: automation.front_back_to_yellow_dim_after_Motion
       - service: light.turn_on
         data:
-          entity_id: light.carport
+          entity_id: light.front_steps
           color_temp: 426
           brightness: 125

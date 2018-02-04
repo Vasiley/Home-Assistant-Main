@@ -53,10 +53,10 @@ homeassistant:
     script.kids_shower_time_off:
       friendly_name: Kids Finished Shower Script
       haaska_hidden: true
-    # switch.kids_shower_time:
-    #   friendly_name: Shower Time
-    #   haaska_hidden: false
-    #   haaska_name: Shower TIme
+    switch.kids_shower_time:
+      friendly_name: Kids Shower Time
+      haaska_hidden: false
+      haaska_name: Kids Shower TIme
     light.kids_bathroom:
       persistence: false
 
@@ -253,7 +253,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
+        entity_id: sensor.kids_bathroom_dimmer_state
         to: 'Off'
     action:
       - service: script.turn_on
@@ -263,24 +263,26 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: light.kids_bathroom
+        entity_id: light.kids_bathroom_vanity
         to: 'on'
         for:
           hours: 1
-          minutes: 0
-          seconds: 0
+          minutes: 00
+          seconds: 00
     action:
       - service: automation.turn_on
         entity_id: automation.motion_kids_bathroom_home_mode_on
       - service: automation.turn_on
         entity_id: automation.motion_kids_bathroom_sleep_on
       - service: light.turn_off
+        entity_id: light.kids_bathroom_vanity
+      - service: light.turn_off
         entity_id: light.kids_bathroom
 
 script:
   kids_shower_time_on:
     sequence:
-      - delay: '00:00:01'
+      - delay: '00:00:05'
       - service: automation.turn_off
         entity_id: automation.motion_kids_bathroom_home_mode_off
       - service: automation.turn_off
@@ -290,28 +292,34 @@ script:
           entity_id: light.kids_bathroom
           color_temp: 154
           brightness: 255
-
+      - service: light.turn_on
+        data:
+          entity_id: light.kids_bathroom_vanity
+          color_temp: 154
+          brightness: 255
   kids_shower_time_off:
     sequence:
-      - delay: '00:00:01'
+      - delay: '00:00:05'
       - service: automation.turn_on
         entity_id: automation.motion_kids_bathroom_home_mode_off
       - service: automation.turn_on
         entity_id: automation.motion_kids_bathroom_sleep_off
       - service: light.turn_off
+        entity_id: light.kids_bathroom_vanity
+      - service: homeassistant.turn_off
         entity_id: light.kids_bathroom
 
-# ADD BACK IN WHEN WE HAVE VANITY LIGHTS
-# switch:
-#   - platform: template
-#     switches:
-#       kids_shower_time:
-#         value_template: "{{ is_state('light.kids_bathroom', 'on') }}"
-#         turn_on:
-#           - service: script.turn_on
-#             data:
-#               entity_id: script.shower_time_on
-#         turn_off:
-#           - service: script.turn_on
-#             data:
-#               entity_id: script.shower_time_off
+
+switch:
+  - platform: template
+    switches:
+      kids_shower_time:
+        value_template: "{{ is_state('light.kids_bathroom_vanity', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.kids_shower_time_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.kids_shower_time_off
