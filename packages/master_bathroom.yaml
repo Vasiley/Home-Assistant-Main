@@ -240,6 +240,7 @@ automation:
     action:
       - service: light.turn_off
         entity_id: light.bathroom
+
   - alias: Master Bath Shower Time On
     initial_state: 'on'
     trigger:
@@ -288,6 +289,8 @@ script:
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_off
         entity_id: automation.motion_bathroom_sleep_off
+      - service: automation.turn_off
+        entity_id: automation.motion_master_bedroom_motion_off
       - service: light.turn_on
         data:
           entity_id: light.bathroom_vanity
@@ -298,6 +301,15 @@ script:
           entity_id: light.bathroom
           color_temp: 154
           brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.master_table_lamps
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.light_bulb_2
+
 
   shower_time_off:
     sequence:
@@ -306,10 +318,13 @@ script:
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_on
         entity_id: automation.motion_bathroom_sleep_off
+      - service: automation.turn_on
+        entity_id: automation.motion_master_bedroom_motion_off
       - service: light.turn_off
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
+
 
 switch:
   - platform: template

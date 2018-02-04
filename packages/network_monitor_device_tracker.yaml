@@ -43,7 +43,7 @@ homeassistant:
       entity_picture: /local/cisco54.jpeg
     sensor.netgear_router:
       friendly_name: Netgear Router
-      entity_picture: /local/netgear.jpeg  
+      entity_picture: /local/netgear.jpeg
     sensor.switch2:
       friendly_name: Switch 2
       entity_picture: /local/8PortSwitch.jpeg
@@ -241,6 +241,10 @@ sensor:
         value_template: '{% if is_state("binary_sensor.gang", "on") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      wink_fan_master_gang:
+        value_template: '{% if is_state("binary_sensor.gang_1", "on") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       harmony_hub:
         value_template: '{% if is_state("device_tracker.harmonyhubvasiley", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
@@ -321,6 +325,7 @@ automation:
       - platform: state
         entity_id:
           - sensor.wink_fan_gang
+          - sensor.wink_fan_master_gang
           - sensor.network_workstation
           - sensor.blue_iris_workstation
           - sensor.network_nas

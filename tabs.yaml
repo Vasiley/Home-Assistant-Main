@@ -15,6 +15,7 @@
      - light.light_bulb
      - light.bathroom_vanity
      - light.bathroom
+     - light.light_bulb_2
      - group.Family
      - group.climate_temp_card
      - group.alarm_panel_card

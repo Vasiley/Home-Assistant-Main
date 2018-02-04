@@ -61,4 +61,5 @@ script:
         data:
           entity_id: climate.thermostat
           hold_mode: "home"
+      
 # rest_command sets profile of blue iris software

@@ -28,6 +28,12 @@ homeassistant:
       Haaska_hidden: false
       haaska_name: Breeze
 
+    script.master_fan_auto:
+      friendly_name: "Master Breeze"
+      icon: mdi:fan
+      Haaska_hidden: false
+      haaska_name: Master Breeze
+
     script.refresh_wink:
       friendly_name: " Refresh Wink"
       icon: mdi:update
@@ -38,7 +44,17 @@ homeassistant:
       haaska_hidden: false
       haaska_name: Fan Auto
 
+    switch.fan_master_override:
+      friendly_name: Master Fan Auto
+      icon: mdi:fan
+      haaska_hidden: false
+      haaska_name: Master Fan Auto
+
     sensor.fan_speed:
+      icon: mdi:speedometer
+      haaska_hidden: true
+
+    sensor.fan_speed_master:
       icon: mdi:speedometer
       haaska_hidden: true
 
@@ -47,10 +63,20 @@ homeassistant:
       icon: mdi:nfc
       haaska_hidden: true
 
+    binary_sensor.gang_1:
+      friendly_name: Master Fan Connection
+      icon: mdi:nfc
+      haaska_hidden: true
+
     light.light_bulb:
       friendly_name: Living Room Light
       haaska_hidden: false
       haaska_name: Living Room Light
+
+    light.light_bulb_2:
+      friendly_name: Master Bedroom Light
+      haaska_hidden: false
+      haaska_name: Master Bedroom Light
 
 group:
   livingroomfan_card:
@@ -64,12 +90,28 @@ group:
      - binary_sensor.gang
      - script.refresh_wink
 
+################## In Room By Room View Package
+  # masterfan_card:
+  #  control: hidden
+  #  name: Master Fan
+  #  entities:
+  #    - fan.master_bedroom_fan
+  #    - light.light_bulb_2
+  #    - script.master_fan_auto
+  #    - sensor.fan_speed_master
+  #    - binary_sensor.gang_1
+
 sensor:
   - platform: template
     sensors:
       fan_speed:
         friendly_name: 'Fan Speed'
         value_template: "{{ states.fan.living_room_fan.attributes.speed }}"
+  - platform: template
+    sensors:
+      fan_speed_master:
+        friendly_name: 'Fan Speed'
+        value_template: "{{ states.fan.master_bedroom_fan.attributes.speed }}"
 
 automation:
   # - alias: fan_set_speed
@@ -141,7 +183,7 @@ automation:
   #         entity_id:
   #           - automation.fan_set_speed
   #           - automation.fan_turn_on
-
+  #
 ##########################################################################
 ############################  cieling fan automation with Hvac    ########
 ##########################################################################
@@ -204,6 +246,13 @@ script:
       - service: fan.turn_on
         data:
           entity_id: fan.living_room_fan
+          speed: 'auto'
+  master_fan_auto:
+    sequence:
+      - delay: '00:00:01'
+      - service: fan.turn_on
+        data:
+          entity_id: fan.master_bedroom_fan
           speed: 'auto'
   refresh_wink:
     sequence:
