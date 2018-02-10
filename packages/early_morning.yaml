@@ -37,8 +37,6 @@ script:
         data_template:
           entity_id: media_player.ha_speaker
           message: 'I am turning on some Classical Music for your pleasure'
-      - delay: '00:00:01'
-      - service: script.blinds_halfway
       - delay: '00:00:07'
       - service: input_select.select_option
         data:
@@ -61,5 +59,5 @@ script:
         data:
           entity_id: climate.thermostat
           hold_mode: "home"
-      
+
 # rest_command sets profile of blue iris software

@@ -81,29 +81,7 @@ sensor:
           {{as_timestamp(strptime(states('sensor.kitchen_table_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
 
 automation:
-  - alias: Motion Kitichen Home Mode On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kitchen_motion
-        to: 'on'
-    condition:
-      condition: and
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
-      - condition: numeric_state
-        entity_id: sensor.motion_sensor_kitchen_lux
-        below: '14000'
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.kitchen
-          color_temp: 154
-          brightness: 255
-
-  - alias: Motion Kitchen Home Mode off
+  - alias: Motion Kitchen off
     initial_state: 'on'
     trigger:
       - platform: state
@@ -113,34 +91,64 @@ automation:
           minutes: 3
     action:
       - service: light.turn_off
-        data:
+        data_template:
           entity_id: light.kitchen
-          transition: 15
-
-  - alias: Motion Kitchen not home mode yellow
+          transition: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+              {{ states('input_number.evening_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+              {{ states('input_number.movie_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+              {{ states('input_number.earlymorning_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+              {{ states('input_number.home_mode_transition_value') | int }}
+              {% else %}
+                15
+              {% endif %}
+  - alias: Motion Kitchen Main Light On
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.kitchen_motion
         to: 'on'
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-      - condition: state
+      - platform: state
         entity_id: input_boolean.boolean_sleep
-        state: 'on'
+        to: 'on'
+    condition:
+      - condition: numeric_state
+        entity_id: sensor.motion_sensor_kitchen_lux
+        below: '14000'
     action:
       - service: light.turn_on
-        data:
+        data_template:
           entity_id: light.kitchen
-          color_temp: 426
-          brightness: 100
+          color_temp: >-
+             {% if is_state("input_boolean.boolean_evening_time", "on") %}
+             {{ states('input_number.evening_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+             {{ states('input_number.movie_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_sleep", "on") %}
+             {{ states('input_number.sleep_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+             {{ states('input_number.earlymorning_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_home", "on") %}
+             {{ states('input_number.home_mode_color_temp_value') | int }}
+             {% else %}
+               180
+             {% endif %}
+          brightness_pct: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+              {{ states('input_number.evening_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+              {{ states('input_number.movie_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+              {{ states('input_number.earlymorning_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+              {{ states('input_number.home_mode_brightness_value') | int }}
+              {% else %}
+                100
+              {% endif %}

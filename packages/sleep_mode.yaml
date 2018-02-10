@@ -22,10 +22,6 @@ script:
       - service: media_player.turn_off
         data:
           entity_id: media_player.stereo
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Sleep is Activated Alexa Good Night'
       - delay: '00:00:03'
       - service: climate.set_hold_mode
         data:
@@ -38,11 +34,6 @@ script:
       - service: fan.turn_off
         data:
           entity_id: fan.living_room_fan
-      - service: light.turn_on
-        data:
-          entity_id: light.kitchen
-          color_temp: 426
-          brightness: 125
       - service: light.turn_on
         data:
           entity_id: light.master_hallway
@@ -74,11 +65,11 @@ script:
           color_temp: 426
           brightness: 125
       - delay: '00:00:10'
-      - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
+#      - wait_template: "{{ states.binary_sensor.kitchen_motion.state == 'off' }}"
 #      - wait_template: "{{is_state('binary_sensor.kitchen.motion.state', 'off' )}}"
-      - service: light.turn_off
-        data:
-          entity_id: light.kitchen
+      # - service: light.turn_off
+      #   data:
+      #     entity_id: light.kitchen
       - service: script.turn_on
         entity_id: script.led_off
       - delay: '00:00:10'

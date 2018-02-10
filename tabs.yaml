@@ -25,6 +25,7 @@
      - group.washing_machine_card_frontend
      - group.harmony_card
      - group.blinds_kitchen_card
+#     - group.blinds_lv_room_rear_card
      - script.media_player_source
      - weblink.fish_tank_ha
      - weblink.dashboard
@@ -170,6 +171,14 @@
    name: Maintanence
    entities:
      - group.big_tank_reminder_card
+     - history_graph.gits
+
+  # setting_view:
+  #  view: yes
+  #  name: Setting's
+  #  icon: mdi:setting
+  #  entities:
+  #    - group.setting_house_mode_lights
 
   Family:
     entities:

@@ -74,6 +74,9 @@ homeassistant:
     sensor.wink_fan_gang:
       friendly_name: Fan Connection
       icon: mdi:nfc
+    sensor.wink_fan_master_gang:
+      friendly_name: Master Fan Connection
+      icon: mdi:nfc
     sensor.myipopendnscom:
       friendly_name: Wan Ip
       icon: mdi:wan
@@ -82,6 +85,12 @@ homeassistant:
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_kitchen_sink_blinds:
       friendly_name: Kitchen Sink Blinds Controller
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_lv_room_dawn_blinds:
+      friendly_name: Lv Room Dawn
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_lv_room_herbs_blinds:
+      friendly_name: Lv Room Herb
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_kitchen_led:
       friendly_name: Kitchen Led Controller
@@ -153,6 +162,10 @@ group:
      - sensor.esp_smallfishtank_led
      - sensor.esp_dawns_controller
      - sensor.dawns_controller_wifi_signal
+     - sensor.esp_lv_room_dawn_blinds
+     - sensor.dawns_blinds_controller_wifi_signal
+     - sensor.esp_lv_room_herbs_blinds
+     - sensor.herb_blinds_controller_wifi_signal
 
   etc_devices_card:
    name: Tracked Network Devices
@@ -263,6 +276,14 @@ sensor:
     sensors:
       esp_kitchen_sink_blinds:
         value_template: '{% if is_state("device_tracker.2c3ae805f66b", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      esp_lv_room_dawn_blinds:
+        value_template: '{% if is_state("device_tracker.60019473e472", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      esp_lv_room_herbs_blinds:
+        value_template: '{% if is_state("device_tracker.6001947550b3", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       esp_kitchen_led:

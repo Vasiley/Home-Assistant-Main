@@ -132,7 +132,7 @@ group:
       - automation.front_back_to_yellow_dim_after_Motion
       - script.front_bright_outside
       - script.front_normal_outside
-      
+
  kitchen_card:
    control: hidden
    name: Kitchen
@@ -150,6 +150,8 @@ group:
       - automation.led_animation_speed
       - automation.kitchen_leds_low_light_on
       - automation.kitchen_leds_low_light_off
+      - automation.motion_kitchen_main_light_on
+      - automation.motion_kitchen_off
       - sensor.Kitchen_dimmer_test
       - sensor.motion_sensor_kitchen_lux
       - input_select.kitchen_blinds_status
@@ -194,8 +196,7 @@ group:
      - binary_sensor.hallway_motion
      - sensor.hallway_temperature
      - sensor.master_hallway_motion_sensor_lux
-     - automation.motion_master_hallway_motion_homemode
-     - automation.motion_master_hallway_motion_not_homemode
+     - automation.motion_master_hallway_motion_on
      - automation.motion_master_hallway_motion_off
 
  kids_hallway_card:

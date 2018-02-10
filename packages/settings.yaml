@@ -1,0 +1,216 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Settings'
+################  EVENING MODE #################################################
+    input_number.evening_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.evening_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.evening_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+################  Movie MODE #################################################
+    input_number.movie_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.movie_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.movie_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+################  Sleep MODE #################################################
+    input_number.sleep_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.sleep_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.sleep_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+################  Early Moringin MODE ########################################
+    input_number.earlymorning_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.earlymorning_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.earlymorning_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+################  Home MODE ###################################################
+    input_number.home_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.home_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.home_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+
+group:
+  setting_view:
+   view: yes
+   name: Setting's
+   icon: mdi:settings
+   entities:
+     - group.setting_evening_mode_settings_card
+     - group.setting_movie_mode_settings_card
+     - group.setting_sleep_mode_settings_card
+     - group.setting_earlymorning_mode_settings_card
+     - group.setting_home_mode_settings_card
+
+################  EVENING MODE #################################################
+  setting_evening_mode_settings_card:
+   name: Evening Mode
+   entities:
+     - input_number.evening_mode_brightness_value
+     - input_number.evening_mode_color_temp_value
+     - input_number.evening_mode_transition_value
+################  Movie MODE #################################################
+  setting_movie_mode_settings_card:
+   name: Movie Mode
+   entities:
+     - input_number.movie_mode_brightness_value
+     - input_number.movie_mode_color_temp_value
+     - input_number.movie_mode_transition_value
+################  Sleep MODE #################################################
+  setting_sleep_mode_settings_card:
+   name: Sleep Mode
+   entities:
+     - input_number.sleep_mode_brightness_value
+     - input_number.sleep_mode_color_temp_value
+     - input_number.sleep_mode_transition_value
+################  Early Morning MODE #################################################
+  setting_earlymorning_mode_settings_card:
+   name: Early Morning Mode
+   entities:
+     - input_number.earlymorning_mode_brightness_value
+     - input_number.earlymorning_mode_color_temp_value
+     - input_number.earlymorning_mode_transition_value
+################  Home MODE #################################################
+  setting_home_mode_settings_card:
+   name: Home Mode
+   entities:
+     - input_number.home_mode_brightness_value
+     - input_number.home_mode_color_temp_value
+     - input_number.home_mode_transition_value
+
+
+input_number:
+################  EVENING MODE #################################################
+  evening_mode_brightness_value:
+    name: Evening Mode Brightness
+    initial: 50
+    min: 0
+    max: 100
+    step: 1
+  evening_mode_color_temp_value:
+    name: Evening Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  evening_mode_transition_value:
+    name: Evening Mode Transition
+    initial: 15
+    min: 0
+    max: 90
+    step: 1
+################  Movie MODE #################################################
+  movie_mode_brightness_value:
+    name: Movie Mode Brightness
+    initial: 30
+    min: 0
+    max: 100
+    step: 1
+  movie_mode_color_temp_value:
+    name: Movie Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  movie_mode_transition_value:
+    name: Movie Mode Transition
+    initial: 45
+    min: 0
+    max: 90
+    step: 1
+################  Sleep MODE #################################################
+  sleep_mode_brightness_value:
+    name: Sleep Mode Brightness
+    initial: 20
+    min: 0
+    max: 100
+    step: 1
+  sleep_mode_color_temp_value:
+    name: Sleep Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  sleep_mode_transition_value:
+    name: Sleep Mode Transition
+    initial: 30
+    min: 1
+    max: 90
+    step: 1
+################  Early Morning MODE ###########################################
+  earlymorning_mode_brightness_value:
+    name: Early Morning Mode Brightness
+    initial: 60
+    min: 0
+    max: 100
+    step: 1
+  earlymorning_mode_color_temp_value:
+    name: Early Morning Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  earlymorning_mode_transition_value:
+    name: Early Morning Mode Transition
+    initial: 20
+    min: 1
+    max: 90
+    step: 1
+################  Home MODE ###########################################
+  home_mode_brightness_value:
+    name: Home Mode Brightness
+    initial: 100
+    min: 0
+    max: 100
+    step: 1
+  home_mode_color_temp_value:
+    name: Home Mode Color Temp
+    initial: 154
+    min: 154
+    max: 426
+    step: 1
+  home_mode_transition_value:
+    name: Home Mode Transition
+    initial: 10
+    min: 1
+    max: 90
+    step: 1
