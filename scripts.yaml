@@ -1,4 +1,2 @@
- 
-  update_github:
-    sequence:
-      - service: shell_command.update_git
+
+  

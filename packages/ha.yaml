@@ -3,7 +3,7 @@ homeassistant:
     sensor.ha_version:
       friendly_name: New Ha Release
       hasska_hidden: true
-    
+
     sensor.hass_uptime:
       friendly_name: Home Assistant Uptime
       icon: mdi:home-assistant
@@ -27,7 +27,12 @@ group:
      - sensor.ha_github_version
      - sensor.ha_pypi_version
      - input_select.log_level
+     - input_text.commit_text
 
+input_text:
+  commit_text:
+    name: Git Update
+    initial: Some Text
 
 sensor:
   ###### VERSIONS
@@ -124,3 +129,9 @@ automation:
           title: "Home Assistant"
           message: >-
             Home Assistant {{ trigger.to_state.state }} is now available on {{ trigger.to_state.name.split(' ')[0] }}.
+script:
+  update_github:
+    sequence:
+      - service: shell_command.update_git
+shell_command:
+  update_git: '/root/.homeassistant/shell/gitupdate.sh "{{ states.input_text.commit_text.state}}"'

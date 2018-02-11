@@ -24,7 +24,8 @@
      - group.livingroomfan_card
      - group.washing_machine_card_frontend
      - group.harmony_card
-     - group.blinds_kitchen_card
+     - group.blinds_card
+#     - group.blinds_lv_room_front_card
 #     - group.blinds_lv_room_rear_card
      - script.media_player_source
      - weblink.fish_tank_ha

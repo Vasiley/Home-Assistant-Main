@@ -87,10 +87,13 @@ homeassistant:
       friendly_name: Kitchen Sink Blinds Controller
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_lv_room_dawn_blinds:
-      friendly_name: Lv Room Dawn
+      friendly_name: Dawns Blinds
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_lv_room_herbs_blinds:
-      friendly_name: Lv Room Herb
+      friendly_name: Herbs Blinds
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_lv_room_front_blinds:
+      friendly_name: Front Blinds
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_kitchen_led:
       friendly_name: Kitchen Led Controller
@@ -166,6 +169,8 @@ group:
      - sensor.dawns_blinds_controller_wifi_signal
      - sensor.esp_lv_room_herbs_blinds
      - sensor.herb_blinds_controller_wifi_signal
+     - sensor.esp_lv_room_front_blinds
+     - sensor.front_blinds_controller_wifi_signal
 
   etc_devices_card:
    name: Tracked Network Devices
@@ -286,6 +291,10 @@ sensor:
         value_template: '{% if is_state("device_tracker.6001947550b3", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      esp_lv_room_front_blinds:
+        value_template: '{% if is_state("device_tracker.60019473e681", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       esp_kitchen_led:
         value_template: '{% if is_state("device_tracker.600194316a56", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
@@ -371,6 +380,10 @@ automation:
           - sensor.gabbies_laptop
           - sensor.dashboard_tablet_bedroom
           - sensor.netgear_router
+          - sensor.esp_lv_room_dawn_blinds
+          - sensor.esp_lv_room_herbs_blinds
+          - sensor.esp_lv_room_front_blinds
+
 #        for: '00:00:01'
     condition:
       condition: and
