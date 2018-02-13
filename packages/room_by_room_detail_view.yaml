@@ -208,8 +208,7 @@ group:
      - binary_sensor.kids_hallway_motion
      - sensor.kids_hallway_temperature
      - sensor.kids_hallway_motion_sensor_lux
-     - automation.motion_kids_hallway_motion_homemode
-     - automation.motion_kids_hallway_motion_not_homemode
+     - automation.motion_kids_hallway_motion_on
      - automation.motion_kids_hallway_motion_off
 
  ruths_room_card:

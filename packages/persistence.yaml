@@ -38,10 +38,22 @@
 
 homeassistant:
   customize:
-    packages.persistence: &customize
-      haaska_hidden: true
-      homebridge_hidden: true
-      package: 'persistence'
+    ################################################
+    ## Node Anchors
+    ################################################
+
+    package.node_anchors:
+      customize: &customize
+        package: 'persistence'
+
+      expose: &expose
+        <<: *customize
+        haaska_hidden: false
+        homebridge_hidden: false
+
+    ################################################
+    ## Automation
+    ################################################
 
     automation.persistence_enable_automations:
       <<: *customize
@@ -59,7 +71,7 @@ homeassistant:
       <<: *customize
       friendly_name: "Persistence Subscribe (Select Option)"
 
-    automation.persistence_subscribe_select_value:
+    automation.persistence_subscribe_set_value:
       <<: *customize
       friendly_name: "Persistence from MQTT (Select Value)"
 
@@ -68,7 +80,6 @@ homeassistant:
 ################################################
 
 automation:
-
   ################################################
   ## Persistent Publisher
   ################################################
@@ -152,7 +163,7 @@ automation:
           entity_id: "{{ trigger.topic|replace('home-assistant/', '')|replace('/', '.') }}"
           option: "{{ trigger.payload }}"
 
-  - alias: persistence_subscribe_select_value
+  - alias: persistence_subscribe_set_value
     initial_state: 'on'
     hide_entity: true
     trigger:
@@ -160,7 +171,7 @@ automation:
         topic: home-assistant/input_number/+
     condition: *subscribe_condition
     action:
-      - service_template: "{{ trigger.topic.split('/')[1] }}.select_value"
+      - service_template: "{{ trigger.topic.split('/')[1] }}.set_value"
         data_template:
           entity_id: "{{ trigger.topic|replace('home-assistant/', '')|replace('/', '.') }}"
           value: "{{ trigger.payload }}"

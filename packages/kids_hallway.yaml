@@ -53,12 +53,11 @@ sensor:
 #       - binary_sensor.kids_hallway_motion
 #       - sensor.kids_hallway_temperature
 #       - sensor.kids_hallway_motion_sensor_lux
-#       - automation.motion_kids_hallway_motion_homemode
-#       - automation.motion_kids_hallway_motion_not_homemode
+#       - automation.motion_kids_hallway_motion_on
 #       - automation.motion_kids_hallway_motion_off
 
 automation:
-  - alias: Motion Kids Hallway Motion HomeMode
+  - alias: Motion Kids Hallway Motion On
     initial_state: 'on'
     trigger:
       - platform: state
@@ -75,29 +74,24 @@ automation:
         below: '10000'
     action:
       - service: light.turn_on
-        data:
+        data_template:
           entity_id: light.kids_hallway
-          color_temp: 154
-          brightness: 255
-
-  - alias: Motion kids Hallway Motion not HomeMode
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_hallway_motion
-        to: 'on'
-    condition:
-      condition: and
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'off'
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.kids_hallway
-          color_temp: 154
-          brightness: 125
+          brightness_pct: >-
+            {% if is_state("input_boolean.boolean_evening_time", "on") %}
+            {{ states('input_number.evening_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+            {{ states('input_number.movie_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_sleep", "on") %}
+            {{ states('input_number.sleep_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+            {{ states('input_number.earlymorning_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_home", "on") %}
+            {{ states('input_number.home_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+            {{ states('input_number.nap_mode_brightness_value') | int }}
+            {% else %}
+              100
+            {% endif %}
 
   - alias: Motion Kids Hallway Motion Off
     initial_state: 'on'
@@ -108,6 +102,21 @@ automation:
         for: '00:01:00'
     action:
       - service: light.turn_off
-        data:
+        data_template:
           entity_id: light.kids_hallway
-          transition: 15
+          transition: >-
+            {% if is_state("input_boolean.boolean_evening_time", "on") %}
+            {{ states('input_number.evening_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+            {{ states('input_number.movie_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_sleep", "on") %}
+            {{ states('input_number.sleep_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+            {{ states('input_number.earlymorning_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_home", "on") %}
+            {{ states('input_number.home_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+            {{ states('input_number.nap_mode_transition_value') | int }}
+            {% else %}
+              15
+            {% endif %}

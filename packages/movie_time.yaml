@@ -4,12 +4,26 @@ homeassistant:
       friendly_name: Movie Time
       haaska_name: Movie Time
 
+automation:
+  - alias: Automate Movie time
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.remote_entertainment
+        to: 'Netflix'
+      - platform: state
+        entity_id: sensor.remote_entertainment
+        to: 'Amazon'
+    action:
+      - service: script.turn_on
+        entity_id: script.movie_time
+
 script:
   movie_time:
     sequence:
       - service: input_boolean.turn_off
         data:
-          entity_id: group.input_boolean_card          
+          entity_id: group.input_boolean_card
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_movie_time
@@ -36,5 +50,4 @@ script:
           color_temp: 426
           brightness: 125
           transition: 45
-      - service: script.turn_on
-        entity_id: script.blinds_closed
+      

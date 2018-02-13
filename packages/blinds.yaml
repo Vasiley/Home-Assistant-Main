@@ -228,6 +228,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Movie Time'
     action:
       - service: script.turn_on
         entity_id: script.blinds_closed_kitchen
@@ -285,6 +288,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Movie Time'
     action:
       - service: script.turn_on
         entity_id: script.lv_couch_blinds_closed
@@ -341,6 +347,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Movie Time'   
     action:
       - service: script.turn_on
         entity_id: script.lv_front_blinds_closed
