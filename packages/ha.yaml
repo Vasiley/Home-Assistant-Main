@@ -1,9 +1,11 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Ha'
     sensor.ha_version:
       friendly_name: New Ha Release
       hasska_hidden: true
-
     sensor.hass_uptime:
       friendly_name: Home Assistant Uptime
       icon: mdi:home-assistant
@@ -16,9 +18,18 @@ homeassistant:
       friendly_name: "PyPi Version"
       icon: mdi:language-python
       hasska_hidden: true
+    script.update_github:
+      friendly_name: Update Git hub
+      haaska_hidden: true
+      icon: mdi:github-circle
+    script.update_home_assistant_home:
+      friendly_name: Home Assistant Update
+      icon: mdi:update
+      hasska_hidden: true
 
 group:
   homeass_version_card:
+   control: hidden
    name: Home Assistant Info
    entities:
      - sensor.hass_uptime
@@ -26,16 +37,17 @@ group:
      - sensor.installed_version
      - sensor.ha_github_version
      - sensor.ha_pypi_version
+     - script.update_home_assistant_home
      - input_select.log_level
      - input_text.commit_text
+     - script.update_github
 
 input_text:
   commit_text:
-    name: Git Update
-    initial: Some Text
+    name: Git Update Message
 
 sensor:
-  ###### VERSIONS
+    ## VERSIONS
   - platform: command_line
     command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
     name: Current Version

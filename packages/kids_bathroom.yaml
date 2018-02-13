@@ -59,7 +59,8 @@ homeassistant:
       haaska_name: Kids Shower TIme
     light.kids_bathroom:
       persistence: false
-
+    light.kids_bathroom_vanity:
+      persistence: false
 
 binary_sensor:
   - platform: rest

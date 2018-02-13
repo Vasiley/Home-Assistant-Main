@@ -42,7 +42,7 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
-################  Early Moringin MODE ########################################
+################  Early Morning MODE ###########################################
     input_number.earlymorning_mode_brightness_value:
       friendly_name: Light Brightness %
       icon: mdi:lightbulb-on-outline
@@ -68,6 +68,20 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
+################  Home MODE ###################################################
+    input_number.nap_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.nap_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.nap_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+
 
 group:
   setting_view:
@@ -80,6 +94,7 @@ group:
      - group.setting_sleep_mode_settings_card
      - group.setting_earlymorning_mode_settings_card
      - group.setting_home_mode_settings_card
+     - group.setting_nap_mode_settings_card
 
 ################  EVENING MODE #################################################
   setting_evening_mode_settings_card:
@@ -116,6 +131,13 @@ group:
      - input_number.home_mode_brightness_value
      - input_number.home_mode_color_temp_value
      - input_number.home_mode_transition_value
+################  Home MODE #################################################
+  setting_nap_mode_settings_card:
+   name: Nap Mode
+   entities:
+     - input_number.nap_mode_brightness_value
+     - input_number.nap_mode_color_temp_value
+     - input_number.nap_mode_transition_value
 
 
 input_number:
@@ -211,6 +233,25 @@ input_number:
   home_mode_transition_value:
     name: Home Mode Transition
     initial: 10
+    min: 1
+    max: 90
+    step: 1
+################  Nap MODE #####################################################
+  nap_mode_brightness_value:
+    name: Nap Mode Brightness
+    initial: 60
+    min: 0
+    max: 100
+    step: 1
+  nap_mode_color_temp_value:
+    name: Nap Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  nap_mode_transition_value:
+    name: Nap Mode Transition
+    initial: 20
     min: 1
     max: 90
     step: 1

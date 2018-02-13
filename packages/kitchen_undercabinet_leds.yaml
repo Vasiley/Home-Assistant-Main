@@ -150,10 +150,6 @@ automation:
         data_template:
           topic: "vasiley/kitchen/set"
           payload: '{"transition":{{ trigger.to_state.state | int }}}'
-#      - service: mqtt.publish
-#        data_template:
-#          topic: "vasiley/kitchen1/set"
-#          payload: '{"transition":{{ trigger.to_state.state | int }}}'
 
   - alias: Kitchen Lights On White with Dimmer
     initial_state: 'on'
@@ -228,6 +224,9 @@ automation:
         - condition: state
           entity_id: input_boolean.boolean_evening_time
           state: 'on'
+        - condition: state
+          entity_id: input_boolean.boolean_nap_time
+          state: 'on'
     action:
       - service: script.turn_on
         entity_id: script.led_yellow
@@ -251,6 +250,9 @@ automation:
         state: 'on'
       - condition: state
         entity_id: input_boolean.boolean_evening_time
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_nap_time
         state: 'on'
     action:
      - service: script.turn_on

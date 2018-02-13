@@ -54,8 +54,7 @@
      - group.hp_printer_card
      - group.homeass_version_card
      - group.hassctl_card
-     - script.update_github
-     - group.logger_input_select_card
+#     - group.logger_input_select_card
      - group.clients_online_card
      - group.fail2ban_card
      - group.iboot_card

@@ -7,17 +7,13 @@ homeassistant:
 
     sensor.hassctl_version:
       friendly_name: Version
-    script.update_home_assistant_home:
-      friendly_name: Home Assistant Update
-      icon: mdi:update
-      hasska_hidden: true
+    
 
 group:
   hassctl_card:
     name: Hassctl
     control: hidden
     entities:
-      - script.update_home_assistant_home
       - sensor.hassctl_version
 sensor:
   ###### VERSIONS

@@ -85,6 +85,8 @@ automation:
             {{ states('input_number.earlymorning_mode_brightness_value') | int }}
             {% elif is_state("input_boolean.boolean_home", "on") %}
             {{ states('input_number.home_mode_brightness_value') | int }}
+            {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+            {{ states('input_number.nap_mode_brightness_value') | int }}
             {% else %}
               100
             {% endif %}
@@ -111,6 +113,8 @@ automation:
             {{ states('input_number.earlymorning_mode_transition_value') | int }}
             {% elif is_state("input_boolean.boolean_home", "on") %}
             {{ states('input_number.home_mode_transition_value') | int }}
+            {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+            {{ states('input_number.nap_mode_transition_value') | int }}
             {% else %}
               15
             {% endif %}

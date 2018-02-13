@@ -337,7 +337,7 @@ automation:
         to: 'Sleep'
       - platform: state
         entity_id: sensor.house_mode_state
-        to: 'Nap Time'   
+        to: 'Nap Time'
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
@@ -506,9 +506,9 @@ shell_command:
   kitchen_blinds_sink_closed: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,35"
   kitchen_blinds_sink_halfway: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,100"
   kitchen_blinds_sink_open: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,150"
-  lv_blinds_dawn_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,15"
-  lv_blinds_dawn_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,100"
-  lv_blinds_dawn_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,170"
+  lv_blinds_dawn_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,20"
+  lv_blinds_dawn_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,70"
+  lv_blinds_dawn_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,120"
   lv_blinds_herb_closed: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,15"
   lv_blinds_herb_halfway: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,70"
   lv_blinds_herb_open: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,150"
