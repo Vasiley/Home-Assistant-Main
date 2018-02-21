@@ -7,58 +7,11 @@ homeassistant:
 
     switch.ibootone:
       persistent: true
-    switch.rear_network:
-      friendly_name: Rear Network
-      haaska_name: Rear Network Switch
-      icon: mdi:power-settings
-      persistent: true
-    script.rear_network_reboot:
-      friendly_name: Rear Network Reboot
-      haaska_name: Rear Network Reboot
-      icon: mdi:access-point-network
-      persistent: true
 
 switch:
-
         #command_example: 'curl --data "A=POWERON" --anyauth --user <username>:<pass> <ip>/P0.HTML'
   - platform: command_line
     switches:
       dawns_scent:
         command_on: !secret iboot2_on
         command_off: !secret iboot2_off
-
-  - platform: command_line
-    switches:
-      rear_network:
-        command_on: !secret iboot_rearnetwork_on
-        command_off: !secret iboot_rearnetwork_off
-
-  # - platform: command_line
-  #   switches:
-  #     masterbedroom_network:
-  #       command_on: !secret iboot_masterbedroom_on
-  #       command_off: !secret iboot_masterbedroom_off
-
-  # - platform: command_line
-  #   switches:
-  #     masterbedroom_toggle:
-  #       command_on: !secret iboot_masterbedroom_toggle
-  #       command_off: !secret iboot_masterbedroom_toggle
-
-
-script:
-  rear_network_reboot:
-    sequence:
-      - service: switch.turn_off
-        entity_id: switch.rear_network
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Rear Network Going Down'
-      - delay: '00:01:00'
-      - service: switch.turn_on
-        entity_id: switch.rear_network
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Rear Network Back Up'

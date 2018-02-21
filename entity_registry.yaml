@@ -88,3 +88,6 @@ switch.wemo_master_bath_fan:
 switch.wemo_master_bath_heater:
   platform: wemo
   unique_id: 231624K120137B
+switch.wemo_mini_rear_network:
+  platform: wemo
+  unique_id: 221743K0102067

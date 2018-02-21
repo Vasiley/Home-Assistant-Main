@@ -19,10 +19,20 @@ homeassistant:
       haaska_name: Master Bedroom Network
       icon: mdi:access-point-network
       persistent: true
+    switch.wemo_mini_rear_network:
+      friendly_name: Rear Network
+      haaska_name: Rear Network Switch
+      icon: mdi:power-settings
+      persistent: true
+    script.rear_network_reboot:
+      friendly_name: Rear Network Reboot
+      haaska_name: Rear Network Reboot
+      icon: mdi:access-point-network
+      persistent: true
     switch.driveway_camera:
       friendly_name: Driveway Camera
       icon: mdi:power-settings
-    switch.master_bedroom_network:       #cannot rename switch ha doesnt change
+    switch.master_bedroom_network:
       friendly_name: Master Bedroom Network
       icon: mdi:power-settings
     automation.reboot_driveway_camera:
@@ -35,13 +45,13 @@ group:
    control: hidden
    name: Equipment Reboots
    entities:
-     - switch.rear_network
+     - switch.wemo_mini_rear_network
+     - switch.master_bedroom_network
+     - switch.driveway_camera
      - script.webswitch_reboot
      - script.network_reboot
-     - switch.master_bedroom_network
      - script.rear_network_reboot
      - script.masterbedroom_reboot
-     - switch.driveway_camera
      - script.driveway_cam_powercycle
      - automation.reboot_driveway_camera
      - automation.reboot_masterbedroom_network
@@ -108,6 +118,22 @@ script:
         data:
           entity_id: media_player.ha_speaker
           message: 'Master Bedroom Is Rebooting'
+
+  rear_network_reboot:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.wemo_mini_rear_network
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rear Network Going Down'
+      - delay: '00:01:00'
+      - service: switch.turn_on
+        entity_id: switch.wemo_mini_rear_network
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rear Network Back Up'
 
 automation:
   - alias: reboot_driveway_camera
