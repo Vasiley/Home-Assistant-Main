@@ -37,61 +37,8 @@ group:
      - script.vas_dashboard
      - switch.dawns_scent
 
- master_bedroom_card:
-    control: hidden
-    name: Master Bedroom
-    entities:
-     - light.dawns_bedside_lamp
-     - light.herbs_bedside_lamp
-     - light.master_table_lamps
-     - light.light_bulb_2
-     - fan.master_bedroom_fan
-     - script.master_fan_auto
-     - sensor.fan_speed_master
-     - binary_sensor.gang_1
-     - binary_sensor.master_motion
-     - binary_sensor.bedroom_motion
-     - sensor.master_bedroom_temperature
-     - sensor.motion_sensor_master_battery
-     - sensor.motion_sensor_master_lux
-     - sensor.bedroom_wallpanel_battery
-     - sensor.bedroom_wallpanel_brightness
-     - automation.motion_master_bedroom_homemode
-     - automation.motion_master_bedroom_evening_and_movie_time_on
-     - automation.motion_master_bedroom_motion_off
-     - binary_sensor.master_bedroom_occupancy
-     - switch.fan_on
-     - switch.dawn_day
-     - switch.dawn_night
-     - automation.candle_on_during_home_mode
-     - automation.candle_off_when_not_home_mode
-     - automation.fan_on_during_sleep_mode
-     - automation.fan_off_when_home_mode
+ 
 
- master_bath_card:
-    control: hidden
-    name: Master Bath
-    entities:
-     - light.bathroom_vanity
-     - light.bathroom
-     - switch.master_bath
-     - binary_sensor.bathroom_motion
-     - sensor.bathroom_temperature
-     - sensor.motion_sensor_bathroom_battery
-     - sensor.master_bathroom_dimmer_state
-     - sensor.master_bathroom_dimmer_last_update
-     - sensor.master_bathroom_dimmer_battery
-     - script.shower_time_on
-     - script.shower_time_off
-     - switch.shower_time
-     - automation.master_bath_light_left_on
-     - automation.master_bath_shower_time_off
-     - automation.master_bath_shower_time_on
-     - automation.motion_bathroom_home_mode_off
-     - automation.motion_bathroom_home_mode_on
-     - automation.motion_bathroom_evening_mode_on
-     - automation.motion_bathroom_sleep_off
-     - automation.motion_bathroom_sleep_on
 
  kids_bath_card:
     control: hidden

@@ -76,4 +76,6 @@ wemo:
     - 192.168.1.204  #washer
     - 192.168.1.146  #Master Bath Scent
     - 192.168.1.126  #Kids Bathroom Scent
-    - 192.168.1.218  #Ruths Room Scent
+    - 192.168.1.218  #Master Bedroom Network Reboot
+    - 192.168.1.230  #Master Bathroom Fan
+    - 192.168.1.171  #Master Bathroom Heat

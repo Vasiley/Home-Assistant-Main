@@ -55,6 +55,41 @@ homeassistant:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan
 
+group:
+  master_bedroom_card:
+     control: hidden
+     name: Master Bedroom
+     entities:
+      - light.dawns_bedside_lamp
+      - light.herbs_bedside_lamp
+      - light.master_table_lamps
+      - light.light_bulb_2
+      - switch.master_bedroom_network
+      - fan.master_bedroom_fan
+      - script.master_fan_auto
+      - sensor.fan_speed_master
+      - binary_sensor.gang_1
+      - binary_sensor.master_motion
+      - binary_sensor.bedroom_motion
+      - sensor.master_bedroom_temperature
+      - sensor.motion_sensor_master_battery
+      - sensor.motion_sensor_master_lux
+      - sensor.bedroom_wallpanel_battery
+      - sensor.bedroom_wallpanel_brightness
+      - automation.motion_master_bedroom_homemode
+      - automation.motion_master_bedroom_evening_and_movie_time_on
+      - automation.motion_master_bedroom_motion_off
+      - binary_sensor.master_bedroom_occupancy
+      - switch.fan_on
+      - switch.dawn_day
+      - switch.dawn_night
+      - automation.candle_on_during_home_mode
+      - automation.candle_off_when_not_home_mode
+      - automation.fan_on_during_sleep_mode
+      - automation.fan_off_when_home_mode
+      - input_select.master_blinds_status
+      - sensor.master_blinds_state
+
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_40
@@ -209,7 +244,7 @@ automation:
       - service: fan.turn_on
         data:
           entity_id: fan.master_bedroom_fan
-          speed: "high"  
+          speed: "high"
 
   - alias: Fan Off when Home mode
     initial_state: 'on'

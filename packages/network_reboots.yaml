@@ -14,8 +14,16 @@ homeassistant:
     script.driveway_cam_powercycle:
       friendly_name: Driveway Cam Reboot
       icon: mdi:access-point-network
+    script.masterbedroom_reboot:
+      friendly_name: Master Bedroom Network
+      haaska_name: Master Bedroom Network
+      icon: mdi:access-point-network
+      persistent: true
     switch.driveway_camera:
       friendly_name: Driveway Camera
+      icon: mdi:power-settings
+    switch.master_bedroom_network:       #cannot rename switch ha doesnt change
+      friendly_name: Master Bedroom Network
       icon: mdi:power-settings
     automation.reboot_driveway_camera:
       friendly_name: Driveway Cam Auto Reboot
@@ -30,6 +38,7 @@ group:
      - switch.rear_network
      - script.webswitch_reboot
      - script.network_reboot
+     - switch.master_bedroom_network
      - script.rear_network_reboot
      - script.masterbedroom_reboot
      - switch.driveway_camera
@@ -86,7 +95,19 @@ script:
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Rebooting Driveway Camera'  
+          message: 'Rebooting Driveway Camera'
+
+  masterbedroom_reboot:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.master_bedroom_network
+      - delay: '00:00:10'
+      - service: switch.turn_on
+        entity_id: switch.master_bedroom_network
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Master Bedroom Is Rebooting'
 
 automation:
   - alias: reboot_driveway_camera

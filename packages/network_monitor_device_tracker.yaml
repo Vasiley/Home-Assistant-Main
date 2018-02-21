@@ -1,5 +1,8 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Network Monitor'
     sensor.speedtest_download:
       entity_picture: /local/speedtest.png
     sensor.speedtest_upload:
@@ -89,11 +92,14 @@ homeassistant:
     sensor.esp_lv_room_dawn_blinds:
       friendly_name: Dawns Blinds
       entity_picture: /local/nodemcu.jpeg
-    sensor.esp_lv_room_herbs_blinds:
-      friendly_name: Herbs Blinds
-      entity_picture: /local/nodemcu.jpeg
     sensor.esp_lv_room_front_blinds:
       friendly_name: Front Blinds
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_master_blinds1:
+      friendly_name: Master BLinds 1
+      entity_picture: /local/nodemcu.jpeg
+    sensor.esp_master_blinds2:
+      friendly_name: Master BLinds 2
       entity_picture: /local/nodemcu.jpeg
     sensor.esp_kitchen_led:
       friendly_name: Kitchen Led Controller
@@ -167,10 +173,12 @@ group:
      - sensor.dawns_controller_wifi_signal
      - sensor.esp_lv_room_dawn_blinds
      - sensor.dawns_blinds_controller_wifi_signal
-     - sensor.esp_lv_room_herbs_blinds
-     - sensor.herb_blinds_controller_wifi_signal
      - sensor.esp_lv_room_front_blinds
      - sensor.front_blinds_controller_wifi_signal
+     - sensor.esp_master_blinds1
+     - sensor.master_blinds_controller1_wifi_signal
+     - sensor.esp_master_blinds2
+     - sensor.master_blinds_controller2_wifi_signal
 
   etc_devices_card:
    name: Tracked Network Devices
@@ -287,8 +295,12 @@ sensor:
         value_template: '{% if is_state("device_tracker.60019473e472", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
-      esp_lv_room_herbs_blinds:
-        value_template: '{% if is_state("device_tracker.6001947550b3", "home") %}Online{% else %}Offline{% endif %}'
+      esp_master_blinds1:
+        value_template: '{% if is_state("device_tracker.600194754dce", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      esp_master_blinds2:
+        value_template: '{% if is_state("device_tracker.149182b3c98f", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
       esp_lv_room_front_blinds:
@@ -381,8 +393,9 @@ automation:
           - sensor.dashboard_tablet_bedroom
           - sensor.netgear_router
           - sensor.esp_lv_room_dawn_blinds
-          - sensor.esp_lv_room_herbs_blinds
           - sensor.esp_lv_room_front_blinds
+          - sensor.esp_master_blinds1
+          - sensor.esp_master_blinds2
 
 #        for: '00:00:01'
     condition:

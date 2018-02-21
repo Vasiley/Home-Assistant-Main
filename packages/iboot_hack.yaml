@@ -12,26 +12,11 @@ homeassistant:
       haaska_name: Rear Network Switch
       icon: mdi:power-settings
       persistent: true
-    switch.masterbedroom_network:
-      friendly_name: Master Bedroom reboot
-      haaska_name: Master Bedroom Switch
-      icon: mdi:power-settings
-      persistent: true
-    switch.masterbedroom_toggle:
-      friendly_name: Master Bedroom Network Switch
-      haaska_name: Master Bedrrom Network Switch
-      icon: mdi:power-setting
     script.rear_network_reboot:
       friendly_name: Rear Network Reboot
       haaska_name: Rear Network Reboot
       icon: mdi:access-point-network
       persistent: true
-    script.masterbedroom_reboot:
-      friendly_name: Master Bedroom Network
-      haaska_name: Master Bedroom Network
-      icon: mdi:access-point-network
-      persistent: true
-
 
 switch:
 
@@ -48,17 +33,17 @@ switch:
         command_on: !secret iboot_rearnetwork_on
         command_off: !secret iboot_rearnetwork_off
 
-  - platform: command_line
-    switches:
-      masterbedroom_network:
-        command_on: !secret iboot_masterbedroom_on
-        command_off: !secret iboot_masterbedroom_off
+  # - platform: command_line
+  #   switches:
+  #     masterbedroom_network:
+  #       command_on: !secret iboot_masterbedroom_on
+  #       command_off: !secret iboot_masterbedroom_off
 
-  - platform: command_line
-    switches:
-      masterbedroom_toggle:
-        command_on: !secret iboot_masterbedroom_toggle
-        command_off: !secret iboot_masterbedroom_toggle
+  # - platform: command_line
+  #   switches:
+  #     masterbedroom_toggle:
+  #       command_on: !secret iboot_masterbedroom_toggle
+  #       command_off: !secret iboot_masterbedroom_toggle
 
 
 script:
@@ -77,14 +62,3 @@ script:
         data:
           entity_id: media_player.ha_speaker
           message: 'Rear Network Back Up'
-
-  masterbedroom_reboot:
-    sequence:
-      - service: switch.turn_off
-        entity_id: switch.masterbedroom_toggle
-      - service: switch.turn_off
-        entity_id: switch.masterbedroom_toggle  
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Master Bedroom Is Rebooting'

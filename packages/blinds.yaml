@@ -11,25 +11,48 @@ homeassistant:
       icon: mdi:signal
     sensor.dawns_blinds_controller_wifi_signal:
       icon: mdi:signal
-    sensor.herb_blinds_controller_wifi_signal:
-      icon: mdi:signal
     sensor.front_blinds_controller_wifi_signal:
+      icon: mdi:signal
+    sensor.master_blinds_controller1_wifi_signal:
+      icon: mdi:signal
+    sensor.master_blinds_controller2_wifi_signal:
       icon: mdi:signal
     script.blinds_closed_kitchen:
       friendly_name: Blinds Closed Kitchen
+      icon: mdi:blinds
+      haaska_hidden: true
     script.blinds_halfway_kitchen:
       friendly_name: Blinds Halfway Kitchen
+      icon: mdi:blinds
+      haaska_hidden: true
     script.blinds_open_kitchen:
       friendly_name: Blinds Open Kitchen
+      icon: mdi:blinds
+      haaska_hidden: true
+    script.master_blinds_closed:
+      friendly_name: Blinds Closed Master
+      icon: mdi:blinds
+      haaska_hidden: true
+    script.master_blinds_halfway:
+      friendly_name: Blinds Halfway Master
+      icon: mdi:blinds
+      haaska_hidden: true
+    script.master_blinds_open:
+      friendly_name: Blinds Open Master
+      icon: mdi:blinds
+      haaska_hidden: true
     script.blinds_closed:
       friendly_name: All Blinds Closed
       icon: mdi:blinds
+      haaska_hidden: true
     script.blinds_halfway:
       friendly_name: All Blinds Halfway
       icon: mdi:blinds
+      haaska_hidden: true
     script.blinds_open:
       friendly_name: All Blinds Open
       icon: mdi:blinds
+      haaska_hidden: true
     input_select.kitchen_blinds_status:
       persistent: true
     sensor.kitchen_blinds_state:
@@ -61,6 +84,7 @@ group:
      - input_select.kitchen_blinds_status
      - input_select.lv_room_rear_blinds_status
      - input_select.lv_room_front_blinds_status
+     - input_select.master_blinds_status
 #     - sensor.kitchen_blinds_state
 #     - sensor.lv_room_rear_blinds_state
 #     - sensor.lv_room_front_blinds_state
@@ -98,6 +122,13 @@ group:
      - script.lv_front_blinds_halfway
      - script.lv_front_blinds_open
 
+  master_blinds_card:
+   control: hidden
+   name: Master Blinds
+   entities:
+     - input_select.master_blinds_status
+     - sensor.master_blinds_state
+
 input_select:
   kitchen_blinds_status:
     name: Kitchen Blinds
@@ -114,6 +145,12 @@ input_select:
      - Closed
   lv_room_front_blinds_status:
     name: Front Blinds
+    options:
+     - Open
+     - Halfway
+     - Closed
+  master_blinds_status:
+    name: Master Blinds
     options:
      - Open
      - Halfway
@@ -135,6 +172,11 @@ sensor:
       lv_room_front_blinds_state:
         friendly_name: 'Front Blinds Status'
         value_template: "{{ states('input_select.lv_room_front_blinds_status') }}"
+  - platform: template
+    sensors:
+      master_blinds_state:
+        friendly_name: 'Master Blinds Status'
+        value_template: "{{ states('input_select.master_blinds_status') }}"
 
   - platform: mqtt
     state_topic: "kitchenblinds/Blinds Wifi/wifi"
@@ -160,6 +202,16 @@ sensor:
     state_topic: "lv_room_blindstv_cntlr/lv_front_wifi/wifi"
     unit_of_measurement: 'dbm'
     name: Front Blinds Controller Wifi Signal
+
+  - platform: mqtt
+    state_topic: "master_blinds1/master_blinds1_wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Master Blinds Controller1 Wifi Signal
+
+  - platform: mqtt
+    state_topic: "master_blinds2/master_blinds2_wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Master Blinds Controller2 Wifi Signal
 
   - platform: template
     sensors:
@@ -349,10 +401,76 @@ automation:
         to: 'Away'
       - platform: state
         entity_id: sensor.house_mode_state
-        to: 'Movie Time'   
+        to: 'Movie Time'
     action:
       - service: script.turn_on
         entity_id: script.lv_front_blinds_closed
+
+################ automations for master blinds #################################
+  - alias: Blinds Open Master
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_blinds_state
+        to: 'Open'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Home'
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        below: 85
+      - platform: state
+        entity_id: switch.shower_time
+        to: 'off'
+      - platform: state
+        entity_id: switch.getting_dressed
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+    action:
+      - service: script.turn_on
+        entity_id: script.master_blinds_open
+
+  - alias: Blinds Halfway Master
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_blinds_state
+        to: 'Halfway'
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        above: 90
+    action:
+      - service: script.turn_on
+        entity_id: script.master_blinds_halfway
+
+  - alias: Blinds Closed Master
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_blinds_state
+        to: 'Closed'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Sleep'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Nap Time'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Away'
+      - platform: state
+        entity_id: switch.shower_time
+        to: 'on'
+      - platform: state
+        entity_id: switch.getting_dressed
+        to: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.master_blinds_closed
+
 
 ##### Dimmer Controls ################################
   - alias: Kitchen Blinds open with Dimmer
@@ -393,8 +511,14 @@ script:
       - service: input_select.select_option
         data:
           entity_id: input_select.lv_room_front_blinds_status
-          option: 'Open'
-      - service: shell_command.lv_front_blinds_closed
+          option: 'Closed'
+      - service: shell_command.lv_blinds_front_closed
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Closed'
+      - service: shell_command.master1_blinds_front_closed
+      - service: shell_command.master2_blinds_front_closed
   blinds_halfway:
     sequence:
       - service: input_select.select_option
@@ -412,7 +536,13 @@ script:
         data:
           entity_id: input_select.lv_room_front_blinds_status
           option: 'Halfway'
-      - service: shell_command.lv_front_blinds_halfway
+      - service: shell_command.lv_blinds_front_halfway
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Halfway'
+      - service: shell_command.master1_blinds_front_halfway
+      - service: shell_command.master2_blinds_front_halfway
   blinds_open:
     sequence:
       - service: input_select.select_option
@@ -430,7 +560,13 @@ script:
         data:
           entity_id: input_select.lv_room_front_blinds_status
           option: 'Open'
-      - service: shell_command.lv_front_blinds_open
+      - service: shell_command.lv_blinds_front_open
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Open'
+      - service: shell_command.master1_blinds_front_open
+      - service: shell_command.master2_blinds_front_open
 ########################### Kitchen Blinds ####################################
   blinds_closed_kitchen:
     sequence:
@@ -507,6 +643,33 @@ script:
           entity_id: input_select.lv_room_front_blinds_status
           option: 'Open'
       - service: shell_command.lv_blinds_front_open
+######################## Master Bedroom Blinds  ################################
+  master_blinds_closed:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Closed'
+      - service: shell_command.master1_blinds_front_closed
+      - service: shell_command.master2_blinds_front_closed
+
+  master_blinds_halfway:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Halfway'
+      - service: shell_command.master1_blinds_front_halfway
+      - service: shell_command.master2_blinds_front_halfway
+
+  master_blinds_open:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.master_blinds_status
+          option: 'Open'
+      - service: shell_command.master1_blinds_front_open
+      - service: shell_command.master2_blinds_front_open
 
 shell_command:
   kitchen_blinds_closed: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,35"
@@ -516,11 +679,17 @@ shell_command:
   kitchen_blinds_sink_halfway: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,100"
   kitchen_blinds_sink_open: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,150"
   lv_blinds_dawn_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,20"
-  lv_blinds_dawn_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,70"
-  lv_blinds_dawn_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,120"
-  lv_blinds_herb_closed: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,15"
-  lv_blinds_herb_halfway: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,70"
-  lv_blinds_herb_open: "curl -X GET http://192.168.1.109/control?cmd=Servo,1,14,150"
+  lv_blinds_dawn_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,80"
+  lv_blinds_dawn_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,130"
+  lv_blinds_herb_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,15"
+  lv_blinds_herb_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,80"
+  lv_blinds_herb_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,130"
   lv_blinds_front_closed: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,15"
   lv_blinds_front_halfway: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,60"
   lv_blinds_front_open: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,150"
+  master1_blinds_front_closed: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,180"
+  master1_blinds_front_halfway: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,100"
+  master1_blinds_front_open: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,30"
+  master2_blinds_front_closed: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,180"
+  master2_blinds_front_halfway: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,100"
+  master2_blinds_front_open: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,30"

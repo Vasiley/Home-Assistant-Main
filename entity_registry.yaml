@@ -1,0 +1,90 @@
+light.kids_vanity_1:
+  platform: hue
+  unique_id: 00:17:88:01:02:5c:00:66-0b
+light.kids_vanity_2:
+  platform: hue
+  unique_id: 00:17:88:01:02:37:f4:da-0b
+light.rear_steps:
+  platform: hue
+  unique_id: 00:17:88:01:02:37:f7:0f-0b
+light.dawns_bedside_lamp:
+  platform: hue
+  unique_id: 00:17:88:01:02:ba:14:59-0b
+light.dawns_lamp:
+  platform: hue
+  unique_id: 00:17:88:01:02:32:53:6c-0b
+light.kitchen_tabe_2:
+  platform: hue
+  unique_id: 00:17:88:01:02:21:db:c1-0b
+light.herbs_bedside_lamp:
+  platform: hue
+  unique_id: 00:17:88:01:02:98:7f:16-0b
+light.bathroom_1:
+  platform: hue
+  unique_id: 00:17:88:01:02:37:f5:8a-0b
+light.laundry_room_1:
+  platform: hue
+  unique_id: 00:17:88:01:10:30:da:ef-0b
+light.bathroom_vanity_1:
+  platform: hue
+  unique_id: 00:17:88:01:02:39:eb:a7-0b
+light.herbs_lamp:
+  platform: hue
+  unique_id: 00:17:88:01:02:32:3d:3c-0b
+light.kids_hallway_1:
+  platform: hue
+  unique_id: 00:17:88:01:02:3f:44:09-0b
+light.front_steps:
+  platform: hue
+  unique_id: 00:17:88:01:02:39:e4:4d-0b
+light.bathroom_2:
+  platform: hue
+  unique_id: 00:17:88:01:02:37:f8:5d-0b
+light.bathroom_vanity_2:
+  platform: hue
+  unique_id: 00:17:88:01:02:37:f8:ca-0b
+light.kitchen_table_1:
+  platform: hue
+  unique_id: 00:17:88:01:10:28:1e:fc-0b
+light.kitchen_2:
+  platform: hue
+  unique_id: 00:17:88:01:10:28:1d:25-0b
+light.master_hallway_1:
+  platform: hue
+  unique_id: 00:17:88:01:02:3f:51:fd-0b
+light.kitchen_1:
+  platform: hue
+  unique_id: 00:17:88:01:10:28:e9:09-0b
+light.kids_bathroom_1:
+  platform: hue
+  unique_id: 00:17:88:01:10:28:10:47-0b
+light.door_lamp:
+  platform: hue
+  unique_id: 00:17:88:01:02:32:3d:15-0b
+media_player.blueiris2:
+  platform: plex
+  unique_id: yl4mfs4g95zdzgaq1twgbvs4
+switch.kids_bathroom_scent:
+  platform: wemo
+  unique_id: 221741K010D84B
+switch.master_bath:
+  platform: wemo
+  unique_id: 221742K01216F2
+switch.wemo_washing_machine:
+  platform: wemo
+  unique_id: 231627K1200071
+switch.master_bedroom_network:
+  platform: wemo
+  unique_id: 221742K0122559
+switch.driveway_camera:
+  platform: wemo
+  unique_id: 221742K012196E
+media_player.galaxy_s6:
+  platform: plex
+  unique_id: a43de8b5a7184c91-com-plexapp-android
+switch.wemo_master_bath_fan:
+  platform: wemo
+  unique_id: 221736K13013B2
+switch.wemo_master_bath_heater:
+  platform: wemo
+  unique_id: 231624K120137B

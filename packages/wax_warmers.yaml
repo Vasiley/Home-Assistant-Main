@@ -17,10 +17,6 @@ homeassistant:
       friendly_name: Kids Bath Scent
       haaska_name: Kids Bath Scent
       icon: mdi:flower
-    switch.ruths_room_scent:
-      friendly_name: Ruths Room Scent
-      haaska_name: Ruths Room Scent
-      icon: mdi:flower
     switch.dawns_scent:
       haaska_name: Living room Scent
       friendly_name: Living Room Scent
@@ -43,7 +39,6 @@ group:
      - switch.dawn_day
      - switch.master_bath
      - switch.kids_bathroom_scent
-     - switch.ruths_room_scent
      - automation.warmers_scent_on
      - automation.warmers_scent_off
 
@@ -62,8 +57,6 @@ automation:
         entity_id: switch.master_bath
       - service: switch.turn_on
         entity_id: switch.kids_bathroom_scent
-      - service: switch.turn_on
-        entity_id: switch.ruths_room_scent
 
   - alias: warmers_scent_off
     trigger:
@@ -72,7 +65,7 @@ automation:
         to: 'Evening Time'
       - platform: state
         entity_id: sensor.house_mode_state
-        to: 'Away'  
+        to: 'Away'
     action:
       - service: switch.turn_off
         entity_id: switch.dawns_scent
@@ -82,5 +75,4 @@ automation:
         entity_id: switch.master_bath
       - service: switch.turn_off
         entity_id: switch.kids_bathroom_scent
-      - service: switch.turn_off
-        entity_id: switch.ruths_room_scent
+    

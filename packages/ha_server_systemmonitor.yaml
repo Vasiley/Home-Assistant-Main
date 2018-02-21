@@ -27,18 +27,18 @@ group:
      - sensor.speedtest_download
      - sensor.speedtest_upload
      - sensor.speedtest_ping
-     - sensor.cpu_used
-     - sensor.average_load_15m
+     - sensor.processor_use
+     - sensor.load_15m
      - sensor.ha_cpu_temperature
      - sensor.disk_free_home
-     - sensor.disk_used_home_2
      - sensor.disk_used_home
-     - sensor.ram_available
-     - sensor.ram_used_2
-     - sensor.ram_used
+     - sensor.disk_use_percent_home
+     - sensor.memory_free
+     - sensor.memory_use
+     - sensor.memory_use_percent
      - sensor.swap_free
-     - sensor.swap_used
-     - sensor.swap_used_2
+     - sensor.swap_use
+     - sensor.swap_use_percent
      - sensor.received_enp2s0
      - sensor.sent_enp2s0
      - sensor.packets_received_enp2s0
@@ -117,11 +117,11 @@ input_number:
     step: 5
 
 automation:
-############# Ram usuage high on BI server #####################################
+############# Ram usuage high on HA server #####################################
   - alias: ha_ram_overload
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.ram_used_2') > states('input_number.ram_alert_value') }}"
+        value_template: "{{ states('sensor.memory_use_percent') > states('input_number.ram_alert_value') }}"
     action:
       - service: tts.google_say
         data:
@@ -143,11 +143,11 @@ automation:
           notification_id: "Ram On HA Server"
       - service: script.ha_dash_usage
 
-############# Disk usuage high on BI server #####################################
+############# Disk usuage high on HA server #####################################
   - alias: ha_disk_overload
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.disk_used_home') > states('input_number.disk_alert_value') }}"
+        value_template: "{{ states('sensor.disk_use_percent_home') > states('input_number.disk_alert_value') }}"
     action:
       - service: tts.google_say
         data:
@@ -173,7 +173,7 @@ automation:
   - alias: ha_cpu_overload
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.cpu_used')|int > states('input_number.cpu_alert_value')| int }}"
+        value_template: "{{ states('sensor.processor_use')|int > states('input_number.cpu_alert_value')| int }}"
 #        for: '00:00:30'
     action:
       - service: tts.google_say
