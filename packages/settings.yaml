@@ -16,6 +16,9 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
+    input_number.evening_time_off:
+      friendly_name: Light Turn Off Timer
+      persistent: true
 ################  Movie MODE #################################################
     input_number.movie_mode_brightness_value:
       friendly_name: Light Brightness %
@@ -103,6 +106,7 @@ group:
      - input_number.evening_mode_brightness_value
      - input_number.evening_mode_color_temp_value
      - input_number.evening_mode_transition_value
+     - input_number.evening_time_off
 ################  Movie MODE #################################################
   setting_movie_mode_settings_card:
    name: Movie Mode
@@ -159,6 +163,12 @@ input_number:
     initial: 15
     min: 0
     max: 90
+    step: 1
+  evening_time_off:
+    name: Evening Mode Timer
+    initial: 3
+    min: 1
+    max: 15
     step: 1
 ################  Movie MODE #################################################
   movie_mode_brightness_value:

@@ -1,0 +1,59 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'BroadLink'
+    switch.bathroom_heater_power:
+      haaska_hidden: true
+      icon: mdi:power
+    switch.bathroom_heater_oscillate:
+      haaska_hidden:
+      icon: mdi:rotate-3d
+    script.bath_heater_on:
+  #    haaska_name: Bath Heater On
+      friendly_name: Master Bath Heater On
+    script.bath_heater_off:
+  #    haaska_name: Bath Heater Off
+      friendly_name: Master Bath Heater Off
+
+group:
+  master_bathroom_heater:
+   control: hidden
+   name: Master Bath Heater
+   entities:
+     - switch.bathroom_heater_power
+     - switch.bathroom_heater_oscillate
+     - script.bath_heater_on
+     - script.bath_heater_off
+
+switch:
+  - platform: broadlink
+    host: 192.168.1.221
+    mac: '34:EA:34:CC:C8:AA'
+    switches:
+      heater_lasko_power:
+        friendly_name: "Bathroom Heater Power"
+        command_on: 'JgBqAAABO5cSQxMVEhQTFhIVExQSQxMVERUSFxEWEhUTEhUVERcRFhEWEkMSFRIVEkMUFRFDE0ITFRIWERYSFRIVExQSFRMWERURFxIUFBQSFhIWERYSFRJCFEISFRMWD0UTQhIWEUQ5HRMADQUAAAAAAAAAAAAAAAAAAA=='
+        command_off: 'JgBqAAABOZgTFRIVEhUUFBMUEhYRRBMVERUTFREWExQSFRQVEBcRFhIVEkMTFRIWEUMUFBJCE0QRFhJDFRIUExNDEkQRRBRBEhQUFBIWEhYRFhIWERUTFRFDFBURGBBDEkIUQhIVExU6GxMADQUAAAAAAAAAAAAAAAAAAA=='
+      heater_lasko_oscillate:
+        friendly_name: "Bathroom Heater Oscillate"
+        command_on: 'JgBqAAABO5cSQxRBExQUFBIVFBQSQxQUEhQUFBIVExUSFRQUEhQUFBIVE0MSFRMUE0IUFBJDFEISQhQUExUTFBIVExURQxVBExQTFRIVExUSFRQTFBMTQxJDFBQSFBRCEhUTFRIVFEE6GxQADQUAAAAAAAAAAAAAAAAAAA=='
+        command_off: 'JgBqAAABO5cTQhMVEhUUFBIVExQTQhUTEhUTFRIVExQTFBMVEhUTFRIVFEETFBQUEkMTFRJCFUETFBMVEhUTFBNCFUESQxQUEhUTFBMUFBQSFRQUEkMTFBNCFEISFRNCE0IUQhIVE0M5GxUADQUAAAAAAAAAAAAAAAAAAA=='
+
+script:
+  bath_heater_on:
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.bathroom_heater_power
+      - delay: '00:00:05'
+      - service: switch.turn_on
+        entity_id: switch.bathroom_heater_oscillate
+
+  bath_heater_off:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.bathroom_heater_oscillate
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.bathroom_heater_power

@@ -89,6 +89,9 @@ automation:
         to: 'off'
         for:
           minutes: 3
+    # condition:
+    #   - condition: template
+    #     value_template: '{{ states.binary_sensor.kitchen_motion.state == (states.input_number.evening_time_off.state) }}'
     action:
       - service: light.turn_off
         data_template:

@@ -11,9 +11,6 @@ homeassistant:
     switch.wemo_master_bath_fan:
       friendly_name: Master Bath Humidity Fan
       icon: mdi:fan
-    switch.wemo_master_bath_heater:
-      friendly_name: Master Bath Heat
-      icon: mdi:oil-temperature
     switch.getting_dressed:
       friendly_name: Getting Dressed
       icon: mdi:room-service
@@ -37,11 +34,11 @@ homeassistant:
     automation.master_bath_shower_time_warmup_on:
       haaska_hidden: true
       hidden: false
-      persistence: true
+      persistence: false
     automation.master_bath_shower_time_warmup_off:
       haaska_hidden: true
       hidden: false
-      persistence: true
+      persistence: false
     automation.motion_bathroom_home_mode_off:
       haaska_hidden: true
       hidden: false
@@ -69,6 +66,7 @@ homeassistant:
     sensor.master_bathroom_dimmer_state:
       icon: mdi:remote
       haaska_hidden: true
+      persistence: false
     sensor.master_bathroom_dimmer_last_update:
       icon: mdi:clock
     sensor.master_bathroom_dimmer_battery:
@@ -92,20 +90,14 @@ homeassistant:
     script.getting_dressed_off:
       friendly_name: Getting Dressed Script Off
       haaska_hidden: true
-    # script.shower_time_warmup_on:
-    #   friendly_name: Shower Warmup Script On
-    #   haaska_hidden: true
-    # script.shower_time_warmup_off:
-    #   friendly_name: Shower Warmup Sript Off
-    #   haaska_hidden: true
     switch.shower_time:
       friendly_name: Shower Time
       haaska_hidden: false
       haaska_name: Shower Time
-    # switch.shower_time_warmup:
-    #   friendly_name: Shower Time Warmup
-    #   haaska_hidden: false
-    #   haaska_name: Shower Time
+    switch.master_bath_heater:
+      friendly_name: Master Bath Heater
+      haaska_name: Master Bath Heater
+      haaska_hidden: false
     light.bathroom:
       persistence: false
 
@@ -117,7 +109,6 @@ group:
        - light.bathroom_vanity
        - light.bathroom
        - switch.wemo_master_bath_fan
-       - switch.wemo_master_bath_heater
        - switch.getting_dressed
        - sensor.bathroom_heater_watts
        - switch.master_bath
@@ -131,9 +122,6 @@ group:
        - script.bath_time_off
        - script.getting_dressed_on
        - script.getting_dressed_off
-#       - script.shower_time_warmup_on
-#       - script.shower_time_warmup_off
-#       - switch.shower_time_warmup
        - switch.shower_time
        - automation.master_bath_light_left_on
        - automation.master_bath_shower_time_off
@@ -146,6 +134,7 @@ group:
        - automation.motion_bathroom_sleep_off
        - automation.motion_bathroom_sleep_on
        - automation.master_bath_getting_dressed
+       - group.master_bathroom_heater
 
 binary_sensor:
   - platform: rest
@@ -336,25 +325,19 @@ automation:
       - platform: state
         entity_id: sensor.master_bathroom_dimmer_state
         to: 'Preshower warmup'
-    condition:
-      condition: and
-      conditions:
-      - condition: numeric_state
-        entity_id: sensor.bathroom_temperature
-        below: '72'
     action:
       - service: script.turn_on
-        entity_id: script.shower_time_warmup_on
+        entity_id: script.bath_heater_on
 
   - alias: Master Bath Shower Time Warmup Off
     initial_state: 'on'
     trigger:
       - platform: numeric_state
         entity_id: sensor.bathroom_temperature
-        above: '74'
+        above: '75'
     action:
       - service: script.turn_on
-        entity_id: script.shower_time_warmup_off
+        entity_id: script.bath_heater_off
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -389,8 +372,6 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.bath_time_off
-      - service: script.turn_on
-        entity_id: script.shower_time_warmup_off
 
   - alias: Master Bath light left on
     initial_state: 'on'
@@ -459,8 +440,6 @@ script:
         entity_id: light.bathroom
       - service: switch.turn_off
         entity_id: switch.wemo_master_bath_fan
-      - service: switch.turn_off
-        entity_id: switch.wemo_master_bath_heater    
 
   getting_dressed_on:
     sequence:
@@ -504,18 +483,7 @@ script:
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
-
-  # shower_time_warmup_on:
-  #   sequence:
-  #     - delay: '00:00:01'
-  #     - service: switch.turn_on
-  #       entity_id: switch.wemo_master_bath_heater
-  #
-  # shower_time_warmup_off:
-  #   sequence:
-  #     - delay: '00:00:01'
-  #     - service: switch.turn_off
-  #       entity_id: switch.wemo_master_bath_heater
+######## for alexa to say turn on and turn Off
 
 switch:
   - platform: template
@@ -542,15 +510,15 @@ switch:
           - service: script.turn_on
             data:
               entity_id: script.getting_dressed_off
-  # - platform: template
-  #   switches:
-  #     shower_time_warmup:
-  #       value_template: "{{ is_state('switch.wemo_master_bath_heater', 'on') }}"
-  #       turn_on:
-  #         - service: script.turn_on
-  #           data:
-  #             entity_id: script.shower_time_warmup_on
-  #       turn_off:
-  #         - service: script.turn_on
-  #           data:
-  #             entity_id: script.shower_time_warmup_off
+  - platform: template
+    switches:
+      master_bath_heater:
+        value_template: "{{ is_state('switch.master_bath_heater', 'On') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.bath_heater_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.bath_heater_off
