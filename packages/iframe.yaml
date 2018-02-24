@@ -13,8 +13,3 @@ panel_iframe:
     title: 'Plex'
     icon: mdi:plex
     url: https://app.plex.tv/desktop
-
-  google_calender:
-    title: 'Calender'
-    icon: mdi:calendar-clock
-    url: !secret google_calender_link

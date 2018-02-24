@@ -16,9 +16,6 @@ homeassistant:
       icon: mdi:room-service
       haaska_hidden: false
       haaska_name: Getting Dressed
-    sensor.bathroom_heater_watts:
-      friendly_name: Master Bath Heater Watts
-      icon: mdi:power-plug
     automation.master_bath_light_left_on:
       haaska_hidden: true
       hidden: false
@@ -110,7 +107,6 @@ group:
        - light.bathroom
        - switch.wemo_master_bath_fan
        - switch.getting_dressed
-       - sensor.bathroom_heater_watts
        - switch.master_bath
        - binary_sensor.bathroom_motion
        - sensor.bathroom_temperature
@@ -123,6 +119,13 @@ group:
        - script.getting_dressed_on
        - script.getting_dressed_off
        - switch.shower_time
+       - group.master_bath_automations_card
+       - group.master_bathroom_heater
+       
+   master_bath_automations_card:
+     control: hidden
+     name: Master Bath Automations
+     entities:
        - automation.master_bath_light_left_on
        - automation.master_bath_shower_time_off
        - automation.master_bath_shower_time_on
@@ -134,7 +137,6 @@ group:
        - automation.motion_bathroom_sleep_off
        - automation.motion_bathroom_sleep_on
        - automation.master_bath_getting_dressed
-       - group.master_bathroom_heater
 
 binary_sensor:
   - platform: rest
@@ -195,11 +197,6 @@ sensor:
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Motion Sensor Bathroom Battery'
-  - platform: template
-    sensors:
-      bathroom_heater_watts:
-        value_template: '{{ states.switch.wemo_master_bath_heater.attributes["current_power_w"] | replace(" W", "") | float }}'
-        unit_of_measurement: 'W'
 
 automation:
   - alias: Motion Bathroom Home Mode On

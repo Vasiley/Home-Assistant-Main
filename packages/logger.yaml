@@ -31,7 +31,7 @@ logger:
     homeassistant.components.feedreader: warn
     homeassistant.components: warn
     bellows.uart: warn
-    homeassistant.core: warn
+    homeassistant.core: critical
     homeassistant.helpers.script: warn
     homeassistant.helpers.entity: warn
     homeassistant.helpers.restore_state: warn
