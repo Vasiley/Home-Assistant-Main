@@ -10,6 +10,10 @@ homeassistant:
     switch.bathroom_heater_oscillate:
       haaska_hidden:
       icon: mdi:rotate-3d
+    switch.gabbies_tv:
+      haaska_name: Gabbies Tv
+      icon: mdi:television-box
+      friendly_name: Gabbies Tv
     script.bath_heater_on:
   #    haaska_name: Bath Heater On
       friendly_name: Master Bath Heater On
@@ -40,7 +44,14 @@ switch:
         friendly_name: "Bathroom Heater Oscillate"
         command_on: 'JgBqAAABO5cSQxRBExQUFBIVFBQSQxQUEhQUFBIVExUSFRQUEhQUFBIVE0MSFRMUE0IUFBJDFEISQhQUExUTFBIVExURQxVBExQTFRIVExUSFRQTFBMTQxJDFBQSFBRCEhUTFRIVFEE6GxQADQUAAAAAAAAAAAAAAAAAAA=='
         command_off: 'JgBqAAABO5cTQhMVEhUUFBIVExQTQhUTEhUTFRIVExQTFBMVEhUTFRIVFEETFBQUEkMTFRJCFUETFBMVEhUTFBNCFUESQxQUEhUTFBMUFBQSFRQUEkMTFBNCFEISFRNCE0IUQhIVE0M5GxUADQUAAAAAAAAAAAAAAAAAAA=='
-
+  - platform: broadlink
+    host: 192.168.1.152
+    mac: '34:EA:34:51:32:E1'
+    switches:
+      gabbies_tv_power:
+        friendly_name: "Gabbies Tv"
+        command_on: 'JgBwAAABJ5MTEhM3EjgSEhMSEhMSExI3EzcSExI3ExISExITEhMSExI3EjgSNxI4EhMSEhMSEhMSExITEhITEhI4EjcTNxI4EgAFlQABKEoTAAxZAAEnSxIADFkAASdLEgAMWQABKEoSAAxZAAEoShMADQUAAAAAAAAAAA=='
+        command_off: 'JgBwAAABJ5MTEhM3EjgSEhMSEhMSExI3EzcSExI3ExISExITEhMSExI3EjgSNxI4EhMSEhMSEhMSExITEhITEhI4EjcTNxI4EgAFlQABKEoTAAxZAAEnSxIADFkAASdLEgAMWQABKEoSAAxZAAEoShMADQUAAAAAAAAAAA=='
 script:
   bath_heater_on:
     sequence:

@@ -32,6 +32,7 @@ group:
    entities:
      - input_boolean.boolean_gabbie_home
      - switch.gabbies_lamp
+     - switch.gabbies_tv
      - automation.gabbie_home
      - automation.gabbie_not_home
 

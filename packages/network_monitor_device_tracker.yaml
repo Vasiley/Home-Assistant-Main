@@ -68,18 +68,31 @@ homeassistant:
     sensor.harmony_hub:
       friendly_name: Harmony Hub
       icon: mdi:black-mesa
+      haaska_hidden: true
     sensor.hue_hub:
       friendly_name: Hue Hub
       icon: mdi:black-mesa
+      haaska_hidden: true
+    sensor.broadlink_mini:
+      friendly_name: Broadlink Mini
+      icon: mdi:black-mesa
+      haaska_hidden: true
+    sensor.broadlink_pro:
+      friendly_name: Broadlink Pro
+      icon: mdi:black-mesa
+      haaska_hidden: true
     sensor.wink_hub:
       friendly_name: Wink Hub
       icon: mdi:black-mesa
+      haaska_hidden: true
     sensor.wink_fan_gang:
       friendly_name: Fan Connection
       icon: mdi:nfc
+      haaska_hidden: true
     sensor.wink_fan_master_gang:
       friendly_name: Master Fan Connection
       icon: mdi:nfc
+      haaska_hidden: true
     sensor.myipopendnscom:
       friendly_name: Wan Ip
       icon: mdi:wan
@@ -137,6 +150,8 @@ group:
      - sensor.harmony_hub
      - sensor.hue_hub
      - sensor.wink_hub
+     - sensor.broadlink_mini
+     - sensor.broadlink_pro
 
   cameras_status_card:
     name: Cameras
@@ -275,6 +290,14 @@ sensor:
         value_template: '{% if is_state("binary_sensor.gang_1", "on") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      broadlink_mini:
+        value_template: '{% if is_state("device_tracker.34ea345132e1", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
+      broadlink_pro:
+        value_template: '{% if is_state("device_tracker.34ea34ccc8aa", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       harmony_hub:
         value_template: '{% if is_state("device_tracker.harmonyhubvasiley", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
@@ -405,6 +428,8 @@ automation:
           - sensor.esp_lv_room_front_blinds
           - sensor.esp_master_blinds1
           - sensor.esp_master_blinds2
+          - sensor.broadlink_mini
+          - sensor.broadlink_pro
 
 #        for: '00:00:01'
     condition:
