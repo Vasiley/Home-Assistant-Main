@@ -116,6 +116,9 @@ homeassistant:
     sensor.dashboard_tablet_lv:
       friendly_name: Dashboard Tablet
       icon: mdi:tablet-android
+    sensor.dashboard_tablet_gabbies:
+      friendly_name: Gabbies Dashboard
+      icon: mdi:tablet-android
     sensor.dashboard_tablet_bedroom:
       friendly_name: Dashboard Tablet Bedroom
       icon: mdi:tablet-android
@@ -186,6 +189,7 @@ group:
      - sensor.gabbies_laptop
      - sensor.dashboard_tablet_lv
      - sensor.dashboard_tablet_bedroom
+     - sensor.dashboard_tablet_gabbies
 
 sensor:
   ############## Public Ip
@@ -327,6 +331,10 @@ sensor:
         value_template: '{% if is_state("device_tracker.androida64e0f70e33eb022", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
     sensors:
+      dashboard_tablet_gabbies:
+        value_template: '{% if is_state("device_tracker.e458e7411c6a", "home") %}Online{% else %}Offline{% endif %}'
+  - platform: template
+    sensors:
       dashboard_tablet_bedroom:
         value_template: '{% if is_state("device_tracker.4ca56d68487b", "home") %}Online{% else %}Offline{% endif %}'
   - platform: template
@@ -391,6 +399,7 @@ automation:
           - sensor.esp_smallfishtank_led
           - sensor.gabbies_laptop
           - sensor.dashboard_tablet_bedroom
+          - sensor.dashboard_tablet_gabbies
           - sensor.netgear_router
           - sensor.esp_lv_room_dawn_blinds
           - sensor.esp_lv_room_front_blinds

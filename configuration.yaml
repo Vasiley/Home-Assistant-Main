@@ -74,7 +74,7 @@ wemo:
   static:
     - 192.168.1.254  #Driveway Camera
     - 192.168.1.204  #washer
-    - 192.168.1.146  #Master Bath Scent
+    - 192.168.1.146  #gabbies_lamp
     - 192.168.1.126  #Kids Bathroom Scent
     - 192.168.1.218  #Master Bedroom Network Reboot
     - 192.168.1.230  #Master Bathroom Fan

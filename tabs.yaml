@@ -119,6 +119,7 @@
      - group.camera_dawn_card
      - group.camera_herb_card
      - group.camera_tablet_card
+     - group.camera_gabbie_cam_card
 
   Roomview:
    view: yes
@@ -135,6 +136,7 @@
      - group.kids_bath_card
      - group.kids_hallway_card
      - group.ruths_room_card
+     - group.gabbies_room_card
 
   Fun_Stuff:
    view: yes
@@ -163,6 +165,7 @@
    entities:
      - group.lv_room_dashboard
      - group.master_bedroom_dashboard
+     - group.gabbies_room_dashboard
      - group.all_dashboards
 
   reminders:
@@ -183,6 +186,7 @@
     entities:
      - sensor.herb
      - sensor.dawn
+     - sensor.gabbie_status
 
   Routines:
     control: hidden
@@ -235,6 +239,7 @@
      - sensor.kitchen_table_dimmer_battery
      - sensor.master_closet_dimmer_battery
      - sensor.bedroom_wallpanel_battery
+     - sensor.gabbies_room_wallpanel_battery
 
   Motion_card:
    name: Motion
@@ -247,6 +252,7 @@
      - binary_sensor.bathroom_motion
      - binary_sensor.master_motion
      - binary_sensor.bedroom_motion
+     - binary_sensor.gabbies_room_motion
 
   lux_card:
    name: House Light Levels

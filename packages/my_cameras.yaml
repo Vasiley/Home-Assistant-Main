@@ -43,6 +43,10 @@ group:
    name: Tablet Cam
    entities:
      - camera.Tablet_Cam
+  camera_gabbie_cam_card:
+   name: Gabbie Cam
+   entities:
+     - camera.gabbie_Cam
 camera:
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
@@ -76,6 +80,13 @@ camera:
     password: !secret blue_iris_camera_stream_pass
     authentication: basic
 
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
+    name: Gabbie Cam
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
   - platform: generic
     still_image_url: http://192.168.1.90/cgi-bin/camera
     name: Yard
@@ -95,5 +106,3 @@ camera:
     name: Herb
     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}
     limit_refetch_to_url_change: true
-
-  

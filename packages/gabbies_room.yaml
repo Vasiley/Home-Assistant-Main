@@ -1,0 +1,69 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'Gabbies Room'
+
+    switch.gabbies_lamp:
+      friendly_name: Gabbies Lamp
+      haaska_name: Gabbies Lamp
+      icon: mdi:lamp
+    sensor.gabbie_status:
+      friendly_name: Gabbie
+      icon: mdi:human-child
+      haaska_hidden: true
+    input_boolean.boolean_gabbie_home:
+      friendly_name: Gabbie Home
+      haaska_hidden: true
+      icon: mdi:human-child
+      persistent: true
+    automation.gabbie_home:
+      friendly_name: Gabbie Home
+      haaska_hidden: true
+    automation.gabbie_not_home:
+      friendly_name: Gabbie Gone
+      haaska_hidden: true
+
+group:
+  gabbies_room_card:
+   name: Gabbie's Room
+   control: hidden
+   entities:
+     - input_boolean.boolean_gabbie_home
+     - switch.gabbies_lamp
+     - automation.gabbie_home
+     - automation.gabbie_not_home
+
+
+input_boolean:
+  boolean_gabbie_home:
+    initial: off
+
+sensor:
+  - platform: template
+    sensors:
+      gabbie_status:
+        value_template: '{% if is_state("input_boolean.boolean_gabbie_home", "on") %}Home{% else %}Gone{% endif %}'
+
+automation:
+  - alias: 'gabbie_home'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_gabbie_home
+        to: 'on'
+    action:
+       - service: tts.google_say
+         data:
+           entity_id: media_player.ha_speaker
+           message: 'Welcome Home Gabbie'
+  - alias: 'gabbie_not_home'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_gabbie_home
+        to: 'off'
+    action:
+       - service: tts.google_say
+         data:
+           entity_id: media_player.ha_speaker
+           message: 'Goodbye Gabbie'

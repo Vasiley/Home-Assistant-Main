@@ -3,6 +3,25 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'dashboards'
+    sensor.gabbies_room_wallpanel_battery:
+      icon: mdi:battery
+      friendly_name: Gabbies Room Dash Battery
+      haaska_hidden: true
+    sensor.gabbies_room_wallpanel_charging:
+      friendly_name: Gabbies Room Dash Battery Charging
+      icon: mdi:battery
+      haaska_hidden: true
+    sensor.gabbies_room_wallpanel_ac_plugged:
+      friendly_name: Gabbies Room Dash Ac Power
+      icon: mdi:power
+      haaska_hidden: true
+    sensor.current_dash_gabbies:
+      friendly_name: Gabbies Room Current Dash
+      icon: mdi:web
+      haaska_hidden: true
+    binary_sensor.gabbies_room_motion:
+      friendly_name: Gabbies Room Dash motion
+      device_class: motion
     binary_sensor.bedroom_motion:
       friendly_name: Master Dash motion
       device_class: motion
@@ -19,6 +38,9 @@ homeassistant:
       icon: mdi:battery
     sensor.living_room_wallpanel_ac_plugged:
       friendly_name: Living Room Dash Ac Power
+      icon: mdi:power
+    binary_sensor.gabbies_dash_ac_power:
+      friendly_name: Gabbies Room Dash Power
       icon: mdi:power
     binary_sensor.lv_ac_power:
       friendly_name: Living Room Dash Power
@@ -69,6 +91,18 @@ homeassistant:
       friendly_name: Power Lost To Dashboard
       haaska_hidden: true
 group:
+  gabbies_room_dashboard:
+   control: hidden
+   name: Gabbies Room Dashboard
+   entities:
+     - sensor.dashboard_tablet_gabbies
+     - sensor.current_dash_gabbies
+     - sensor.gabbies_room_wallpanel_battery
+     - sensor.gabbies_room_wallpanel_charging
+     - binary_sensor.gabbies_screen_on
+     - binary_sensor.gabbies_dash_ac_power
+     - binary_sensor.gabbies_room_motion
+
   lv_room_dashboard:
    control: hidden
    name: Living Room Dashboard
@@ -111,6 +145,35 @@ group:
      - automation.power_lost_to_dashboards
 
 sensor:
+####### Gabbies Room #############################
+  - platform: mqtt
+    state_topic: "wallpanel/gabbiedash/sensor/battery"
+    name: "Gabbies Room wallpanel battery"
+    unit_of_measurement: "%"
+    value_template: '{{ value_json.value }}'
+  - platform: mqtt
+    state_topic: "wallpanel/gabbiedash/sensor/battery"
+    name: "Gabbies Room wallpanel Charging"
+    value_template: '{{ value_json.charging }}'
+  - platform: mqtt
+    state_topic: "wallpanel/gabbiedash/sensor/battery"
+    name: "Gabbies Room wallpanel Ac Plugged"
+    value_template: '{{ value_json.acPlugged }}'
+  - platform: rest
+    resource: http://192.168.1.107:2971/api/state
+    value_template: '{{ value_json.currentUrl }}'
+    name: 'Current Url Gabbie'
+  - platform: template
+    sensors:
+      current_dash_gabbies:
+        value_template: >-
+          {% if states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies?skin=default" %}
+               Gabbies Dash
+          {% elif states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies" %}
+               Gabbies Dash
+          {% else %}
+               Unknown
+          {% endif %}
 ####### BEDROOM ##################################
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/battery"
@@ -213,19 +276,37 @@ sensor:
 
 #### Binary's For Master and Living Room
 binary_sensor:
-####### Bedroom ###############
+####### Gabbies Room  ###############
+  - platform: rest
+    resource: http://192.168.1.107:2971/api/state
+    value_template: '{{ value_json.screenOn }}'
+    name: 'Gabbies Screen On'
+  - platform: template
+    sensors:
+      gabbies_dash_ac_power:
+        device_class: power
+        friendly_name: "Living Dash Power"
+        value_template: "{{ states.sensor.gabbies_room_wallpanel_ac_plugged.state == 'True' }}"
+  - platform: mqtt
+    state_topic: "wallpanel/gabbiedash/sensor/motion"
+    name: "Gabbies Room Motion"
+    payload_on: '{"value":true}'
+    payload_off: '{"value":false}'
+    device_class: motion
+####### Bedroom       ###############
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/motion"
     name: "Bedroom Motion"
     payload_on: '{"value":true}'
     payload_off: '{"value":false}'
     device_class: motion
-
-######### Living Room   ##############
   - platform: rest
     resource: http://192.168.1.108:2971/api/state
     value_template: '{{ value_json.screenOn }}'
     name: 'Master Screen On'
+
+######### Living Room   ##############
+
   - platform: rest
     resource: http://192.168.1.15:2971/api/state
     value_template: '{{ value_json.screenOn }}'
@@ -309,6 +390,11 @@ automation:
         from: 'On'
         to: 'Off'
         for: '00:10:00'
+      - platform: state
+        entity_id: binary_sensor.gabbies_dash_ac_power
+        from: 'On'
+        to: 'Off'
+        for: '00:10:00'
     action:
       - service: tts.google_say
         data:
@@ -324,6 +410,7 @@ script:
       - delay: '00:00:01'
       - service: shell_command.lv_room_dash_refresh
       - service: shell_command.master_dash_refresh
+      - service: shell_command.gabbies_room_dash_refresh
   dash_frontdoor_cam:
     sequence:
       - delay: '00:00:01'
@@ -342,6 +429,7 @@ script:
       - service: shell_command.master_dash_wake_up
 
 shell_command:
+   gabbies_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.107:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
    lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.15:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
    master_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
    master_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.108:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"

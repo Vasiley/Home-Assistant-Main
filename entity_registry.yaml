@@ -67,7 +67,7 @@ media_player.blueiris2:
 switch.kids_bathroom_scent:
   platform: wemo
   unique_id: 221741K010D84B
-switch.master_bath:
+switch.gabbies_lamp:
   platform: wemo
   unique_id: 221742K01216F2
 switch.wemo_washing_machine:
