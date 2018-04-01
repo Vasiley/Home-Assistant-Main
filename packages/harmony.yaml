@@ -14,7 +14,7 @@ group:
 remote:
   - platform: harmony
     name: Entertainment
-    host: 192.168.1.193
+    host: 192.168.1.210
 
 sensor:
   - platform: template
@@ -68,7 +68,7 @@ automation:
             {% elif is_state("input_select.harmony", "Amazon") %}
               27189210
             {% elif is_state("input_select.harmony", "Roku") %}
-              31026175  
+              31026175
             {% else %}
             {% endif %}
       - service: input_select.select_option

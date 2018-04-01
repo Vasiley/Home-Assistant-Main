@@ -9,12 +9,11 @@ homeassistant:
       friendly_name: Dawns Scent
       haaska_name: Dawns Scent
       icon: mdi:flower
-
     switch.kids_bathroom_scent:
       friendly_name: Kids Bath Scent
       haaska_name: Kids Bath Scent
       icon: mdi:flower
-    switch.dawns_scent:
+    switch.kids_bathroom_scent_2:
       haaska_name: Living room Scent
       friendly_name: Living Room Scent
       icon: mdi:flower
@@ -35,6 +34,7 @@ group:
      - switch.dawns_scent
      - switch.dawn_day
      - switch.kids_bathroom_scent
+     - switch.kids_bathroom_scent_2
      - automation.warmers_scent_on
      - automation.warmers_scent_off
 
@@ -46,9 +46,7 @@ automation:
         to: 'Home'
     action:
       - service: switch.turn_on
-        entity_id: switch.dawns_scent
-      - service: switch.turn_on
-        entity_id: switch.dawns_scent
+        entity_id: switch.kids_bathroom_scent_2
       - service: switch.turn_on
         entity_id: switch.master_bath
       - service: switch.turn_on
@@ -64,9 +62,7 @@ automation:
         to: 'Away'
     action:
       - service: switch.turn_off
-        entity_id: switch.dawns_scent
-      - service: switch.turn_off
-        entity_id: switch.dawns_scent
+        entity_id: switch.kids_bathroom_scent_2
       - service: switch.turn_off
         entity_id: switch.master_bath
       - service: switch.turn_off

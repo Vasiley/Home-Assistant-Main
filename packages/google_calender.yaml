@@ -188,7 +188,7 @@ automation:
       - delay: '00:01:00'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'BIRTHDAY COUNTDOWN {{states.sensor.next_birthday.state}} is {{states.sensor.days_to_next_birthday.state}} days away'
 
   - alias: Random Birthday Wishes
@@ -211,7 +211,7 @@ automation:
     action:
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: !include ../intent_templates/birthday_wishes.yaml
 
 ####### Holiday Announcment ################
@@ -230,7 +230,7 @@ automation:
       - delay: '00:01:00'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Holiday COUNTDOWN {{states.sensor.next_holiday.state}} is {{states.sensor.days_to_next_holiday.state}} days away'
 
   - alias: Holiday
@@ -253,7 +253,7 @@ automation:
     action:
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Today is {{ states.calendar.holidays_in_united_states.attributes.message }}'
 
 ##### appointment Announcment   ###################
@@ -272,7 +272,7 @@ automation:
       - delay: '00:01:15'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
             Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
             with {{ states.calendar.dawns_calender.attributes.description }} is
@@ -310,7 +310,7 @@ automation:
       - delay: '00:01:30'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
             Dr appointment today {{ states.calendar.dawns_calender.attributes.description }}
             at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}

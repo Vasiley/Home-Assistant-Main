@@ -121,7 +121,7 @@ group:
        - switch.shower_time
        - group.master_bath_automations_card
        - group.master_bathroom_heater
-       
+
    master_bath_automations_card:
      control: hidden
      name: Master Bath Automations
@@ -250,7 +250,7 @@ automation:
         entity_id: binary_sensor.bathroom_motion
         to: 'off'
         for:
-          minutes: 3
+          minutes: 7
     condition:
       condition: or
       conditions:

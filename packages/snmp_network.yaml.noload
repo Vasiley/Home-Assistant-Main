@@ -1,0 +1,169 @@
+homeassistant:
+  customize:
+    sensor.wan_traffic_in_mean:
+      friendly_name: 'WAN Download Average'
+      icon: mdi:download
+    sensor.wan_traffic_out_mean:
+      friendly_name: 'WAN Upload Average'
+      icon: mdi:upload
+    sensor.internet_speed_in:
+      friendly_name: Internet In
+    sensor.internet_speed_out:
+      friendly_name: Internet Out
+    sensor.lan_load_in_mean:
+      friendly_name: Lan Load In
+    sensor.lan_load_out_mean:
+      friendly_name: Lan Load Out
+
+group:
+  NetworkSnmp_card:
+   name: Bandwidth
+   entities:
+     - sensor.ping_time
+     - sensor.wan_traffic_in_mean
+     - sensor.wan_traffic_out_mean
+     - sensor.lan_load_in_mean
+     - sensor.lan_load_out_mean
+
+sensor:
+  ################# Network Bandwith ################
+
+  - platform: snmp
+    name: snmp_wan_in
+    host: 192.168.1.1
+    baseoid: 1.3.6.1.2.1.2.2.1.16.4
+
+  - platform: snmp
+    name: snmp_wan_out
+    host: 192.168.1.1
+    baseoid: 1.3.6.1.2.1.2.2.1.10.5
+#1.3.6.1.2.1.2.2.1.10.4
+  - platform: snmp
+    name: snmp lan load in
+    host: 192.168.1.1
+    baseoid: 1.3.6.1.2.1.2.2.1.16.7
+
+  - platform: snmp
+    name: snmp lan load out
+    host: 192.168.1.1
+    baseoid: 1.3.6.1.2.1.2.2.1.10.7
+
+
+  - platform: template
+    sensors:
+      lan_load_in:
+        friendly_name: 'Lan Load'
+        value_template: "{{ ((states('input_number.lan_load_delta_in') | float ) / 1000000 ) | round(2) }}"
+        unit_of_measurement: 'Mbps'
+
+  - platform: template
+    sensors:
+      lan_load_out:
+        friendly_name: 'Lan Load'
+        value_template: "{{ ((states('input_number.lan_load_delta_out') | float ) / 1000000 ) | round(2) }}"
+        unit_of_measurement: 'Mbps'
+
+  - platform: template
+    sensors:
+      internet_speed_in:
+        friendly_name: 'Internet Speed Down'
+        value_template: "{{ ((states('input_number.internet_traffic_delta_in') | float ) / 1000000 ) | round(2) }}"
+        unit_of_measurement: 'Mbps'
+
+  - platform: template
+    sensors:
+      internet_speed_out:
+        friendly_name: 'Internet Speed Up'
+        value_template: "{{ ((states('input_number.internet_traffic_delta_out') | float ) / 1000000 ) | round(2) }}"
+        unit_of_measurement: 'Mbps'
+
+  - platform: statistics
+    name: 'WAN Traffic IN'
+    entity_id: sensor.internet_speed_in
+
+  - platform: statistics
+    name: 'WAN Traffic OUT'
+    entity_id: sensor.internet_speed_out
+
+  - platform: statistics
+    name: 'LAN LOAD IN'
+    entity_id: sensor.lan_load_in
+
+  - platform: statistics
+    name: 'LAN LOAD OUT'
+    entity_id: sensor.lan_load_out
+
+input_number:
+
+  internet_traffic_delta_in:
+    name: "Traffic IN Delta"
+    initial: 0
+    min: -100
+    max: 1000000000000
+
+  internet_traffic_delta_out:
+    name: "Traffic OUT Delta"
+    initial: 0
+    min: -100
+    max: 1000000000000
+
+  lan_load_delta_in:
+    name: "Lan IN Delta"
+    initial: 0
+    min: -100
+    max: 1000000000000
+
+  lan_load_delta_out:
+    name: "Lan OUT Delta"
+    initial: 0
+    min: -100
+    max: 1000000000000
+
+automation:
+  - alias: Monitor Traffic
+
+    trigger:
+      platform: state
+      entity_id: sensor.snmp_wan_in
+
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.internet_traffic_delta_in
+          value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 1 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'
+
+  - alias: Monitor Traffic
+
+    trigger:
+      platform: state
+      entity_id: sensor.snmp_wan_out
+
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.internet_traffic_delta_out
+          value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 1 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'
+
+  - alias: Monitor Traffic Lan Traffic
+
+    trigger:
+      platform: state
+      entity_id: sensor.snmp_lan_load_in
+
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.lan_load_delta_in
+          value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 1 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'
+
+  - alias: Monitor Traffic Lan Traffic
+
+    trigger:
+      platform: state
+      entity_id: sensor.snmp_lan_load_out
+
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.lan_load_delta_out
+          value: '{{ ((trigger.to_state.state | int - trigger.from_state.state | int) * 1 ) / ( as_timestamp(trigger.to_state.last_updated) - as_timestamp(trigger.from_state.last_updated) ) }}'

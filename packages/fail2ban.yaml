@@ -13,7 +13,7 @@ sensor:
     jails:
       - ssh
       - hass-iptables
-    file_path: /var/log/fail2ban.log
+#    file_path: /var/log/fail2ban.log
     scan_interval: 120
 
   - platform: template

@@ -37,7 +37,7 @@ group:
      - script.vas_dashboard
      - switch.dawns_scent
 
- 
+
 
 
  kids_bath_card:
@@ -46,6 +46,7 @@ group:
     entities:
      - light.kids_bathroom
      - light.kids_bathroom_vanity
+     - switch.wemo_kids_bath_fan
      - switch.kids_bathroom_scent
      - binary_sensor.kids_bathroom_motion
      - sensor.kids_bathroom_temperature

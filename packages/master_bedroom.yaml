@@ -50,7 +50,9 @@ homeassistant:
       friendly_name: Dawns Side
     light.herbs_bedside_lamp:
       friendly_name: Herbs Side
-
+    switch.dawn_day:
+      friendly_name: Dawns controls Day
+      haaska_name: Dawns Wax Warmer
     switch.dawn_night:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan
@@ -143,10 +145,6 @@ switch:
     optimistic: false
     qos: 0
     retain: true
-
-# shell_command:
-#   fan_on: "curl -X GET http://192.168.1.167/control?cmd=GPIO,14,1"
-#   fan_off: "curl -X GET http://192.168.1.167/control?cmd=GPIO,14,0"
 
 #######################################################################################################
 #####    When home mode set on ecobee then master light turns on in bedroom (not while sleeping  ######

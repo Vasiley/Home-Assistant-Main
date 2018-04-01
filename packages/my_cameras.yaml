@@ -28,9 +28,9 @@ group:
    entities:
      - camera.back_door
   camera_livingroom_card:
-   name: Living Room
+   name: Front Door
    entities:
-     - camera.Living_Room_Camera
+     - camera.front_door_Camera
   camera_dawn_card:
    name: Dawn
    entities:
@@ -54,11 +54,11 @@ camera:
     password: !secret blue_iris_camera_stream_pass
     name: Number 12
 
-  # - platform: mjpeg
-  #   mjpeg_url: http://192.168.1.80:81/mjpg/cam4/video.mjpeg
-  #   username: !secret blue_iris_camera_stream_usrname
-  #   password: !secret blue_iris_camera_stream_pass
-  #   name: Living Room Camera
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam4/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Front Door Camera
 
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
@@ -81,21 +81,25 @@ camera:
     authentication: basic
 
   - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam7/video.mjpeg
+    name: Back Door
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/shed/video.mjpeg
+    name: Yard
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
     name: Gabbie Cam
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic
-
-  - platform: generic
-    still_image_url: http://192.168.1.90/cgi-bin/camera
-    name: Yard
-
-#  - platform: generic
-#    still_image_url: http://192.168.1.75/now.jpg
-#    name: Back Door
-#    username: !secret iqeye_username
-#    password: !secret iqeye_password
 
   - platform: generic
     name: Dawn

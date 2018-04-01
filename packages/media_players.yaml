@@ -5,14 +5,6 @@ homeassistant:
 
 # grouped each media player so that the would show correctly
 group:
-  Kodi_media_player_card:
-   name: Kodi
-   entities:
-     - media_player.kodi
-  Blue_iris_media_player_card:
-   name: Plex
-   entities:
-     - media_player.blueiris2
   Samsung_tv_media_player_card:
    name: Samsung
    entities:
@@ -21,7 +13,7 @@ group:
    name: stereo Amp
    entities:
      - media_player.stereo
-  Ruths_roku_media_player_card:
+  ruths_roku_media_player_card:
    name: Ruths Roku
    entities:
      - media_player.ruths_roku
@@ -29,23 +21,43 @@ group:
    name: Ha TTS Speaker
    entities:
      - media_player.ha_speaker
+  media_player_networkpc_card:
+    name: Plex
+    entities:
+      - media_player.networkpc
+  media_player_living_room_card:
+    name: Living Room Roku
+    entities:
+      - media_player.living_room
+  media_player_plex_server_card:
+    name: Plex Server
+    entities:
+      - media_player.plex_server_living_room
+  media_player_master_bedroom_cast_card:
+    name: Master Bedroom Cast
+    entities:
+      - media_player.master_bedroom_cast
 
 media_player:
-  - platform: kodi
-    name: Ha Speaker
-    host: 127.0.0.1
-    port: 8888
-    username: !secret media_player_kodi1_username
-    password: !secret media_player_kodi1_password
+  # - platform: kodi
+  #   name: Ha Speaker
+  #   host: 192.168.1.154
+  #   port: 8888
+  #   username: !secret media_player_kodi_username
+  #   password: !secret media_player_kodi_password
 
-  # - platform: samsungtv
-  #   host: 192.168.1.18
-  #   port: 8001
-  #   name: Smart Tv
-  - platform: plex
-    include_non_clients: false
+  - platform: samsungtv
+    host: 192.168.1.82
+    port: 8001
+    name: Smart Tv
+
+  # - platform: plex
+  #   entity_namespace: 'plex_server'
+  #   include_non_clients: true
+  #   IP_ADDRESS: 192.168.1.80
+
   - platform: onkyo
-    host: 192.168.1.131
+    host: 192.168.1.81
     name: Stereo
     sources:
       dvd: 'Blue Iris'
@@ -57,4 +69,15 @@ media_player:
       net: 'Net'
 
   # - platform: roku
-  #   host: 192.168.1.228
+  #   host: 192.168.1.142
+
+  - platform: roku
+    host: 192.168.1.143
+
+  - platform: cast
+    host: 192.168.1.173
+    name: master_bedroom_cast
+
+  - platform: cast
+    host: 192.168.1.32
+    name: Ha Speaker

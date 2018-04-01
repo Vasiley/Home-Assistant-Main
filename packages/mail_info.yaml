@@ -46,15 +46,6 @@ sensor:
     state_topic: '/usps/packages'
     value_template: "{{ value }}"
 
-  # - platform: command_line
-  #   name: 'USPS Mail'
-  #   command: '/root/.homeassistant/python_scripts/check_mail.py letters'
-  #   scan_interval: 3600
-  # - platform: command_line
-  #   name: 'USPS Packages'
-  #   command: 'root/.homeassistant/python_scripts/check_mail.py packages'
-  #   scan_interval: 3600
-
 #  - platform: usps
 #    username: !secret usps_username
 #    password: !secret usps_password

@@ -7,7 +7,7 @@ homeassistant:
 
     sensor.hassctl_version:
       friendly_name: Version
-    
+
 
 group:
   hassctl_card:
@@ -19,7 +19,7 @@ sensor:
   ###### VERSIONS
     - platform: command_line
       name: hassctl Current Version
-      command: curl -s  https://raw.githubusercontent.com/dale3h/hassctl/master/hassctl 2> /dev/null | head -3 | tail -1 | cut -d# -f2
+      command: curl -sS  https://raw.githubusercontent.com/dale3h/hassctl/master/hassctl 2> /dev/null | head -3 | tail -1 | cut -d# -f2
       value_template: '{{value[17:-1]}}'
     - platform: command_line
       name: hassctl Installed Version
@@ -42,4 +42,4 @@ script:
     sequence:
       - service: shell_command.update_hass
 shell_command:
-  update_hass: hassctl update-hass && hassctl config && hassctl restart
+  update_hass: "bash /usr/local/bin/hassctl update-hass"

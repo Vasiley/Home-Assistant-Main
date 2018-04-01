@@ -13,13 +13,13 @@ homeassistant:
       friendly_name: Blue Iris Pc
     switch.network_switch_asus_router:
       friendly_name: Asus Router
-    switch.network_switch_comnet_switches:
-      friendly_name: Comnet Switches
-    switch.network_switch_kodi_server:
-      friendly_name: Kodi Server
+    switch.network_switch_netgear_switch:
+      friendly_name: Netgear Managed Switch
+    switch.network_switch_chrome_cast_living_room:
+      friendly_name: Chrome Cast Living Room
     switch.network_switch_home_assistant_server:
       friendly_name: HASS Server
-    
+
 group:
   DigitalLoggers_card:
    control: hidden
@@ -29,8 +29,8 @@ group:
      - switch.network_switch_asus_router
      - switch.network_switch_blue_iris_monitor
      - switch.network_switch_blue_iris_pc
-     - switch.network_switch_comnet_switches
-     - switch.network_switch_kodi_server
+     - switch.network_switch_netgear_switch
+     - switch.network_switch_chrome_cast_living_room
      - switch.network_switch_home_assistant_server
 
 

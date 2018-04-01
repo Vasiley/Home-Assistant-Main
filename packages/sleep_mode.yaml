@@ -13,6 +13,10 @@ homeassistant:
 script:
   lamps_on:
     sequence:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Good Night'
       - service: input_boolean.turn_off
         data:
           entity_id: group.input_boolean_card

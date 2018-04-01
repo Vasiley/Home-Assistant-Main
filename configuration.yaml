@@ -5,7 +5,7 @@ homeassistant:
   elevation: 1
   unit_system: imperial
   time_zone: America/Chicago
-  customize: !include Customize.yaml
+  customize: !include customize.yaml
   packages: !include_dir_named packages
 
 ####Zone files
@@ -19,7 +19,7 @@ http:
    api_password: !secret http_password
    ssl_certificate: !secret ssl_certificate
    ssl_key: !secret ssl_key
-  # base_url: !secret http_base_url
+   base_url: !secret http_base_url
    use_x_forwarded_for: True
    trusted_networks:
      - 127.0.0.1
@@ -71,12 +71,13 @@ ffmpeg:
 
 #discovery:
 wemo:
-  static:
-    - 192.168.1.254  #Driveway Camera
-    - 192.168.1.204  #washer
-    - 192.168.1.146  #gabbies_lamp
-    - 192.168.1.126  #Kids Bathroom Scent
-    - 192.168.1.218  #Master Bedroom Network Reboot
-    - 192.168.1.230  #Master Bathroom Fan
-#    - 192.168.1.171  #Master Bathroom Heat
-    - 192.168.1.162  #rear network
+   static:
+     - 192.168.1.230  #Living Room Scent
+     - 192.168.1.231  #gabbies_lamp
+     - 192.168.1.233  #washer
+     - 192.168.1.232  #Driveway Camera roboot
+     - 192.168.1.228  #Kids Bathroom scent
+     - 192.168.1.31   #Master Bedroom Network Reboot
+     - 192.168.1.53  #Master Fan
+     - 192.168.1.163 #kids bathroom fan
+#     - 192.168.1.162  #rear network

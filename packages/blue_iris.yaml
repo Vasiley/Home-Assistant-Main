@@ -132,37 +132,22 @@ binary_sensor:
           {% else %}
             False
           {% endif %}
-#   - platform: template
-#     sensors:
-#       motion_outdoor_frontdoor:
-# #        friendly_name: 'Front Door'
-#         value_template: >-
-#           {% if states('binary_sensor.blueiriscam4') %}
-#           {% if is_state('binary_sensor.blueiriscam4', 'on') %}
-#              True
-#           {% elif is_state('binary_sensor.blueiriscam4', 'off') %}
-#              False
-#           {% else %}
-#           {{ states('binary_sensor.blueiriscam4') }}
-#           {% endif %}
-#           {% else %}
-#             False
-#           {% endif %}
-#   - platform: template
-#     sensors:
-#       motion_outdoor_backdoor:
-# #        friendly_name: 'Back Door'
-#         value_template: >-
-#           {% if states('binary_sensor.blueiriscam3') %}
-#           {% if is_state('binary_sensor.blueiriscam3', 'on') %}
-#              True
-#           {% elif is_state('binary_sensor.blueiriscam3', 'off') %}
-#              False
-#           {% else %}
-#           {{ states('binary_sensor.blueiriscam3') }}
-#           {% endif %}
-#           {% else %}
-#             False
+  - platform: template
+    sensors:
+      motion_outdoor_frontdoor:
+#        friendly_name: 'Front Door'
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam4') %}
+          {% if is_state('binary_sensor.blueiriscam4', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam4', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam4') }}
+          {% endif %}
+          {% else %}
+            False
+           {% endif %}
 #           {% endif %}
   - platform: template
     sensors:
@@ -195,13 +180,19 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_active_outside
+        state: 'off'  
     action:
       - service: light.turn_on
         data:
           entity_id: light.door_lamp
           flash: short
           color_name: Red
-
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'Somebody is at Front Door'
   - alias: Back to White after Motion
     initial_state: 'on'
     trigger:

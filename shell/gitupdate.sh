@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /root/.homeassistant
+cd /home/homeassistant/.homeassistant
 git add .
 git commit -m "$1"
 git push origin master

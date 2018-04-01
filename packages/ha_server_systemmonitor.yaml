@@ -3,8 +3,8 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Ha Server Monitor'
-    sensor.average_load_15m:
-      friendly_name: Cpu load_15m
+    sensor.load_15m:
+      friendly_name: Cpu load
       icon: mdi:speedometer
     sensor.ha_cpu_temperature:
       friendly_name: Ha Cpu Temperature
@@ -39,11 +39,11 @@ group:
      - sensor.swap_free
      - sensor.swap_use
      - sensor.swap_use_percent
-     - sensor.received_enp2s0
-     - sensor.sent_enp2s0
-     - sensor.packets_received_enp2s0
-     - sensor.packets_sent_enp2s0
-     - sensor.ipv4_address_enp2s0
+     - sensor.received_enp3s0
+     - sensor.sent_enp3s0
+     - sensor.packets_received_enp3s0
+     - sensor.packets_sent_enp3s0
+     - sensor.ipv4_address_enp3s0
      - sensor.last_boot
      - sensor.since_last_boot
      - sensor.myipopendnscom
@@ -80,19 +80,19 @@ sensor:
       - type: network_in
         arg: enp2s0
       - type: network_out
-        arg: enp2s0
+        arg: enp3s0
       - type: packets_in
-        arg: enp2s0
+        arg: enp3s0
       - type: packets_out
-        arg: enp2s0
+        arg: enp3s0
       - type: ipv4_address
-        arg: enp2s0
+        arg: enp3s0
       - type: last_boot
       - type: since_last_boot
 
   - platform: command_line
     name: Ha Cpu Temperature
-    command: cat /sys/class/thermal/thermal_zone2/temp
+    command: cat /sys/class/thermal/thermal_zone0/temp
     unit_of_measurement: '°C'
     value_template: '{{ (value|int / 1000 )|round(1) }}'
 
@@ -121,7 +121,7 @@ automation:
   - alias: ha_ram_overload
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.memory_use_percent') > states('input_number.ram_alert_value') }}"
+        value_template: "{{ states('sensor.memory_use_percent') > states('input_number.ram_alert_value')}}"
     action:
       - service: tts.google_say
         data:

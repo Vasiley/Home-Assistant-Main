@@ -3,209 +3,414 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Network Monitor'
+######### Speedtest ###############################
     sensor.speedtest_download:
       entity_picture: /local/speedtest.png
     sensor.speedtest_upload:
       entity_picture: /local/speedtest.png
     sensor.speedtest_ping:
       entity_picture: /local/ping.jpg
-    sensor.download_speed_mean:
-      friendly_name: 'Speedtest Download Average'
-      icon: mdi:speedometer
-    sensor.upload_speed_mean:
-      friendly_name: 'Speedtest Upload Average'
-      icon: mdi:speedometer
-    sensor.ping_time_mean:
-      friendly_name: 'Speedtest Ping Average'
-      icon: mdi:clock-fast
-    camera.living_room_camera:
-      friendly_name: Living Room Camera
-    sensor.shed_camera:
-      friendly_name: Shed Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.driveway_camera:
+
+########### Camera's ##################################
+    binary_sensor.driveway_camera_connect:
       friendly_name: Driveway Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.number12_camera:
-      friendly_name: Number12 Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.swamp_camera:
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.shed_camera_connect:
+      friendly_name: Shed Camera
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.swamp_camera_connect:
       friendly_name: Swamp Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.frontdoor_camera:
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.number12_camera_connect:
+      friendly_name: Number12 Camera
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.frontdoor_camera_connect:
       friendly_name: Front Door Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.backdoor_camera:
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.backdoor_camera_connect:
       friendly_name: Back Door Camera
-      entity_picture: /local/ipcameraicon.jpeg
-    sensor.asus_router:
-      friendly_name: Asus Merlin
-      entity_picture: /local/AsusMerlin.jpeg
-    sensor.cisco_router:
-      friendly_name: Cisco Router
-      entity_picture: /local/cisco54.jpeg
-    sensor.netgear_router:
-      friendly_name: Netgear Router
-      entity_picture: /local/netgear.jpeg
-    sensor.switch2:
-      friendly_name: Switch 2
-      entity_picture: /local/8PortSwitch.jpeg
-    sensor.switch1:
-      friendly_name: Switch 1
-      entity_picture: /local/8PortSwitch.jpeg
-    sensor.media_nas:
-      friendly_name: Media Nas
-      entity_picture: /local/Worldbook.jpeg
-    sensor.network_nas:
-      friendly_name: Network Nas
-      entity_picture: /local/Worldbook.jpeg
-    sensor.blue_iris_workstation:
-      friendly_name: Blue Iris Server
-      entity_picture: /local/workstation.jpeg
-    sensor.network_workstation:
-      friendly_name: Network Workstation
-      entity_picture: /local/workstation.jpeg
-    sensor.harmony_hub:
+      icon: mdi:cctv
+      haaska_hidden: true
+########### Mobile Devices's  ###############################
+    binary_sensor.herbs_laptop:
+      friendly_name: Herbs Laptop
+      icon: mdi:laptop
+      haaska_hidden: true
+    binary_sensor.herbs_iphone:
+      friendly_name: Herbs Iphone
+      icon: mdi:cellphone-iphone
+      haaska_hidden: true
+    binary_sensor.dawns_phone:
+      friendly_name: Dawns Samsung
+      icon: mdi:cellphone-android
+      haaska_hidden: true
+    binary_sensor.ruths_tablet:
+      friendly_name: Ruths Tablet
+      icon: mdi:tablet
+      haaska_hidden: true
+    binary_sensor.gabbies_laptop:
+      friendly_name: Gabbies Laptop
+      icon: mdi:laptop
+      haaska_hidden: true
+
+############### Hubs   #######################################
+    binary_sensor.harmony_hub:
       friendly_name: Harmony Hub
       icon: mdi:black-mesa
       haaska_hidden: true
-    sensor.hue_hub:
-      friendly_name: Hue Hub
-      icon: mdi:black-mesa
-      haaska_hidden: true
-    sensor.broadlink_mini:
-      friendly_name: Broadlink Mini
-      icon: mdi:black-mesa
-      haaska_hidden: true
-    sensor.broadlink_pro:
-      friendly_name: Broadlink Pro
-      icon: mdi:black-mesa
-      haaska_hidden: true
-    sensor.wink_hub:
+    binary_sensor.wink_hub:
       friendly_name: Wink Hub
       icon: mdi:black-mesa
       haaska_hidden: true
-    sensor.wink_fan_gang:
-      friendly_name: Fan Connection
-      icon: mdi:nfc
+    binary_sensor.hue_hub:
+      friendly_name: Hue Hub
+      icon: mdi:black-mesa
       haaska_hidden: true
-    sensor.wink_fan_master_gang:
-      friendly_name: Master Fan Connection
-      icon: mdi:nfc
+    binary_sensor.broadlink_mini:
+      friendly_name: Broadlink Mini
+      icon: mdi:black-mesa
       haaska_hidden: true
+    binary_sensor.broadlink_pro:
+      friendly_name: Broadlink Pro
+      icon: mdi:black-mesa
+      haaska_hidden: true
+############### Servers     ##########################################
+    binary_sensor.server_blue_iris:
+      friendly_name: Blue Iris Server
+      icon: mdi:server-network
+      haaska_hidden: true
+    binary_sensor.server_homeassistant_fishtank:
+      friendly_name: Homeassistant FishTank
+      icon: mdi:server-network
+      haaska_hidden: true
+
+############### Alexa'es   ##########################################
+    binary_sensor.alexa_master_dot:
+      friendly_name: Master Bedroom Dot
+      icon: mdi:voice
+      haaska_hidden: true
+    binary_sensor.alexa_living_room_echo:
+      friendly_name: Living Room Echo
+      icon: mdi:voice
+      haaska_hidden: true
+    binary_sensor.alexa_gabbies_room_dot:
+      friendly_name: Gabbies Dot
+      icon: mdi:voice
+      haaska_hidden: true
+
+############### Media Players  ##########################################
+    binary_sensor.ruths_ruko:
+      friendly_name: Ruths Roku
+      icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.livingroom_roku:
+      friendly_name: Living Room Ruko
+      icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.media_player_onkyo_lv:
+      friendly_name: Onkyo Reciever
+      icon: mdi:theater
+      haaska_hidden: true
+    binary_sensor.samsung_tv:
+      friendly_name: Samsung Tv
+      icon: mdi:theater
+      haaska_hidden: true
+    binary_sensor.chromecast_master:
+      friendly_name: Chromecast Master
+      icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.chromecast_livingroom:
+      friendly_name: Chromecast Living Room
+      icon: mdi:play-network
+      haaska_hidden: true
+##################### NAS ############################################
+    binary_sensor.media_harddrive:
+      friendly_name: Media Nas
+      icon: mdi:harddisk
+      haaska_hidden: true
+    binary_sensor.network_harddrive:
+      friendly_name: Network Nas
+      icon: mdi:harddisk
+      haaska_hidden: true
+################ Network Equipment ####################################
+    binary_sensor.cable_modem:
+      friendly_name: Cable Modem
+      icon: mdi:ethernet
+      haaska_hidden: true
+    binary_sensor.asus_main_router:
+      friendly_name: Asus Ac5300
+      icon: mdi:router-wireless
+      haaska_hidden: true
+    binary_sensor.asus_rt68u_node_wired:
+      friendly_name: Asus Node Wired
+      icon: mdi:router-wireless
+      haaska_hidden: true
+    binary_sensor.asus_rt68u_node_wireless:
+      friendly_name: Asus Node Wireless
+      icon: mdi:router-wireless
+      haaska_hidden: true
+    binary_sensor.netgear_switch:
+      friendly_name: Netgear Switch
+      icon: mdi:switch
+      haaska_hidden: true
+########## Wemos         ########################
+    binary_sensor.wemo_master_bath_fan:
+      friendly_name: Wemos Master Bath Fan
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_kids_bathroom_fan:
+      friendly_name: Wemos Kids Bath Fan
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_asus_node:
+      friendly_name: Wemos Asus Node Switch
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_gabbies_lamp:
+      friendly_name: Wemos Gabbies Lamp Switch
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_kids_bathroom_scent:
+      friendly_name: Wemos Kids Bathroom Scent
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_washing_machine:
+      friendly_name: Wemos Washing Machine
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_lv_scent:
+      friendly_name: living Room Scent
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_driveway_reboot:
+      friendly_name: Driveway Camera Reboot
+      icon: mdi:power-settings
+      haaska_hidden: true
+
+############## Dashboards ################
+    binary_sensor.dash_master:
+      friendly_name: Dashboard Tablet Bedroom
+      icon: mdi:tablet-android
+      haaska_hidden: true
+    binary_sensor.dash_living_room:
+      friendly_name: Dashboard Tablet Living Room
+      icon: mdi:tablet-android
+      haaska_hidden: true
+    binary_sensor.dash_gabbies_room:
+      friendly_name: Dashboard Gabbies Room
+      icon: mdi:tablet-android
+      haaska_hidden: true
+############ ESP Controllers  ###########################################
+    binary_sensor.led_kitchen_cabinets:
+      friendly_name: Kitchen Led Controller
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.led_small_tank:
+      friendly_name: Small Fish Tank Led Controller
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.dawns_controller:
+      friendly_name: Dawns Controller
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_tv:
+      friendly_name: Front Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_couch:
+      friendly_name: Couch Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_kitchen_sink:
+      friendly_name: Kitchen Sink Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_master_dawns_side:
+      friendly_name: Master Dawns Side Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_master_herbs_side:
+      friendly_name: Master Herbs Side Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_gabbies:
+      friendly_name: Gabbies Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.blinds_kitchen_table:
+      friendly_name: Kitchen Table Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+
+############## Misc Devices ###############################################
+    binary_sensor.game_console_ps4:
+      friendly_name: Ps4
+      icon: mdi:playstation
+      haaska_hidden: true
+    binary_sensor.game_console_ps3:
+      friendly_name: Gabbies Ps3
+      icon: mdi:playstation
+      haaska_hidden: true
+    binary_sensor.voip_nettalk:
+      friendly_name: NetDuo
+      icon: mdi:phone-voip
+      haaska_hidden: true
+    binary_sensor.webswitch_network:
+      friendly_name: Digital Loggers Webswitch
+      icon: mdi:power-plug
+      haaska_hidden: true
+    binary_sensor.printer_hp:
+      friendly_name: HP Printer
+      icon: mdi:printer
+    binary_sensor.ecobee:
+      friendly_name: Ecobee Thermostat
+      icon: mdi:thermostat-box
     sensor.myipopendnscom:
       friendly_name: Wan Ip
       icon: mdi:wan
-    sensor.esp_kitchen_blinds:
-      friendly_name: Kitchen Blinds Controller
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_kitchen_sink_blinds:
-      friendly_name: Kitchen Sink Blinds Controller
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_lv_room_dawn_blinds:
-      friendly_name: Dawns Blinds
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_lv_room_front_blinds:
-      friendly_name: Front Blinds
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_master_blinds1:
-      friendly_name: Master BLinds 1
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_master_blinds2:
-      friendly_name: Master BLinds 2
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_kitchen_led:
-      friendly_name: Kitchen Led Controller
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_smallfishtank_led:
-      friendly_name: Small Fish Tank Led Controller
-      entity_picture: /local/nodemcu.jpeg
-    sensor.esp_dawns_controller:
-      friendly_name: Dawns Contoller
-      entity_picture: /local/nodemcu.jpeg
-    sensor.gabbies_laptop:
-      friendly_name: Gabbies Laptop
-      icon: mdi:laptop
-    sensor.dashboard_tablet_lv:
-      friendly_name: Dashboard Tablet
-      icon: mdi:tablet-android
-    sensor.dashboard_tablet_gabbies:
-      friendly_name: Gabbies Dashboard
-      icon: mdi:tablet-android
-    sensor.dashboard_tablet_bedroom:
-      friendly_name: Dashboard Tablet Bedroom
-      icon: mdi:tablet-android
+
     sensor.clients:
       friendly_name: Clients Tracked
       icon: mdi:network
+      haaska_hidden: true
 group:
   clients_online_card:
     name: Clients Online
     entities:
       - sensor.clients
 
+  wifi_signal_card:
+   name: Wifi Signals
+   entities:
+     - sensor.blinds_controller_wifi_signal
+     - sensor.sink_blinds_controller_wifi_signal
+     - sensor.dawns_controller_wifi_signal
+     - sensor.dawns_blinds_controller_wifi_signal
+     - sensor.front_blinds_controller_wifi_signal
+     - sensor.master_blinds_controller_dawns_wifi_signal
+     - sensor.master_blinds_controller_herbs_wifi_signal
+     - sensor.gabbies_blinds_wifi_signal
+
+  wink_connections_card:
+   name: Wink Connections
+   entities:
+     - binary_sensor.gang
+     - binary_sensor.gang_1
+
   hubs_card:
    name: Hub's & Bridges
    entities:
-     - sensor.harmony_hub
-     - sensor.hue_hub
-     - sensor.wink_hub
-     - sensor.broadlink_mini
-     - sensor.broadlink_pro
+     - binary_sensor.harmony_hub
+     - binary_sensor.hue_hub
+     - binary_sensor.wink_hub
+     - binary_sensor.broadlink_mini
+     - binary_sensor.broadlink_pro
 
   cameras_status_card:
     name: Cameras
     entities:
-     - sensor.number12_camera
-     - sensor.driveway_camera
-     - sensor.shed_camera
-     - sensor.backdoor_camera
-     - sensor.frontdoor_camera
-     - sensor.swamp_camera
+     - binary_sensor.number12_camera_connect
+     - binary_sensor.driveway_camera_connect
+     - binary_sensor.shed_camera_connect
+     - binary_sensor.backdoor_camera_connect
+     - binary_sensor.frontdoor_camera_connect
+     - binary_sensor.swamp_camera_connect
 
   NetworkDrives_status_card:
    name: Nas Drives
    entities:
-     - sensor.media_nas
-     - sensor.network_nas
+     - binary_sensor.media_harddrive
+     - binary_sensor.network_harddrive
 
-  NetworkNmap_status_card:
-   name: Network Equipment
-   entities:
-     - sensor.asus_router
-     - sensor.cisco_router
-     - sensor.netgear_router
-     - sensor.switch1
-     - sensor.switch2
-
-  esp_devices_card:
+  esp_led_devices_card:
    name: Esp Controller's
    entities:
-     - sensor.esp_kitchen_blinds
-     - sensor.blinds_controller_wifi_signal
-     - sensor.esp_kitchen_sink_blinds
-     - sensor.sink_blinds_controller_wifi_signal
-     - sensor.esp_kitchen_led
-     - sensor.esp_smallfishtank_led
-     - sensor.esp_dawns_controller
-     - sensor.dawns_controller_wifi_signal
-     - sensor.esp_lv_room_dawn_blinds
-     - sensor.dawns_blinds_controller_wifi_signal
-     - sensor.esp_lv_room_front_blinds
-     - sensor.front_blinds_controller_wifi_signal
-     - sensor.esp_master_blinds1
-     - sensor.master_blinds_controller1_wifi_signal
-     - sensor.esp_master_blinds2
-     - sensor.master_blinds_controller2_wifi_signal
+     - binary_sensor.led_kitchen_cabinets
+     - binary_sensor.led_small_tank
+     - binary_sensor.blinds_kitchen_table
+     - binary_sensor.blinds_kitchen_sink
+     - binary_sensor.dawns_controller
+     - binary_sensor.blinds_couch
+     - binary_sensor.blinds_tv
+     - binary_sensor.blinds_master_dawns_side
+     - binary_sensor.blinds_master_herbs_side
+     - binary_sensor.blinds_gabbies
 
   etc_devices_card:
-   name: Tracked Network Devices
+   name: Mobile Devices
    entities:
-     - sensor.gabbies_laptop
-     - sensor.dashboard_tablet_lv
-     - sensor.dashboard_tablet_bedroom
-     - sensor.dashboard_tablet_gabbies
+     - binary_sensor.herbs_laptop
+     - binary_sensor.herbs_iphone
+     - binary_sensor.dawns_phone
+     - binary_sensor.ruths_tablet
+     - binary_sensor.gabbies_laptop
 
+  servers_status_card:
+   name: Servers
+   entities:
+     - binary_sensor.server_blue_iris
+     - binary_sensor.server_homeassistant_fishtank
+
+  alexa_status_card:
+   name: Alexa
+   entities:
+     - binary_sensor.alexa_master_dot
+     - binary_sensor.alexa_gabbies_room_dot
+     - binary_sensor.alexa_living_room_echo
+
+  network_equipment_status_card:
+   name: Networking Devices
+   entities:
+     - binary_sensor.cable_modem
+     - binary_sensor.asus_main_router
+     - binary_sensor.asus_rt68u_node_wired
+     - binary_sensor.asus_rt68u_node_wireless
+     - binary_sensor.netgear_switch
+
+
+  media_player_status_card:
+   name: Media Players
+   entities:
+     - binary_sensor.ruths_ruko
+     - binary_sensor.livingroom_roku
+     - binary_sensor.media_player_onkyo_lv
+     - binary_sensor.samsung_tv
+     - binary_sensor.chromecast_master
+     - binary_sensor.chromecast_livingroom
+
+  wemos_status_card:
+   name: Wemos
+   entities:
+     - binary_sensor.wemo_master_bath_fan
+     - binary_sensor.wemo_kids_bathroom_fan
+     - binary_sensor.wemo_asus_node
+     - binary_sensor.wemo_gabbies_lamp
+     - binary_sensor.wemo_kids_bathroom_scent
+     - binary_sensor.wemo_washing_machine
+     - binary_sensor.wemo_lv_scent
+     - binary_sensor.wemo_driveway_reboot
+
+  dashboard_status_card:
+   name: Dashboards
+   entities:
+     - binary_sensor.dash_master
+     - binary_sensor.dash_living_room
+     - binary_sensor.dash_gabbies_room
+
+  misc_devices_card:
+   name: Misc Devices
+   entities:
+    - binary_sensor.game_console_ps4
+    - binary_sensor.game_console_ps3
+    - binary_sensor.voip_nettalk
+    - binary_sensor.webswitch_network
+    - binary_sensor.printer_hp
+    - binary_sensor.ecobee
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -223,215 +428,455 @@ sensor:
       - download
       - upload
 
-##### show devices as online instead of home   ############################
-  - platform: template
-    sensors:
-      shed_camera:
-        value_template: '{% if is_state("binary_sensor.shed_camera", "on") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      driveway_camera:
-        value_template: '{% if is_state("device_tracker.drivewaycamvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      number12_camera:
-        value_template: '{% if is_state("device_tracker.number12vasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      swamp_camera:
-        value_template: '{% if is_state("device_tracker.shedvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      frontdoor_camera:
-        value_template: '{% if is_state("device_tracker.frontdoorvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      backdoor_camera:
-        value_template: '{% if is_state("device_tracker.backdoorvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      asus_router:
-        value_template: '{% if is_state("device_tracker.routerasuscom", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      cisco_router:
-        value_template: '{% if is_state("device_tracker.pan_shedvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      switch2:
-        value_template: '{% if is_state("device_tracker.blueirispcvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      switch1:
-        value_template: '{% if is_state("device_tracker.switch1vasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      media_nas:
-        value_template: '{% if is_state("device_tracker.medianasvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      network_nas:
-        value_template: '{% if is_state("device_tracker.nasnetworkvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      blue_iris_workstation:
-        value_template: '{% if is_state("device_tracker.blueiris2vasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      network_workstation:
-        value_template: '{% if is_state("device_tracker.networkpcvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      wink_fan_gang:
-        value_template: '{% if is_state("binary_sensor.gang", "on") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      wink_fan_master_gang:
-        value_template: '{% if is_state("binary_sensor.gang_1", "on") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      broadlink_mini:
-        value_template: '{% if is_state("device_tracker.34ea345132e1", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      broadlink_pro:
-        value_template: '{% if is_state("device_tracker.34ea34ccc8aa", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      harmony_hub:
-        value_template: '{% if is_state("device_tracker.harmonyhubvasiley", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      hue_hub:
-        value_template: '{% if is_state("device_tracker.huebridge", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      wink_hub:
-        value_template: '{% if is_state("binary_sensor.wink_hub_2", "on") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_kitchen_blinds:
-        value_template: '{% if is_state("device_tracker.5ccf7fb19112", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_kitchen_sink_blinds:
-        value_template: '{% if is_state("device_tracker.2c3ae805f66b", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_lv_room_dawn_blinds:
-        value_template: '{% if is_state("device_tracker.60019473e472", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_master_blinds1:
-        value_template: '{% if is_state("device_tracker.600194754dce", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_master_blinds2:
-        value_template: '{% if is_state("device_tracker.149182b3c98f", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_lv_room_front_blinds:
-        value_template: '{% if is_state("device_tracker.60019473e681", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_kitchen_led:
-        value_template: '{% if is_state("device_tracker.600194316a56", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_smallfishtank_led:
-        value_template: '{% if is_state("device_tracker.600194316502", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      esp_dawns_controller:
-        value_template: '{% if is_state("device_tracker.5ccf7fb565ff", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      gabbies_laptop:
-        value_template: '{% if is_state("device_tracker.f82819c42847", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      dashboard_tablet_lv:
-        value_template: '{% if is_state("device_tracker.androida64e0f70e33eb022", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      dashboard_tablet_gabbies:
-        value_template: '{% if is_state("device_tracker.e458e7411c6a", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      dashboard_tablet_bedroom:
-        value_template: '{% if is_state("device_tracker.4ca56d68487b", "home") %}Online{% else %}Offline{% endif %}'
-  - platform: template
-    sensors:
-      netgear_router:
-        value_template: '{% if is_state("device_tracker.e8fcaf8a04de", "home") %}Online{% else %}Offline{% endif %}'
+#################### ALL CLIENTS ###################
   - platform: template
     sensors:
       clients:
+        unit_of_measurement: '#'
         value_template: >-
             {%- for d in states.device_tracker if d.state == 'home' -%}
             {{- loop.length if loop.first -}}
             {%- endfor -%}
+##### show devices as online instead of home   ############################
+#### Cameras #############
+binary_sensor:
+  - platform: template
+    sensors:
+      driveway_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.driveway_camera", "home") }}'
+  - platform: template
+    sensors:
+      shed_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.shed_camera", "home") }}'
+  - platform: template
+    sensors:
+      swamp_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.swamp_camera", "home") }}'
+  - platform: template
+    sensors:
+      number12_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.driveway_number_12", "home") }}'
+  - platform: template
+    sensors:
+      frontdoor_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.frontdoor_camera", "home") }}'
+  - platform: template
+    sensors:
+      backdoor_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.camera_backdoor", "home") }}'
+
+######### Mobile Devices  ##########################
+
+  - platform: template
+    sensors:
+      herbs_laptop:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.vaspc", "home") }}'
+  - platform: template
+    sensors:
+      herbs_iphone:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.herbertrsiphone", "home") }}'
+  - platform: template
+    sensors:
+      dawns_phone:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.dawns_phone", "home") }}'
+  - platform: template
+    sensors:
+      ruths_tablet:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.ruths_tablet", "home") }}'
+  - platform: template
+    sensors:
+      gabbies_laptop:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.gabbies_laptop", "home") }}'
+
+############ Hubs ######################################
+
+  - platform: template
+    sensors:
+      harmony_hub:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.harmony_hub", "home") }}'
+  - platform: template
+    sensors:
+      wink_hub:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wink_hub", "home") }}'
+  - platform: template
+    sensors:
+      hue_hub:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.hue_hub", "home") }}'
+  - platform: template
+    sensors:
+      broadlink_mini:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.gabbies_mini_broadlink", "home") }}'
+  - platform: template
+    sensors:
+      broadlink_pro:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.master_bedroom_broadlink", "home") }}'
+#################### servers ###################
+
+  - platform: template
+    sensors:
+      server_blue_iris:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.server_blueiris_plex", "home") }}'
+  - platform: template
+    sensors:
+      server_homeassistant_fishtank:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.server_homeassistant_fishtank", "home") }}'
+
+#################### alexa's ###################
+
+  - platform: template
+    sensors:
+      alexa_living_room_echo:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.alexa_living_room_echo", "home") }}'
+  - platform: template
+    sensors:
+      alexa_gabbies_room_dot:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.alexa_gabbies_room_dot", "home") }}'
+  - platform: template
+    sensors:
+      alexa_master_dot:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.alexa_master_dot", "home") }}'
+
+#################### media players ###################
+
+  - platform: template
+    sensors:
+      ruths_ruko:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.ruths_ruko", "home") }}'
+  - platform: template
+    sensors:
+      livingroom_roku:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.livingroom_roku", "home") }}'
+  - platform: template
+    sensors:
+      media_player_onkyo_lv:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.media_player_onkyo_lv", "home") }}'
+
+  - platform: template
+    sensors:
+      samsung_tv:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.samsung_tv", "home") }}'
+
+  - platform: template
+    sensors:
+      chromecast_master:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.chromecast_master", "home") }}'
+
+  - platform: template
+    sensors:
+      chromecast_livingroom:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.chromecast_livingroom", "home") }}'
+
+#################### NAS  ###################
+
+  - platform: template
+    sensors:
+      media_harddrive:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.media_harddrive", "home") }}'
+  - platform: template
+    sensors:
+      network_harddrive:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.network_harddrive", "home") }}'
+
+#################### Network Devices  ###################
+  - platform: template
+    sensors:
+      cable_modem:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.cable_modem", "home") }}'
+  - platform: template
+    sensors:
+      asus_rt68u_node_wired:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.asus_rt68u_node_wired", "home") }}'
+  - platform: template
+    sensors:
+      asus_rt68u_node_wireless:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.asus_rt68u_node_wireless", "home") }}'
+  - platform: template
+    sensors:
+      asus_main_router:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.asus_main_router", "home") }}'
+  - platform: template
+    sensors:
+      netgear_switch:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.netgear_switch", "home") }}'
+#################### Wemo Devices  ###################
+
+  - platform: template
+    sensors:
+      wemo_master_bath_fan:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_master_bath_fan", "home") }}'
+  - platform: template
+    sensors:
+      wemo_kids_bathroom_fan:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_kids_bathroom_fan", "home") }}'
+  - platform: template
+    sensors:
+      wemo_asus_node:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_asus_node", "home") }}'
+  - platform: template
+    sensors:
+      wemo_gabbies_lamp:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_gabbies_lamp", "home") }}'
+  - platform: template
+    sensors:
+      wemo_kids_bathroom_scent:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_kids_bathroom_scent", "home") }}'
+  - platform: template
+    sensors:
+      wemo_washing_machine:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_washing_machine", "home") }}'
+  - platform: template
+    sensors:
+      wemo_lv_scent:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_lv_scent", "home") }}'
+  - platform: template
+    sensors:
+      wemo_driveway_reboot:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_driveway_reboot", "home") }}'
+
+#################### Dashboards Devices  ###################
+
+  - platform: template
+    sensors:
+      dash_master:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.dash_master", "home") }}'
+  - platform: template
+    sensors:
+      dash_living_room:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.dash_living_room", "home") }}'
+  - platform: template
+    sensors:
+      dash_gabbies_room:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.dash_gabbies_room", "home") }}'
+
+#################### Esp Devices  ###################
+
+  - platform: template
+    sensors:
+      led_kitchen_cabinets:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.led_kitchen_cabinets", "home") }}'
+  - platform: template
+    sensors:
+      led_small_tank:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.led_small_tank", "home") }}'
+  - platform: template
+    sensors:
+      dawns_controller:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.dawns_controller", "home") }}'
+  - platform: template
+    sensors:
+      blinds_tv:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_tv", "home") }}'
+  - platform: template
+    sensors:
+      blinds_couch:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_couch", "home") }}'
+  - platform: template
+    sensors:
+      blinds_kitchen_sink:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_kitchen_sink", "home") }}'
+  - platform: template
+    sensors:
+      blinds_master_dawns_side:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_master_dawns_side", "home") }}'
+  - platform: template
+    sensors:
+      blinds_master_herbs_side:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_master_herbs_side", "home") }}'
+  - platform: template
+    sensors:
+      blinds_gabbies:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_gabbies", "home") }}'
+  - platform: template
+    sensors:
+      blinds_kitchen_table:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.blinds_kitchen_table", "home") }}'
+
+################### Misc Devices  ##########################
+  - platform: template
+    sensors:
+      game_console_ps4:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.game_console_ps4", "home") }}'
+  - platform: template
+    sensors:
+      game_console_ps3:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.game_console_ps3', 'home') }}"
+  - platform: template
+    sensors:
+      voip_nettalk:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.voip_nettalk', 'home') }}"
+  - platform: template
+    sensors:
+      webswitch_network:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.webswitch_network', 'home') }}"
+  - platform: template
+    sensors:
+      printer_hp:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.printer_hp', 'home') }}"
+  - platform: template
+    sensors:
+      ecobee:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.ecobee', 'home') }}"
 
 device_tracker:
   - platform: nmap_tracker
-    home_interval: 60
-    hosts: 192.168.1.1-255
-    consider_home: 180
-    interval_seconds: 120
+    hosts:
+      - 192.168.1.1/24
     exclude:
-      - 192.168.1.153
+     - 192.168.1.153
+    home_interval: 180
+    interval_seconds: 30
+
+  - platform: asuswrt
+    host: 192.168.1.1
+    username: !secret asus_username
+    password: !secret asus_password
+    consider_home: 180
 
   - platform: owntracks
     max_gps_accuracy: 200
-
-binary_sensor:
-  - platform: ping
-    host: 192.168.1.90
-    name: Shed Camera
 
 #### Notify if device goes offline
 
 automation:
   - alias: Notify Device Status
-    initial_state: 'on'
+    initial_state: 'off'
     trigger:
       - platform: state
         entity_id:
-          - sensor.wink_fan_gang
-          - sensor.wink_fan_master_gang
-          - sensor.network_workstation
-          - sensor.blue_iris_workstation
-          - sensor.network_nas
-          - sensor.media_nas
-          - sensor.switch1
-          - sensor.switch2
-          - sensor.cisco_router
-          - sensor.asus_router
-          - sensor.backdoor_camera
-          - sensor.frontdoor_camera
-          - sensor.shed_camera
-          - sensor.driveway_camera
-          - sensor.number12_camera
-          - sensor.swamp_camera
-          - sensor.harmony_hub
-          - sensor.hue_hub
-          - sensor.wink_hub
-          - sensor.esp_kitchen_blinds
-          - sensor.esp_kitchen_sink_blinds
-          - sensor.esp_kitchen_led1
-          - sensor.esp_smallfishtank_led
-          - sensor.gabbies_laptop
-          - sensor.dashboard_tablet_bedroom
-          - sensor.dashboard_tablet_gabbies
-          - sensor.netgear_router
-          - sensor.esp_lv_room_dawn_blinds
-          - sensor.esp_lv_room_front_blinds
-          - sensor.esp_master_blinds1
-          - sensor.esp_master_blinds2
-          - sensor.broadlink_mini
-          - sensor.broadlink_pro
+          - binary_sensor.driveway_camera_connect
+          - binary_sensor.number12_camera_connect
+          - binary_sensor.shed_camera_connect
+          - binary_sensor.swamp_camera_connect
+          - binary_sensor.frontdoor_camera_connect
+          - binary_sensor.backdoor_camera_connect
+#         MOBILE DEVICES
+          - binary_sensor.herbs_laptop
+          - binary_sensor.herbs_iphone
+          - binary_sensor.dawns_phone
+          - binary_sensor.ruths_tablet
+          - binary_sensor.gabbies_laptop
+#         HUBS
+          - binary_sensor.harmony_hub
+          - binary_sensor.wink_hub
+          - binary_sensor.hue_hub
+          - binary_sensor.broadlink_pro
+          - binary_sensor.broadlink_mini
+#         Servers
+          - binary_sensor.server_blue_iris
+          - binary_sensor.server_homeassistant_fishtank
+#         alexa
+          - binary_sensor.alexa_master_dot
+          - binary_sensor.alexa_gabbies_room_dot
+          - binary_sensor.alexa_living_room_echo
+#         media Players
+          - binary_sensor.ruths_ruko
+          - binary_sensor.livingroom_roku
+          - binary_sensor.media_player_onkyo_lv
+          - binary_sensor.samsung_tv
+          - binary_sensor.chromecast_master
+          - binary_sensor.chromecast_livingroom
+#         NAS
+          - binary_sensor.media_harddrive
+          - binary_sensor.network_harddrive
+#         Network Equipment
+          - binary_sensor.cable_modem
+          - binary_sensor.asus_main_router
+          - binary_sensor.asus_rt68u_node_wired
+          - binary_sensor.asus_rt68u_node_wireless
+          - binary_sensor.netgear_switch
+#         wemos
+          - binary_sensor.wemo_master_bath_fan
+          - binary_sensor.wemo_kids_bathroom_fan
+          - binary_sensor.wemo_asus_node
+          - binary_sensor.wemo_gabbies_lamp
+          - binary_sensor.wemo_kids_bathroom_scent
+          - binary_sensor.wemo_washing_machine
+          - binary_sensor.wemo_lv_scent
+          - binary_sensor.wemo_driveway_reboot
+#         Dashboards
+          - binary_sensor.dash_master
+          - binary_sensor.dash_living_room
+          - binary_sensor.dash_gabbies_room
+#         esp
+          - binary_sensor.led_kitchen_cabinets
+          - binary_sensor.led_small_tank
+          - binary_sensor.dawns_controller
+          - binary_sensor.blinds_tv
+          - binary_sensor.blinds_couch
+          - binary_sensor.blinds_master_dawns_side
+          - binary_sensor.blinds_master_herbs_side
+          - binary_sensor.blinds_gabbies
+          - binary_sensor.blinds_kitchen_table
+          - binary_sensor.blinds_kitchen_sink
+#         misc devices
+          - binary_sensor.game_console_ps4
+          - binary_sensor.game_console_ps3
+          - binary_sensor.voip_nettalk
+          - binary_sensor.webswitch_network
+          - binary_sensor.printer_hp
+          - binary_sensor.ecobee
 
-#        for: '00:00:01'
     condition:
       condition: and
       conditions:
@@ -443,7 +888,7 @@ automation:
     action:
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >
             {% if trigger.to_state.state | lower == "offline" %}
               {{ trigger.to_state.attributes.friendly_name }} has gone offline!

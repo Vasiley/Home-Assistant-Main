@@ -4,7 +4,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'blinds'
-
     sensor.blinds_controller_wifi_signal:
       icon: mdi:signal
     sensor.sink_blinds_controller_wifi_signal:
@@ -13,9 +12,9 @@ homeassistant:
       icon: mdi:signal
     sensor.front_blinds_controller_wifi_signal:
       icon: mdi:signal
-    sensor.master_blinds_controller1_wifi_signal:
+    sensor.master_blinds_controller_herbs_wifi_signal:
       icon: mdi:signal
-    sensor.master_blinds_controller2_wifi_signal:
+    sensor.master_blinds_controller_dawns_wifi_signal:
       icon: mdi:signal
     script.blinds_closed_kitchen:
       friendly_name: Blinds Closed Kitchen
@@ -85,9 +84,7 @@ group:
      - input_select.lv_room_rear_blinds_status
      - input_select.lv_room_front_blinds_status
      - input_select.master_blinds_status
-#     - sensor.kitchen_blinds_state
-#     - sensor.lv_room_rear_blinds_state
-#     - sensor.lv_room_front_blinds_state
+     - input_select.gabbies_blinds_status
      - script.blinds_closed
      - script.blinds_halfway
      - script.blinds_open
@@ -136,7 +133,6 @@ input_select:
      - Open
      - Halfway
      - Closed
-#    initial: Closed
   lv_room_rear_blinds_status:
     name: Couch Blinds
     options:
@@ -177,6 +173,11 @@ sensor:
       master_blinds_state:
         friendly_name: 'Master Blinds Status'
         value_template: "{{ states('input_select.master_blinds_status') }}"
+  - platform: template
+    sensors:
+      gabbies_blinds_state:
+        friendly_name: 'Master Blinds Status'
+        value_template: "{{ states('input_select.gabbies_blinds_status') }}"
 
   - platform: mqtt
     state_topic: "kitchenblinds/Blinds Wifi/wifi"
@@ -191,7 +192,7 @@ sensor:
   - platform: mqtt
     state_topic: "lv_room_rear_blinds_contr/lv_rear_wifi/wifi"
     unit_of_measurement: 'dbm'
-    name: Dawns Blinds Controller Wifi Signal
+    name: Couch Blinds Controller Wifi Signal
 
   - platform: mqtt
     state_topic: "lv_room_rear_blind1_contr/lv_rear1_wifi/wifi"
@@ -206,12 +207,12 @@ sensor:
   - platform: mqtt
     state_topic: "master_blinds1/master_blinds1_wifi/wifi"
     unit_of_measurement: 'dbm'
-    name: Master Blinds Controller1 Wifi Signal
+    name: Master Blinds Controller Dawns Wifi Signal
 
   - platform: mqtt
     state_topic: "master_blinds2/master_blinds2_wifi/wifi"
     unit_of_measurement: 'dbm'
-    name: Master Blinds Controller2 Wifi Signal
+    name: Master Blinds Controller Herbs Wifi Signal
 
   - platform: template
     sensors:
@@ -471,7 +472,6 @@ automation:
       - service: script.turn_on
         entity_id: script.master_blinds_closed
 
-
 ##### Dimmer Controls ################################
   - alias: Kitchen Blinds open with Dimmer
     initial_state: 'on'
@@ -519,6 +519,12 @@ script:
           option: 'Closed'
       - service: shell_command.master1_blinds_front_closed
       - service: shell_command.master2_blinds_front_closed
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Closed'
+      - service: shell_command.gabbies_blinds_closed
+
   blinds_halfway:
     sequence:
       - service: input_select.select_option
@@ -543,6 +549,12 @@ script:
           option: 'Halfway'
       - service: shell_command.master1_blinds_front_halfway
       - service: shell_command.master2_blinds_front_halfway
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Halfway'
+      - service: shell_command.gabbies_blinds_halfway
+
   blinds_open:
     sequence:
       - service: input_select.select_option
@@ -567,6 +579,12 @@ script:
           option: 'Open'
       - service: shell_command.master1_blinds_front_open
       - service: shell_command.master2_blinds_front_open
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Open'
+      - service: shell_command.gabbies_blinds_open
+
 ########################### Kitchen Blinds ####################################
   blinds_closed_kitchen:
     sequence:
@@ -671,25 +689,27 @@ script:
       - service: shell_command.master1_blinds_front_open
       - service: shell_command.master2_blinds_front_open
 
+
+
 shell_command:
-  kitchen_blinds_closed: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,35"
-  kitchen_blinds_halfway: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,70"
-  kitchen_blinds_open: "curl -X GET http://192.168.1.239/control?cmd=Servo,1,0,105"
-  kitchen_blinds_sink_closed: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,35"
-  kitchen_blinds_sink_halfway: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,100"
-  kitchen_blinds_sink_open: "curl -X GET http://192.168.1.189/control?cmd=Servo,1,14,150"
-  lv_blinds_dawn_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,20"
-  lv_blinds_dawn_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,80"
-  lv_blinds_dawn_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,1,14,130"
-  lv_blinds_herb_closed: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,15"
-  lv_blinds_herb_halfway: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,80"
-  lv_blinds_herb_open: "curl -X GET http://192.168.1.151/control?cmd=Servo,2,15,130"
-  lv_blinds_front_closed: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,15"
-  lv_blinds_front_halfway: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,60"
-  lv_blinds_front_open: "curl -X GET http://192.168.1.243/control?cmd=Servo,1,12,150"
-  master1_blinds_front_closed: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,180"
-  master1_blinds_front_halfway: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,100"
-  master1_blinds_front_open: "curl -X GET http://192.168.1.249/control?cmd=Servo,1,4,30"
-  master2_blinds_front_closed: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,180"
-  master2_blinds_front_halfway: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,100"
-  master2_blinds_front_open: "curl -X GET http://192.168.1.183/control?cmd=Servo,1,12,30"
+  kitchen_blinds_closed: "curl -sS -X GET http://192.168.1.243/control?cmd=Servo,1,0,35"
+  kitchen_blinds_halfway: "curl -sS -X GET http://192.168.1.243/control?cmd=Servo,1,0,70"
+  kitchen_blinds_open: "curl -sS -X GET http://192.168.1.243/control?cmd=Servo,1,0,105"
+  kitchen_blinds_sink_closed: "curl -sS -X GET http://192.168.1.242/control?cmd=Servo,1,14,35"
+  kitchen_blinds_sink_halfway: "curl -sS -X GET http://192.168.1.242/control?cmd=Servo,1,14,100"
+  kitchen_blinds_sink_open: "curl -sS -X GET http://192.168.1.242/control?cmd=Servo,1,14,150"
+  lv_blinds_dawn_closed: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,1,14,20"
+  lv_blinds_dawn_halfway: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,1,14,80"
+  lv_blinds_dawn_open: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,1,14,130"
+  lv_blinds_herb_closed: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,2,15,15"
+  lv_blinds_herb_halfway: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,2,15,80"
+  lv_blinds_herb_open: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,2,15,130"
+  lv_blinds_front_closed: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,15"
+  lv_blinds_front_halfway: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,60"
+  lv_blinds_front_open: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,150"
+  master1_blinds_front_closed: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,180"
+  master1_blinds_front_halfway: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,100"
+  master1_blinds_front_open: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,30"
+  master2_blinds_front_closed: "curl -sS -X GET http://192.168.1.245/control?cmd=Servo,1,12,180"
+  master2_blinds_front_halfway: "curl -sS -X GET http://192.168.1.245/control?cmd=Servo,1,12,100"
+  master2_blinds_front_open: "curl -sS -X GET http://192.168.1.245/control?cmd=Servo,1,12,30"

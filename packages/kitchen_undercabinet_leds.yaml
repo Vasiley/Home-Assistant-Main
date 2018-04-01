@@ -264,7 +264,7 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
-          effect: solid
+          # effect: solid
           brightness: 255
           rgb_color: [255,166,87]
 
@@ -273,7 +273,7 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
-          effect: solid
+          # effect: solid
           brightness: 255
           rgb_color: [255,136,13]
 

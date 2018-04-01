@@ -3,6 +3,13 @@ homeassistant:
     automation.Ha_Start:
       friendly_name: Ha Start
       haaska_hidden: true
+    input_boolean.ha_start:
+      friendly_name: Ha Restart in Process
+      haaska_hidden: true
+
+input_boolean:
+  ha_start:
+    initial: off
 
 automation:
   - alias: Ha Start
@@ -11,16 +18,29 @@ automation:
       - platform: homeassistant
         event: start
     action:
-      # - service: media_player.turn_on
-      #   data:
-      #     entity_id: media_player.ha_speaker
-      #     
+      - service: automation.turn_off
+        entity_id: automation.notify_device_status
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.ha_start
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker
           volume_level: '.99'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          volume_level: '.50'
       - delay: '00:00:20'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Home assistant is up Volume Set at Full'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'Home assistant is up Volume Set at Half'
+      - delay: '00:05:00'
+      - service: automation.turn_on
+        entity_id: automation.notify_device_status
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.ha_start

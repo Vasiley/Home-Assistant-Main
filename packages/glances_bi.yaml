@@ -125,20 +125,20 @@ sensor:
         value_template: "{{(states.sensor.glances_ram_used.state|int/1024/1024+1)|round(0)}} MB / {{(states.sensor.glances_ram_total.state|int/1024/1024+1)|round(0)}} MB"
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/mem/total
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/mem/total
     name: 'glances_ram_total'
     value_template: '{{ value_json.total }}'
     scan_interval: 604800
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/mem
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/mem
     name: 'glances_ram_percent'
     value_template: '{{ value_json.percent }}'
     scan_interval: 604800
     unit_of_measurement: '%'
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/mem
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/mem
     name: 'glances_ram_used'
     value_template: '{{ value_json.used }}'
     scan_interval: 604800
@@ -150,20 +150,20 @@ sensor:
         value_template: "{{((states.sensor.glances_disk_used_bi.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_disk_total.state|int)/1024/1024/1024)|round(0)}} GB"
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_disk_total'
     value_template: '{{ value_json[0].size }}'
     scan_interval: 604800
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_disk_percent_free'
     value_template: '{{ value_json[0].percent }}'
     scan_interval: 604800
     unit_of_measurement: '%'
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_disk_used_bi'
     value_template: '{{ value_json[0].used }}'
     scan_interval: 604800
@@ -176,20 +176,20 @@ sensor:
         value_template: "{{((states.sensor.glances_usb_disk_used_bi.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_usb_disk_total.state|int)/1024/1024/1024)|round(0)}} GB"
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_total'
     value_template: '{{ value_json[2].size }}'
     scan_interval: 604800
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_percent_free'
     value_template: '{{ value_json[2].percent }}'
     scan_interval: 604800
     unit_of_measurement: '%'
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/fs
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_used_bi'
     value_template: '{{ value_json[2].used }}'
     scan_interval: 604800
@@ -202,20 +202,20 @@ sensor:
         value_template: "{{(states.sensor.glances_swap_used.state|int/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_swap_total.state|int)/1024/1024/1024)|round(0)}} GB"
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/memswap/total
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/memswap/total
     name: 'glances_swap_total'
     value_template: '{{ value_json.total }}'
     scan_interval: 604800
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/memswap
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/memswap
     name: 'glances_swap_percent'
     value_template: '{{ value_json.percent }}'
     scan_interval: 604800
     unit_of_measurement: '%'
 
   - platform: command_line
-    command: curl -X GET http://192.168.1.80:61208/api/2/memswap
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/memswap
     name: 'glances_swap_used'
     value_template: '{{ value_json.used }}'
     scan_interval: 604800
@@ -253,7 +253,7 @@ automation:
       - platform: template
         value_template: "{{ states('sensor.glances_disk_used') > states('input_number.bi_disk_alert_value') }}"
       - platform: template
-        value_template: "{{ states('glances_usb_disk_percent_free') > states('input_number.bi_usb_disk_alert_value') }}"  
+        value_template: "{{ states('glances_usb_disk_percent_free') > states('input_number.bi_usb_disk_alert_value') }}"
     action:
       - service: tts.google_say
         data:

@@ -17,6 +17,7 @@
      - light.bathroom_vanity
      - light.bathroom
      - light.light_bulb_2
+     - light.gabbies_light
      - group.Family
      - group.climate_temp_card
      - group.alarm_panel_card
@@ -46,18 +47,12 @@
      - group.Ads_Blocked_card
      - group.DigitalLoggers_card
      - group.NetworkNmap_status_card
-     - group.NetworkDrives_status_card
-     - group.cameras_status_card
-     - group.hubs_card
      - group.NetworkSnmp_card
-     - group.esp_devices_card
      - group.hp_printer_card
      - group.homeass_version_card
      - group.hassctl_card
-     - group.clients_online_card
      - group.fail2ban_card
      - group.iboot_card
-     - group.etc_devices_card
 
   Serversview:
    view: yes
@@ -75,12 +70,14 @@
    view: yes
    name: Media Players
    entities:
-     - group.Kodi_media_player_card
-     - group.Blue_iris_media_player_card
      - group.Samsung_tv_media_player_card
      - group.stereo_avr_card
      - group.Ruths_roku_media_player_card
      - group.media_player_ha_speaker_card
+     - group.media_player_networkpc_card
+     - group.media_player_living_room_card
+     - group.media_player_plex_server_card
+     - group.media_player_master_bedroom_cast_card
 
   Weather_view:
    view: yes
@@ -174,6 +171,27 @@
    entities:
      - group.big_tank_reminder_card
      - history_graph.gits
+
+  network_status:
+   view: yes
+   name: Network Status
+   entities:
+     - group.clients_online_card
+     - group.network_equipment_status_card
+     - group.cameras_status_card
+     - group.hubs_card
+     - group.esp_led_devices_card
+     - group.esp_blind_devices_card
+     - group.etc_devices_card
+     - group.NetworkDrives_status_card
+     - group.servers_status_card
+     - group.alexa_status_card
+     - group.media_player_status_card
+     - group.wemos_status_card
+     - group.dashboard_status_card
+     - group.misc_devices_card
+     - group.wink_connections_card
+     - group.wifi_signal_card
 
   # setting_view:
   #  view: yes
@@ -270,6 +288,7 @@
    control: hidden
    entities:
      - sensor.house_mode_state
+     - input_boolean.boolean_active_outside
      - script.lamps_on
      - script.home_mode
      - script.gone_on

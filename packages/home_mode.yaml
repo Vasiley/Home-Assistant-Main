@@ -4,14 +4,37 @@ homeassistant:
       friendly_name: Home
       haaska_name: Home
       icon: mdi:home
+    input_boolean.boolean_active_outside:
+      friendly_name: Active Outside Boolean
+      haaska_hidden: true
+      icon: mdi:run-fast
+    script.active_outside:
+      friendly_name: Active Outside
+      haaska_name: Active Outside
+      icon: mdi:run-fast
+    script.inside:
+      friendly_name: Inside
+      haaska_name: Inside
+      icon: mdi:run
 
 #########################################################################################
 #                                                                                   #####
 #                   Home Mode                                                       #####
 #                                                                                   #####
 #########################################################################################
+input_boolean:
+  boolean_active_outside:
+    initial: off
 
 script:
+  active_outside:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_active_outside
+  inside:
+    sequence:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_active_outside
   home_mode:
     sequence:
       - service: input_boolean.turn_off
@@ -79,4 +102,8 @@ script:
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
+          message: 'Home Mode is Activated'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
           message: 'Home Mode is Activated'

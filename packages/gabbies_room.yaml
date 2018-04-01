@@ -1,10 +1,8 @@
 homeassistant:
   customize:
-
     package.node_anchors:
       customize: &customize
         package: 'Gabbies Room'
-
     switch.gabbies_lamp:
       friendly_name: Gabbies Lamp
       haaska_name: Gabbies Lamp
@@ -18,6 +16,30 @@ homeassistant:
       haaska_hidden: true
       icon: mdi:human-child
       persistent: true
+    input_boolean.boolean_gabbie_awake:
+      friendly_name: Gabbie Awake
+      haaska_hidden: true
+      icon: mdi:sleep-off
+      persistent: true
+    input_boolean.boolean_gabbie_sleep:
+      friendly_name: Gabbie Sleep
+      haaska_hidden: true
+      icon: mdi:sleep
+      persistent: true
+    script.gabbies_bedtime:
+      friendly_name: Gabbies Bedtime
+      icon: mdi:sleep
+      haaska_name: Gabbies Bedtime
+    script.gabbies_awake:
+      friendly_name: Gabbie Awake
+      icon: mdi:sleep-off
+      haaska_name: Gabbie Awake
+    automation.gabbie_going_sleep:
+      friendly_name: Gabbie Going Asleep
+      haaska_hidden: true
+    automation.gabbie_waking_up:
+      friendly_name: Gabbie Waking Up
+      haaska_hidden: true
     automation.gabbie_home:
       friendly_name: Gabbie Home
       haaska_hidden: true
@@ -25,20 +47,32 @@ homeassistant:
       friendly_name: Gabbie Gone
       haaska_hidden: true
 
+
 group:
   gabbies_room_card:
    name: Gabbie's Room
    control: hidden
    entities:
+     - light.gabbies_light
      - input_boolean.boolean_gabbie_home
-     - switch.gabbies_lamp
+     - input_boolean.boolean_gabbie_sleep
+     - input_boolean.boolean_gabbie_awake
      - switch.gabbies_tv
+     - script.gabbies_awake
+     - script.gabbies_bedtime
+     - automation.gabbie_going_sleep
+     - automation.gabbie_waking_up
      - automation.gabbie_home
      - automation.gabbie_not_home
+     - group.gabbies_blinds_card
 
 
 input_boolean:
   boolean_gabbie_home:
+    initial: off
+  boolean_gabbie_sleep:
+    initial: off
+  boolean_gabbie_awake:
     initial: off
 
 sensor:
@@ -53,18 +87,83 @@ automation:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_home
         to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.ha_start
+        state: 'off'
     action:
-       - service: tts.google_say
-         data:
-           entity_id: media_player.ha_speaker
-           message: 'Welcome Home Gabbie'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Welcome Home Gabbie'
   - alias: 'gabbie_not_home'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_home
         to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.ha_start
+        state: 'off'
     action:
        - service: tts.google_say
          data:
            entity_id: media_player.ha_speaker
            message: 'Goodbye Gabbie'
+  - alias: 'gabbie_going_sleep'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_gabbie_sleep
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.ha_start
+        state: 'off'
+    action:
+       - service: tts.google_say
+         data:
+           entity_id: media_player.ha_speaker
+           message: 'Goodnight Gabbie'
+  - alias: 'gabbie_waking_up'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_gabbie_awake
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.ha_start
+        state: 'off'        
+    action:
+       - service: tts.google_say
+         data:
+           entity_id: media_player.ha_speaker
+           message: 'Goodmorning Gabbie'
+
+script:
+  gabbies_bedtime:
+    sequence:
+      - service: light.turn_on
+        entity_id: light.gabbies_light
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_gabbie_sleep
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_gabbie_awake
+      - service: script.turn_on
+        entity_id: script.gabbies_blinds_closed
+      - delay: '00:05:00'
+      - service: light.turn_off
+        data:
+          entity_id: light.gabbies_light
+          transition: 45
+  gabbies_awake:
+    sequence:
+      - service: light.turn_on
+        entity_id: light.gabbies_light
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_gabbie_sleep
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_gabbie_awake
+      - service: light.turn_off
+        data:
+          entity_id: light.gabbies_light
+          transition: 180

@@ -1,0 +1,141 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'gabbies_blinds'
+    automation.blinds_open_gabbies:
+      friendly_name: Gabbies Blinds Open
+      haaska_hidden: true
+    automation.blinds_halfway_gabbies:
+      friendly_name: Gabbies Blinds Halfway
+      haaska_hidden: true
+    automation.blinds_closed_gabbies:
+      friendly_name: Gabbies Blinds Closed
+      haaska_hidden: true
+    script.gabbies_blinds_closed:
+      friendly_name: Blinds Closed Gabbies
+      icon: mdi:blinds
+      haaska_hidden: false
+      haaska_name: Gabbies Blinds Closed
+    script.gabbies_blinds_halfway:
+      friendly_name: Blinds Halfway Gabbies
+      icon: mdi:blinds
+      haaska_hidden: false
+      haaska_name: Gabbies Blinds Halfway
+    script.gabbies_blinds_open:
+      friendly_name: Blinds Open Gabbies
+      icon: mdi:blinds
+      haaska_hidden: false
+      haaska_name: Gabbies Blinds Open
+    sensor.gabbies_blinds_wifi_signal:
+      icon: mdi:signal
+
+group:
+  gabbies_blinds_card:
+   control: hidden
+   name: Gabbies Blinds
+   entities:
+     - input_select.gabbies_blinds_status
+     - sensor.gabbies_blinds_state
+     - sensor.gabbies_blinds_wifi_signal
+     - script.gabbies_blinds_open
+     - script.gabbies_blinds_halfway
+     - script.gabbies_blinds_closed
+     - automation.blinds_open_gabbies
+     - automation.blinds_halfway_gabbies
+     - automation.blinds_closed_gabbies
+     - sensor.esp_gabbies_blinds
+     - sensor.gabbies_blinds_wifi_signal
+
+input_select:
+  gabbies_blinds_status:
+    name: Gabbies Blinds
+    options:
+     - Open
+     - Halfway
+     - Closed
+
+sensor:
+  - platform: mqtt
+    state_topic: "gabbiesblinds/Blinds Wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Gabbies Blinds Wifi Signal
+
+automation:
+  - alias: Blinds Open Gabbies
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.gabbies_blinds_state
+        to: 'Open'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Home'
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        below: 85
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+    action:
+      - service: script.turn_on
+        entity_id: script.gabbies_blinds_open
+
+  - alias: Blinds Halfway Gabbies
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.gabbies_blinds_state
+        to: 'Halfway'
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        above: 90
+    action:
+      - service: script.turn_on
+        entity_id: script.gabbies_blinds_halfway
+
+  - alias: Blinds Closed Gabbies
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.gabbies_blinds_state
+        to: 'Closed'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Sleep'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Away'
+    action:
+      - service: script.turn_on
+        entity_id: script.gabbies_blinds_closed
+
+script:
+  gabbies_blinds_closed:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Closed'
+      - service: shell_command.gabbies_blinds_closed
+
+  gabbies_blinds_halfway:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Halfway'
+      - service: shell_command.gabbies_blinds_halfway
+
+  gabbies_blinds_open:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.gabbies_blinds_status
+          option: 'Open'
+      - service: shell_command.gabbies_blinds_open
+shell_command:
+  gabbies_blinds_closed: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,180"
+  gabbies_blinds_halfway: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,100"
+  gabbies_blinds_open: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,30"

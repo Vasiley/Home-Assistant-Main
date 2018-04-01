@@ -20,6 +20,9 @@ homeassistant:
     sensor.stopwatch:
       friendly_name: Cycle TIme
       icon: mdi:timer
+    switch.wemo_washing_machine:
+      friendly_name: Washing Machine switch
+      haaska_hidden: true
 
 group:
 
@@ -28,6 +31,7 @@ group:
    entities:
     - sensor.washer_status
     - sensor.stopwatch
+    - switch.wemo_washing_machine
 
 input_boolean:
   washer_switch:

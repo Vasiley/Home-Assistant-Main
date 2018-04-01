@@ -4,57 +4,35 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'network reboot'
-
+    script.driveway_cam_powercycle:
+      friendly_name: Driveway Cam Reboot
+      icon: mdi:access-point-network
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
     script.network_reboot:
       friendly_name: Network Reboot
       icon: mdi:power-settings
-    script.driveway_cam_powercycle:
-      friendly_name: Driveway Cam Reboot
-      icon: mdi:access-point-network
-    script.masterbedroom_reboot:
-      friendly_name: Master Bedroom Network
-      haaska_name: Master Bedroom Network
-      icon: mdi:access-point-network
-      persistent: true
-    switch.wemo_mini_rear_network:
-      friendly_name: Rear Network
-      haaska_name: Rear Network Switch
-      icon: mdi:power-settings
-      persistent: true
-    script.rear_network_reboot:
-      friendly_name: Rear Network Reboot
-      haaska_name: Rear Network Reboot
-      icon: mdi:access-point-network
-      persistent: true
-    switch.driveway_camera:
+    switch.driveway_camaera:
       friendly_name: Driveway Camera
       icon: mdi:power-settings
-    switch.master_bedroom_network:
-      friendly_name: Master Bedroom Network
+    switch.wemo_mini_rear_network:
+      friendly_name: Asus RT68U Node
       icon: mdi:power-settings
     automation.reboot_driveway_camera:
       friendly_name: Driveway Cam Auto Reboot
-    automation.reboot_masterbedroom_network:
-      friendly_name: Master Bedroom Auto Reboot
 
 group:
   equip_reboots_card:
    control: hidden
    name: Equipment Reboots
    entities:
+     - switch.driveway_camaera
      - switch.wemo_mini_rear_network
-     - switch.master_bedroom_network
-     - switch.driveway_camera
      - script.webswitch_reboot
      - script.network_reboot
-     - script.rear_network_reboot
-     - script.masterbedroom_reboot
      - script.driveway_cam_powercycle
      - automation.reboot_driveway_camera
-     - automation.reboot_masterbedroom_network
 
 script:
   #### reboot websitch clients  ####################
@@ -75,21 +53,16 @@ script:
           message: 'Network is going down Gabbie and Grandma chill it will be okay'
       - delay: '00:00:01'
       - service: rest_command.modem_reboot
-      - delay: '00:01:30'
+      - delay: '00:01:30'           
       - service: rest_command.router_reboot
-      - delay: '00:02:30'
+      - delay: '00:01:15'
+      - service: rest_command.switch1_reboot
+      - delay: '00:01:00'
       - service: switch.turn_off
-        entity_id: switch.network_switch_comnet_switches
-      - delay: '00:00:15'
+        entity_id: switch.wemo_mini_rear_network
+      - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.network_switch_comnet_switches
-      - service: automation.trigger
-        entity_id: automation.reboot_driveway_camera
-      - service: automation.trigger
-        entity_id: automation.reboot_masterbedroom_network
-      - service: script.turn_on
-        entity_id: script.rear_network_reboot
-      - delay: '00:01:30'
+        entity_id: switch.wemo_mini_rear_network
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -101,39 +74,11 @@ script:
         entity_id: switch.driveway_camera
       - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.driveway_camera
+        entity_id: switch.driveway_camaera
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Driveway Camera'
-
-  masterbedroom_reboot:
-    sequence:
-      - service: switch.turn_off
-        entity_id: switch.master_bedroom_network
-      - delay: '00:00:10'
-      - service: switch.turn_on
-        entity_id: switch.master_bedroom_network
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Master Bedroom Is Rebooting'
-
-  rear_network_reboot:
-    sequence:
-      - service: switch.turn_off
-        entity_id: switch.wemo_mini_rear_network
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Rear Network Going Down'
-      - delay: '00:01:00'
-      - service: switch.turn_on
-        entity_id: switch.wemo_mini_rear_network
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Rear Network Back Up'
 
 automation:
   - alias: reboot_driveway_camera
@@ -152,20 +97,3 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.driveway_cam_powercycle
-
-  - alias: reboot_masterbedroom_network
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.netgear_router
-        to: 'Offline'
-        for: '00:05:00'
-      - platform: homeassistant
-        event: start
-    condition:
-      - condition: state
-        entity_id: sensor.netgear_router
-        state: 'Offline'
-    action:
-      - service: script.turn_on
-        entity_id: script.masterbedroom_reboot

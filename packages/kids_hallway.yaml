@@ -66,9 +66,6 @@ automation:
     condition:
       condition: and
       conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
       - condition: numeric_state
         entity_id: sensor.kids_hallway_motion_sensor_lux
         below: '10000'

@@ -74,6 +74,22 @@ automation:
       - service: light.turn_on
         data_template:
           entity_id: light.master_hallway
+          color_temp: >-
+            {% if is_state("input_boolean.boolean_evening_time", "on") %}
+            {{ states('input_number.evening_mode_color_temp_value') | int }}
+            {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+            {{ states('input_number.movie_mode_color_temp_value') | int }}
+            {% elif is_state("input_boolean.boolean_sleep", "on") %}
+            {{ states('input_number.sleep_mode_color_temp_value') | int }}
+            {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+            {{ states('input_number.earlymorning_mode_color_temp_value') | int }}
+            {% elif is_state("input_boolean.boolean_home", "on") %}
+            {{ states('input_number.home_mode_color_temp_value') | int }}
+            {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+            {{ states('input_number.nap_mode_color_temp_value') | int }}
+            {% else %}
+             180
+            {% endif %}
           brightness_pct: >-
             {% if is_state("input_boolean.boolean_evening_time", "on") %}
             {{ states('input_number.evening_mode_brightness_value') | int }}
