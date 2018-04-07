@@ -78,19 +78,14 @@ light.kids_vanity_1:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:5c:00:66-0b
-media_player.networkpc:
-  name: Plex
-  platform: plex
-  unique_id: kwkrkqcz7cyzshnru4lmzpvi
 media_player.rz_810:
   name:
   platform: cast
   unique_id: 07d7af17-1219-0e75-d35f-f4d20c9041b5
-switch.gabbies_lamp:
-  name:
+switch.master_bedroom_mixer:
+  name: Master Bedroom Mixer
   platform: wemo
   unique_id: 221742K01216F2
-
 switch.wemo_mini_rear_network:
   name:
   platform: wemo
@@ -123,10 +118,6 @@ light.gabbies_light:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:3f:51:fd-0b
-light.master_hallway_2:
-  name:
-  platform: hue
-  unique_id: 00:17:88:01:02:e7:0c:c2-0b
 media_player.plex_server_living_room:
   name:
   platform: plex
@@ -139,3 +130,7 @@ media_player.ha_speaker:
   name:
   platform: cast
   unique_id: 1ce4c0d6-4cc9-ae3b-14db-bf4e093131c7
+light.master_hallway_1:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:e7:0c:c2-0b

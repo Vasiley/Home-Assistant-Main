@@ -97,7 +97,7 @@ automation:
     action:
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'You Have Mail Today Check Dashboard'
       - service: shell_command.lv_room_mail ## In dashboard package
       - delay: '00:05:00'
@@ -112,7 +112,7 @@ automation:
     action:
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'You Have a Usps Package On the Way Check Dashboard'
 camera:
   - platform: generic

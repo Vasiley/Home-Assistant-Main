@@ -25,20 +25,20 @@ automation:
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker
-          volume_level: '.99'
+          volume_level: '.80'
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.master_bedroom_cast
-          volume_level: '.50'
+          volume_level: '.40'
       - delay: '00:00:20'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
-          message: 'Home assistant is up Volume Set at Full'
+          message: 'Home assistant is up Volume Set for Living Room'
       - service: tts.google_say
         data:
           entity_id: media_player.master_bedroom_cast
-          message: 'Home assistant is up Volume Set at Half'
+          message: 'Home assistant is up Volume Set for Master Bedroom'
       - delay: '00:05:00'
       - service: automation.turn_on
         entity_id: automation.notify_device_status

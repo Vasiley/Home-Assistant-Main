@@ -3,6 +3,8 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Master Hallway'
+    light.master_hallway_1:
+      haaska_hidden: true     #hide single bulb its referred to as room name
     sensor.motion_sensor_hallway_battery:
       icon: mdi:battery
     binary_sensor.hallway_motion:

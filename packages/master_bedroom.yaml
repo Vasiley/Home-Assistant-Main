@@ -26,16 +26,16 @@ homeassistant:
       hidden: false
       persistence: true
       friendly_name: Master Bedroom Candle Off
-    automation.fan_on_during_sleep_mode:
+    automation.master_bedroom_sleep_mode:
       haaska_hidden: true
       hidden: false
       persistence: true
-      friendly_name: Master Bedroom Small Fan On
-    automation.fan_off_when_home_mode:
+      friendly_name: Master Bedroom Sleep Mode
+    automation.master_bedroom_home_mode:
       haaska_hidden: true
       hidden: false
       persistence: true
-      friendly_name: Master Bedroom Small Fan Off
+      friendly_name: Master Bedroom Home Mode
     binary_sensor.master_motion:
       friendly_name: Master Motion
       device_class: motion
@@ -67,6 +67,7 @@ group:
       - light.master_table_lamps
       - light.light_bulb_2
       - switch.master_bedroom_network
+      - switch.master_bedroom_mixer
       - fan.master_bedroom_fan
       - script.master_fan_auto
       - sensor.fan_speed_master
@@ -87,8 +88,8 @@ group:
       - switch.dawn_night
       - automation.candle_on_during_home_mode
       - automation.candle_off_when_not_home_mode
-      - automation.fan_on_during_sleep_mode
-      - automation.fan_off_when_home_mode
+      - automation.master_bedroom_sleep_mode
+      - automation.master_bedroom_home_mode
       - input_select.master_blinds_status
       - sensor.master_blinds_state
 
@@ -230,7 +231,7 @@ automation:
       - service: switch.turn_off
         entity_id: switch.dawn_day
 
-  - alias: Fan On during Sleep mode
+  - alias: Master Bedroom Sleep mode
     initial_state: 'on'
     trigger:
       - platform: state
@@ -239,12 +240,14 @@ automation:
     action:
       - service: switch.turn_on
         entity_id: switch.dawn_night
+      - service: switch.turn_off
+        entity_id: switch.master_bedroom_mixer
       - service: fan.turn_on
         data:
           entity_id: fan.master_bedroom_fan
           speed: "high"
 
-  - alias: Fan Off when Home mode
+  - alias: Master Bedroom Home mode
     initial_state: 'on'
     trigger:
       - platform: state
@@ -253,6 +256,8 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.dawn_night
+      - service: switch.turn_on
+        entity_id: switch.master_bedroom_mixer
       - service: fan.turn_off
         data:
           entity_id: fan.master_bedroom_fan

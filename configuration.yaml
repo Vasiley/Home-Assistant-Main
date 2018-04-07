@@ -73,7 +73,7 @@ ffmpeg:
 wemo:
    static:
      - 192.168.1.230  #Living Room Scent
-     - 192.168.1.231  #gabbies_lamp
+     - 192.168.1.231  #master bedroom mixer
      - 192.168.1.233  #washer
      - 192.168.1.232  #Driveway Camera roboot
      - 192.168.1.228  #Kids Bathroom scent

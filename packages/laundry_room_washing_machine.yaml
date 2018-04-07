@@ -99,7 +99,7 @@ automation:
     action:
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Check the Clothes Washer Is Done'
       - service: notify.Pushbullet
         data:
