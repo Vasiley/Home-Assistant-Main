@@ -46,7 +46,12 @@ homeassistant:
     automation.gabbie_not_home:
       friendly_name: Gabbie Gone
       haaska_hidden: true
-
+    automation.gabbie_light_on:
+      friendly_name: Gabbies Light On
+      haaska_hidden: true
+    automation.gabbie_light_off:
+      friendly_name: Gabbies Light Off
+      haaska_hidden: true
 
 group:
   gabbies_room_card:
@@ -64,6 +69,8 @@ group:
      - automation.gabbie_waking_up
      - automation.gabbie_home
      - automation.gabbie_not_home
+     - automation.gabbie_light_on
+     - automation.gabbie_light_off
      - group.gabbies_blinds_card
 
 
@@ -132,12 +139,57 @@ automation:
     condition:
       - condition: state
         entity_id: input_boolean.ha_start
-        state: 'off'        
+        state: 'off'
     action:
        - service: tts.google_say
          data:
            entity_id: media_player.ha_speaker
            message: 'Goodmorning Gabbie'
+
+  - alias: 'gabbie_light_on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gabbies_room_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_gabbie_awake
+        state: 'on'
+    action:
+       - service: light.turn_on
+         data_template:
+           entity_id: light.gabbies_light
+           brightness_pct: >-
+             {% if is_state("input_boolean.boolean_evening_time", "on") %}
+             {{ states('input_number.evening_mode_brightness_value') | int }}
+             {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+             {{ states('input_number.movie_mode_brightness_value') | int }}
+             {% elif is_state("input_boolean.boolean_sleep", "on") %}
+             {{ states('input_number.sleep_mode_brightness_value') | int }}
+             {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+             {{ states('input_number.earlymorning_mode_brightness_value') | int }}
+             {% elif is_state("input_boolean.boolean_home", "on") %}
+             {{ states('input_number.home_mode_brightness_value') | int }}
+             {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+             {{ states('input_number.nap_mode_brightness_value') | int }}
+             {% else %}
+               100
+             {% endif %}
+
+  - alias: 'gabbie_light_off'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gabbies_room_motion
+        to: 'off'
+        for: '00:05:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_gabbie_awake
+        state: 'on'
+    action:
+       - service: light.turn_off
+         entity_id: light.gabbies_light
+
 
 script:
   gabbies_bedtime:

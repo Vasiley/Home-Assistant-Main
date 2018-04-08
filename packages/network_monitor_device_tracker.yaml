@@ -857,7 +857,7 @@ automation:
           - binary_sensor.wemo_driveway_reboot
 #         Dashboards
           - binary_sensor.dash_master
-          - binary_sensor.dash_living_room
+#          - binary_sensor.dash_living_room
           - binary_sensor.dash_gabbies_room
 #         esp
           - binary_sensor.led_kitchen_cabinets
