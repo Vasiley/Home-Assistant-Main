@@ -1,5 +1,7 @@
 # Welcome to @Vasiley's Home Automation World
 
+Check Out My New [Wiki](https://github.com/Vasiley/Home-Assistant-Main/wiki)
+
 I currently have two instances of [Home Assistant](https://www.home-assistant.io) running:
 
 1. Running on a Raspberry Pi 3, dedicated to my [Fish Tank](https://github.com/Vasiley/Home-Assistant_FishTank), where it automatically monitors and maintain Lighting, Temperature, Water levels and alerts me whenever it requires my attention. You can find my [Fish Tank Repository Here](https://github.com/Vasiley/Home-Assistant_FishTank)
