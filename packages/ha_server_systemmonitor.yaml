@@ -47,7 +47,7 @@ group:
      - sensor.last_boot
      - sensor.since_last_boot
      - sensor.myipopendnscom
-
+########## In setting #######################
   ha_server_automations:
    control: hidden
    name: HA Server Alerts

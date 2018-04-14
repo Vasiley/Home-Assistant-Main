@@ -1,0 +1,10 @@
+  # binary_sensor.herbs_iphone:
+  #   show_last_changed: true
+  #   templates:
+  #     rgb_color: "if (state === 'On') return [192, 39, 30]; else return [54, 95, 140];"
+  #     icon: "if (state === 'On') return 'mdi:run-fast';
+  #                         else return 'mdi:exit-to-app';"
+  #     _stateDisplay: if (state === 'On') return 'Working'; else return 'Dead';
+  #   friendly_name: Herbs Iphone
+  # #      icon: mdi:cellphone-iphone
+  #   haaska_hidden: true

@@ -68,6 +68,10 @@ homeassistant:
       friendly_name: Front Door Dash
       haaska_name: Front Door Dash
       icon: mdi:chevron-right
+    script.dash_backdoor_cam:
+      friendly_name: Back Door Dash
+      haaska_name: Back Door Dash
+      icon: mdi:chevron-right
     script.dash_reset_after_motion:
       friendly_name: Main Dash
       haaska_name: Main Dash
@@ -141,6 +145,7 @@ group:
      - automation.navigate_cameradash_camera_motion
      - automation.back_to_main_dash_motion
      - script.dash_frontdoor_cam
+     - script.dash_backdoor_cam
      - script.dash_reset_after_motion
      - automation.power_lost_to_dashboards
 
@@ -335,7 +340,7 @@ automation:
       - service: script.turn_on
         entity_id: script.dash_refresh
 
-
+############# Front Door Camera #############################################
   - alias: navigate_cameradash_camera_motion
     initial_state: 'on'
     trigger:
@@ -349,12 +354,30 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.dash_frontdoor_cam
+############# Back Door Camera #############################################
+  - alias: navigate_backdoor_cameradash_camera_motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_backdoor
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_backdoor_cam
 
   - alias: back_to_main_dash_motion
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
+        to: 'off'
+        for: '00:05:00'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_backdoor
         to: 'off'
         for: '00:05:00'
     condition:
@@ -398,7 +421,7 @@ automation:
     action:
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.ha_speaker, media_player.chromecast_master
           message: 'Power is Lost to A Dashboard Please Check'
       - service: notify.Pushbullet
         data:
@@ -417,6 +440,13 @@ script:
       - service: shell_command.lv_room_frontdoor_cam
       - service: shell_command.lv_room_dash_wake_up
       - service: shell_command.master_dash_frontdoor_cam
+      - service: shell_command.master_dash_wake_up
+  dash_backdoor_cam:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_backdoor_cam
+      - service: shell_command.lv_room_dash_wake_up
+      - service: shell_command.master_dash_backdoor_cam
       - service: shell_command.master_dash_wake_up
   dash_reset_after_motion:
     sequence:
@@ -440,3 +470,5 @@ shell_command:
    master_dash: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
    lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
    server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
+   lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
+   master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""

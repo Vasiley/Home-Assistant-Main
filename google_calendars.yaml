@@ -1,7 +1,7 @@
 
-- cal_id: herbertwindecker@gmail.com
+- cal_id: !secret main_calender 
   entities:
-  - device_id: main_calender #herbertwindeckergmailcom
+  - device_id: main_calender
     name: Main Calender
     track: true
 
@@ -10,12 +10,6 @@
   - device_id: holidays_in_united_states
     name: Holidays in United States
     track: true
-
-# - cal_id: '#contacts@group.v.calendar.google.com'
-#   entities:
-#   - device_id: contacts
-#     name: Contacts
-#     track: true
 
 - cal_id: addressbook#contacts@group.v.calendar.google.com
   entities:
@@ -29,7 +23,7 @@
     name: Contacts
     track: true
 
-- cal_id: dawnherbert123@gmail.com
+- cal_id: !secret dawn_herb_calender
   entities:
   - device_id: dawns_calender
     name: Dawns Calender

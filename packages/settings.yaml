@@ -98,6 +98,9 @@ group:
      - group.setting_earlymorning_mode_settings_card
      - group.setting_home_mode_settings_card
      - group.setting_nap_mode_settings_card
+     - group.settings_av_equip_card
+     - group.ha_server_automations
+     - group.bi_server_automations
 
 ################  EVENING MODE #################################################
   setting_evening_mode_settings_card:
@@ -142,7 +145,11 @@ group:
      - input_number.nap_mode_brightness_value
      - input_number.nap_mode_color_temp_value
      - input_number.nap_mode_transition_value
-
+############## Audio Video Equip ####################################
+  settings_av_equip_card:
+    name: Audio Volumes
+    entities:
+      - input_number.onkyo_volume
 
 input_number:
 ################  EVENING MODE #################################################
@@ -265,3 +272,38 @@ input_number:
     min: 1
     max: 90
     step: 1
+################### Onkyo ######################################################
+
+  onkyo_volume:
+    name: Onkyo Volume
+#    initial: 15
+    min: 0
+    max: 100
+    step: 1
+
+automation:
+  - alias: Onkyo Volume Slider Set
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_number.onkyo_volume
+    condition:
+      - condition: state
+        entity_id: media_player.stereo
+        state: 'on'
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.stereo
+          volume_level: '{{ states.input_number.onkyo_volume.state | float / 40}}'
+
+  - alias: Onkyo Volume Slider Get
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: media_player.stereo
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.onkyo_volume
+        value: '{{ states.media_player.stereo.attributes.volume_level | float * 40  }}'

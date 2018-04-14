@@ -25,6 +25,18 @@ homeassistant:
       hidden: false
       persistence: true
 
+    automation.back_carport_bright_and_white_on_motion:
+      friendly_name: "Front Porch Lights White On Motion"
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+
+    automation.back_back_to_yellow_dim_after_Motion:
+      friendly_name: "Front Porch Lights Yellow No Motion"
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+
     script.front_bright_outside:
       friendly_name: "Front Porch Lights Bright"
       haaska_hidden: false
@@ -65,7 +77,6 @@ automation:
 
 # brigten front porch light if motion from shed camera
 
-
   - alias: Front Carport bright and white on motion
     initial_state: 'on'
     trigger:
@@ -99,6 +110,44 @@ automation:
       - service: light.turn_on
         data:
           entity_id: light.front_steps
+          color_temp: 426
+          brightness: 125
+
+# brigten rear porch light if motion from shed camera
+
+  - alias: rear Carport bright and white on motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_backdoor
+        to: 'on'
+        for: '00:00:10'
+    condition:
+      - condition: state
+        entity_id: light.rear_steps
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.rear_steps
+          color_temp: 154
+          brightness: 255
+
+  - alias: Rear Back to yellow dim after Motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_shed
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: light.rear_steps
+        state: 'on'
+    action:
+      - delay: '00:005:00'
+      - service: light.turn_on
+        data:
+          entity_id: light.rear_steps
           color_temp: 426
           brightness: 125
 

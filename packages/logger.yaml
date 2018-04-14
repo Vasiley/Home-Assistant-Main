@@ -30,10 +30,11 @@ logger:
     homeassistant.components.sensor.usps: warn
     homeassistant.components.feedreader: warn
     homeassistant.components: warn
+    homeassistant.components.binary_sensor: error
     bellows.uart: warn
     homeassistant.core: critical
     homeassistant.helpers.script: warn
-    homeassistant.helpers.entity: warn
+    homeassistant.helpers.entity: error
     homeassistant.helpers.restore_state: warn
     homeassistant.loader: warn
     homeassistant.setup: warn
@@ -44,6 +45,7 @@ logger:
     myusps: warn
     pubnub: warn
     homeassistant.components.http.ban: debug
+
 
 group:
   logger_input_select_card:

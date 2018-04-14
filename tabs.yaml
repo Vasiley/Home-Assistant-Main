@@ -26,8 +26,6 @@
      - group.washing_machine_card_frontend
      - group.harmony_card
      - group.blinds_card
-#     - group.blinds_lv_room_front_card
-#     - group.blinds_lv_room_rear_card
      - script.media_player_source
      - weblink.fish_tank_ha
      - weblink.dashboard
@@ -52,7 +50,7 @@
      - group.homeass_version_card
      - group.hassctl_card
      - group.fail2ban_card
-     - group.iboot_card
+     - group.network_backup_ups_card
 
   Serversview:
    view: yes
@@ -60,11 +58,7 @@
    entities:
      - group.linux_server_card
      - group.blue_iris_info_card
-#     - group.Workstations_status_card
-     - group.network_workstation_info_card
-     - group.network_backup_ups_card
-     - group.bi_server_automations
-     - group.ha_server_automations
+
 
   media:
    view: yes
@@ -74,7 +68,6 @@
      - group.stereo_avr_card
      - group.Ruths_roku_media_player_card
      - group.media_player_ha_speaker_card
-     - group.media_player_networkpc_card
      - group.media_player_living_room_card
      - group.media_player_plex_server_card
      - group.media_player_master_bedroom_cast_card

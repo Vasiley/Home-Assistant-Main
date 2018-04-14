@@ -26,16 +26,15 @@ homeassistant:
     binary_sensor.motion_tablet_camera:
       friendly_name: Tablet Camera
       device_class: motion
-    automation.back_to_white_after_motion:
-      friendly_name: Bi White no Motion
+    automation.flash_red_motion_shed:
+      friendly_name: Motion Front Door Outside
       haaska_hidden: true
-    automation.back_to_yellow_dim_after_motion:
-      friendly_name: Bi Red with Motion
+    automation.flash_blue_motion_backdoor:
+      friendly_name: Motion Back Door Outside
       haaska_hidden: true
-    script.front_cam_dashboard:
+    automation.white_no_motion:
+      friendly_name: White No Motion
       haaska_hidden: true
-      friendly_name: Switch Dash Board on Motion
-
 
 group:
   blue_iris_motion_card:
@@ -135,7 +134,6 @@ binary_sensor:
   - platform: template
     sensors:
       motion_outdoor_frontdoor:
-#        friendly_name: 'Front Door'
         value_template: >-
           {% if states('binary_sensor.blueiriscam4') %}
           {% if is_state('binary_sensor.blueiriscam4', 'on') %}
@@ -148,7 +146,22 @@ binary_sensor:
           {% else %}
             False
            {% endif %}
-#           {% endif %}
+  - platform: template
+    sensors:
+      motion_outdoor_backdoor:
+        value_template: >-
+          {% if states('binary_sensor.blueiriscam7') %}
+          {% if is_state('binary_sensor.blueiriscam7', 'on') %}
+             True
+          {% elif is_state('binary_sensor.blueiriscam7', 'off') %}
+             False
+          {% else %}
+          {{ states('binary_sensor.blueiriscam7') }}
+          {% endif %}
+          {% else %}
+            False
+           {% endif %}
+
   - platform: template
     sensors:
       motion_tablet_camera:
@@ -167,10 +180,10 @@ binary_sensor:
 
 
   ######################################################
-# Flash Door lamp when motion at shed camera
+# Flash Door lamp when motion at shed camera and backdoor
 ######################################################
 automation:
-  - alias: Flash Red on Motion
+  - alias: flash_red_motion_shed
     initial_state: 'on'
     trigger:
       - platform: state
@@ -182,7 +195,7 @@ automation:
         state: 'on'
       - condition: state
         entity_id: input_boolean.boolean_active_outside
-        state: 'off'  
+        state: 'off'
     action:
       - service: light.turn_on
         data:
@@ -193,11 +206,41 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Somebody is at Front Door'
-  - alias: Back to White after Motion
+
+
+  - alias: flash_blue_motion_backdoor
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_backdoor
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_active_outside
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          flash: short
+          color_name: Blue
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'Somebody is at Back Door'
+
+
+  - alias: white_no_motion
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_backdoor
         to: 'off'
     condition:
       - condition: state

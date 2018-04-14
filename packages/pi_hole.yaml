@@ -132,9 +132,9 @@ sensor:
         value_template:  "{{states.sensor.pihole_status_raw.state.split('[✓]')[2][1:]}}"
         icon_template: >-
           {% if states.sensor.pihole_blocking.state == 'Pi-hole blocking is Enabled' %}
-             mdi:checkbox-blank-outline
-          {% else %}
              mdi:checkbox-marked
+          {% else %}
+             mdi:checkbox-blank-outline
           {% endif %}
 
 ######Custom Version sensor

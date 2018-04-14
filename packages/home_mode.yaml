@@ -43,8 +43,9 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_home
-#      - service: script.turn_on
-#        entity_id: script.led_off
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.boolean_active_outside
       - service: automation.turn_on
         data:
           entity_id: automation.motion_master_bedroom

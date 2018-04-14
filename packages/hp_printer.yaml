@@ -8,6 +8,9 @@ homeassistant:
     sensor.printer_uptime:
       friendly_name: Hp printer Uptime
       icon: mdi:printer
+    sensor.hp_uptime:
+      friendly_name: Hp printer Uptime
+      icon: mdi:printer  
     sensor.cyan_ink_level:
       entity_picture: /local/cyan.jpeg
     sensor.magenta_ink_level:
@@ -25,7 +28,8 @@ group:
    control: hidden
    name: Printers
    entities:
-     - sensor.printer_uptime
+#     - sensor.printer_uptime
+     - sensor.hp_uptime
      - sensor.black_ink_level
      - sensor.yellow_ink_level
      - sensor.cyan_ink_level
@@ -42,7 +46,26 @@ sensor:
     baseoid: 1.3.6.1.2.1.1.3.0
     accept_errors: true
     unit_of_measurement: 'minutes'
-    value_template: '{{((value | int) / 6000) | int}}'
+    value_template: '{{((value | int) / 100 ) | int}}'
+
+  - platform: template
+    sensors:
+      hp_uptime:
+        value_template: >-
+          {%- macro parse_time(sec) -%}
+            {%- set w = sec // 604800 -%}
+            {%- set d = sec % 604800 // 86400 -%}
+            {%- set h = sec % 604800 % 86400 // 3600 -%}
+            {%- set m = sec % 604800 % 86400 % 3600 // 60 -%}
+            {%- set s = sec % 604800 % 86400 % 3600 % 60 -%}
+            {%- set comma = joiner(', ') -%}
+            {{- comma() ~ w ~ ' week' ~ ('s' if w != 1) if w -}}
+            {{- comma() ~ d ~ ' day' ~ ('s' if d != 1) if d -}}
+            {{- comma() ~ h ~ ' hour' ~ ('s' if h != 1) if h -}}
+            {{- comma() ~ m ~ ' minute' ~ ('s' if m != 1) if m -}}
+            {{- comma() ~ s ~ ' second' ~ ('s' if s != 1) if s -}}
+          {%- endmacro -%}
+          {{ parse_time(states('sensor.printer_uptime')|int) }}
 
   - platform: snmp
     name: 'Black Ink Level'
