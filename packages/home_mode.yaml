@@ -100,6 +100,23 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.kids_hallway
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.ha_speaker
+          volume_level: '{{ states.input_number.home_mode_chromecast_lv.state }}'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          volume_level: '{{ states.input_number.home_mode_chromecast_masterbedroom.state }}'
+      - delay: '00:00:20'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Home Mode is Set Volume Set for Living Room'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'Home Mode Set Volume Set for Master Bedroom'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker

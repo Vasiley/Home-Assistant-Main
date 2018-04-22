@@ -10,13 +10,13 @@ homeassistant:
       friendly_name: Disk Overview
       icon: mdi:harddisk
     sensor.glances_disk_percent_free:
-      friendly_name: Hard Drive Free Space
+      friendly_name: Hard Drive Used
       icon: mdi:harddisk
     sensor.glances_usb_disk_overview:
       friendly_name: USB Disk Overview
       icon: mdi:harddisk
     sensor.glances_usb_disk_percent_free:
-      friendly_name: USB Drive Free Space
+      friendly_name: USB Drive Used
       icon: mdi:harddisk
     sensor.glances_ram_overview:
       friendly_name: Ram Overview

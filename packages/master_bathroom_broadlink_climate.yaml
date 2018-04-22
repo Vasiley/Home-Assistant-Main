@@ -1,0 +1,129 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'Broadlink Master Bath heater'
+    climate.lasko_heater:
+#      friendly_name: Bathroom Heater
+      haaska_name: Master Bathroom Heater
+    switch.heater_lasko_power:
+      haaska_name: Master Bathroom Heater Power
+      icon: mdi:power
+    switch.heater_lasko_oscillate:
+      haaska_name: Bathroom heater Oscillate
+      icon: mdi:rotate-3d
+    script.bath_heater_on:
+      friendly_name: Master Bath Heater On
+    script.bath_heater_off:
+      friendly_name: Master Bath Heater Off
+
+group:
+  master_bathroom_heater_broadlink_card:
+   control: hidden
+   name: Master Bathroom Climate
+   entities:
+     - climate.lasko_heater
+
+  master_bathroom_heater:
+   control: hidden
+   name: Master Bath 
+   entities:
+     - switch.heater_lasko_power
+     - switch.heater_lasko_oscillate
+     - script.bath_heater_on
+     - script.bath_heater_off
+switch:
+  - platform: broadlink
+    host: 192.168.1.161
+    mac: '34:EA:34:CC:C8:AA'
+    switches:
+      heater_lasko_power:
+        friendly_name: "Bathroom Heater Power"
+        command_on: 'JgBqAAABO5cSQxMVEhQTFhIVExQSQxMVERUSFxEWEhUTEhUVERcRFhEWEkMSFRIVEkMUFRFDE0ITFRIWERYSFRIVExQSFRMWERURFxIUFBQSFhIWERYSFRJCFEISFRMWD0UTQhIWEUQ5HRMADQUAAAAAAAAAAAAAAAAAAA=='
+        command_off: 'JgBqAAABOZgTFRIVEhUUFBMUEhYRRBMVERUTFREWExQSFRQVEBcRFhIVEkMTFRIWEUMUFBJCE0QRFhJDFRIUExNDEkQRRBRBEhQUFBIWEhYRFhIWERUTFRFDFBURGBBDEkIUQhIVExU6GxMADQUAAAAAAAAAAAAAAAAAAA=='
+      heater_lasko_oscillate:
+        friendly_name: "Bathroom Heater Oscillate"
+        command_on: 'JgBqAAABO5cSQxRBExQUFBIVFBQSQxQUEhQUFBIVExUSFRQUEhQUFBIVE0MSFRMUE0IUFBJDFEISQhQUExUTFBIVExURQxVBExQTFRIVExUSFRQTFBMTQxJDFBQSFBRCEhUTFRIVFEE6GxQADQUAAAAAAAAAAAAAAAAAAA=='
+        command_off: 'JgBqAAABO5cTQhMVEhUUFBIVExQTQhUTEhUTFRIVExQTFBMVEhUTFRIVFEETFBQUEkMTFRJCFUETFBMVEhUTFBNCFUESQxQUEhUTFBMUFBQSFRQUEkMTFBNCFEISFRNCE0IUQhIVE0M5GxUADQUAAAAAAAAAAAAAAAAAAA=='
+climate:
+  - platform: broadlink
+    name: Lasko Heater
+    host: 192.168.1.161
+    mac: '34:EA:34:CC:C8:AA'
+    ircodes_ini: 'broadlink_climate_codes/lasko_heater.ini'
+    min_temp: 70
+    max_temp: 80
+    target_temp: 70
+    temp_sensor: sensor.bathroom_temperature
+    default_operation: idle
+    default_fan_mode: auto
+    customize:
+      operations:
+        - idle
+        - 'off'
+        - heat
+      fan_modes:
+        - auto
+        - 'off'
+
+script:
+  bath_heater_on:
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_power
+      - delay: '00:00:05'
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_oscillate
+
+  bath_heater_off:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_oscillate
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_power
+
+sensor:
+  - platform: template
+    sensors:
+      operating_mode_bathroom_heater:
+        friendly_name: 'Bathroom Current Operation'
+        value_template: "{{ states.climate.lasko_heater.attributes.operation_mode }}"
+
+automation:
+  - alias: master bath heater state on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.heater_lasko_power
+#        from: 'off'
+        to: 'on'
+      - platform: state
+        entity_id: sensor.operating_mode_bathroom_heater
+        to: 'heat'
+    action:
+      - service: climate.set_operation_mode
+        data:
+          entity_id: climate.lasko_heater
+          operation_mode: 'heat'
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_power
+
+  - alias: master bath heater state off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.heater_lasko_power
+#      from: 'on'
+        to: 'off'
+      - platform: state
+        entity_id: sensor.operating_mode_bathroom_heater
+        to: 'idle'
+    action:
+      - service: climate.set_operation_mode
+        data:
+          entity_id: climate.lasko_heater
+          operation_mode: 'idle'
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_power

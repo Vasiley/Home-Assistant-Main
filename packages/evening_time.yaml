@@ -21,10 +21,7 @@ automation:
         state: 'Home'
     action:
      - service: script.evening_time
-     - service: tts.google_say
-       data:
-         entity_id: media_player.ha_speaker
-         message: 'Grandma Mode is Activated'
+
 
 script:
 #  - alias: Evening Time
@@ -47,6 +44,22 @@ script:
           entity_id: script.vas_dashboard
         - service: script.turn_on
           entity_id: script.led_off
+        - service: media_player.volume_set
+          data_template:
+            entity_id: media_player.ha_speaker
+            volume_level: '{{ states.input_number.evening_mode_chromecast_lv.state }}'
+        - service: media_player.volume_set
+          data_template:
+            entity_id: media_player.master_bedroom_cast
+            volume_level: '{{ states.input_number.evening_mode_chromecast_masterbedroom.state }}'
+        - service: tts.google_say
+          data:
+            entity_id: media_player.ha_speaker
+            message: 'Grandma Mode is Activated'
+        - service: tts.google_say
+          data:
+            entity_id: media_player.master_bedroom_cast
+            message: 'Grandma Mode is Activated'
 #  - alias: Navigate Dashboard to Vas
     vas_dashboard:
       sequence:

@@ -30,6 +30,14 @@ script:
       - service: switch.turn_off
         data:
           entity_id: switch.network_switch_blue_iris_monitor
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.ha_speaker
+          volume_level: '{{ states.input_number.movi_mode_chromecast_lv.state }}'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          volume_level: '{{ states.input_number.movie_mode_chromecast_masterbedroom.state }}'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -50,4 +58,3 @@ script:
           color_temp: 426
           brightness: 125
           transition: 45
-      

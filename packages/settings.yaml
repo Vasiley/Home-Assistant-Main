@@ -19,6 +19,16 @@ homeassistant:
     input_number.evening_time_off:
       friendly_name: Light Turn Off Timer
       persistent: true
+    input_number.evening_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.evening_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
 ################  Movie MODE #################################################
     input_number.movie_mode_brightness_value:
       friendly_name: Light Brightness %
@@ -32,6 +42,16 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
+    input_number.movie_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.movie_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
 ################  Sleep MODE #################################################
     input_number.sleep_mode_brightness_value:
       friendly_name: Light Brightness %
@@ -58,6 +78,16 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
+    input_number.onkyo_volume_earlymorning:
+      friendly_name: Onkyo Volume Early Morning
+      icon: mid:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.earlymorning_mode_chromecast_livingroom:
+      friendly_name: Chrome Cast LV Volume Early Morning
+      icon: mid:volume-high
+      persistent: true
+      haaska_hidden: true
 ################  Home MODE ###################################################
     input_number.home_mode_brightness_value:
       friendly_name: Light Brightness %
@@ -71,7 +101,18 @@ homeassistant:
       friendly_name: Light Transition Time
       icon: mdi:timer
       persistent: true
-################  Home MODE ###################################################
+    input_number.home_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.home_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+
+################  Nap MODE ###################################################
     input_number.nap_mode_brightness_value:
       friendly_name: Light Brightness %
       icon: mdi:lightbulb-on-outline
@@ -98,7 +139,6 @@ group:
      - group.setting_earlymorning_mode_settings_card
      - group.setting_home_mode_settings_card
      - group.setting_nap_mode_settings_card
-     - group.settings_av_equip_card
      - group.ha_server_automations
      - group.bi_server_automations
 
@@ -109,6 +149,8 @@ group:
      - input_number.evening_mode_brightness_value
      - input_number.evening_mode_color_temp_value
      - input_number.evening_mode_transition_value
+     - input_number.evening_mode_chromecast_lv
+     - input_number.evening_mode_chromecast_masterbedroom
      - input_number.evening_time_off
 ################  Movie MODE #################################################
   setting_movie_mode_settings_card:
@@ -117,6 +159,8 @@ group:
      - input_number.movie_mode_brightness_value
      - input_number.movie_mode_color_temp_value
      - input_number.movie_mode_transition_value
+     - input_number.movie_mode_chromecast_lv
+     - input_number.movie_mode_chromecast_masterbedroom
 ################  Sleep MODE #################################################
   setting_sleep_mode_settings_card:
    name: Sleep Mode
@@ -131,6 +175,8 @@ group:
      - input_number.earlymorning_mode_brightness_value
      - input_number.earlymorning_mode_color_temp_value
      - input_number.earlymorning_mode_transition_value
+     - input_number.earlymorning_mode_chromecast_livingroom
+     - input_number.onkyo_volume_earlymorning
 ################  Home MODE #################################################
   setting_home_mode_settings_card:
    name: Home Mode
@@ -138,6 +184,8 @@ group:
      - input_number.home_mode_brightness_value
      - input_number.home_mode_color_temp_value
      - input_number.home_mode_transition_value
+     - input_number.home_mode_chromecast_lv
+     - input_number.home_mode_chromecast_masterbedroom
 ################  Home MODE #################################################
   setting_nap_mode_settings_card:
    name: Nap Mode
@@ -145,11 +193,6 @@ group:
      - input_number.nap_mode_brightness_value
      - input_number.nap_mode_color_temp_value
      - input_number.nap_mode_transition_value
-############## Audio Video Equip ####################################
-  settings_av_equip_card:
-    name: Audio Volumes
-    entities:
-      - input_number.onkyo_volume
 
 input_number:
 ################  EVENING MODE #################################################
@@ -177,6 +220,18 @@ input_number:
     min: 1
     max: 15
     step: 1
+  evening_mode_chromecast_lv:
+    name: Evening Time TTS Living Room
+    initial: .60
+    min: 0
+    max: 1
+    step: .1
+  evening_mode_chromecast_masterbedroom:
+    name: Evening Time Mode TTS Master Bedroom
+    initial: .30
+    min: 0
+    max: 1
+    step: .1
 ################  Movie MODE #################################################
   movie_mode_brightness_value:
     name: Movie Mode Brightness
@@ -196,6 +251,18 @@ input_number:
     min: 0
     max: 90
     step: 1
+  movie_mode_chromecast_lv:
+    name: Movie Time TTS Living Room
+    initial: .75
+    min: 0
+    max: 1
+    step: .1
+  movie_mode_chromecast_masterbedroom:
+    name: Movie Time Mode TTS Master Bedroom
+    initial: .35
+    min: 0
+    max: 1
+    step: .1
 ################  Sleep MODE #################################################
   sleep_mode_brightness_value:
     name: Sleep Mode Brightness
@@ -234,6 +301,18 @@ input_number:
     min: 1
     max: 90
     step: 1
+  earlymorning_mode_chromecast_livingroom:
+    name: Early Morning Chrome Cast living room
+    initial: .3
+    min: 0
+    max: 1
+    step: .1
+  onkyo_volume_earlymorning:
+    name: Onkyo Volume
+    initial: .6
+    min: 0
+    max: 1.75
+    step: .1
 ################  Home MODE ###########################################
   home_mode_brightness_value:
     name: Home Mode Brightness
@@ -253,6 +332,18 @@ input_number:
     min: 1
     max: 90
     step: 1
+  home_mode_chromecast_lv:
+    name: Home Mode TTS Living Room
+    initial: .80
+    min: 0
+    max: 1
+    step: .1
+  home_mode_chromecast_masterbedroom:
+    name: Home Mode TTS Master Bedroom
+    initial: .40
+    min: 0
+    max: 1
+    step: .1
 ################  Nap MODE #####################################################
   nap_mode_brightness_value:
     name: Nap Mode Brightness
@@ -272,38 +363,3 @@ input_number:
     min: 1
     max: 90
     step: 1
-################### Onkyo ######################################################
-
-  onkyo_volume:
-    name: Onkyo Volume
-#    initial: 15
-    min: 0
-    max: 100
-    step: 1
-
-automation:
-  - alias: Onkyo Volume Slider Set
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: input_number.onkyo_volume
-    condition:
-      - condition: state
-        entity_id: media_player.stereo
-        state: 'on'
-    action:
-      - service: media_player.volume_set
-        data_template:
-          entity_id: media_player.stereo
-          volume_level: '{{ states.input_number.onkyo_volume.state | float / 40}}'
-
-  - alias: Onkyo Volume Slider Get
-    initial_state: 'on'
-    trigger:
-      platform: state
-      entity_id: media_player.stereo
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.onkyo_volume
-        value: '{{ states.media_player.stereo.attributes.volume_level | float * 40  }}'

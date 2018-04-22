@@ -62,7 +62,7 @@ group:
      - input_boolean.boolean_gabbie_home
      - input_boolean.boolean_gabbie_sleep
      - input_boolean.boolean_gabbie_awake
-     - switch.gabbies_tv
+     - switch.gabbies_tv_power
      - script.gabbies_awake
      - script.gabbies_bedtime
      - automation.gabbie_going_sleep

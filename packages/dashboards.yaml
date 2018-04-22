@@ -151,34 +151,34 @@ group:
 
 sensor:
 ####### Gabbies Room #############################
-  - platform: mqtt
-    state_topic: "wallpanel/gabbiedash/sensor/battery"
-    name: "Gabbies Room wallpanel battery"
-    unit_of_measurement: "%"
-    value_template: '{{ value_json.value }}'
-  - platform: mqtt
-    state_topic: "wallpanel/gabbiedash/sensor/battery"
-    name: "Gabbies Room wallpanel Charging"
-    value_template: '{{ value_json.charging }}'
-  - platform: mqtt
-    state_topic: "wallpanel/gabbiedash/sensor/battery"
-    name: "Gabbies Room wallpanel Ac Plugged"
-    value_template: '{{ value_json.acPlugged }}'
-  - platform: rest
-    resource: http://192.168.1.51:2971/api/state
-    value_template: '{{ value_json.currentUrl }}'
-    name: 'Current Url Gabbie'
-  - platform: template
-    sensors:
-      current_dash_gabbies:
-        value_template: >-
-          {% if states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies?skin=default" %}
-               Gabbies Dash
-          {% elif states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies" %}
-               Gabbies Dash
-          {% else %}
-               Unknown
-          {% endif %}
+  # - platform: mqtt
+  #   state_topic: "wallpanel/gabbiedash/sensor/battery"
+  #   name: "Gabbies Room wallpanel battery"
+  #   unit_of_measurement: "%"
+  #   value_template: '{{ value_json.value }}'
+  # - platform: mqtt
+  #   state_topic: "wallpanel/gabbiedash/sensor/battery"
+  #   name: "Gabbies Room wallpanel Charging"
+  #   value_template: '{{ value_json.charging }}'
+  # - platform: mqtt
+  #   state_topic: "wallpanel/gabbiedash/sensor/battery"
+  #   name: "Gabbies Room wallpanel Ac Plugged"
+  #   value_template: '{{ value_json.acPlugged }}'
+  # - platform: rest
+  #   resource: http://192.168.1.51:2971/api/state
+  #   value_template: '{{ value_json.currentUrl }}'
+  #   name: 'Current Url Gabbie'
+  # - platform: template
+  #   sensors:
+  #     current_dash_gabbies:
+  #       value_template: >-
+  #         {% if states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies?skin=default" %}
+  #              Gabbies Dash
+  #         {% elif states.sensor.current_url_gabbie.state == "http://192.168.1.153:5050/gabbies" %}
+  #              Gabbies Dash
+  #         {% else %}
+  #              Unknown
+  #         {% endif %}
 ####### BEDROOM ##################################
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/battery"

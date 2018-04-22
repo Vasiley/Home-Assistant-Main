@@ -3,6 +3,7 @@
    name: Vas and Squrriels Castle
    entities:
      - group.House_mode
+     - group.alarm_panel_card
      - light.lamps
      - light.kitchen
      - light.master_hallway
@@ -20,7 +21,7 @@
      - light.gabbies_light
      - group.Family
      - group.climate_temp_card
-     - group.alarm_panel_card
+     - group.master_bathroom_heater_broadlink_card
      - group.usps_mail_card
      - group.livingroomfan_card
      - group.washing_machine_card_frontend
@@ -185,13 +186,6 @@
      - group.misc_devices_card
      - group.wink_connections_card
      - group.wifi_signal_card
-
-  # setting_view:
-  #  view: yes
-  #  name: Setting's
-  #  icon: mdi:setting
-  #  entities:
-  #    - group.setting_house_mode_lights
 
   Family:
     entities:

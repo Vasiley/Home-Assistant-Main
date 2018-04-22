@@ -28,6 +28,10 @@ script:
         data:
           entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:01'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.ha_speaker
+          volume_level: '{{ states.earlymorning_mode_chromecast_livingroom.state }}'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker
@@ -46,7 +50,7 @@ script:
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.stereo
-          volume_level: '.60'
+          volume_level: '{{ states.input_number.onkyo_volume_earlymorning.state }}'
       - delay: '00:00:15'
       - service: light.turn_on
         data:
