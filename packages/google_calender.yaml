@@ -207,7 +207,7 @@ automation:
           state: 'on'
         - condition: state
           entity_id: calendar.contacts
-          state: 'On'
+          state: 'on'
     action:
       - service: tts.google_say
         data_template:

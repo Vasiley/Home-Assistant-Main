@@ -28,7 +28,7 @@ http:
    login_attempts_threshold: 5
 
 # Allows you to issue voice commands from the frontend in enabled browsers
-conversation:
+#conversation:
 
 # Track the sun
 sun:
@@ -81,3 +81,11 @@ wemo:
      - 192.168.1.53  #Master Fan
      - 192.168.1.163 #kids bathroom fan
 #     - 192.168.1.162  #rear network
+xiaomi_aqara:
+#  interface: '192.168.1.1'
+#  host: '192.168.1.207'
+#  discovery_retry: 10
+  gateways:
+     - mac: !secret xiaomi_mac
+       key: !secret xiaomi_key
+       host: 192.168.1.207

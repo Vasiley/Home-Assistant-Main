@@ -1,10 +1,8 @@
 homeassistant:
   customize:
-
     package.node_anchors:
       customize: &customize
         package: 'Kitchen Mains'
-
     binary_sensor.kitchen_motion:
       friendly_name: Kitchen Motion
       device_class: motion
@@ -88,9 +86,7 @@ automation:
         entity_id: binary_sensor.kitchen_motion
         to: 'off'
         for:
-#          '00:{{"%02d" % states.input_number.evening_time_off.state | int }}:00'
           minutes: 3
-
     action:
       - service: light.turn_off
 #      - delay: '00:{{ states.input_number.evening_time_off.state | int }}:00'
@@ -112,6 +108,7 @@ automation:
               {% else %}
                 15
               {% endif %}
+
   - alias: Motion Kitchen Main Light On
     initial_state: 'on'
     trigger:

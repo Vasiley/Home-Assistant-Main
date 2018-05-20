@@ -1,0 +1,180 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'test_leds'
+
+group:
+   test_led_card:
+      control: hidden
+      name: Test Leds
+      entities:
+       - light.porch_strip
+       - input_number.porch_animation_speed
+light:
+  - platform: mqtt_json
+    name: "Porch Strip"
+    state_topic: "led/led"
+    command_topic: "led/led/set"
+    effect: true
+    effect_list:
+      - solid
+      - twinkle
+      - cylon bounce
+      - fire
+      - fade in out
+      - strobe
+      - theater chase
+      - rainbow cycle
+      - color wipe
+      - running lights
+      - snow sparkle
+      - sparkle
+      - twinkle random
+      - lightning
+    brightness: true
+    flash: true
+    rgb: true
+    white_value: true
+    optimistic: false
+    qos: 0
+
+input_number:
+  porch_animation_speed:
+    name: Porch Animation Speed
+    initial: 150
+    min: 1
+    max: 150
+    step: 10
+
+automation:
+  - alias: "Porch Animation Speed"
+    initial_state: True
+    hide_entity: False
+    trigger:
+      - platform: state
+        entity_id: input_slider.porch_animation_speed
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "led/led/set"
+          payload: '{"transition":{{ trigger.to_state.state | int }}}'
+
+# light:
+#   - platform: mqtt
+#     name: "MCLIGHT"
+#     retain: true
+#     optimistic: true
+#     state_topic: "McLightingRGBW01/out"
+#     command_topic: "McLightingRGBW01/in"
+#     rgb_command_template: "#{{ '%02x%02x%02x' | format(red, blue, green)}}"
+#     rgb_command_topic: "MCLIGHT/in"
+#     effect_command_topic: "MCLIGHT/in"
+#     payload_off: "*0000000"
+#     effect_list:
+#       - "/0"
+#       - "/1"
+#       - "/2"
+#       - "/3"
+#       - "/4"
+#       - "/5"
+#       - "/6"
+#       - "/7"
+#       - "/8"
+#       - "/9"
+#       - "/10"
+#       - "/11"
+#       - "/12"
+#       - "/13"
+#       - "/14"
+#       - "/15"
+#       - "/16"
+#       - "/17"
+#       - "/18"
+#       - "/19"
+#       - "/20"
+#       - "/21"
+#       - "/22"
+#       - "/23"
+#       - "/24"
+#       - "/25"
+#       - "/26"
+#       - "/27"
+#       - "/28"
+#       - "/29"
+#       - "/30"
+#       - "/31"
+#       - "/32"
+#       - "/33"
+#       - "/34"
+#       - "/35"
+#       - "/36"
+#       - "/37"
+#       - "/38"
+#       - "/39"
+#       - "/40"
+#       - "/41"
+#       - "/42"
+#       - "/43"
+#       - "/44"
+#       - "/45"
+#       - "/46"
+#       - "/47"
+#       - "/48"
+#       - "/49"
+#       - "/50"
+#       - "/51"
+#       - "/52"
+#       - "/53"
+#       - "/54"
+#       - "/55"
+#
+# input_number:
+#   mclight_animation_speed:
+#     name: McLight Animation Speed
+#     initial: 200
+#     min: 1
+#     max: 255
+#     step: 1
+#
+# automation:
+#  - alias: Mclight Animation Speed
+#    initial_state: True
+#    trigger:
+#       - platform: state
+#         entity_id: input_number.mclight_animation_speed
+#    action:
+#       - service: mqtt.publish
+#         data_template:
+#           topic: "MCLIGHT/in"
+#           payload: '?{{ trigger.to_state.state | int }}'
+#  - alias: Mclight Random Static Color
+#    initial_state: off
+#    trigger:
+#      - platform: time
+#        seconds: '/30'
+#    action:
+#      - service: mqtt.publish
+#        data_template:
+#          topic: "MCLIGHT/in"
+#          payload: >-
+#             {% set r = range(0, 255)|random %}
+#             {% set g = range(0, 255)|random %}
+#             {% set b = range(0, 255)|random %}
+#             {{ '*' ~ '%02x%02x%02x' | format(g, r, b)}}
+#
+#  - alias: Mclight Random Default Color
+#    initial_state: off
+#    trigger:
+#      - platform: time
+#        seconds: '/30'
+#    action:
+#      - service: mqtt.publish
+#        data_template:
+#          topic: "MCLIGHT/in"
+#          payload: >-
+#            {% set r = range(0, 255)|random %}
+#            {% set g = range(0, 255)|random %}
+#            {% set b = range(0, 255)|random %}
+#            {{ '#' ~ '%02x%02x%02x' | format(g, r, b)}}

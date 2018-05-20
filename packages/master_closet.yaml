@@ -1,0 +1,46 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Master Closet'
+    light.hue_master_closet:
+      friendly_name: Master Closet Light
+      haaska_name: Master Closet Light
+    automation.master_closet_on:
+      friendly_name: Master Closet Light On
+      haaska_hidden: true
+    automation.master_closet_off:
+      friendly_name: Master Closet Light Off
+      haaska_hidden: true
+
+
+group:
+  master_closet_card:
+   name: Master Closet
+   control: hidden
+   entities:
+     - light.hue_master_closet
+     - binary_sensor.door_window_sensor_master_closet
+     - automation.master_closet_on
+     - automation.master_closet_off
+
+automation:
+  - alias: 'master_closet_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_master_closet
+        to: 'on'
+    action:
+      - service: light.turn_on
+        entity_id: light.hue_master_closet
+
+  - alias: 'master_closet_off'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_master_closet
+        to: 'off'
+    action:
+      - service: light.turn_off
+        entity_id: light.hue_master_closet

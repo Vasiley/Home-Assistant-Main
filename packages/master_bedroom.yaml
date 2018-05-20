@@ -240,8 +240,8 @@ automation:
     action:
       - service: switch.turn_on
         entity_id: switch.dawn_night
-      - service: switch.turn_off
-        entity_id: switch.master_bedroom_mixer
+      # - service: switch.turn_off
+      #   entity_id: switch.master_bedroom_mixer
       - service: fan.turn_on
         data:
           entity_id: fan.master_bedroom_fan

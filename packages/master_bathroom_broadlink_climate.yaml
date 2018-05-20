@@ -27,7 +27,7 @@ group:
 
   master_bathroom_heater:
    control: hidden
-   name: Master Bath 
+   name: Master Bath
    entities:
      - switch.heater_lasko_power
      - switch.heater_lasko_oscillate
@@ -55,7 +55,7 @@ climate:
     min_temp: 70
     max_temp: 80
     target_temp: 70
-    temp_sensor: sensor.bathroom_temperature
+    temp_sensor: sensor.temperature_master_bathroom
     default_operation: idle
     default_fan_mode: auto
     customize:

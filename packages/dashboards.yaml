@@ -19,9 +19,9 @@ homeassistant:
       friendly_name: Gabbies Room Current Dash
       icon: mdi:web
       haaska_hidden: true
-    binary_sensor.gabbies_room_motion:
-      friendly_name: Gabbies Room Dash motion
-      device_class: motion
+    # binary_sensor.gabbies_room_motion:
+    #   friendly_name: Gabbies Room Dash motion
+    #   device_class: motion
     binary_sensor.bedroom_motion:
       friendly_name: Master Dash motion
       device_class: motion

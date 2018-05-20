@@ -125,3 +125,5 @@ script:
         data:
           entity_id: media_player.master_bedroom_cast
           message: 'Home Mode is Activated'
+      - service: light.turn_off
+        entity_id: light.gateway_light_xiaomi_lv

@@ -1,6 +1,5 @@
 homeassistant:
   customize:
-
     package.node_anchors:
       customize: &customize
         package: 'Washing machine'
@@ -138,13 +137,3 @@ automation:
     action:
       - service: input_boolean.toggle
         entity_id: input_boolean.dummy
-# Code for seconds only
-  # {% if is_state('input_boolean.stopwatch', 'on') %}
-  #   {{ (now() - states.automation.stopwatch_start.attributes.last_triggered).total_seconds() | int }}
-  # {% elif is_state('sensor.stopwatch', 'unknown') %}
-  #   0
-  # {% else %}
-  #   {{ states('sensor.stopwatch') }}
-  # {% endif %}
-#    trying a diff way
-# {{ (as_timestamp(now()) - as_timestamp(states.automation.stopwatch_start.attributes.last_triggered)) }}

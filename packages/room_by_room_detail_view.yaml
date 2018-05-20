@@ -12,6 +12,7 @@ group:
     control: hidden
     name: Living Room
     entities:
+     - binary_sensor.door_window_sensor_front_door
      - light.lamps
      - light.herbs_lamp
      - light.dawns_lamp
@@ -40,33 +41,7 @@ group:
 
 
 
- kids_bath_card:
-    control: hidden
-    name: Kids Bath
-    entities:
-     - light.kids_bathroom
-     - light.kids_bathroom_vanity
-     - switch.wemo_kids_bath_fan
-     - switch.kids_bathroom_scent
-     - binary_sensor.kids_bathroom_motion
-     - sensor.kids_bathroom_temperature
-     - sensor.kids_bathroom_motion_sensor_lux
-     - sensor.motion_sensor_kids_bathroom_battery
-     - sensor.kids_bathroom_dimmer_state
-     - sensor.kids_bathroom_dimmer_last_update
-     - sensor.kids_bathroom_dimmer_battery
-     - script.kids_shower_time_on
-     - script.kids_shower_time_off
-     - switch.kids_shower_time
-     - automation.kids_bath_light_left_on
-     - automation.kids_bath_shower_time_off
-     - automation.kids_bath_shower_time_on
-     - automation.motion_kids_bathroom_home_mode_off
-     - automation.motion_kids_bathroom_home_mode_on
-     - automation.motion_kids_bathroom_evening_mode_on
-     - automation.motion_kids_bathroom_sleep_off
-     - automation.motion_kids_bathroom_sleep_on
-
+ 
  carport_lights_card:
     control: hidden
     name: Carport
@@ -112,6 +87,7 @@ group:
    control: hidden
    name: Laundry Room
    entities:
+      - binary_sensor.door_window_sensor_back_door
       - light.laundry_room
       - binary_sensor.laundry_room_motion
       - sensor.motion_sensor_laundry_battery

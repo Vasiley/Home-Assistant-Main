@@ -3,24 +3,33 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Kids Bathroom Room'
-    ############ DIMMERS #################
-    binary_sensor.kids_bathroom_motion:
-      haaska_hidden: true
-      device_class: motion
-      friendly_name: Kids Bathroom Motion
-    sensor.kids_bathroom_temperature:
-      haaska_hidden: true
     sensor.kids_bathroom_dimmer_battery:
       icon: mdi:battery
+      friendly_name: Kids Bathroom Dimmer
     sensor.kids_bathroom_dimmer_last_update:
       icon: mdi:clock
     sensor.kids_bathroom_dimmer_state:
       icon: mdi:remote
-    sensor.motion_sensor_kids_bathroom_battery:
+    sensor.kids_motion_sensor_batt:
       icon: mdi:battery
-    sensor.kids_bathroom_motion_sensor_lux:
-      friendly_name: Kids Bathroom Light Level
-      icon: mdi:theme-light-dark
+      unit_of_measurement: '%'
+    sensor.humidity_kids_bathroom:
+      friendly_name: Kids Bathroom Humidity
+      haaska_hidden: true
+    sensor.temperature_kids_bathroom:
+      friendly_name: Kids Bathroom Temperature
+      haaska_hidden: true
+    binary_sensor.motion_sensor_kids_bathroom:
+      haaska_hidden: true
+    sensor.kids_humidity_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kids Bathroom Humidity Sensor
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    sensor.illumination_kids_bathroom:
+      friendly_name: Kids Bathroom Lux
+      haaska_hidden: true
+      unit_of_measurement: 'Lux'
     automation.motion_kids_bathroom_home_mode_on:
       haaska_hidden: true
       hidden: false
@@ -49,6 +58,10 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
+    automation.kids_humidity_fan_on:
+      haaska_hidden: true
+    automation.kids_humidity_fan_off:
+      haaska_hidden: true
     script.kids_shower_time_on:
       friendly_name: Kids Shower Time Script
       haaska_hidden: true
@@ -66,14 +79,39 @@ homeassistant:
     switch.wemo_kids_bath_fan:
       friendly_name: Kids Bath Humidity Fan
       icon: mdi:fan
-      
 
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_30
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: kids_bathroom_motion
+group:
+  kids_bath_card:
+     control: hidden
+     name: Kids Bath
+     entities:
+      - light.kids_bathroom
+      - light.kids_bathroom_vanity
+      - switch.wemo_kids_bath_fan
+      - switch.kids_bathroom_scent
+      - sensor.temperature_kids_bathroom
+      - sensor.pressure_kids_bathroom
+      - sensor.humidity_kids_bathroom
+      - binary_sensor.motion_sensor_kids_bathroom
+      - sensor.illumination_kids_bathroom
+      - sensor.kids_motion_sensor_batt
+      - sensor.kids_humidity_sensor_batt
+      - sensor.kids_bathroom_dimmer_state
+      - sensor.kids_bathroom_dimmer_last_update
+      - sensor.kids_bathroom_dimmer_battery
+      - script.kids_shower_time_on
+      - script.kids_shower_time_off
+      - switch.kids_shower_time
+      - automation.kids_bath_light_left_on
+      - automation.kids_bath_shower_time_off
+      - automation.kids_bath_shower_time_on
+      - automation.motion_kids_bathroom_home_mode_off
+      - automation.motion_kids_bathroom_home_mode_on
+      - automation.motion_kids_bathroom_evening_mode_on
+      - automation.motion_kids_bathroom_sleep_off
+      - automation.motion_kids_bathroom_sleep_on
+
+
 sensor:
       ######## Kids Bathroom
   - platform: rest
@@ -81,7 +119,7 @@ sensor:
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
-    name: 'Kids Bathroom Dimmer Battery'
+    name: 'kids_bathroom_dimmer_battery'
   - platform: rest
     resource: !secret dimmer_rest_27
     value_template: '{{ value_json.state.buttonevent }}'
@@ -110,23 +148,17 @@ sensor:
         friendly_name: 'Kids Bathroom Last Used'
         value_template: >-
           {{ as_timestamp(strptime(states('sensor.kids_bathroom_dimmer_last_update_2')[:19], '%Y-%m-%dT%X'))|timestamp_custom('%a, %B %d') }}
-  - platform: rest
-    resource: !secret MS_rest_29
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Kids Bathroom Temperature'
-  - platform: rest
-    resource: !secret MS_rest_30
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Kids Bathroom Battery'
-  - platform: rest
-    resource: !secret MS_rest_31
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Kids Bathroom Motion Sensor Lux'
+
+  - platform: template
+    sensors:
+      kids_motion_sensor_batt:
+        friendly_name: 'Kids Bathroom Motion Sensor'
+        value_template: "{{ states.binary_sensor.motion_sensor_kids_bathroom.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      kids_humidity_sensor_batt:
+        friendly_name: 'Kids Bathroom Humidity Sensor Battery Level'
+        value_template: "{{ states.sensor.humidity_kids_bathroom.attributes.battery_level }}"
 
 automation:
   - alias: Motion Kids Bathroom Home Mode On
@@ -134,6 +166,9 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.kids_bathroom_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'on'
     condition:
       condition: and
@@ -153,6 +188,9 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.kids_bathroom_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'on'
     condition:
       condition: or
@@ -178,6 +216,11 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.kids_bathroom_motion
+        to: 'off'
+        for:
+          minutes: 3
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'off'
         for:
           minutes: 3
@@ -209,6 +252,9 @@ automation:
       - platform: state
         entity_id: binary_sensor.kids_bathroom_motion
         to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_kids_bathroom
+        to: 'on'
     condition:
       condition: or
       conditions:
@@ -230,6 +276,11 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.kids_bathroom_motion
+        to: 'off'
+        for:
+          minutes: 5
+      - platform: state
+        entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'off'
         for:
           minutes: 5
@@ -285,6 +336,28 @@ automation:
         entity_id: light.kids_bathroom_vanity
       - service: light.turn_off
         entity_id: light.kids_bathroom
+###############################################################################
+###  vent fan if humidity is over 60 control                            #######
+###############################################################################
+  - alias: Kids Humidity Fan On
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.humidity_kids_bathroom
+        above: '60'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.wemo_kids_bath_fan
+  - alias: Kids Humidity Fan Off
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.humidity_kids_bathroom
+        below: '59'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.wemo_kids_bath_fan
+
 
 script:
   kids_shower_time_on:
@@ -304,8 +377,8 @@ script:
           entity_id: light.kids_bathroom_vanity
           color_temp: 154
           brightness: 255
-      - service: switch.turn_on
-        entity_id: switch.wemo_kids_bath_fan
+      # - service: switch.turn_on
+      #   entity_id: switch.wemo_kids_bath_fan
   kids_shower_time_off:
     sequence:
       - delay: '00:00:05'
@@ -317,8 +390,8 @@ script:
         entity_id: light.kids_bathroom_vanity
       - service: homeassistant.turn_off
         entity_id: light.kids_bathroom
-      - service: switch.turn_off
-        entity_id: switch.wemo_kids_bath_fan
+      # - service: switch.turn_off
+      #   entity_id: switch.wemo_kids_bath_fan
 
 
 switch:

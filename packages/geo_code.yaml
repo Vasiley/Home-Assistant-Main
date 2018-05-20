@@ -6,6 +6,10 @@ homeassistant:
     sensor.herb:
       hasska_hidden: true
       entity_picture: /local/king.jpeg
+    sensor.mom:
+      friendly_name: Mom
+      haaska_hidden: true
+      icon: mdi:account
 
 
 # geo locate for device trackers
@@ -21,3 +25,8 @@ sensor:
     origin: device_tracker.lsp_herb
     scan_interval: 30
       #    options: both
+  - platform: google_geocode
+    name: Mom
+    api_key: !secret family_geo_locate
+    origin: device_tracker.homeassistant_mom
+    scan_interval: 30

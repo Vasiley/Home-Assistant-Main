@@ -39,6 +39,10 @@ group:
    name: Herb
    entities:
      - camera.herb
+  camera_mom_card:
+   name: Mom
+   entities:
+     - camera.mom
   camera_tablet_card:
    name: Tablet Cam
    entities:
@@ -103,10 +107,15 @@ camera:
 
   - platform: generic
     name: Dawn
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:green%7Clabel:P%7C{{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}
     limit_refetch_to_url_change: true
 
   - platform: generic
     name: Herb
     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}
+    limit_refetch_to_url_change: true
+
+  - platform: generic
+    name: Mom
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.homeassistant_mom.attributes.latitude }},{{ states.device_tracker.homeassistant_mom.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:red%7Clabel:P%7C{{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}
     limit_refetch_to_url_change: true

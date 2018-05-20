@@ -18,6 +18,12 @@ homeassistant:
     sensor.glances_usb_disk_percent_free:
       friendly_name: USB Drive Used
       icon: mdi:harddisk
+    sensor.glances_usb_disk_overview_4t:
+      friendly_name: USB Desktop Disk Overview
+      icon: mdi:harddisk
+    sensor.glances_usb_disk_percent_free_4t:
+      friendly_name: USB Desktop Drive Used
+      icon: mdi:harddisk
     sensor.glances_ram_overview:
       friendly_name: Ram Overview
       icon: mdi:chip
@@ -63,6 +69,8 @@ group:
     - sensor.glances_disk_percent_free
     - sensor.glances_usb_disk_overview
     - sensor.glances_usb_disk_percent_free
+    - sensor.glances_usb_disk_overview_4t
+    - sensor.glances_usb_disk_percent_free_4t
     - sensor.glances_ram_overview
     - sensor.glances_ram_percent
     - sensor.glances_swap_overview
@@ -178,19 +186,45 @@ sensor:
   - platform: command_line
     command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_total'
-    value_template: '{{ value_json[2].size }}'
+    value_template: '{{ value_json[1].size }}'
     scan_interval: 604800
 
   - platform: command_line
     command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_percent_free'
-    value_template: '{{ value_json[2].percent }}'
+    value_template: '{{ value_json[1].percent }}'
     scan_interval: 604800
     unit_of_measurement: '%'
 
   - platform: command_line
     command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
     name: 'glances_usb_disk_used_bi'
+    value_template: '{{ value_json[1].used }}'
+    scan_interval: 604800
+    unit_of_measurement: '%'
+
+################## Glances Custom F Hard Drive Display ##########################
+  - platform: template
+    sensors:
+      glances_usb_disk_overview_4t:
+        value_template: "{{((states.sensor.glances_usb_disk_used_bi_4t.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_usb_disk_total_4t.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
+    name: 'glances_usb_disk_total_4t'
+    value_template: '{{ value_json[2].size }}'
+    scan_interval: 604800
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
+    name: 'glances_usb_disk_percent_free_4t'
+    value_template: '{{ value_json[2].percent }}'
+    scan_interval: 604800
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/2/fs
+    name: 'glances_usb_disk_used_bi_4t'
     value_template: '{{ value_json[2].used }}'
     scan_interval: 604800
     unit_of_measurement: '%'

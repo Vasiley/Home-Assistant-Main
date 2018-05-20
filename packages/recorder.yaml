@@ -28,7 +28,7 @@ recorder:
       - sensor.pws_observation_time
       - sensor.pws_alerts
       - sensor.pws_weather
-      - sensor.pws_Temp_f
+#      - sensor.pws_Temp_f
       - sensor.pws_feelslike_f
       - sensor.pws_wind_dir
       - sensor.pws_wind_mph
@@ -40,7 +40,7 @@ recorder:
       - camera.radar
       - sun.sun
       - sensor.pihole_status_raw
-      
+
   db_url: !secret recorder_db_url
   purge_interval: 2
   purge_keep_days: 5

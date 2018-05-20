@@ -1,6 +1,7 @@
   Default_view:
    view: yes
-   name: Vas and Squrriels Castle
+   name: Home
+   icon: mdi:home-assistant
    entities:
      - group.House_mode
      - group.alarm_panel_card
@@ -19,6 +20,7 @@
      - light.bathroom
      - light.light_bulb_2
      - light.gabbies_light
+     - light.hue_master_closet
      - group.Family
      - group.climate_temp_card
      - group.master_bathroom_heater_broadlink_card
@@ -28,8 +30,6 @@
      - group.harmony_card
      - group.blinds_card
      - script.media_player_source
-     - weblink.fish_tank_ha
-     - weblink.dashboard
      - group.kitchen_leds_card
      - persistent_notification.update_available
      - persistent_notification.small_tank_temperature_problem
@@ -37,7 +37,7 @@
      - group.season_card
      - group.theme_input_select_card
      - group.google_calender_card
-
+     - group.test_led_card
   Devicesview:
    view: yes
    name: Equipment
@@ -87,14 +87,16 @@
    view: yes
    name: Sensors
    entities:
-     - group.Temperature_Info
+     - group.temperature_Info
      - group.ecobee_sensors_card
      - group.Motion_card
-     - group.Battery
+     - group.battery
+     - group.humidity
      - group.room_occupancy_card
      - group.Dimmers_status_card
      - group.blue_iris_motion_card
      - group.lux_card
+     - group.door_window_sensors_card
 
   MyCameras:
    view: yes
@@ -109,6 +111,7 @@
      - group.mailscan_card
      - group.camera_dawn_card
      - group.camera_herb_card
+     - group.camera_mom_card
      - group.camera_tablet_card
      - group.camera_gabbie_cam_card
 
@@ -128,6 +131,7 @@
      - group.kids_hallway_card
      - group.ruths_room_card
      - group.gabbies_room_card
+     - group.master_closet_card
 
   Fun_Stuff:
    view: yes
@@ -192,6 +196,7 @@
      - sensor.herb
      - sensor.dawn
      - sensor.gabbie_status
+     - sensor.mom
 
   Routines:
     control: hidden
@@ -217,7 +222,7 @@
      - script.knightrider_on
      - script.rerunknightrider_on
 
-  Temperature_Info:
+  temperature_Info:
    name: Temperature
    entities:
      - sensor.kitchen_temperature
@@ -225,18 +230,20 @@
      - sensor.laundry_temperature
      - sensor.kids_hallway_temperature
      - sensor.master_temperature
-     - sensor.bathroom_temperature
-     - sensor.kids_bathroom_temperature
+#     - sensor.bathroom_temperature
+     - sensor.temperature_kids_bathroom
+     - sensor.gabbies_room_temperature
+     - sensor.temperature_master_bathroom
 
-  Battery:
+
+  battery:
    name: Battery
    entities:
      - sensor.motion_sensor_kids_hall_battery
      - sensor.motion_sensor_laundry_battery
      - sensor.motion_sensor_hallway_battery
-#     - sensor.motion_sensor_kitchen_battery
      - sensor.kitchen_battery_motion
-     - sensor.motion_sensor_kids_bathroom_battery
+     - sensor.motion_sensor_gabbies_room_battery
      - sensor.motion_sensor_master_battery
      - sensor.motion_sensor_bathroom_battery
      - sensor.master_bathroom_dimmer_battery
@@ -245,6 +252,21 @@
      - sensor.master_closet_dimmer_battery
      - sensor.bedroom_wallpanel_battery
      - sensor.gabbies_room_wallpanel_battery
+     - sensor.kids_motion_sensor_batt
+     - sensor.front_door_sensor_batt
+     - sensor.back_door_sensor_batt
+     - sensor.master_closet_door_sensor_batt
+     - sensor.kids_humidity_sensor_batt
+     - sensor.master_humidity_sensor_batt
+     - sensor.master_bath_motion_sensor_batt
+
+  humidity:
+   name: Humidity
+   entities:
+     - sensor.thermostat_humidity
+     - sensor.ha_humidity
+     - sensor.humidity_kids_bathroom
+     - sensor.humidity_master_bathroom
 
   Motion_card:
    name: Motion
@@ -253,11 +275,12 @@
      - binary_sensor.hallway_motion
      - binary_sensor.laundry_room_motion
      - binary_sensor.kids_hallway_motion
-     - binary_sensor.kids_bathroom_motion
-     - binary_sensor.bathroom_motion
+#     - binary_sensor.bathroom_motion
      - binary_sensor.master_motion
      - binary_sensor.bedroom_motion
      - binary_sensor.gabbies_room_motion
+     - binary_sensor.motion_sensor_kids_bathroom
+     - binary_sensor.motion_sensor_master_bath
 
   lux_card:
    name: House Light Levels
@@ -267,8 +290,11 @@
      - sensor.master_hallway_motion_sensor_lux
      - sensor.motion_sensor_kitchen_lux
      - sensor.motion_sensor_laundry_lux
-     - sensor.kids_bathroom_motion_sensor_lux
+     - sensor.gabbies_room_motion_sensor_lux
      - sensor.kids_hallway_motion_sensor_lux
+     - sensor.illumination_xiaomi_lv
+     - sensor.illumination_kids_bathroom
+     - sensor.illumination_master_bath
 
   House_mode:
    name: Home Mode

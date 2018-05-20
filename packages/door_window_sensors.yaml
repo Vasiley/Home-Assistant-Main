@@ -1,0 +1,54 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Door Window Sensors'
+    binary_sensor.door_window_sensor_front_door:
+      haaska_hidden: true
+      friendly_name: Front Door
+    binary_sensor.door_window_sensor_back_door:
+      haaska_hidden: true
+      friendly_name: Back Door
+    sensor.front_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Front Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    sensor.back_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Back Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_master_closet:
+      friendly_name: Master Closet
+      haaska_hidden: true
+    sensor.master_closet_door_sensor_batt:
+      friendly_name: Master Closet Sensor Battery
+      haaska_hidden: true
+      unit_of_measurement: '%'
+      icon: mdi:battery
+
+group:
+  door_window_sensors_card:
+   name: Door Windows
+   entities:
+    - binary_sensor.door_window_sensor_front_door
+    - binary_sensor.door_window_sensor_back_door
+    - binary_sensor.door_window_sensor_master_closet
+
+sensor:
+  - platform: template
+    sensors:
+      front_door_sensor_batt:
+        friendly_name: 'Front Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_front_door.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      back_door_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_back_door.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      master_closet_door_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_master_closet.attributes.battery_level }}"

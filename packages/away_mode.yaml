@@ -3,8 +3,8 @@ homeassistant:
 
     package.node_anchors:
       customize: &customize
-        package: 'iboot)hack'
-        
+        package: 'away_mode'
+
     script.gone_on:
       friendly_name: Away
       icon: mdi:security-home

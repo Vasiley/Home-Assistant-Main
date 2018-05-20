@@ -60,6 +60,12 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
+    automation.master_bath_humidity_fan_on:
+      friendly_name: Master Vent On
+      haaska_hidden: true
+    automation.master_bath_humidity_fan_off:
+      friendly_name: Master Vent Off
+      haaska_hidden: true
     sensor.master_bathroom_dimmer_state:
       icon: mdi:remote
       haaska_hidden: true
@@ -97,6 +103,28 @@ homeassistant:
       haaska_hidden: false
     light.bathroom:
       persistence: false
+######## Xiaomi ################
+    sensor.humidity_master_bathroom:
+      friendly_name: Master Bathroom Humidity
+      haaska_hidden: true
+    sensor.temperature_master_bathroom:
+      friendly_name: Master Bathroom Temperature
+      haaska_hidden: true
+    sensor.master_humidity_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Master Bathroom Humidity Sensor
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.motion_sensor_master_bath:
+      haaska_hidden: true
+      friendly_name: Master Bath Motion
+    sensor.illumination_master_bath:
+      haaska_hidden: true
+      friendly_name: Master Bath Lux
+      unit_of_measurement: 'Lux'
+    sensor.master_bath_motion_sensor_batt:
+      icon: mdi:battery
+      unit_of_measurement: '%'
 
 group:
    master_bath_card:
@@ -105,12 +133,19 @@ group:
       entities:
        - light.bathroom_vanity
        - light.bathroom
+       - sensor.humidity_master_bathroom
+       - sensor.temperature_master_bathroom
+       - sensor.pressure_master_bathroom
+       - binary_sensor.motion_sensor_master_bath
+       - sensor.illumination_master_bath
+       - sensor.master_bath_motion_sensor_batt
        - switch.wemo_master_bath_fan
        - switch.getting_dressed
        - switch.master_bath
-       - binary_sensor.bathroom_motion
-       - sensor.bathroom_temperature
-       - sensor.motion_sensor_bathroom_battery
+#       - binary_sensor.bathroom_motion
+#       - sensor.bathroom_temperature
+#       - sensor.motion_sensor_bathroom_battery
+       - sensor.master_humidity_sensor_batt
        - sensor.master_bathroom_dimmer_state
        - sensor.master_bathroom_dimmer_last_update
        - sensor.master_bathroom_dimmer_battery
@@ -137,13 +172,14 @@ group:
        - automation.motion_bathroom_sleep_off
        - automation.motion_bathroom_sleep_on
        - automation.master_bath_getting_dressed
-
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_36
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 1
-    name: bathroom_motion
+       - automation.master_bath_humidity_fan_on
+       - automation.master_bath_humidity_fan_off
+# binary_sensor:
+#   - platform: rest
+#     resource: !secret MS_rest_36
+#     value_template: '{{ value_json.state.presence }}'
+#     scan_interval: 1
+#     name: bathroom_motion
 sensor:
   - platform: rest
     resource: !secret dimmer_rest_33
@@ -186,24 +222,35 @@ sensor:
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Master Bathroom Dimmer Battery'
-  - platform: rest
-    resource: !secret MS_rest_35
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Bathroom Temperature'
-  - platform: rest
-    resource: !secret MS_rest_35
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Bathroom Battery'
+
+  - platform: template
+    sensors:
+      master_bath_motion_sensor_batt:
+        friendly_name: 'Master Bathroom Motion Sensor'
+        value_template: "{{ states.binary_sensor.motion_sensor_master_bath.attributes.battery_level }}"
+  # - platform: rest
+  #   resource: !secret MS_rest_35
+  #   value_template: '{{ value_json.state.temperature | float / 100 }}'
+  #   unit_of_measurement: °C
+  #   name: 'Bathroom Temperature'
+  # - platform: rest
+  #   resource: !secret MS_rest_35
+  #   value_template: '{{ value_json.config.battery }}'
+  #   unit_of_measurement: '%'
+  #   scan_interval: 1800
+  #   name: 'Motion Sensor Bathroom Battery'
+  - platform: template
+    sensors:
+      master_humidity_sensor_batt:
+        friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
+        value_template: "{{ states.sensor.humidity_master_bathroom.attributes.battery_level }}"
 
 automation:
   - alias: Motion Bathroom Home Mode On
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.bathroom_motion
+        entity_id: binary_sensor.motion_sensor_master_bath
         to: 'on'
     condition:
       condition: and
@@ -222,7 +269,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.bathroom_motion
+        entity_id: binary_sensor.motion_sensor_master_bath
         to: 'on'
     condition:
       condition: or
@@ -247,7 +294,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.bathroom_motion
+        entity_id: binary_sensor.motion_sensor_master_bath
         to: 'off'
         for:
           minutes: 7
@@ -277,7 +324,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.bathroom_motion
+        entity_id: binary_sensor.motion_sensor_master_bath
         to: 'on'
     condition:
       condition: or
@@ -299,7 +346,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.bathroom_motion
+        entity_id: binary_sensor.motion_sensor_master_bath
         to: 'off'
         for:
           minutes: 5
@@ -323,6 +370,13 @@ automation:
         entity_id: sensor.master_bathroom_dimmer_state
         to: 'Preshower warmup'
     action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'Disabling  Master Bedroom Speakers and turning on preshower warmup'
+      - delay: '00:00:30'
+      - service: switch.turn_off
+        entity_id: switch.master_bedroom_mixer
       - service: script.turn_on
         entity_id: script.bath_heater_on
 
@@ -335,9 +389,15 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.bath_heater_off
+      - service: switch.turn_on
+        entity_id: switch.master_bedroom_mixer
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id: media_player.master_bedroom_cast
+          message: 'Renabling Master Bedroom Speakers'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker, media_player_master_bedroom_cast_card
           message: 'The Bathroom is warm time for a shower'
 
   - alias: Master Bath Getting Dressed
@@ -367,6 +427,13 @@ automation:
         entity_id: sensor.master_bathroom_dimmer_state
         to: 'Off'
     action:
+      - service: switch.turn_on
+        entity_id: switch.master_bedroom_mixer
+      - delay: '00:00:15'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'Renabling Master Bedroom Speakers, Hope you had a good bath'
       - service: script.turn_on
         entity_id: script.bath_time_off
 
@@ -389,6 +456,27 @@ automation:
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
+###############################################################################
+###  vent fan if humidity is over 60 control                            #######
+###############################################################################
+  - alias: Master Bath Humidity Fan On
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.humidity_master_bathroom
+        above: '60'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.wemo_master_bath_fan
+  - alias: Master Bath Humidity Fan Off
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.humidity_master_bathroom
+        below: '59'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.wemo_master_bath_fan
 
 script:
   bath_time_on:
@@ -418,9 +506,6 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.light_bulb_2
-      - service: switch.turn_on
-        entity_id: switch.wemo_master_bath_fan
-
 
   bath_time_off:
     sequence:
@@ -435,8 +520,6 @@ script:
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
-      - service: switch.turn_off
-        entity_id: switch.wemo_master_bath_fan
 
   getting_dressed_on:
     sequence:
@@ -514,8 +597,8 @@ switch:
         turn_on:
           - service: script.turn_on
             data:
-              entity_id: script.bath_heater_on
+              entity_id: script.bath_heater_on      #in master_bathroom_broadlink_climate package
         turn_off:
           - service: script.turn_on
             data:
-              entity_id: script.bath_heater_off
+              entity_id: script.bath_heater_off      #in master_bathroom_broadlink_climate package

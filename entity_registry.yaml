@@ -134,3 +134,151 @@ light.master_hallway_1:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:e7:0c:c2-0b
+light.gateway_light_xiaomi_lv:
+  name:
+  platform: xiaomi_aqara
+  unique_id: rgb7811dce1a9b9
+sensor.illumination_xiaomi_lv:
+  name: Kitchen Gateway Lux
+  platform: xiaomi_aqara
+  unique_id: illumination7811dce1a9b9
+binary_sensor.door_window_sensor_front_door:
+  name: Front Door
+  platform: xiaomi_aqara
+  unique_id: status158d00020455e9
+binary_sensor.door_window_sensor_back_door:
+  name: Back Door
+  platform: xiaomi_aqara
+  unique_id: status158d0002047170
+sensor.temperature_kids_bathroom:
+  name:
+  platform: xiaomi_aqara
+  unique_id: temperature158d00016422c3
+sensor.pressure_kids_bathroom:
+  name: Kids Bathroom Pressue
+  platform: xiaomi_aqara
+  unique_id: pressure158d00016422c3
+sensor.humidity_kids_bathroom:
+  name:
+  platform: xiaomi_aqara
+  unique_id: humidity158d00016422c3
+binary_sensor.motion_sensor_kids_bathroom:
+  name: Kids Bathroom Motion
+  platform: xiaomi_aqara
+  unique_id: status158d000222c7d2
+sensor.illumination_kids_bathroom:
+  name: Kids Bathroom Lux
+  platform: xiaomi_aqara
+  unique_id: lux158d000222c7d2
+light.hue_master_closet:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:58:19:0c-0b
+binary_sensor.door_window_sensor_master_closet:
+  name: Master Closet
+  platform: xiaomi_aqara
+  unique_id: status158d0002059a59
+sensor.pressure_master_bathroom:
+  name: Master Bath Pressure
+  platform: xiaomi_aqara
+  unique_id: pressure158d00022c9bc1
+sensor.humidity_master_bathroom:
+  name:
+  platform: xiaomi_aqara
+  unique_id: humidity158d00022c9bc1
+sensor.temperature_master_bathroom:
+  name:
+  platform: xiaomi_aqara
+  unique_id: temperature158d00022c9bc1
+binary_sensor.motion_sensor_master_bath:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d000222be0c
+sensor.illumination_master_bath:
+  name:
+  platform: xiaomi_aqara
+  unique_id: lux158d000222be0c
+sensor.pws_weather_3d:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_3d'
+sensor.pws_relative_humidity:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,relative_humidity'
+sensor.pws_observation_time:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,observation_time'
+sensor.pws_alerts:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,alerts'
+sensor.pws_feelslike_f:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,feelslike_f'
+sensor.pws_wind_mph:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,wind_mph'
+sensor.pws_weather_1d:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_1d'
+sensor.pws_weather_2d:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_2d'
+sensor.pws_wind_dir:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,wind_dir'
+sensor.pws_precip_1hr_in:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,precip_1hr_in'
+sensor.pws_wind_gust_mph:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,wind_gust_mph'
+sensor.pws_weather_2n:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_2n'
+sensor.pws_temp_f:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,temp_f'
+sensor.pws_weather_4n:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_4n'
+sensor.pws_weather_4d:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_4d'
+sensor.pws_visibility_mi:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,visibility_mi'
+sensor.pws_weather_3n:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_3n'
+sensor.pws_precip_today_in:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,precip_today_in'
+sensor.pws_weather:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather'
+sensor.pws_weather_1n:
+  name:
+  platform: wunderground
+  unique_id: '@-90.489947,30.422200,weather_1n'
+media_player.home_group:
+  name:
+  platform: cast
+  unique_id: aa4d1fe1-7aad-4123-8ef6-89fa73f79efd

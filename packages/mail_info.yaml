@@ -42,22 +42,17 @@ sensor:
     value_template: "{{ value }}"
 
   - platform: mqtt
-    name: USPS Packages
+    name: 'USPS Packages'
     state_topic: '/usps/packages'
     value_template: "{{ value }}"
-
-#  - platform: usps
-#    username: !secret usps_username
-#    password: !secret usps_password
-#    scan_interval: 1800
   - platform: ups
     username: !secret ups_username
     password: !secret ups_password
     scan_interval: 1800
-  - platform: fedex
-    username: !secret fedex_username
-    password: !secret fedex_password
-    scan_interval: 1800
+  # - platform: fedex
+  #   username: !secret fedex_username
+  #   password: !secret fedex_password
+  #   scan_interval: 1800
   - platform: template
     sensors:
       packages_in_transit:
@@ -107,7 +102,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.mail_packages
+        entity_id: sensor.usps_packages
         above: 0
     action:
       - service: tts.google_say

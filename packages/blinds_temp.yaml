@@ -1,0 +1,112 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'blinds_temp'
+
+input_boolean:
+  boolean_hot_outside:
+    initial: off
+  boolean_warm_outside:
+    initial: off
+############################### Blinds react to hot weather   #######################
+automation:
+  - alias: blinds_halfway_at_90
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        above: 90
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_select.lv_room_rear_blinds_status
+        state: 'open'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_warm_outside
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >-
+              It is {{ states("state.sensor.pws_Temp_f") }} degrees I am closing blinds halfway
+      - service: script.turn_on
+        entity_id: script.blinds_halfway
+
+  - alias: blinds_close_at_95
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        above: 95
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.boolean_hot_outside
+        state: 'on'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_hot_outside
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >-
+             It is {{ states("sensor.pws_Temp_f") }} degrees I am closing blinds
+      - service: script.turn_on
+        entity_id: script.blinds_closed
+
+#################33 returning to fully open as temps decrease #########################################
+
+  - alias: blinds_return_halfway_at_90
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        below: 90
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.boolean_hot_outside
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_hot_outside
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >-
+            It is {{ states("sensor.pws_Temp_f") }} degrees I am setting blinds halfway
+      - service: script.turn_on
+        entity_id: script.blinds_halfway
+
+  - alias: blinds_return_open_at_85
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.pws_Temp_f
+        below: 85
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+      - condition: state
+        entity_id: input_boolean.boolean_warm_outside
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_warm_outside
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'It is {{ states("sensor.pws_Temp_f") }} degrees I am opening blinds'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_hot_outside
+      - service: script.turn_on
+        entity_id: script.blinds_open

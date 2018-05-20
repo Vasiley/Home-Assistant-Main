@@ -15,13 +15,15 @@ sensor:
       - sensor.laundry_temperature
       - sensor.kids_hallway_temperature
       - sensor.master_temperature
-      - sensor.bathroom_temperature
-      - sensor.kids_bathroom_temperature
+#      - sensor.bathroom_temperature       #old hue in master bathroom
+      - sensor.gabbies_room_temperature
       - sensor.master_bedroom_temperature
       - sensor.living_room_temperature
       - sensor.ruths_room_temperature
       - sensor.thermostat_temperature
       - sensor.ha_temperature
+      - sensor.temperature_kids_bathroom
+      - sensor.temperature_master_bathroom
 
   - platform: min_max
     type: mean
@@ -29,3 +31,5 @@ sensor:
     entity_ids:
       - sensor.thermostat_humidity
       - sensor.ha_humidity
+      - sensor.humidity_kids_bathroom
+      - sensor.humidity_master_bathroom
