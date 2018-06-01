@@ -82,10 +82,9 @@ wemo:
      - 192.168.1.163 #kids bathroom fan
 #     - 192.168.1.162  #rear network
 xiaomi_aqara:
-#  interface: '192.168.1.1'
-#  host: '192.168.1.207'
-#  discovery_retry: 10
   gateways:
      - mac: !secret xiaomi_mac
        key: !secret xiaomi_key
        host: 192.168.1.207
+
+vasileys_awesome_pixel_control:

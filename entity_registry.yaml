@@ -282,3 +282,7 @@ media_player.home_group:
   name:
   platform: cast
   unique_id: aa4d1fe1-7aad-4123-8ef6-89fa73f79efd
+media_player.living_room:
+  name:
+  platform: roku
+  unique_id: YJ00CH439147

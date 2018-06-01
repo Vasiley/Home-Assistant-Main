@@ -18,6 +18,7 @@ sensor:
     name: Dawn
     api_key: !secret family_geo_locate
     origin: device_tracker.dawn_baby
+    scan_interval: 30
 #    options: full
   - platform: google_geocode
     name: Herb

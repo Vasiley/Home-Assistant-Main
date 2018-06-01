@@ -17,22 +17,22 @@ input_datetime:
     has_date: true
     has_time: false
 
-sensor:
-  - platform: command_line
-    name: Bi Weekly Git Views
-    command: !secret bi_weekly_git_views
-    unit_of_measurement: 'views'
-    scan_interval: 43200
-    value_template: '{{ value_json.count | int }}'
-  - platform: command_line
-    name: Bi Weekly Git Views Unique
-    unit_of_measurement: 'views'
-    scan_interval: 43200
-    command: !secret bi_weekly_git_views_unique
-    value_template: '{{ value_json.uniques | int }}'
-history_graph:
-  gits:
-    entities:
-      - sensor.bi_weekly_git_views
-      - sensor.bi_weekly_git_views_unique
-    hours_to_show: 72
+# sensor:
+#   - platform: command_line
+#     name: Bi Weekly Git Views
+#     command: !secret bi_weekly_git_views
+#     unit_of_measurement: 'views'
+#     scan_interval: 43200
+#     value_template: '{{ value_json.count | int }}'
+#   - platform: command_line
+#     name: Bi Weekly Git Views Unique
+#     unit_of_measurement: 'views'
+#     scan_interval: 43200
+#     command: !secret bi_weekly_git_views_unique
+#     value_template: '{{ value_json.uniques | int }}'
+# history_graph:
+#   gits:
+#     entities:
+#       - sensor.bi_weekly_git_views
+#       - sensor.bi_weekly_git_views_unique
+#     hours_to_show: 72

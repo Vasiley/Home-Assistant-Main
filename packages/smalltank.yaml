@@ -81,7 +81,7 @@ homeassistant:
 
 group:
   Fish_tank_server_info:
-   name: Server Info
+   name: Small Tank Server Info
    entities:
      - sensor.small_tank_server_temperature
      - sensor.fish_tank_cpu_use

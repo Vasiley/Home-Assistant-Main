@@ -1,0 +1,169 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'main_tank'
+    switch.main_tank_switch_outlet_1:
+      friendly_name: HOB Filter
+    switch.main_tank_switch_outlet_2:
+      friendly_name: Heater
+    switch.main_tank_switch_outlet_3:
+      friendly_name: Canister Filter
+    switch.main_tank_switch_outlet_4:
+      friendly_name: Wave Pump Left
+    switch.main_tank_switch_outlet_5:
+      friendly_name: Wave Pump Right
+    script.feeding_time_on:
+      friendly_name: Feeding Time On
+    script.feeding_time_off:
+      friendly_name: Feeding Time Off
+    automation.turn_feeding_off:
+      friendly_name: Auto Pumps On
+
+group:
+  main_tank_power:
+    name: Main Tank Power
+    entities:
+      - switch.main_tank_switch_outlet_1
+      - switch.main_tank_switch_outlet_2
+      - switch.main_tank_switch_outlet_3
+      - switch.main_tank_switch_outlet_4
+      - switch.main_tank_switch_outlet_5
+      - switch.main_tank_switch_outlet_6
+      - switch.main_tank_switch_outlet_7
+      - switch.main_tank_switch_outlet_8
+
+  main_tank_automations:
+    control: hidden
+    name: Main Tank Automations
+    entities:
+      - script.feeding_time_on
+      - script.feeding_time_off
+      - automation.turn_feeding_off
+      - input_boolean.boolean_pump_swap
+
+input_boolean:
+  boolean_feeding_time_on:
+    initial: off
+  boolean_pump_swap:
+    initial: off
+
+switch:
+  - platform: template
+    switches:
+      feeding_time:
+        value_template: "{{ is_state('switch.main_tank_switch_outlet_1', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.feeding_time_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.feeding_time_off
+
+script:
+  feeding_time_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_1
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_3
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_4
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_5
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_feeding_time_on
+  feeding_time_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_1
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_3
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_4
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_5
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_feeding_time_on
+
+automation:
+
+  - alias: 'turn_feeding_off'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_feeding_time_on
+        to: 'on'
+    action:
+      - delay: '00:10:00'
+      - service: script.turn_on
+        entity_id: script.feeding_time_off
+
+  - alias: 'pump_swap'
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        minutes: 15
+        seconds: 00
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_sleep
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_feeding_time_on
+        state: 'off'
+    action:
+      - service: input_boolean.toggle
+        entity_id: input_boolean.boolean_pump_swap
+
+  - alias: 'pump_right'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_pump_swap
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_5
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_4
+  - alias: 'pump_left'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_pump_swap
+        to: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_4
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_5
+
+  - alias: 'pumps_off'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_sleep
+        to: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_4
+      - service: switch.turn_off
+        entity_id: switch.main_tank_switch_outlet_5
+
+  - alias: 'pumps_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_4
+      - service: switch.turn_on
+        entity_id: switch.main_tank_switch_outlet_5

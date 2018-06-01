@@ -129,19 +129,19 @@ sensor:
     sensors:
       next_appt_date_time:
         friendly_name: "Next Appt Date Time"
-        value_template: "{{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%D %-I:%M %P') }}"
+        value_template: "{{ as_timestamp(states.calendar.main_calender.attributes.start_time) | timestamp_custom('%D %-I:%M %P') }}"
 
   - platform: template
     sensors:
       next_appt_message:
         friendly_name: "Next Appt Type"
-        value_template: "{{ states.calendar.dawns_calender.attributes.message }}"
+        value_template: "{{ states.calendar.main_calender.attributes.message }}"
 
   - platform: template
     sensors:
       next_appt_description:
         friendly_name: "Next Appt Description"
-        value_template: "{{ states.calendar.dawns_calender.attributes.description }}"
+        value_template: "{{ states.calendar.main_calender.attributes.description }}"
 
   - platform: template
     sensors:
@@ -151,8 +151,8 @@ sensor:
               {% set year = states.sensor.date.state.split('-')[0] %}
               {% set month = states.sensor.date.state.split('-')[1] %}
               {% set date = states.sensor.date.state.split('-')[2] %}
-              {%- set Month = states.calendar.dawns_calender.attributes.start_time.split('-')[1] -%}
-              {%- set DayDate = states.calendar.dawns_calender.attributes.start_time.split('-')[2] -%}
+              {%- set Month = states.calendar.main_calender.attributes.start_time.split('-')[1] -%}
+              {%- set DayDate = states.calendar.main_calender.attributes.start_time.split('-')[2] -%}
               {%- set numOfDays = ((as_timestamp(strptime(year ~ '-' ~ Month ~ '-' ~ DayDate , '%Y-%m-%d')) | timestamp_custom('%j', true) | int ) - (as_timestamp(strptime(year ~ '-' ~ month~ '-' ~ date , '%Y-%m-%d')) | timestamp_custom('%j', true) | int)) -%}
               {%- if numOfDays < 0 -%}
                 {{ numOfDays + 365 }}
@@ -268,27 +268,29 @@ automation:
     condition:
       - condition: template
         value_template: "{{ states.sensor.days_to_next_appointment.state | int > 0 and states.sensor.days_to_next_appointment.state | int < 4 }}"
+      - condition: template
+        value_template: "{{ states.sensor.days_to_next_appointment.state != 'Unknown' }}"
     action:
       - delay: '00:01:15'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
-            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
-            with {{ states.calendar.dawns_calender.attributes.description }} is
+            Appointment Reminder {{ states.calendar.main_calender.attributes.message }}
+            with {{ states.calendar.main_calender.attributes.description }} is
             {{ states.sensor.days_to_next_appointment.state }} days away
       - service: notify.Pushbullet
         data_template:
           message: >-
-            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
-            with {{ states.calendar.dawns_calender.attributes.description }} is
+            Appointment Reminder {{ states.calendar.main_calender.attributes.message }}
+            with {{ states.calendar.main_calender.attributes.description }} is
             {{states.sensor.days_to_next_appointment.state}} days away
       - service: notify.chrome_push
         data_template:
           title: "Appointment Reminder"
           message: >-
-            Appointment Reminder {{ states.calendar.dawns_calender.attributes.message }}
-            with {{ states.calendar.dawns_calender.attributes.description }} is
+            Appointment Reminder {{ states.calendar.main_calender.attributes.message }}
+            with {{ states.calendar.main_calender.attributes.description }} is
             {{states.sensor.days_to_next_appointment.state}} days away
 
   - alias: Dr Appontments
@@ -306,24 +308,26 @@ automation:
           state: 'on'
         - condition: template
           value_template: "{{ states.sensor.days_to_next_appointment.state | int == 0 }}"
+        # - condition: template
+        #   value_template: "{{ states.sensor.days_to_next_appointment.state != 'Unknown' }}"
     action:
       - delay: '00:01:30'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
-            Dr appointment today {{ states.calendar.dawns_calender.attributes.description }}
-            at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
+            Dr appointment today {{ states.calendar.main_calender.attributes.description }}
+            at {{ as_timestamp(states.calendar.main_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
       - service: notify.Pushbullet
         data_template:
           message: >-
-            Appointment Today {{ states.calendar.dawns_calender.attributes.message }}
-            with {{ states.calendar.dawns_calender.attributes.description }}
-            at {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
+            Appointment Today {{ states.calendar.main_calender.attributes.message }}
+            with {{ states.calendar.main_calender.attributes.description }}
+            at {{ as_timestamp(states.calendar.main_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
       - service: notify.chrome_push
         data_template:
           title: "Appointment Reminder"
           message: >-
-            Appointment Today {{ states.calendar.dawns_calender.attributes.message }}
-            with {{ states.calendar.dawns_calender.attributes.description }} at
-            {{ as_timestamp(states.calendar.dawns_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
+            Appointment Today {{ states.calendar.main_calender.attributes.message }}
+            with {{ states.calendar.main_calender.attributes.description }} at
+            {{ as_timestamp(states.calendar.main_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}

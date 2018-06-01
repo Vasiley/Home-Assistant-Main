@@ -681,7 +681,7 @@ shell_command:
   lv_blinds_herb_open: "curl -sS -X GET http://192.168.1.241/control?cmd=Servo,2,15,130"
   lv_blinds_front_closed: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,15"
   lv_blinds_front_halfway: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,60"
-  lv_blinds_front_open: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,150"
+  lv_blinds_front_open: "curl -sS -X GET http://192.168.1.240/control?cmd=Servo,1,12,130"
   master1_blinds_front_closed: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,180"
   master1_blinds_front_halfway: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,100"
   master1_blinds_front_open: "curl -sS -X GET http://192.168.1.244/control?cmd=Servo,1,4,30"
