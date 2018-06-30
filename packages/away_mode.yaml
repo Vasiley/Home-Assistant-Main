@@ -37,7 +37,7 @@ script:
           entity_id: switch.network_switch_blue_iris_monitor
       - service: media_player.turn_off
         data:
-          entity_id: media_player.onkyo
+          entity_id: media_player.stereo
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment

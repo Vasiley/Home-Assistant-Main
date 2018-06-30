@@ -1,18 +1,13 @@
 homeassistant:
   customize:
-
     package.node_anchors:
       customize: &customize
         package: 'main_tank'
-    switch.main_tank_switch_outlet_1:
-      friendly_name: HOB Filter
-    switch.main_tank_switch_outlet_2:
-      friendly_name: Heater
-    switch.main_tank_switch_outlet_3:
-      friendly_name: Canister Filter
-    switch.main_tank_switch_outlet_4:
+    switch.wemo_fish_tan_pumps:
+      friendly_name: Filter's
+    switch.outlet_one:
       friendly_name: Wave Pump Left
-    switch.main_tank_switch_outlet_5:
+    switch.outlet_two:
       friendly_name: Wave Pump Right
     script.feeding_time_on:
       friendly_name: Feeding Time On
@@ -23,16 +18,12 @@ homeassistant:
 
 group:
   main_tank_power:
+    control: hidden
     name: Main Tank Power
     entities:
-      - switch.main_tank_switch_outlet_1
-      - switch.main_tank_switch_outlet_2
-      - switch.main_tank_switch_outlet_3
-      - switch.main_tank_switch_outlet_4
-      - switch.main_tank_switch_outlet_5
-      - switch.main_tank_switch_outlet_6
-      - switch.main_tank_switch_outlet_7
-      - switch.main_tank_switch_outlet_8
+      - switch.outlet_one
+      - switch.outlet_two
+      - switch.wemo_fish_tan_pumps
 
   main_tank_automations:
     control: hidden
@@ -44,6 +35,8 @@ group:
       - switch.pump_right_control
       - automation.turn_feeding_off
       - input_boolean.boolean_feeding_time_on
+      - automation.pumps_on
+      - automation.pumps_routine_start
       - input_boolean.pump_left
       - input_boolean.pump_right
 
@@ -57,23 +50,33 @@ input_boolean:
 
 
 switch:
+  - platform: command_line
+    switches:
+      outlet_one:
+        command_on: !secret netbooter_outlet1_on
+        command_off: !secret netbooter_outlet1_off
+  - platform: command_line
+    switches:
+      outlet_two:
+        command_on: !secret netbooter_outlet2_on
+        command_off: !secret netbooter_outlet2_off
   - platform: template
     switches:
-      feeding_time:
-        value_template: "{{ is_state('switch.main_tank_switch_outlet_1', 'on') }}"
+      pump_right_control:
+        value_template: "{{ is_state('switch.outlet_two', 'on') }}"
         turn_on:
           - service: script.turn_on
             data:
-              entity_id: script.feeding_time_on
+              entity_id: script.pump_right_on
         turn_off:
           - service: script.turn_on
             data:
-              entity_id: script.feeding_time_off
+              entity_id: script.pump_right_off
 
   - platform: template
     switches:
       pump_left_control:
-        value_template: "{{ is_state('switch.main_tank_switch_outlet_4', 'on') }}"
+        value_template: "{{ is_state('switch.outlet_one', 'on') }}"
         turn_on:
           service: script.turn_on
           data:
@@ -85,43 +88,41 @@ switch:
 
   - platform: template
     switches:
-      pump_right_control:
-        value_template: "{{ is_state('switch.main_tank_switch_outlet_5', 'on') }}"
+      feeding_time:
+        value_template: "{{ is_state('switch.wemo_fish_tan_pumps', 'on') }}"
         turn_on:
-          service: script.turn_on
-          data:
-            entity_id: script.pump_right_on
+          - service: script.turn_on
+            data:
+              entity_id: script.feeding_time_on
         turn_off:
-          service: script.turn_on
-          data:
-            entity_id: script.pump_right_off
-
+          - service: script.turn_on
+            data:
+              entity_id: script.feeding_time_off
 
 script:
   feeding_time_on:
     sequence:
       - delay: '00:00:01'
       - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_1
+        entity_id: switch.outlet_one
       - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_3
+        entity_id: switch.outlet_two
       - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_4
-      - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_5
+        entity_id: switch.wemo_fish_tan_pumps
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_feeding_time_on
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Feeding Time is Starting disabling pumps and filters'
+
   feeding_time_off:
     sequence:
       - delay: '00:00:01'
       - service: switch.turn_on
-        entity_id: switch.main_tank_switch_outlet_1
+        entity_id: switch.outlet_one
       - service: switch.turn_on
-        entity_id: switch.main_tank_switch_outlet_3
+        entity_id: switch.wemo_fish_tan_pumps
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_feeding_time_on
       - service: script.turn_on
@@ -136,12 +137,12 @@ script:
         entity_id: input_boolean.pump_left
         state: 'on'
       - service: switch.turn_on
-        entity_id: switch.main_tank_switch_outlet_4
+        entity_id: switch.outlet_one
 
   pump_left_off:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_4
+        entity_id: switch.outlet_one
 
   pump_right_on:
     sequence:
@@ -152,12 +153,12 @@ script:
         entity_id: input_boolean.pump_right
         state: 'on'
       - service: switch.turn_on
-        entity_id: switch.main_tank_switch_outlet_5
+        entity_id: switch.outlet_two
 
   pump_right_off:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.main_tank_switch_outlet_5
+        entity_id: switch.outlet_two
 
   # Step through the left pump, right pump, both pumps
   pump_cycle_one:
@@ -215,6 +216,8 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.pump_cycle_one
+      - service: switch.turn_off
+        entity_id: switch.outlet_two
 
   - alias: 'pump_left_on'
     initial_state: 'on'
@@ -266,9 +269,9 @@ automation:
       - service: switch.turn_off
         entity_id: switch.pump_left_control, switch.pump_right_control
       - service: input_boolean.turn_off
-        entity_id: input_boolean.pump_right, input_boolean.pump_left  
+        entity_id: input_boolean.pump_right, input_boolean.pump_left
 
-  - alias: 'turn_feeding_off'
+  - alias: 'turn_feeding_off_auto'
     initial_state: 'on'
     trigger:
       - platform: state

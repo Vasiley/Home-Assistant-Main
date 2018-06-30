@@ -68,6 +68,8 @@
    entities:
      - group.Samsung_tv_media_player_card
      - group.stereo_avr_card
+     - group.stereo_avr_card_zone_2
+     - group.stereo_avr_card_zone_3
      - group.Ruths_roku_media_player_card
      - group.media_player_ha_speaker_card
      - group.media_player_living_room_card
@@ -115,6 +117,7 @@
      - group.camera_mom_card
      - group.camera_tablet_card
      - group.camera_gabbie_cam_card
+     - group.camera_master_bedroom_cam_card
 
   Roomview:
    view: yes
@@ -144,7 +147,6 @@
      - group.input_boolean_card
      - group.smellgood_card
 
-
   Fish_tank:
    view: yes
    name: Small Tank
@@ -161,7 +163,7 @@
    entities:
      - group.main_tank_power
      - group.main_tank_automations
-    
+
   dashboard:
    view: yes
    name: Dashboards

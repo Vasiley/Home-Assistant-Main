@@ -20,7 +20,7 @@ http:
    ssl_certificate: !secret ssl_certificate
    ssl_key: !secret ssl_key
    base_url: !secret http_base_url
-   use_x_forwarded_for: True
+   # use_x_forwarded_for: True
    trusted_networks:
      - 127.0.0.1
      - 192.168.1.0/24
@@ -45,6 +45,13 @@ mqtt:
   keepalive: 60
   username: !secret mqtt_username
   password: !secret mqtt_password
+
+mqtt_eventstream:
+  publish_topic: master/topic
+  subscribe_topic: slaves/#
+  # ignore_event:
+  #   - call_service
+  #   - state_changed
 
 intent_script: !include intent_scripts.yaml
 alexa:
@@ -77,14 +84,15 @@ wemo:
      - 192.168.1.233  #washer
      - 192.168.1.232  #Driveway Camera roboot
      - 192.168.1.228  #Kids Bathroom scent
-     - 192.168.1.31   #Master Bedroom Network Reboot
+     - 192.168.1.31   #rear network Reboot
      - 192.168.1.53  #Master Fan
      - 192.168.1.163 #kids bathroom fan
-#     - 192.168.1.162  #rear network
+#     - 192.168.1.162  #?
+     - 192.168.1.152  #fish tank pumps
 xiaomi_aqara:
   gateways:
      - mac: !secret xiaomi_mac
        key: !secret xiaomi_key
-       host: 192.168.1.207
+       host: 192.168.1.8
 
 vasileys_awesome_pixel_control:

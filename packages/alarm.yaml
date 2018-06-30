@@ -18,10 +18,9 @@ group:
 ##############################################################################
 alarm_control_panel:
   - platform: manual
-#    code:  # move this to secrets when you have time
-    # code: !secret alarm_control_panel_code
     trigger_time: 1
     pending_time: 5
+    code: !secret alarm_code
 
 automation:
   - alias: rerun alarm
@@ -224,7 +223,9 @@ automation:
         to: 'on'
     action:
       - service: alarm_control_panel.alarm_arm_away
-        entity_id: alarm_control_panel.ha_alarm
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
 
 #################################################
 #          Alarm Auto DISARM when RETURN                         #
@@ -240,7 +241,9 @@ automation:
         to: 'on'
     action:
       - service: alarm_control_panel.alarm_disarm
-        entity_id: alarm_control_panel.ha_alarm
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
       - service: light.turn_off
         entity_id: light.light_bulb
       - service: automation.turn_off

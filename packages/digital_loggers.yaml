@@ -9,12 +9,12 @@ homeassistant:
       friendly_name: Charter Modem
     switch.network_switch_blue_iris_monitor:
       friendly_name: Blue Iris Monitor
-    switch.network_switch_blue_iris_pc:
-      friendly_name: Blue Iris Pc
-    switch.network_switch_asus_router:
-      friendly_name: Asus Router
-    switch.network_switch_netgear_switch:
-      friendly_name: Netgear Managed Switch
+    switch.network_switch_blue_iris_server:
+      friendly_name: Blue Iris Server
+    switch.network_switch_unifi_router:
+      friendly_name: UniFi Router
+    switch.network_switch_unifi_switch:
+      friendly_name: UniFi Poe Managed Switch
     switch.network_switch_chrome_cast_living_room:
       friendly_name: Chrome Cast Living Room
     switch.network_switch_home_assistant_server:
@@ -27,10 +27,10 @@ group:
    name: Network Switch
    entities:
      - switch.network_switch_charter_modem
-     - switch.network_switch_asus_router
+     - switch.network_switch_unifi_router
      - switch.network_switch_blue_iris_monitor
-     - switch.network_switch_blue_iris_pc
-     - switch.network_switch_netgear_switch
+     - switch.network_switch_blue_iris_server
+     - switch.network_switch_unifi_switch
      - switch.network_switch_chrome_cast_living_room
      - switch.network_switch_home_assistant_server
 
@@ -40,8 +40,8 @@ switch:
     password: !secret digital_loggers_pass
     name: Network Switch
     cycletime: 5
-  - platform: digitalloggers
-    host: 192.168.1.41
-    password: !secret digital_loggers_pass_maintank
-    name: Main Tank Switch
-    cycletime: 5
+  # - platform: digitalloggers
+  #   host: 192.168.1.41
+  #   password: !secret digital_loggers_pass_maintank
+  #   name: Main Tank Switch
+  #   cycletime: 5

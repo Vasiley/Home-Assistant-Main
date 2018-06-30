@@ -136,3 +136,11 @@
  #         friendly_name: Anyone Home
  #        #device_class: occupancy
  #         value_template: "{{ is_state('device_tracker.dawn_baby', 'home') }}"
+# script:
+#   vacation_mode:
+#     alias: 'Vacation Mode'
+#     sequence:
+#       - service: climate.set_operation_mode
+#         data:
+#           operation_mode: 'Eco'
+#           entity_id: 'climate.hallway'

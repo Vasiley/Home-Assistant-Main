@@ -342,18 +342,16 @@ automation:
   - alias: Kids Humidity Fan On
     initial_state: 'on'
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.humidity_kids_bathroom
-        above: '60'
+      - platform: template
+        value_template: '{{ states.sensor.humidity_kids_bathroom.state > states.input_number.target_humidity_kids_bathroom.state }}'
     action:
       - service: switch.turn_on
         entity_id: switch.wemo_kids_bath_fan
   - alias: Kids Humidity Fan Off
     initial_state: 'on'
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.humidity_kids_bathroom
-        below: '59'
+      - platform: template
+        value_template: '{{ states.sensor.humidity_kids_bathroom.state < states.input_number.target_humidity_kids_bathroom.state }}'
     action:
       - service: switch.turn_off
         entity_id: switch.wemo_kids_bath_fan

@@ -23,8 +23,14 @@ homeassistant:
     binary_sensor.motion_outdoor_swamp:
       friendly_name: Swamp
       device_class: motion
-    binary_sensor.motion_tablet_camera:
+    binary_sensor.motion_tablet_lv_camera:
       friendly_name: Tablet Camera
+      device_class: motion
+    binary_sensor.motion_tablet_mb_camera:
+      friendly_name: Master Bedroom Camera
+      device_class: motion
+    binary_sensor.motion_tablet_gb_camera:
+      friendly_name: Gabbies Bedroom Camera
       device_class: motion
     automation.flash_red_motion_shed:
       friendly_name: Motion Front Door Outside
@@ -46,7 +52,9 @@ group:
      - binary_sensor.motion_outdoor_swamp
      - binary_sensor.motion_outdoor_frontdoor
      - binary_sensor.motion_outdoor_backdoor
-     - binary_sensor.motion_tablet_camera
+     - binary_sensor.motion_tablet_lv_camera
+     - binary_sensor.motion_tablet_mb_camera
+     - binary_sensor.motion_tablet_gb_camera
 #######################################################################################################################
 ###### Sets profile on blue iris   ####################################################################################
 #######################################################################################################################
@@ -67,116 +75,88 @@ sensor:
 ###### Motion sensor templates for blue Iris  #########################################################################
 #######################################################################################################################
 binary_sensor:
-  - platform: template
-    sensors:
-      motion_outdoor_shed:
-#        friendly_name: 'Shed Cam'
-        value_template: >-
-          {% if states('binary_sensor.blueirisshed') %}
-          {% if is_state('binary_sensor.blueirisshed', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueirisshed', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueirisshed') }}
-          {% endif %}
-          {% else %}
-            False
-          {% endif %}
-  - platform: template
-    sensors:
-      motion_outdoor_driveway:
-#        friendly_name: 'Driveway'
-        value_template: >-
-           {% if states('binary_sensor.blueiriscam2') %}
-           {% if is_state('binary_sensor.blueiriscam2', 'on') %}
-              True
-           {% elif is_state('binary_sensor.blueiriscam2', 'off') %}
-              False
-           {% else %}
-           {{ states('binary_sensor.blueiriscam2') }}
-           {% endif %}
-           {% else %}
-             False
-           {% endif %}
-  - platform: template
-    sensors:
-      motion_outdoor_number12:
-#        friendly_name: 'Number 12'
-        value_template: >-
-          {% if states('binary_sensor.blueiriscam6') %}
-          {% if is_state('binary_sensor.blueiriscam6', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueiriscam6', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueiriscam6') }}
-          {% endif %}
-          {% else %}
-            False
-          {% endif %}
-  - platform: template
-    sensors:
-      motion_outdoor_swamp:
- #       friendly_name: 'Swamp'
-        value_template: >-
-          {% if states('binary_sensor.blueiriscam5') %}
-          {% if is_state('binary_sensor.blueiriscam5', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueiriscam5', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueiriscam5') }}
-          {% endif %}
-          {% else %}
-            False
-          {% endif %}
-  - platform: template
-    sensors:
-      motion_outdoor_frontdoor:
-        value_template: >-
-          {% if states('binary_sensor.blueiriscam4') %}
-          {% if is_state('binary_sensor.blueiriscam4', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueiriscam4', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueiriscam4') }}
-          {% endif %}
-          {% else %}
-            False
-           {% endif %}
-  - platform: template
-    sensors:
-      motion_outdoor_backdoor:
-        value_template: >-
-          {% if states('binary_sensor.blueiriscam7') %}
-          {% if is_state('binary_sensor.blueiriscam7', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueiriscam7', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueiriscam7') }}
-          {% endif %}
-          {% else %}
-            False
-           {% endif %}
+  - platform: mqtt
+    state_topic: "blue_iris/driveway_cam/state"
+    name: motion_outdoor_driveway
+    payload_on: "on"
+    payload_off: "off"
 
-  - platform: template
-    sensors:
-      motion_tablet_camera:
-        value_template: >-
-          {% if states('binary_sensor.blueiriscam8') %}
-          {% if is_state('binary_sensor.blueiriscam8', 'on') %}
-             True
-          {% elif is_state('binary_sensor.blueiriscam8', 'off') %}
-             False
-          {% else %}
-          {{ states('binary_sensor.blueiriscam8') }}
-          {% endif %}
-          {% else %}
-            False
-          {% endif %}
+  - platform: mqtt
+    state_topic: "blue_iris/swamp_cam/state"
+    name: motion_outdoor_swamp
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/shed_cam/state"
+    name: motion_outdoor_shed
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/backdoor_cam/state"
+    name: motion_outdoor_backdoor
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/frontdoor_cam/state"
+    name: motion_outdoor_frontdoor
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/dashboard_lv_cam/state"
+    name: motion_tablet_lv_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/dashboard_mb_cam/state"
+    name: motion_tablet_mb_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/dashboard_gb_cam/state"
+    name: motion_tablet_gb_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/number12_cam/state"
+    name: motion_outdoor_number12_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/lv_dash_cam/state"
+    name: motion_tablet_lv_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/bd_dash_cam/state"
+    name: motion_tablet_mb_camera
+    payload_on: "on"
+    payload_off: "off"
+
+
+  # - platform: template
+  #   sensors:
+  #     motion_tablet_camera:
+  #       value_template: >-
+  #         {% if states('binary_sensor.blueiriscam8') %}
+  #         {% if is_state('binary_sensor.blueiriscam8', 'on') %}
+  #            True
+  #         {% elif is_state('binary_sensor.blueiriscam8', 'off') %}
+  #            False
+  #         {% else %}
+  #         {{ states('binary_sensor.blueiriscam8') }}
+  #         {% endif %}
+  #         {% else %}
+  #           False
+  #         {% endif %}
 
 
   ######################################################

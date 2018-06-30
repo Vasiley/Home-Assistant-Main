@@ -31,21 +31,25 @@ sensor:
   - platform: snmp
     name: snmp_wan_in
     host: 192.168.1.1
+    community: public
     baseoid: 1.3.6.1.2.1.2.2.1.16.4
 
   - platform: snmp
     name: snmp_wan_out
     host: 192.168.1.1
+    community: public
     baseoid: 1.3.6.1.2.1.2.2.1.10.5
 #1.3.6.1.2.1.2.2.1.10.4
   - platform: snmp
     name: snmp lan load in
     host: 192.168.1.1
+    community: public
     baseoid: 1.3.6.1.2.1.2.2.1.16.7
 
   - platform: snmp
     name: snmp lan load out
     host: 192.168.1.1
+    community: public
     baseoid: 1.3.6.1.2.1.2.2.1.10.7
 
 

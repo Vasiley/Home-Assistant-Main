@@ -164,6 +164,7 @@ group:
      - group.setting_alarm_mode_settings_card
      - group.ha_server_automations
      - group.bi_server_automations
+     - group.setting_humdity_settings_card
 
 ################  EVENING MODE #################################################
   setting_evening_mode_settings_card:
@@ -227,6 +228,12 @@ group:
      - input_number.nap_mode_brightness_value
      - input_number.nap_mode_color_temp_value
      - input_number.nap_mode_transition_value
+################  Humidity #################################################
+  setting_humdity_settings_card:
+   name: Humidity
+   entities:
+     - input_number.target_humidity_kids_bathroom
+     - input_number.target_humidity_master_bathroom
 
 input_number:
 ################  EVENING MODE #################################################
@@ -422,4 +429,18 @@ input_number:
     initial: 20
     min: 1
     max: 90
+    step: 1
+
+###################### Humidity ################################################
+  target_humidity_kids_bathroom:
+    name: Kids Bathroom Humidity Setting
+    initial: 65
+    min: 0
+    max: 100
+    step: 1
+  target_humidity_master_bathroom:
+    name: Master Bathroom Humidity Setting
+    initial: 65
+    min: 0
+    max: 100
     step: 1

@@ -17,7 +17,7 @@ homeassistant:
       friendly_name: Driveway Camera
       icon: mdi:power-settings
     switch.wemo_mini_rear_network:
-      friendly_name: Asus RT68U Node
+      friendly_name: Netgear Managed Switch
       icon: mdi:power-settings
     automation.reboot_driveway_camera:
       friendly_name: Driveway Cam Auto Reboot
@@ -53,7 +53,7 @@ script:
           message: 'Network is going down Gabbie and Grandma chill it will be okay'
       - delay: '00:00:01'
       - service: rest_command.modem_reboot
-      - delay: '00:01:30'           
+      - delay: '00:01:30'
       - service: rest_command.router_reboot
       - delay: '00:01:15'
       - service: rest_command.switch1_reboot

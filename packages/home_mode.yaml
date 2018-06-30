@@ -26,6 +26,17 @@ input_boolean:
   boolean_active_outside:
     initial: off
 
+#### used mostly for tasker when wife gets home
+automation:
+  - alias: 'turn_on_home_mode_auto_tasker'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.home_mode
+
 script:
   active_outside:
     sequence:

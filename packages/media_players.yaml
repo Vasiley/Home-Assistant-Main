@@ -13,6 +13,14 @@ group:
    name: stereo Amp
    entities:
      - media_player.stereo
+  stereo_avr_card_zone_2:
+   name: stereo Amp
+   entities:
+     - media_player.stereo_zone_2
+  stereo_avr_card_zone_3:
+   name: stereo Amp
+   entities:
+     - media_player.stereo_zone_3
   ruths_roku_media_player_card:
    name: Ruths Roku
    entities:
@@ -47,7 +55,7 @@ media_player:
   #   password: !secret media_player_kodi_password
 
   - platform: samsungtv
-    host: 192.168.1.82
+    host: 192.168.1.14
     port: 8001
     name: Smart Tv
 

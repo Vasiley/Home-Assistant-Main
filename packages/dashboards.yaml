@@ -242,7 +242,7 @@ sensor:
     name: "Living Room wallpanel Ac Plugged"
     value_template: '{{ value_json.acPlugged }}'
   - platform: rest
-    resource: http://192.168.1.50:2971/api/state
+    resource: http://192.168.1.182:2971/api/state
     value_template: '{{ value_json.currentUrl }}'
     name: 'Current Url Living Room'
   - platform: template
@@ -282,22 +282,22 @@ sensor:
 #### Binary's For Master and Living Room
 binary_sensor:
 ####### Gabbies Room  ###############
-  - platform: rest
-    resource: http://192.168.1.51:2971/api/state
-    value_template: '{{ value_json.screenOn }}'
-    name: 'Gabbies Screen On'
-  - platform: template
-    sensors:
-      gabbies_dash_ac_power:
-        device_class: power
-        friendly_name: "Living Dash Power"
-        value_template: "{{ states.sensor.gabbies_room_wallpanel_ac_plugged.state == 'True' }}"
-  - platform: mqtt
-    state_topic: "wallpanel/gabbiedash/sensor/motion"
-    name: "Gabbies Room Motion"
-    payload_on: '{"value":true}'
-    payload_off: '{"value":false}'
-    device_class: motion
+  # - platform: rest
+  #   resource: http://192.168.1.51:2971/api/state
+  #   value_template: '{{ value_json.screenOn }}'
+  #   name: 'Gabbies Screen On'
+  # - platform: template
+  #   sensors:
+  #     gabbies_dash_ac_power:
+  #       device_class: power
+  #       friendly_name: "Living Dash Power"
+  #       value_template: "{{ states.sensor.gabbies_room_wallpanel_ac_plugged.state == 'True' }}"
+  # - platform: mqtt
+  #   state_topic: "wallpanel/gabbiedash/sensor/motion"
+  #   name: "Gabbies Room Motion"
+  #   payload_on: '{"value":true}'
+  #   payload_off: '{"value":false}'
+  #   device_class: motion
 ####### Bedroom       ###############
   - platform: mqtt
     state_topic: "wallpanel/mybedroom_dash/sensor/motion"
@@ -313,7 +313,7 @@ binary_sensor:
 ######### Living Room   ##############
 
   - platform: rest
-    resource: http://192.168.1.50:2971/api/state
+    resource: http://192.168.1.182:2971/api/state
     value_template: '{{ value_json.screenOn }}'
     name: 'Living Room Screen On'
   - platform: template
@@ -433,7 +433,7 @@ script:
       - delay: '00:00:01'
       - service: shell_command.lv_room_dash_refresh
       - service: shell_command.master_dash_refresh
-      - service: shell_command.gabbies_room_dash_refresh
+#      - service: shell_command.gabbies_room_dash_refresh
   dash_frontdoor_cam:
     sequence:
       - delay: '00:00:01'
@@ -459,16 +459,16 @@ script:
       - service: shell_command.master_dash_wake_up
 
 shell_command:
-   gabbies_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.51:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
-   lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+#   gabbies_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.51:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+   lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
    master_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
    master_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
-   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
-   lv_room_mail: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/mail?skin=default'}\""
-   lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
+   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
+   lv_room_mail: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/mail?skin=default'}\""
+   lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
    master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
    master_dash: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
-   lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
-   server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
-   lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.50:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
+   lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
+   server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
+   lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
    master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""

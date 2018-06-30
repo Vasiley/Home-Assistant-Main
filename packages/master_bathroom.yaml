@@ -462,18 +462,16 @@ automation:
   - alias: Master Bath Humidity Fan On
     initial_state: 'on'
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.humidity_master_bathroom
-        above: '60'
+      - platform: template
+        value_template: '{{ states.sensor.humidity_master_bathroom.state > states.input_number.target_humidity_master_bathroom.state }}'
     action:
       - service: switch.turn_on
         entity_id: switch.wemo_master_bath_fan
   - alias: Master Bath Humidity Fan Off
     initial_state: 'on'
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.humidity_master_bathroom
-        below: '59'
+      - platform: template
+        value_template: '{{ states.sensor.humidity_master_bathroom.state < states.input_number.target_humidity_master_bathroom.state }}'
     action:
       - service: switch.turn_off
         entity_id: switch.wemo_master_bath_fan

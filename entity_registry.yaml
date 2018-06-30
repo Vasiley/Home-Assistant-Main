@@ -286,3 +286,7 @@ media_player.living_room:
   name:
   platform: roku
   unique_id: YJ00CH439147
+switch.wemo_fish_tan_pumps:
+  name:
+  platform: wemo
+  unique_id: 231624K120137B

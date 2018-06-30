@@ -147,21 +147,29 @@ homeassistant:
       friendly_name: Cable Modem
       icon: mdi:ethernet
       haaska_hidden: true
-    binary_sensor.asus_main_router:
-      friendly_name: Asus Ac5300
-      icon: mdi:router-wireless
-      haaska_hidden: true
-    binary_sensor.asus_rt68u_node_wired:
-      friendly_name: Asus Node Wired
-      icon: mdi:router-wireless
-      haaska_hidden: true
-    binary_sensor.asus_rt68u_node_wireless:
-      friendly_name: Asus Node Wireless
-      icon: mdi:router-wireless
+    binary_sensor.unifi_gateway:
+      friendly_name: Unfi Gateway
+      icon: mdi:ethernet
       haaska_hidden: true
     binary_sensor.netgear_switch:
       friendly_name: Netgear Switch
       icon: mdi:switch
+      haaska_hidden: true
+    binary_sensor.unificloudkey:
+      friendly_name: Unfi CloudKey
+      icon: mdi:ethernet
+      haaska_hidden: true
+    binary_sensor.switch_ubnt_poe_16:
+      friendly_name: POE 16 port Unifi
+      icon: mdi:switch
+      haaska_hidden: true
+    binary_sensor.ac_pro:
+      friendly_name: AP UniFi AC PRO
+      icon: mdi:access-point
+      haaska_hidden: true
+    binary_sensor.ap_master:
+      friendly_name: AP UniFi
+      icon: mdi:access-point
       haaska_hidden: true
 ########## Wemos         ########################
     binary_sensor.wemo_master_bath_fan:
@@ -172,8 +180,8 @@ homeassistant:
       friendly_name: Wemos Kids Bath Fan
       icon: mdi:power-settings
       haaska_hidden: true
-    binary_sensor.wemo_asus_node:
-      friendly_name: Wemos Asus Node Switch
+    binary_sensor.wemo_rear_network:
+      friendly_name: Wemos Rear Network
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.master_bedroom_mixer:
@@ -189,11 +197,15 @@ homeassistant:
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.wemo_lv_scent:
-      friendly_name: living Room Scent
+      friendly_name: Wemos living Room Scent
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.wemo_driveway_reboot:
       friendly_name: Driveway Camera Reboot
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_fish_tan_pumps:
+      friendly_name: FishTank Filters
       icon: mdi:power-settings
       haaska_hidden: true
 
@@ -278,11 +290,15 @@ homeassistant:
     sensor.myipopendnscom:
       friendly_name: Wan Ip
       icon: mdi:wan
-
     sensor.clients:
       friendly_name: Clients Tracked
       icon: mdi:network
       haaska_hidden: true
+    binary_sensor.power_relay:
+      friendly_name: Fish Tank Wave Pumps
+      icon: mdi:power-plug
+      haaska_hidden: true
+
 group:
   clients_online_card:
     name: Clients Online
@@ -373,11 +389,12 @@ group:
    name: Networking Devices
    entities:
      - binary_sensor.cable_modem
-     - binary_sensor.asus_main_router
-     - binary_sensor.asus_rt68u_node_wired
-     - binary_sensor.asus_rt68u_node_wireless
+     - binary_sensor.unifi_gateway
      - binary_sensor.netgear_switch
-
+     - binary_sensor.unificloudkey
+     - binary_sensor.switch_ubnt_poe_16
+     - binary_sensor.ac_pro
+     - binary_sensor.ap_master
 
   media_player_status_card:
    name: Media Players
@@ -394,12 +411,13 @@ group:
    entities:
      - binary_sensor.wemo_master_bath_fan
      - binary_sensor.wemo_kids_bathroom_fan
-     - binary_sensor.wemo_asus_node
+     - binary_sensor.wemo_rear_network
      - binary_sensor.master_bedroom_mixer
      - binary_sensor.wemo_kids_bathroom_scent
      - binary_sensor.wemo_washing_machine
      - binary_sensor.wemo_lv_scent
      - binary_sensor.wemo_driveway_reboot
+     - binary_sensor.wemo_fish_tan_pumps
 
   dashboard_status_card:
    name: Dashboards
@@ -417,6 +435,7 @@ group:
     - binary_sensor.webswitch_network
     - binary_sensor.printer_hp
     - binary_sensor.ecobee
+    - binary_sensor.power_relay
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -625,24 +644,34 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.cable_modem", "home") }}'
   - platform: template
     sensors:
-      asus_rt68u_node_wired:
+      unifi_gateway:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.asus_rt68u_node_wired", "home") }}'
-  - platform: template
-    sensors:
-      asus_rt68u_node_wireless:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.asus_rt68u_node_wireless", "home") }}'
-  - platform: template
-    sensors:
-      asus_main_router:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.asus_main_router", "home") }}'
+        value_template: '{{ is_state("device_tracker.unifi_gateway", "home") }}'
   - platform: template
     sensors:
       netgear_switch:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.netgear_switch", "home") }}'
+  - platform: template
+    sensors:
+      unificloudkey:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.unificloudkey", "home") }}'
+  - platform: template
+    sensors:
+      switch_ubnt_poe_16:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.switch_ubnt_poe_16", "home") }}'
+  - platform: template
+    sensors:
+      ac_pro:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.ac_pro", "home") }}'
+  - platform: template
+    sensors:
+      ap_master:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.ap_master", "home") }}'
 #################### Wemo Devices  ###################
 
   - platform: template
@@ -657,9 +686,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.wemo_kids_bathroom_fan", "home") }}'
   - platform: template
     sensors:
-      wemo_asus_node:
+      wemo_rear_network:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.wemo_asus_node", "home") }}'
+        value_template: '{{ is_state("device_tracker.wemo_rear_network", "home") }}'
   - platform: template
     sensors:
       master_bedroom_mixer:
@@ -685,6 +714,12 @@ binary_sensor:
       wemo_driveway_reboot:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.wemo_driveway_reboot", "home") }}'
+
+  - platform: template
+    sensors:
+      wemo_fish_tan_pumps:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_fish_tan_pumps", "home") }}'
 
 #################### Dashboards Devices  ###################
 
@@ -780,6 +815,11 @@ binary_sensor:
         value_template: "{{ is_state('device_tracker.webswitch_network', 'home') }}"
   - platform: template
     sensors:
+      power_relay:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.power_relay', 'home') }}"
+  - platform: template
+    sensors:
       printer_hp:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.printer_hp', 'home') }}"
@@ -790,121 +830,124 @@ binary_sensor:
         value_template: "{{ is_state('device_tracker.ecobee', 'home') }}"
 
 device_tracker:
-  # - platform: nmap_tracker
-  #   hosts:
-  #     - 192.168.1.1/24
-  #   exclude:
-  #    - 192.168.1.153
-  #   home_interval: 180
-  #   interval_seconds: 90
-  #   scan_options: " --privileged -sP "
+  - platform: nmap_tracker
+    hosts:
+      - 192.168.1.1/24
+    exclude:
+     - 192.168.1.153
+    home_interval: 180
+    interval_seconds: 90
+    scan_options: " --privileged -sP "
 
-  - platform: asuswrt
-    host: 192.168.1.1
-    username: !secret asus_username
-    password: !secret asus_password
-    consider_home: 180
+  # - platform: unifi
+  #   host: 192.168.1.181
+  #   username: !secret unifi_username
+  #   password: !secret unifi_password
+  #   verify_ssl: True
 
   - platform: owntracks
     max_gps_accuracy: 200
 
 #### Notify if device goes offline
 
-# automation:
-#   - alias: Notify Device Status
-#     initial_state: 'off'
-#     trigger:
-#       - platform: state
-#         entity_id:
-#           - binary_sensor.driveway_camera_connect
-#           - binary_sensor.number12_camera_connect
-#           - binary_sensor.shed_camera_connect
-#           - binary_sensor.swamp_camera_connect
-#           - binary_sensor.frontdoor_camera_connect
-#           - binary_sensor.backdoor_camera_connect
-# #         MOBILE DEVICES
-#           - binary_sensor.herbs_laptop
-#           - binary_sensor.herbs_iphone
-#           - binary_sensor.dawns_phone
-#           - binary_sensor.ruths_tablet
-#           - binary_sensor.gabbies_laptop
-# #         HUBS
-#           - binary_sensor.harmony_hub
-#           - binary_sensor.wink_hub
-#           - binary_sensor.hue_hub
-#           - binary_sensor.broadlink_pro
-#           - binary_sensor.broadlink_mini
-#           - binary_sensor.xiaomi_gateway
-# #         Servers
-#           - binary_sensor.server_blue_iris
-#           - binary_sensor.server_homeassistant_fishtank
-# #         alexa
-#           - binary_sensor.alexa_master_dot
-#           - binary_sensor.alexa_gabbies_room_dot
-#           - binary_sensor.alexa_living_room_echo
-# #         media Players
-#           - binary_sensor.ruths_ruko
-#           - binary_sensor.livingroom_roku
-#           - binary_sensor.media_player_onkyo_lv
-#           - binary_sensor.samsung_tv
-#           - binary_sensor.chromecast_master
-#           - binary_sensor.chromecast_livingroom
-# #         NAS
-#           - binary_sensor.media_harddrive
-#           - binary_sensor.network_harddrive
-# #         Network Equipment
-#           - binary_sensor.cable_modem
-#           - binary_sensor.asus_main_router
-#           - binary_sensor.asus_rt68u_node_wired
-#           - binary_sensor.asus_rt68u_node_wireless
-#           - binary_sensor.netgear_switch
-# #         wemos
-#           - binary_sensor.wemo_master_bath_fan
-#           - binary_sensor.wemo_kids_bathroom_fan
-#           - binary_sensor.wemo_asus_node
-#           - binary_sensor.master_bedroom_mixer
-#           - binary_sensor.wemo_kids_bathroom_scent
-#           - binary_sensor.wemo_washing_machine
-#           - binary_sensor.wemo_lv_scent
-#           - binary_sensor.wemo_driveway_reboot
-# #         Dashboards
-#           - binary_sensor.dash_master
-# #          - binary_sensor.dash_living_room
-#           - binary_sensor.dash_gabbies_room
-# #         esp
-#           - binary_sensor.led_kitchen_cabinets
-#           - binary_sensor.led_small_tank
-#           - binary_sensor.dawns_controller
-#           - binary_sensor.blinds_tv
-#           - binary_sensor.blinds_couch
-#           - binary_sensor.blinds_master_dawns_side
-#           - binary_sensor.blinds_master_herbs_side
-#           - binary_sensor.blinds_gabbies
-#           - binary_sensor.blinds_kitchen_table
-#           - binary_sensor.blinds_kitchen_sink
-# #         misc devices
-#           - binary_sensor.game_console_ps4
-#           - binary_sensor.game_console_ps3
-#           - binary_sensor.voip_nettalk
-#           - binary_sensor.webswitch_network
-#           - binary_sensor.printer_hp
-#           - binary_sensor.ecobee
-#
-#     condition:
-#       condition: and
-#       conditions:
-#         - condition: template
-#           value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
-#         - condition: state
-#           entity_id: input_boolean.boolean_home
-#           state: 'on'
-#     action:
-#       - service: tts.google_say
-#         data_template:
-#           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-#           message: >
-#             {% if trigger.to_state.state | lower == "offline" %}
-#               {{ trigger.to_state.attributes.friendly_name }} has gone offline!
-#             {% else %}
-#               {{ trigger.to_state.attributes.friendly_name }} has come online!
-#             {% endif %}
+automation:
+  - alias: Notify Device Status
+    initial_state: 'off'
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.driveway_camera_connect
+          - binary_sensor.number12_camera_connect
+          - binary_sensor.shed_camera_connect
+          - binary_sensor.swamp_camera_connect
+          - binary_sensor.frontdoor_camera_connect
+          - binary_sensor.backdoor_camera_connect
+#         MOBILE DEVICES
+          - binary_sensor.herbs_laptop
+          - binary_sensor.herbs_iphone
+          - binary_sensor.dawns_phone
+          - binary_sensor.ruths_tablet
+          - binary_sensor.gabbies_laptop
+#         HUBS
+          - binary_sensor.harmony_hub
+          - binary_sensor.wink_hub
+          - binary_sensor.hue_hub
+          - binary_sensor.broadlink_pro
+          - binary_sensor.broadlink_mini
+          - binary_sensor.xiaomi_gateway
+#         Servers
+          - binary_sensor.server_blue_iris
+          - binary_sensor.server_homeassistant_fishtank
+#         alexa
+          - binary_sensor.alexa_master_dot
+          - binary_sensor.alexa_gabbies_room_dot
+          - binary_sensor.alexa_living_room_echo
+#         media Players
+          - binary_sensor.ruths_ruko
+          - binary_sensor.livingroom_roku
+          - binary_sensor.media_player_onkyo_lv
+          - binary_sensor.samsung_tv
+          - binary_sensor.chromecast_master
+          - binary_sensor.chromecast_livingroom
+#         NAS
+          - binary_sensor.media_harddrive
+          - binary_sensor.network_harddrive
+#         Network Equipment
+          - binary_sensor.cable_modem
+          - binary_sensor.unifi_gateway
+          - binary_sensor.netgear_switch
+          - binary_sensor.unificloudkey
+          - binary_sensor.switch_ubnt_poe_16
+          - binary_sensor.ac_pro
+          - binary_sensor.ap_master
+#         wemos
+          - binary_sensor.wemo_master_bath_fan
+          - binary_sensor.wemo_kids_bathroom_fan
+          - binary_sensor.wemo_rear_network
+          - binary_sensor.master_bedroom_mixer
+          - binary_sensor.wemo_kids_bathroom_scent
+          - binary_sensor.wemo_washing_machine
+          - binary_sensor.wemo_lv_scent
+          - binary_sensor.wemo_driveway_reboot
+          - binary_sensor.wemo_fish_tan_pumps
+#         Dashboards
+          - binary_sensor.dash_master
+#          - binary_sensor.dash_living_room
+          - binary_sensor.dash_gabbies_room
+#         esp
+          - binary_sensor.led_kitchen_cabinets
+          - binary_sensor.led_small_tank
+          - binary_sensor.dawns_controller
+          - binary_sensor.blinds_tv
+          - binary_sensor.blinds_couch
+          - binary_sensor.blinds_master_dawns_side
+          - binary_sensor.blinds_master_herbs_side
+          - binary_sensor.blinds_gabbies
+          - binary_sensor.blinds_kitchen_table
+          - binary_sensor.blinds_kitchen_sink
+#         misc devices
+          - binary_sensor.game_console_ps4
+          - binary_sensor.game_console_ps3
+          - binary_sensor.voip_nettalk
+          - binary_sensor.webswitch_network
+          - binary_sensor.printer_hp
+          - binary_sensor.ecobee
+          - binary_sensor.power_relay
+    condition:
+      condition: and
+      conditions:
+        - condition: template
+          value_template: "{% if trigger.from_state and trigger.to_state %} True {% else %} False {% endif %}"
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >
+            {% if trigger.to_state.state | lower == "offline" %}
+              {{ trigger.to_state.attributes.friendly_name }} has gone offline!
+            {% else %}
+              {{ trigger.to_state.attributes.friendly_name }} has come online!
+            {% endif %}
