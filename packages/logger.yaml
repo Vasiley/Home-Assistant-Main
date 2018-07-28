@@ -1,5 +1,5 @@
 logger:
-  default: warning
+  default: critical
   logs:
     homeassistant.components.rest: warn
     homeassistant.components.zha: warn
@@ -45,7 +45,8 @@ logger:
     myusps: warn
     pubnub: warn
     homeassistant.components.http.ban: debug
-    requests.packages.urllib3.connectionpool: critical
+    requests.packages.urllib3.connectionpool: fatal
+    urllib3.connectionpool.py: fatal
 
 group:
   logger_input_select_card:
@@ -62,11 +63,10 @@ input_select:
      - fatal
      - error
      - warning
-     - warn
      - info
      - debug
      - notset
-    initial: warning
+    initial: error
 
 
   ############################# Sets Logging Level

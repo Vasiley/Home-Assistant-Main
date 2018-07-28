@@ -47,22 +47,15 @@ group:
       - media_player.master_bedroom_cast
 
 media_player:
-  # - platform: kodi
-  #   name: Ha Speaker
-  #   host: 192.168.1.154
-  #   port: 8888
-  #   username: !secret media_player_kodi_username
-  #   password: !secret media_player_kodi_password
-
   - platform: samsungtv
     host: 192.168.1.14
     port: 8001
     name: Smart Tv
 
-  # - platform: plex
-  #   entity_namespace: 'plex_server'
-  #   include_non_clients: true
-  #   IP_ADDRESS: 192.168.1.80
+  - platform: plex
+    entity_namespace: 'plex_server'
+    include_non_clients: true
+    IP_ADDRESS: 192.168.1.80
 
   - platform: onkyo
     host: 192.168.1.81
@@ -70,22 +63,27 @@ media_player:
     sources:
       dvd: 'Blue Iris'
       game: 'PS4'
-      pc: 'Kodi'
+#      pc: 'Kodi'
       cd: 'PI'
       tv-cd: 'TV'
       tuner: 'Radio'
       net: 'Net'
 
-  # - platform: roku
-  #   host: 192.168.1.142
+  - platform: roku
+    host: 192.168.1.234
 
   - platform: roku
     host: 192.168.1.143
 
-  - platform: cast
-    host: 192.168.1.173
-    name: master_bedroom_cast
+  # - platform: cast
+  #   host: 192.168.1.173
+  #   name: master_bedroom_cast
+  #
+  # - platform: cast
+  #   host: 192.168.1.32
+  #   name: Ha Speaker
 
-  - platform: cast
-    host: 192.168.1.32
-    name: Ha Speaker
+cast:
+  media_player:
+  - host: 192.168.1.173
+  - host: 192.168.1.32

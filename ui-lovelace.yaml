@@ -1,0 +1,1246 @@
+title: Home
+views:
+  - title: Home
+    icon: mdi:home-assistant
+    cards:
+      - type: weather-forecast
+        title: Weather
+        show_header_toggle: true
+        entity:  weather.yweather
+      - type: entities
+        entities:
+          - light.lamps
+          - light.kitchen
+          - light.master_hallway
+          - light.kitchen_table
+          - light.laundry_room
+          - light.kids_hallway
+          - light.kids_bathroom
+          - light.kids_bathroom_vanity
+          - light.carport
+          - light.light_bulb
+          - light.bathroom_vanity
+          - light.bathroom
+          - light.light_bulb_2
+          - light.gabbies_light
+          - light.hue_master_closet
+          - light.gateway_light_xiaomi_lv
+      - type: entities
+        title: Home Mode
+        show_header_toggle: false
+        entities:
+          - sensor.house_mode_state
+          - input_boolean.boolean_active_outside
+          - script.lamps_on
+          - script.home_mode
+          - script.gone_on
+          - script.nap_time
+          - script.daytime_sleep_mode
+      - type: entities
+        title: Alarm
+        show_header_toggle: true
+        entities:
+          - alarm_control_panel.ha_alarm
+          - sensor.blue_iris_profile
+      - type: entities
+        title: Family
+        show_header_toggle: true
+        entities:
+          - sensor.herb
+          - sensor.dawn
+          - sensor.gabbie_status
+          - sensor.mom
+      - type: entities
+        title: Climate
+        show_header_toggle: true
+        entities:
+          - climate.thermostat
+          - sensor.set_hold_mode
+          - sensor.operating_mode
+          - sensor.hvac_fan
+          - sensor.house_avg_temperature
+          - sensor.house_avg_humidity
+          - sensor.pws_temp_f
+      - type: entities
+        title: Master Bathroom Climate
+        show_header_toggle: false
+        entities:
+          - climate.lasko_heater
+      - type: entities
+        title: Mail
+        show_header_toggle: true
+        entities:
+          - sensor.usps_mail
+          - sensor.usps_packages
+          - sensor.ups
+      - type: entities
+        title: Living Room Fan
+        show_header_toggle: false
+        entities:
+          - fan.living_room_fan
+          - switch.fan_override
+          - script.living_room_fan_auto
+          - sensor.fan_speed
+          - binary_sensor.gang
+          - script.refresh_wink
+      - type: entities
+        title: Washing Machine
+        show_header_toggle: true
+        entities:
+          - sensor.washer_status
+          - sensor.stopwatch
+          - switch.wemo_washing_machine
+      - type: entities
+        title: Entertainment Center
+        show_header_toggle: true
+        entities:
+          - remote.entertainment
+          - sensor.remote_entertainment
+          - input_select.harmony
+      - type: entities
+        title: Blinds
+        show_header_toggle: false
+        entities:
+          - input_select.kitchen_blinds_status
+          - input_select.lv_room_rear_blinds_status
+          - input_select.lv_room_front_blinds_status
+          - input_select.master_blinds_status
+          - input_select.gabbies_blinds_status
+          - script.blinds_closed
+          - script.blinds_halfway
+          - script.blinds_open
+      - type: entities
+        title: Kitchen Under Cabinets
+        show_header_toggle: true
+        entities:
+          - light.kitchen_under_cabinet
+          - input_number.led_animation_speed
+      - type: entities
+        title: Season
+        show_header_toggle: true
+        entities:
+          - sensor.season
+      - type: entities
+        title: Themes
+        show_header_toggle: true
+        entities:
+          - input_select.theme_select
+      - type: entities
+        title: Calender
+        show_header_toggle: true
+        entities:
+          - sensor.next_appt_message
+          - sensor.next_appt_description
+          - sensor.next_appt_date_time
+          - sensor.days_to_next_appointment
+          - sensor.next_holiday
+          - sensor.next_holiday_date_time
+          - sensor.days_to_next_holiday
+          - sensor.next_birthday
+          - sensor.next_birthday_date_time
+          - sensor.days_to_next_birthday
+      - type: entities
+        title: Test Leds
+        show_header_toggle: false
+        entities:
+          - light.porch_strip
+          - input_number.porch_animation_speed
+  - title: Equipment
+    cards:
+
+      - type: entities
+        title: Equipment Reboots
+        show_header_toggle: false
+        entities:
+          - switch.driveway_camaera
+          - switch.wemo_shed_camera
+          - script.webswitch_reboot
+          - script.network_reboot
+          - script.driveway_cam_powercycle
+          - automation.reboot_driveway_camera
+          - script.shed_cam_powercycle
+          - automation.reboot_shed_camera
+      - type: entities
+        title: Ads Blocked
+        show_header_toggle: false
+        entities:
+          - switch.pihole
+          - sensor.ads_blocked_today
+          - sensor.ads_percentage_today
+          - sensor.dns_queries_today
+          - sensor.domains_being_blocked
+          - sensor.ads_blocked_today
+          - sensor.unique_domains
+          - sensor.queries_forwarded
+          - sensor.queries_cached
+          - sensor.pihole_dns
+          - sensor.pihole_blocking
+          - sensor.pi_hole_version
+          - script.pihole_update
+      - type: entities
+        title: Network Switch
+        show_header_toggle: false
+        entities:
+          - switch.network_switch_charter_modem
+          - switch.network_switch_unifi_router
+          - switch.network_switch_blue_iris_monitor
+          - switch.network_switch_blue_iris_server
+          - switch.network_switch_unifi_switch
+          - switch.network_switch_chrome_cast_living_room
+          - switch.network_switch_home_assistant_server
+      - type: entities
+        title: Printers
+        show_header_toggle: false
+        entities:
+          - sensor.hp_uptime
+          - sensor.black_ink_level
+          - sensor.yellow_ink_level
+          - sensor.cyan_ink_level
+          - sensor.magenta_ink_level
+          - sensor.photo_black_ink_level
+      - type: entities
+        title: Home Assistant Info
+        show_header_toggle: false
+        entities:
+          - sensor.hass_uptime
+          - sensor.ha_version
+          - sensor.installed_version
+          - sensor.ha_github_version
+          - sensor.ha_pypi_version
+          - script.update_home_assistant_home
+          - input_select.log_level
+          - input_text.commit_text
+          - script.update_github
+      - type: entities
+        title: Hassctl
+        show_header_toggle: false
+        entities:
+          - sensor.hassctl_version
+      - type: entities
+        title: Hackers
+        show_header_toggle: true
+        entities:
+          - sensor.hacks_failed_hassiptables
+          - sensor.hacks_failed_ssh
+          - sensor.total_bans_ip
+          - sensor.total_bans_ssh
+      - type: entities
+        title: Main Tank Power
+        show_header_toggle: false
+        entities:
+          - switch.outlet_one
+          - switch.outlet_two
+          - switch.wemo_fish_tan_pumps
+  - title: Servers
+    cards:
+      - type: entities
+        title: Ha Server
+        show_header_toggle: true
+        entities:
+          - sensor.speedtest_download
+          - sensor.speedtest_upload
+          - sensor.speedtest_ping
+          - sensor.processor_use
+          - sensor.load_15m
+          - sensor.ha_cpu_temperature
+          - sensor.disk_free_home
+          - sensor.disk_use_percent_home
+          - sensor.memory_free
+          - sensor.memory_use
+          - sensor.memory_use_percent
+          - sensor.swap_free
+          - sensor.swap_use
+          - sensor.swap_use_percent
+          - sensor.ipv4_address_enp3s0
+          - sensor.last_boot
+          - sensor.since_last_boot
+          - sensor.myipopendnscom
+      - type: entities
+        title: Blue Iris Svr Info
+        show_header_toggle: true
+        entities:
+          - sensor.glances_cpu_load
+          - sensor.glances_disk_overview
+          - sensor.glances_disk_percent_free
+          - sensor.glances_z_black_disk_overview
+          - sensor.glances_z_black_disk_percent_free
+          - sensor.glances_usb_disk_overview
+          - sensor.glances_usb_disk_percent_free
+          - sensor.glances_usb_disk_overview_4t
+          - sensor.glances_usb_disk_percent_free_4t
+          - sensor.glances_ram_overview
+          - sensor.glances_ram_percent
+          - sensor.glances_swap_overview
+          - sensor.glances_swap_percent
+          - sensor.glances_total
+      - type: entities
+        title: Small Tank Server Info
+        show_header_toggle: true
+        entities:
+          - sensor.small_tank_server_temperature
+          - sensor.fish_tank_cpu_use
+          - sensor.fish_tank_disk_use
+          - sensor.fish_tank_ram_free
+          - sensor.fish_tank_ram_used
+          - sensor.small_tank_power
+          - sensor.fish_tank_ha_uptime
+          - sensor.small_tank_link
+          - sensor.small_tank_signal
+  - title: Media Players
+    cards:
+      - type: media-control
+        entity: media_player.smart_tv
+      - type: media-control
+        entity: media_player.stereo
+      - type: media-control
+        entity: media_player.stereo_zone_2
+      - type: media-control
+        entity: media_player.stereo_zone_3
+      - type: media-control
+        entity: media_player.ruths_roku
+      - type: media-control
+        entity: media_player.ha_speaker
+      - type: media-control
+        entity: media_player.living_room
+      - type: media-control
+        entity: media_player.master_bedroom_cast
+  - title: Weather
+    cards:
+      - type: entities
+        title: Current Weather
+        show_header_toggle: true
+        entities:
+          - sensor.pws_observation_time
+          - sensor.pws_alerts
+          - sensor.pws_weather
+          - sensor.pws_temp_f
+          - sensor.pws_feelslike_f
+          - sensor.pws_wind_dir
+          - sensor.pws_wind_mph
+          - sensor.pws_wind_gust_mph
+          - sensor.pws_relative_humidity
+          - sensor.pws_precip_1hr_in
+          - sensor.pws_precip_today_in
+          - sensor.pws_visibility_mi
+          - sun.sun
+      - type: entities
+        title: Predication
+        show_header_toggle: true
+        entities:
+          - sensor.dark_sky_summary
+          - sensor.dark_sky_daily_summary
+          - sensor.dark_sky_hourly_summary
+          - sensor.dark_sky_minutely_summary
+          - sensor.dark_sky_daily_high_temperature
+          - sensor.dark_sky_daily_low_temperature
+          - sensor.dark_sky_precip_probability
+          - sensor.dark_sky_nearest_storm_bearing
+          - sensor.dark_sky_nearest_storm_distance
+      - type: entities
+        title: Daily Forecast
+        show_header_toggle: true
+        entities:
+          - sensor.pws_weather_1d
+          - sensor.pws_weather_1n
+          - sensor.pws_weather_2d
+          - sensor.pws_weather_2n
+          - sensor.pws_weather_3d
+          - sensor.pws_weather_3n
+          - sensor.pws_weather_4d
+          - sensor.pws_weather_4n
+      - type: picture-entity
+        title: Radar Animated
+        entity: camera.radar_animated
+        camera_image: camera.radar_animated
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Radar
+        entity: camera.radar
+        camera_image: camera.radar
+        show_info: true
+        tap_action: dialog
+  - title: Sensors
+    cards:
+      - type: entities
+        title: Temperature
+        show_header_toggle: true
+        entities:
+          - sensor.kitchen_temperature
+          - sensor.hallway_temperature
+          - sensor.laundry_temperature
+          - sensor.kids_hallway_temperature
+          - sensor.master_temperature
+          - sensor.temperature_kids_bathroom
+          - sensor.gabbies_room_temperature
+          - sensor.temperature_master_bathroom
+      - type: entities
+        title: Ecobee Temp Sensors
+        show_header_toggle: true
+        entities:
+          - sensor.master_bedroom_temperature
+          - sensor.living_room_temperature
+          - sensor.ruths_room_temperature
+          - sensor.thermostat_humidity
+          - sensor.thermostat_temperature
+      - type: entities
+        title: Motion
+        show_header_toggle: true
+        entities:
+          - binary_sensor.kitchen_motion
+          - binary_sensor.hallway_motion
+          - binary_sensor.laundry_room_motion
+          - binary_sensor.kids_hallway_motion
+          - binary_sensor.master_motion
+          - binary_sensor.bedroom_motion
+          - binary_sensor.gabbies_room_motion
+          - binary_sensor.motion_sensor_kids_bathroom
+          - binary_sensor.motion_sensor_master_bath
+      - type: entities
+        title: Battery
+        show_header_toggle: true
+        entities:
+          - sensor.motion_sensor_kids_hall_battery
+          - sensor.motion_sensor_laundry_battery
+          - sensor.motion_sensor_hallway_battery
+          - sensor.kitchen_battery_motion
+          - sensor.motion_sensor_gabbies_room_battery
+          - sensor.motion_sensor_master_battery
+          - sensor.master_bathroom_dimmer_battery
+          - sensor.kids_bathroom_dimmer_battery
+          - sensor.kitchen_table_dimmer_battery
+          - sensor.bedroom_wallpanel_battery
+          - sensor.kids_motion_sensor_batt
+          - sensor.front_door_sensor_batt
+          - sensor.back_door_sensor_batt
+          - sensor.shed_door_sensor_batt
+          - sensor.master_closet_door_sensor_batt
+          - sensor.kids_humidity_sensor_batt
+          - sensor.master_humidity_sensor_batt
+          - sensor.master_bath_motion_sensor_batt
+      - type: entities
+        title: Humidity
+        show_header_toggle: true
+        entities:
+          - sensor.thermostat_humidity
+          - sensor.ha_humidity
+          - sensor.humidity_kids_bathroom
+          - sensor.humidity_master_bathroom
+      - type: entities
+        title: Occupancy
+        show_header_toggle: true
+        entities:
+          - binary_sensor.thermostat_occupancy
+          - binary_sensor.ruths_room_occupancy
+          - binary_sensor.master_bedroom_occupancy
+          - binary_sensor.living_room_occupancy
+      - type: entities
+        title: Dimmers
+        show_header_toggle: true
+        entities:
+          - sensor.master_bathroom_dimmer_last_update
+          - sensor.master_bathroom_dimmer_state
+          - sensor.kitchen_table_dimmer_last_update
+          - sensor.kitchen_table_dimmer_state
+          - sensor.kids_bathroom_dimmer_last_update
+          - sensor.kids_bathroom_dimmer_state
+          - sensor.kitchen_led_dimmer_state
+          - sensor.kitchen_blinds_state
+          - sensor.kitchen_led_dimmer_last_update
+      - type: entities
+        title: Camera Motion
+        show_header_toggle: true
+        entities:
+          - binary_sensor.motion_outdoor_shed
+          - binary_sensor.motion_outdoor_driveway
+          - binary_sensor.motion_outdoor_swamp
+          - binary_sensor.motion_outdoor_frontdoor
+          - binary_sensor.motion_outdoor_backdoor
+          - binary_sensor.motion_tablet_lv_camera
+          - binary_sensor.motion_tablet_mb_camera
+          - binary_sensor.motion_tablet_gb_camera
+      - type: entities
+        title: House Light Levels
+        show_header_toggle: true
+        entities:
+          - sensor.bedroom_wallpanel_brightness
+          - sensor.motion_sensor_master_lux
+          - sensor.master_hallway_motion_sensor_lux
+          - sensor.motion_sensor_kitchen_lux
+          - sensor.motion_sensor_laundry_lux
+          - sensor.gabbies_room_motion_sensor_lux
+          - sensor.kids_hallway_motion_sensor_lux
+          - sensor.illumination_xiaomi_lv
+          - sensor.illumination_kids_bathroom
+          - sensor.illumination_master_bath
+      - type: entities
+        title: Door Windows
+        show_header_toggle: true
+        entities:
+          - binary_sensor.door_window_sensor_front_door
+          - binary_sensor.door_window_sensor_back_door
+          - binary_sensor.door_window_sensor_master_closet
+          - binary_sensor.door_window_sensor_shed_door
+  - title: Cameras
+    cards:
+      - type: picture-entity
+        title: Number 12
+        entity: camera.number_12
+        camera_image: camera.number_12
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Driveway
+        entity: camera.driveway
+        camera_image: camera.driveway
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Swamp
+        entity: camera.swamp
+        camera_image: camera.swamp
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Yard
+        entity: camera.yard
+        camera_image: camera.yard
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Back Door
+        entity: camera.back_door
+        camera_image: camera.back_door
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Front Door Camera
+        entity: camera.front_door_camera
+        camera_image: camera.front_door_camera
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Mail Scan's
+        entity: camera.camera_mail
+        camera_image: camera.camera_mail
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Dawn
+        entity: camera.dawn
+        camera_image: camera.dawn
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Herb
+        entity: camera.herb
+        camera_image: camera.herb
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Mom
+        entity: camera.mom
+        camera_image: camera.mom
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Tablet Cam
+        entity: camera.tablet_cam
+        camera_image: camera.tablet_cam
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Gabbie Cam
+        entity: camera.gabbie_cam
+        camera_image: camera.gabbie_cam
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: Master Bedroom Cam
+        entity: camera.master_bedroom_cam
+        camera_image: camera.master_bedroom_cam
+        show_info: true
+        tap_action: dialog
+      - type: picture-entity
+        title: ISS
+        entity: camera.iss
+        camera_image: camera.iss
+        show_info: true
+        tap_action: dialog
+  - title: Rooms
+    cards:
+      - type: entities
+        title: Master Bath
+        show_header_toggle: false
+        entities:
+          - light.bathroom_vanity
+          - light.bathroom
+          - sensor.humidity_master_bathroom
+          - sensor.temperature_master_bathroom
+          - sensor.pressure_master_bathroom
+          - binary_sensor.motion_sensor_master_bath
+          - sensor.illumination_master_bath
+          - sensor.master_bath_motion_sensor_batt
+          - switch.wemo_master_bath_fan
+          - switch.getting_dressed
+          - sensor.master_humidity_sensor_batt
+          - sensor.master_bathroom_dimmer_state
+          - sensor.master_bathroom_dimmer_last_update
+          - sensor.master_bathroom_dimmer_battery
+          - script.bath_time_on
+          - script.bath_time_off
+          - script.getting_dressed_on
+          - script.getting_dressed_off
+          - switch.shower_time
+      - type: entities
+        title: Master Bath Automations
+        show_header_toggle: false
+        entities:
+          - automation.master_bath_light_left_on
+          - automation.master_bath_shower_time_off
+          - automation.master_bath_shower_time_on
+          - automation.master_bath_shower_time_warmup_on
+          - automation.master_bath_shower_time_warmup_off
+          - automation.motion_bathroom_home_mode_off
+          - automation.motion_bathroom_home_mode_on
+          - automation.motion_bathroom_evening_mode_on
+          - automation.motion_bathroom_sleep_off
+          - automation.motion_bathroom_sleep_on
+          - automation.master_bath_getting_dressed
+          - automation.master_bath_humidity_fan_on
+          - automation.master_bath_humidity_fan_off
+      - type: entities
+        title: Master Bath
+        show_header_toggle: false
+        entities:
+          - switch.heater_lasko_power
+          - switch.heater_lasko_oscillate
+          - script.bath_heater_on
+          - script.bath_heater_off
+      - type: entities
+        title: Master Bedroom
+        show_header_toggle: false
+        entities:
+          - light.dawns_bedside_lamp
+          - light.herbs_bedside_lamp
+          - light.master_table_lamps
+          - light.light_bulb_2
+          - switch.master_bedroom_mixer
+          - fan.master_bedroom_fan
+          - script.master_fan_auto
+          - sensor.fan_speed_master
+          - binary_sensor.gang_1
+          - binary_sensor.master_motion
+          - binary_sensor.bedroom_motion
+          - sensor.master_bedroom_temperature
+          - sensor.motion_sensor_master_battery
+          - sensor.motion_sensor_master_lux
+          - sensor.bedroom_wallpanel_battery
+          - sensor.bedroom_wallpanel_brightness
+          - automation.motion_master_bedroom_homemode
+          - automation.motion_master_bedroom_evening_and_movie_time_on
+          - automation.motion_master_bedroom_motion_off
+          - binary_sensor.master_bedroom_occupancy
+          - switch.dawn_day
+          - switch.dawn_night
+          - automation.candle_on_during_home_mode
+          - automation.candle_off_when_not_home_mode
+          - automation.master_bedroom_sleep_mode
+          - automation.master_bedroom_home_mode
+          - input_select.master_blinds_status
+          - sensor.master_blinds_state
+      - type: entities
+        title: Carport
+        show_header_toggle: false
+        entities:
+          - light.carport
+          - light.front_steps
+          - light.rear_steps
+          - automation.porch_lights_on
+          - automation.porch_lights_off
+          - automation.front_carport_bright_and_white_on_motion
+          - automation.front_back_to_yellow_dim_after_motion
+          - script.front_bright_outside
+          - script.front_normal_outside
+      - type: entities
+        title: Living Room
+        show_header_toggle: false
+        entities:
+          - binary_sensor.door_window_sensor_front_door
+          - light.lamps
+          - light.herbs_lamp
+          - light.dawns_lamp
+          - light.door_lamp
+          - fan.living_room_fan
+          - script.living_room_fan_auto
+          - sensor.fan_speed
+          - binary_sensor.gang
+          - script.refresh_wink
+          - automation.fan_low_with_hvac_automation
+          - automation.fan_medium_with_hvac_automation
+          - automation.reenable_fan_automation
+          - switch.fan_override
+          - automation.evening_time_turn_on
+          - light.light_bulb
+          - script.evening_time
+          - script.movie_time
+          - script.nap_time
+          - script.vas_dashboard
+      - type: entities
+        title: Kitchen
+        show_header_toggle: false
+        entities:
+          - light.kitchen_under_cabinet
+          - light.kitchen
+          - light.kitchen_table
+          - input_number.led_animation_speed
+          - script.led_white
+          - script.led_yellow
+          - script.led_off
+          - automation.kitchen_lights_off_with_dimmer
+          - automation.kitchen_lights_on_white_with_dimmer
+          - automation.led_animation_speed
+          - automation.kitchen_leds_low_light_on
+          - automation.kitchen_leds_low_light_off
+          - automation.motion_kitchen_main_light_on
+          - automation.motion_kitchen_off
+          - sensor.kitchen_dimmer_test
+          - sensor.motion_sensor_kitchen_lux
+          - input_select.kitchen_blinds_status
+          - sensor.kitchen_blinds_state
+          - script.blinds_closed
+          - script.blinds_halfway
+          - script.blinds_open
+      - type: entities
+        title: Laundry Room
+        show_header_toggle: false
+        entities:
+          - binary_sensor.door_window_sensor_back_door
+          - light.laundry_room
+          - binary_sensor.laundry_room_motion
+          - sensor.motion_sensor_laundry_battery
+          - sensor.laundry_temperature
+          - sensor.motion_sensor_laundry_lux
+          - automation.laundry_motion_homemode
+          - automation.laundry_motion_not_homemode
+          - automation.laundry_motion_off
+          - switch.wemo_washing_machine
+          - sensor.washing_machine_watts
+          - sensor.washing_machine_power_up
+          - sensor.washing_machine_power_down
+          - input_boolean.stopwatch
+          - input_boolean.dummy
+          - input_boolean.washer_switch
+          - sensor.stopwatch
+          - sensor.washer_status
+          - automation.washer_start
+          - automation.washer_done
+          - automation.stopwatch_start
+          - automation.stopwatch_stop
+          - automation.stopwatch_update
+      - type: entities
+        title: Master Hallway
+        show_header_toggle: false
+        entities:
+          - light.master_hallway
+          - sensor.motion_sensor_hallway_battery
+          - binary_sensor.hallway_motion
+          - sensor.hallway_temperature
+          - sensor.master_hallway_motion_sensor_lux
+          - automation.motion_master_hallway_motion_on
+          - automation.motion_master_hallway_motion_off
+      - type: entities
+        title: Kids Bath
+        show_header_toggle: false
+        entities:
+          - light.kids_bathroom
+          - light.kids_bathroom_vanity
+          - switch.wemo_kids_bath_fan
+          - switch.kids_bathroom_scent
+          - sensor.temperature_kids_bathroom
+          - sensor.pressure_kids_bathroom
+          - sensor.humidity_kids_bathroom
+          - binary_sensor.motion_sensor_kids_bathroom
+          - sensor.illumination_kids_bathroom
+          - sensor.kids_motion_sensor_batt
+          - sensor.kids_humidity_sensor_batt
+          - sensor.kids_bathroom_dimmer_state
+          - sensor.kids_bathroom_dimmer_last_update
+          - sensor.kids_bathroom_dimmer_battery
+          - script.kids_shower_time_on
+          - script.kids_shower_time_off
+          - switch.kids_shower_time
+          - automation.kids_bath_light_left_on
+          - automation.kids_bath_shower_time_off
+          - automation.kids_bath_shower_time_on
+          - automation.motion_kids_bathroom_home_mode_off
+          - automation.motion_kids_bathroom_home_mode_on
+          - automation.motion_kids_bathroom_evening_mode_on
+          - automation.motion_kids_bathroom_sleep_off
+          - automation.motion_kids_bathroom_sleep_on
+      - type: entities
+        title: Kids Hallway
+        show_header_toggle: false
+        entities:
+          - light.kids_hallway
+          - sensor.motion_sensor_hallway_battery
+          - binary_sensor.kids_hallway_motion
+          - sensor.kids_hallway_temperature
+          - sensor.kids_hallway_motion_sensor_lux
+          - automation.motion_kids_hallway_motion_on
+          - automation.motion_kids_hallway_motion_off
+      - type: entities
+        title: Ruths Room
+        show_header_toggle: false
+        entities:
+          - sensor.ruths_room_temperature
+          - binary_sensor.ruths_room_occupancy
+          - script.driveway_cam_powercycle
+          - automation.reboot_driveway_camera
+      - type: entities
+        title: Gabbie's Room
+        show_header_toggle: false
+        entities:
+          - light.gabbies_light
+          - binary_sensor.gabbies_room_motion
+          - sensor.gabbies_room_temperature
+          - sensor.gabbies_room_motion_sensor_lux
+          - sensor.motion_sensor_gabbies_room_battery
+          - input_boolean.boolean_gabbie_home
+          - input_boolean.boolean_gabbie_sleep
+          - input_boolean.boolean_gabbie_awake
+          - switch.gabbies_tv_power
+          - script.gabbies_awake
+          - script.gabbies_bedtime
+          - automation.gabbie_going_sleep
+          - automation.gabbie_waking_up
+          - automation.gabbie_home
+          - automation.gabbie_not_home
+          - automation.gabbie_light_on
+          - automation.gabbie_light_off
+      - type: entities
+        title: Gabbies Blinds
+        show_header_toggle: false
+        entities:
+          - input_select.gabbies_blinds_status
+          - sensor.gabbies_blinds_state
+          - sensor.gabbies_blinds_wifi_signal
+          - script.gabbies_blinds_open
+          - script.gabbies_blinds_halfway
+          - script.gabbies_blinds_closed
+          - automation.blinds_open_gabbies
+          - automation.blinds_halfway_gabbies
+          - automation.blinds_closed_gabbies
+          - sensor.gabbies_blinds_wifi_signal
+      - type: entities
+        title: Master Closet
+        show_header_toggle: false
+        entities:
+          - light.hue_master_closet
+          - binary_sensor.door_window_sensor_master_closet
+          - automation.master_closet_on
+          - automation.master_closet_off
+  - title: Fun Stuff
+    cards:
+      - type: entities
+        title: Effects
+        show_header_toggle: false
+        entities:
+          - script.knightrider_off
+          - script.knightrider_on
+          - script.rerunknightrider_on
+      - type: entities
+        title: Hue Scenes
+        show_header_toggle: false
+        entities:
+          - script.spring
+          - script.savanna
+          - script.arctic
+          - script.tropical
+          - script.supernatural
+      - type: entities
+        title: Routines
+        show_header_toggle: false
+        entities:
+          - script.lamps_on
+          - script.herbearly_on
+          - script.gone_on
+          - scene.all_on
+          - scene.all_off
+          - script.alarm_repeat
+          - script.alarm_flashonoff
+          - script.nap_time
+          - script.movie_time
+          - script.evening_time
+          - script.daytime_sleep_mode
+      - type: entities
+        title: Input Boolean House
+        show_header_toggle: true
+        entities:
+          - input_boolean.boolean_home
+          - input_boolean.boolean_away
+          - input_boolean.boolean_movie_time
+          - input_boolean.boolean_early_morning
+          - input_boolean.boolean_sleep
+          - input_boolean.boolean_evening_time
+          - input_boolean.boolean_nap_time
+          - input_boolean.boolean_day_time_sleep
+      - type: entities
+        title: Wax Warmers
+        show_header_toggle: false
+        entities:
+          - switch.dawn_day
+          - switch.kids_bathroom_scent
+          - switch.kids_bathroom_scent_2
+          - automation.warmers_scent_on
+          - automation.warmers_scent_off
+      - type: entities
+        title: Space
+        show_header_toggle: true
+        entities:
+          - sensor.people_in_space
+          - sensor.iss_visible
+          - sensor.iss_next_rise
+  - title: Small Tank
+    cards:
+      - type: entities
+        title: Small Tank Server Info
+        show_header_toggle: true
+        entities:
+          - sensor.small_tank_server_temperature
+          - sensor.fish_tank_cpu_use
+          - sensor.fish_tank_disk_use
+          - sensor.fish_tank_ram_free
+          - sensor.fish_tank_ram_used
+          - sensor.small_tank_power
+          - sensor.fish_tank_ha_uptime
+          - sensor.small_tank_link
+          - sensor.small_tank_signal
+      - type: entities
+        title: Server Exterior Info
+        show_header_toggle: true
+        entities:
+          - sensor.ha_temperature
+          - sensor.ha_humidity
+      - type: entities
+        title: Small Tank Sensors
+        show_header_toggle: true
+        entities:
+          - sensor.small_tank_water_temperature
+          - sensor.small_tank_temp_ok
+          - sensor.small_tank_water_level
+          - binary_sensor.small_tank_warning
+      - type: entities
+        title: Controls
+        show_header_toggle: true
+        entities:
+          - binary_sensor.small_tank_heater
+          - binary_sensor.small_tank_white_lights
+          - binary_sensor.small_tank_controller
+          - binary_sensor.small_tank_hob_filter
+          - sensor.small_tank_lighting_mode
+          - sensor.small_tank_weather_mode
+      - type: history-graph
+        title: Tank Graph
+        hours_to_show: 72
+        refresh_interval: 180
+        entities:
+          - sensor.small_tank_water_temperature
+          - sensor.ha_temperature
+  - title: Main Tank
+    cards:
+      - type: entities
+        title: Main Tank Power
+        show_header_toggle: false
+        entities:
+          - switch.outlet_one
+          - switch.outlet_two
+          - switch.wemo_fish_tan_pumps
+      - type: entities
+        title: Main Tank Automations
+        show_header_toggle: false
+        entities:
+          - script.feeding_time_on
+          - script.feeding_time_off
+          - switch.pump_left_control
+          - switch.pump_right_control
+          - input_boolean.boolean_feeding_time_on
+          - automation.pumps_on
+          - automation.pumps_routine_start
+          - input_boolean.pump_left
+          - input_boolean.pump_right
+  - title: Dashboards
+    cards:
+      - type: entities
+        title: Living Room Dashboard
+        show_header_toggle: false
+        entities:
+          - sensor.current_dash_living_room
+          - binary_sensor.living_room_screen_on
+          - sensor.living_room_wallpanel_battery
+          - sensor.living_room_wallpanel_charging
+          - binary_sensor.lv_ac_power
+      - type: entities
+        title: Master Bedroom Dashboard
+        show_header_toggle: false
+        entities:
+          - sensor.current_dash_master
+          - binary_sensor.master_screen_on
+          - binary_sensor.bedroom_motion
+          - sensor.bedroom_wallpanel_battery
+          - sensor.bedroom_wallpanel_charging
+          - binary_sensor.master_ac_power
+          - sensor.bedroom_wallpanel_brightness
+          - script.master_dash_wake_up
+          - automation.master_dash_early_wakeup
+      - type: entities
+        title: Gabbies Room Dashboard
+        show_header_toggle: false
+        entities:
+          - binary_sensor.gabbies_room_motion
+      - type: entities
+        title: All Dashboards
+        show_header_toggle: false
+        entities:
+          - script.dash_refresh
+          - automation.dashboards_refresh
+          - automation.navigate_cameradash_camera_motion
+          - automation.back_to_main_dash_motion
+          - script.dash_frontdoor_cam
+          - script.dash_backdoor_cam
+          - script.dash_reset_after_motion
+          - automation.power_lost_to_dashboards
+  - title: Maintanence
+    cards: []
+  - title: Network Status
+    cards:
+      - type: entities
+        title: Clients Online
+        show_header_toggle: true
+        entities:
+          - sensor.clients
+      - type: entities
+        title: Networking Devices
+        show_header_toggle: true
+        entities:
+          - binary_sensor.unifi_gateway
+          - binary_sensor.unificloudkey
+          - binary_sensor.switch_ubnt_poe_16
+          - binary_sensor.switch_ubnt_poe_8_shed
+          - binary_sensor.ac_pro
+          - binary_sensor.ap_master
+      - type: entities
+        title: Cameras
+        show_header_toggle: true
+        entities:
+          - binary_sensor.number12_camera_connect
+          - binary_sensor.driveway_camera_connect
+          - binary_sensor.shed_camera_connect
+          - binary_sensor.backdoor_camera_connect
+          - binary_sensor.frontdoor_camera_connect
+          - binary_sensor.swamp_camera_connect
+      - type: entities
+        title: Hub's & Bridges
+        show_header_toggle: true
+        entities:
+          - binary_sensor.harmony_hub
+          - binary_sensor.hue_hub
+          - binary_sensor.wink_hub
+          - binary_sensor.broadlink_mini
+          - binary_sensor.broadlink_pro
+          - binary_sensor.xiaomi_gateway
+      - type: entities
+        title: Esp Controller's Leds/Power
+        show_header_toggle: true
+        entities:
+          - binary_sensor.led_kitchen_cabinets
+          - binary_sensor.led_small_tank
+          - binary_sensor.dawns_controller
+      - type: entities
+        title: Esp Controller's Blinds
+        show_header_toggle: true
+        entities:
+          - binary_sensor.blinds_master_dawns_side
+          - binary_sensor.blinds_master_herbs_side
+          - binary_sensor.blinds_kitchen_table
+          - binary_sensor.blinds_kitchen_sink
+          - binary_sensor.blinds_couch
+          - binary_sensor.blinds_tv
+          - binary_sensor.blinds_gabbies
+      - type: entities
+        title: Mobile Devices
+        show_header_toggle: true
+        entities:
+          - binary_sensor.herbs_laptop
+          - binary_sensor.herbs_iphone
+          - binary_sensor.dawns_phone
+          - binary_sensor.ruths_tablet
+          - binary_sensor.gabbies_laptop
+      - type: entities
+        title: Nas Drives
+        show_header_toggle: true
+        entities:
+          - binary_sensor.media_harddrive
+          - binary_sensor.network_harddrive
+      - type: entities
+        title: Servers
+        show_header_toggle: true
+        entities:
+          - binary_sensor.server_blue_iris
+          - binary_sensor.server_homeassistant_fishtank
+      - type: entities
+        title: Alexa
+        show_header_toggle: true
+        entities:
+          - binary_sensor.alexa_master_dot
+          - binary_sensor.alexa_gabbies_room_dot
+          - binary_sensor.alexa_living_room_echo
+      - type: entities
+        title: Media Players
+        show_header_toggle: true
+        entities:
+          - binary_sensor.ruths_ruko
+          - binary_sensor.livingroom_roku
+          - binary_sensor.media_player_onkyo_lv
+          - binary_sensor.samsung_tv
+          - binary_sensor.chromecast_master
+          - binary_sensor.chromecast_livingroom
+      - type: entities
+        title: Wemos
+        show_header_toggle: true
+        entities:
+          - binary_sensor.wemo_master_bath_fan
+          - binary_sensor.wemo_kids_bathroom_fan
+          - binary_sensor.wemo_rear_network
+          - binary_sensor.master_bedroom_mixer
+          - binary_sensor.wemo_kids_bathroom_scent
+          - binary_sensor.wemo_washing_machine
+          - binary_sensor.wemo_lv_scent
+          - binary_sensor.wemo_driveway_reboot
+          - binary_sensor.wemo_fish_tan_pumps
+      - type: entities
+        title: Dashboards
+        show_header_toggle: true
+        entities:
+          - binary_sensor.dash_master
+          - binary_sensor.dash_living_room
+          - binary_sensor.dash_gabbies_room
+      - type: entities
+        title: Misc Devices
+        show_header_toggle: true
+        entities:
+          - binary_sensor.game_console_ps4
+          - binary_sensor.game_console_ps3
+          - binary_sensor.voip_nettalk
+          - binary_sensor.webswitch_network
+          - binary_sensor.printer_hp
+          - binary_sensor.ecobee
+          - binary_sensor.power_relay
+      - type: entities
+        title: Wink Connections
+        show_header_toggle: true
+        entities:
+          - binary_sensor.gang
+          - binary_sensor.gang_1
+      - type: entities
+        title: Wifi Signals
+        show_header_toggle: true
+        entities:
+          - sensor.blinds_controller_wifi_signal
+          - sensor.sink_blinds_controller_wifi_signal
+          - sensor.dawns_controller_wifi_signal
+          - sensor.front_blinds_controller_wifi_signal
+          - sensor.master_blinds_controller_dawns_wifi_signal
+          - sensor.master_blinds_controller_herbs_wifi_signal
+          - sensor.gabbies_blinds_wifi_signal
+  - title: Setting's
+    icon: mdi:settings
+    cards:
+      - type: entities
+        title: Evening Mode
+        show_header_toggle: true
+        entities:
+          - input_number.evening_mode_brightness_value
+          - input_number.evening_mode_color_temp_value
+          - input_number.evening_time_mode_transition_value
+          - input_number.evening_mode_chromecast_lv
+          - input_number.evening_mode_chromecast_masterbedroom
+          - input_number.evening_time_off
+      - type: entities
+        title: Movie Mode
+        show_header_toggle: true
+        entities:
+          - input_number.movie_mode_brightness_value
+          - input_number.movie_mode_color_temp_value
+          - input_number.movie_mode_transition_value
+          - input_number.movie_mode_chromecast_lv
+          - input_number.movie_mode_chromecast_masterbedroom
+      - type: entities
+        title: Sleep Mode
+        show_header_toggle: true
+        entities:
+          - input_number.sleep_mode_brightness_value
+          - input_number.sleep_mode_color_temp_value
+          - input_number.sleep_mode_transition_value
+          - input_number.sleep_mode_chromecast_livingroom
+          - input_number.onkyo_volume_sleepmode
+      - type: entities
+        title: Early Morning Mode
+        show_header_toggle: true
+        entities:
+          - input_number.earlymorning_mode_brightness_value
+          - input_number.earlymorning_mode_color_temp_value
+          - input_number.earlymorning_mode_transition_value
+          - input_number.earlymorning_mode_chromecast_livingroom
+          - input_number.onkyo_volume_earlymorning
+      - type: entities
+        title: Home Mode
+        show_header_toggle: true
+        entities:
+          - input_number.home_mode_brightness_value
+          - input_number.home_mode_color_temp_value
+          - input_number.home_mode_transition_value
+          - input_number.home_mode_chromecast_lv
+          - input_number.home_mode_chromecast_masterbedroom
+      - type: entities
+        title: Nap Mode
+        show_header_toggle: true
+        entities:
+          - input_number.nap_mode_brightness_value
+          - input_number.nap_mode_color_temp_value
+          - input_number.nap_mode_transition_value
+      - type: entities
+        title: Alarm Mode
+        show_header_toggle: true
+        entities:
+          - input_number.alarm_mode_chromecast_lv
+          - input_number.alarm_mode_chromecast_masterbedroom
+      - type: entities
+        title: HA Server Alerts
+        show_header_toggle: false
+        entities:
+          - script.ha_dash_usage
+          - input_number.ram_alert_value
+          - input_number.disk_alert_value
+          - input_number.cpu_alert_value
+          - automation.ha_ram_overload
+          - automation.ha_disk_overload
+          - automation.ha_cpu_overload
+      - type: entities
+        title: BI Server Alerts
+        show_header_toggle: false
+        entities:
+          - script.blue_iris_dash_usage
+          - input_number.bi_ram_alert_value
+          - input_number.bi_disk_alert_value
+          - input_number.bi_usb_disk_alert_value
+          - input_number.bi_cpu_alert_value
+          - automation.blue_iris_ram_overload
+          - automation.blue_iris_disk_overload
+          - automation.blue_iris_cpu_overload
+      - type: entities
+        title: Humidity
+        show_header_toggle: true
+        entities:
+          - input_number.target_humidity_kids_bathroom
+          - input_number.target_humidity_master_bathroom

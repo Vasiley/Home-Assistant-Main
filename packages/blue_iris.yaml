@@ -55,6 +55,7 @@ group:
      - binary_sensor.motion_tablet_lv_camera
      - binary_sensor.motion_tablet_mb_camera
      - binary_sensor.motion_tablet_gb_camera
+
 #######################################################################################################################
 ###### Sets profile on blue iris   ####################################################################################
 #######################################################################################################################
@@ -140,7 +141,6 @@ binary_sensor:
     name: motion_tablet_mb_camera
     payload_on: "on"
     payload_off: "off"
-
 
   # - platform: template
   #   sensors:

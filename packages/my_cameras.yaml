@@ -55,6 +55,7 @@ group:
    name: Gabbie Cam
    entities:
      - camera.gabbie_Cam
+
 camera:
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg

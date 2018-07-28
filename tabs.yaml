@@ -21,6 +21,7 @@
      - light.light_bulb_2
      - light.gabbies_light
      - light.hue_master_closet
+     - light.gateway_light_xiaomi_lv
      - group.Family
      - group.climate_temp_card
      - group.master_bathroom_heater_broadlink_card
@@ -118,7 +119,7 @@
      - group.camera_tablet_card
      - group.camera_gabbie_cam_card
      - group.camera_master_bedroom_cam_card
-
+     - group.camera_iss_card
   Roomview:
    view: yes
    name: Rooms
@@ -146,6 +147,7 @@
      - group.Routines
      - group.input_boolean_card
      - group.smellgood_card
+     - group.number_of_people_in_space_card
 
   Fish_tank:
    view: yes
@@ -265,6 +267,7 @@
      - sensor.kids_motion_sensor_batt
      - sensor.front_door_sensor_batt
      - sensor.back_door_sensor_batt
+     - sensor.shed_door_sensor_batt
      - sensor.master_closet_door_sensor_batt
      - sensor.kids_humidity_sensor_batt
      - sensor.master_humidity_sensor_batt

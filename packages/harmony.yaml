@@ -14,7 +14,7 @@ group:
 remote:
   - platform: harmony
     name: Entertainment
-    host: 192.168.1.210
+    host: 192.168.1.162
 
 sensor:
   - platform: template
@@ -28,15 +28,13 @@ input_select:
     name: Harmony
     options:
       - Select Input
-      - Kodi
-      - Watch Tv
       - PS4
       - Blue Iris
       - Netflix
       - Classical Music
       - Amazon
-      - Roku
-      - Power Off
+      - Directv
+      - PowerOff
     icon: mdi:monitor
 
 # Harmony input select Automation
@@ -53,11 +51,7 @@ automation:
         entity_id: remote.entertainment
         data_template:
           activity: >
-            {% if is_state("input_select.harmony", "Kodi") %}
-              25483962
-            {% elif is_state("input_select.harmony", "Watch Tv") %}
-              25482850
-            {% elif is_state("input_select.harmony", "PS4") %}
+            {% if is_state("input_select.harmony", "PS4") %}
               25501031
             {% elif is_state("input_select.harmony", "Blue Iris") %}
               25486501
@@ -67,8 +61,10 @@ automation:
               25501845
             {% elif is_state("input_select.harmony", "Amazon") %}
               27189210
-            {% elif is_state("input_select.harmony", "Roku") %}
-              31026175
+            {% elif is_state("input_select.harmony", "Directv") %}
+              32645868
+            {% elif is_state("input_select.harmony", "PowerOff") %}
+              -1
             {% else %}
             {% endif %}
       - service: input_select.select_option

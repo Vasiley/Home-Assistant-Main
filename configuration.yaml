@@ -86,7 +86,7 @@ wemo:
      - 192.168.1.228  #Kids Bathroom scent
      - 192.168.1.31   #rear network Reboot
      - 192.168.1.53  #Master Fan
-     - 192.168.1.163 #kids bathroom fan
+     - 192.168.1.254 #kids bathroom fan
 #     - 192.168.1.162  #?
      - 192.168.1.152  #fish tank pumps
 xiaomi_aqara:

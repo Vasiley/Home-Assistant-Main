@@ -27,7 +27,14 @@ homeassistant:
       haaska_hidden: true
       unit_of_measurement: '%'
       icon: mdi:battery
-
+    binary_sensor.door_window_sensor_shed_door:
+      haaska_hidden: true
+      friendly_name: Shed Door
+    sensor.shed_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Shed Door Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
 group:
   door_window_sensors_card:
    name: Door Windows
@@ -35,7 +42,7 @@ group:
     - binary_sensor.door_window_sensor_front_door
     - binary_sensor.door_window_sensor_back_door
     - binary_sensor.door_window_sensor_master_closet
-
+    - binary_sensor.door_window_sensor_shed_door
 sensor:
   - platform: template
     sensors:
@@ -52,3 +59,8 @@ sensor:
       master_closet_door_sensor_batt:
         friendly_name: 'Back Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_master_closet.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      shed_door_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_shed_door.attributes.battery_level }}"

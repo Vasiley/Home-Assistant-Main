@@ -136,6 +136,6 @@ script:
           option: 'Open'
       - service: shell_command.gabbies_blinds_open
 shell_command:
-  gabbies_blinds_closed: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,180"
-  gabbies_blinds_halfway: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,100"
-  gabbies_blinds_open: "curl -sS -X GET http://192.168.1.246/control?cmd=Servo,1,12,30"
+  gabbies_blinds_closed: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,180"
+  gabbies_blinds_halfway: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,100"
+  gabbies_blinds_open: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,30"

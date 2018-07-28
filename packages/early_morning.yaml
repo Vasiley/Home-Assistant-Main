@@ -36,7 +36,7 @@ script:
         data_template:
           entity_id: media_player.ha_speaker
           message: 'Good Morning Herb how are you this morning The weather for today is{{states.sensor.dark_sky_daily_summary.state}}'
-      - delay: '00:00:10'
+      - delay: '00:00:19'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker

@@ -1,292 +1,380 @@
 light.kitchen_table_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:1e:fc-0b
 light.bathroom_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f5:8a-0b
 light.bathroom_2:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f8:5d-0b
 light.herbs_bedside_lamp:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:98:7f:16-0b
 light.kids_vanity_2:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f4:da-0b
 light.bathroom_vanity_2:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f8:ca-0b
 light.dawns_bedside_lamp:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:ba:14:59-0b
 light.kids_bathroom_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:10:47-0b
 light.kids_hallway_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:3f:44:09-0b
 light.front_steps:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:39:e4:4d-0b
 light.laundry_room_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:10:30:da:ef-0b
 light.kitchen_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:e9:09-0b
 light.dawns_lamp:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:53:6c-0b
 light.kitchen_2:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:1d:25-0b
 light.herbs_lamp:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:3d:3c-0b
 light.bathroom_vanity_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:39:eb:a7-0b
 light.door_lamp:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:3d:15-0b
 light.rear_steps:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f7:0f-0b
 light.kitchen_tabe_2:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:21:db:c1-0b
 light.kids_vanity_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:5c:00:66-0b
 media_player.rz_810:
+  config_entry_id:
   name:
   platform: cast
   unique_id: 07d7af17-1219-0e75-d35f-f4d20c9041b5
 switch.master_bedroom_mixer:
+  config_entry_id:
   name: Master Bedroom Mixer
   platform: wemo
   unique_id: 221742K01216F2
-switch.wemo_mini_rear_network:
+switch.wemo_shed_camera:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221743K0102067
 switch.kids_bathroom_scent_2:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221741K010D84B
 switch.kids_bathroom_scent:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221742K012196E
 switch.wemo_washing_machine:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 231627K1200071
 switch.wemo_master_bath_fan:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221736K13013B2
 switch.driveway_camaera:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221742K0122559
 switch.wemo_kids_bath_fan:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 221711K13002A7
 light.gabbies_light:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:3f:51:fd-0b
 media_player.plex_server_living_room:
+  config_entry_id:
   name:
   platform: plex
   unique_id: edf4d17d835fbee3d16bbf9686635450
 media_player.master_bedroom_cast:
+  config_entry_id:
   name:
   platform: cast
   unique_id: f7473c89-251c-2abf-caf4-7d09ac69bcbc
 media_player.ha_speaker:
+  config_entry_id:
   name:
   platform: cast
   unique_id: 1ce4c0d6-4cc9-ae3b-14db-bf4e093131c7
 light.master_hallway_1:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:02:e7:0c:c2-0b
 light.gateway_light_xiaomi_lv:
-  name:
+  config_entry_id:
+  name: Xiaomi Hub
   platform: xiaomi_aqara
   unique_id: rgb7811dce1a9b9
 sensor.illumination_xiaomi_lv:
+  config_entry_id:
   name: Kitchen Gateway Lux
   platform: xiaomi_aqara
   unique_id: illumination7811dce1a9b9
 binary_sensor.door_window_sensor_front_door:
+  config_entry_id:
   name: Front Door
   platform: xiaomi_aqara
   unique_id: status158d00020455e9
 binary_sensor.door_window_sensor_back_door:
+  config_entry_id:
   name: Back Door
   platform: xiaomi_aqara
   unique_id: status158d0002047170
 sensor.temperature_kids_bathroom:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: temperature158d00016422c3
 sensor.pressure_kids_bathroom:
+  config_entry_id:
   name: Kids Bathroom Pressue
   platform: xiaomi_aqara
   unique_id: pressure158d00016422c3
 sensor.humidity_kids_bathroom:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: humidity158d00016422c3
 binary_sensor.motion_sensor_kids_bathroom:
+  config_entry_id:
   name: Kids Bathroom Motion
   platform: xiaomi_aqara
   unique_id: status158d000222c7d2
 sensor.illumination_kids_bathroom:
+  config_entry_id:
   name: Kids Bathroom Lux
   platform: xiaomi_aqara
   unique_id: lux158d000222c7d2
 light.hue_master_closet:
+  config_entry_id:
   name:
   platform: hue
   unique_id: 00:17:88:01:03:58:19:0c-0b
 binary_sensor.door_window_sensor_master_closet:
+  config_entry_id:
   name: Master Closet
   platform: xiaomi_aqara
   unique_id: status158d0002059a59
+binary_sensor.door_window_sensor_shed_door:
+  config_entry_id:
+  name: Shed Door
+  platform: xiaomi_aqara
+  unique_id: status158d0002059cf4
 sensor.pressure_master_bathroom:
+  config_entry_id:
   name: Master Bath Pressure
   platform: xiaomi_aqara
   unique_id: pressure158d00022c9bc1
 sensor.humidity_master_bathroom:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: humidity158d00022c9bc1
 sensor.temperature_master_bathroom:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: temperature158d00022c9bc1
 binary_sensor.motion_sensor_master_bath:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: status158d000222be0c
 sensor.illumination_master_bath:
+  config_entry_id:
   name:
   platform: xiaomi_aqara
   unique_id: lux158d000222be0c
 sensor.pws_weather_3d:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_3d'
 sensor.pws_relative_humidity:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,relative_humidity'
 sensor.pws_observation_time:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,observation_time'
 sensor.pws_alerts:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,alerts'
 sensor.pws_feelslike_f:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,feelslike_f'
 sensor.pws_wind_mph:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,wind_mph'
 sensor.pws_weather_1d:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_1d'
 sensor.pws_weather_2d:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_2d'
 sensor.pws_wind_dir:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,wind_dir'
 sensor.pws_precip_1hr_in:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,precip_1hr_in'
 sensor.pws_wind_gust_mph:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,wind_gust_mph'
 sensor.pws_weather_2n:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_2n'
 sensor.pws_temp_f:
-  name:
+  config_entry_id:
+  name: Outdoor Temperature
   platform: wunderground
   unique_id: '@-90.489947,30.422200,temp_f'
 sensor.pws_weather_4n:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_4n'
 sensor.pws_weather_4d:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_4d'
 sensor.pws_visibility_mi:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,visibility_mi'
 sensor.pws_weather_3n:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_3n'
 sensor.pws_precip_today_in:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,precip_today_in'
 sensor.pws_weather:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather'
 sensor.pws_weather_1n:
+  config_entry_id:
   name:
   platform: wunderground
   unique_id: '@-90.489947,30.422200,weather_1n'
 media_player.home_group:
+  config_entry_id:
   name:
   platform: cast
   unique_id: aa4d1fe1-7aad-4123-8ef6-89fa73f79efd
 media_player.living_room:
+  config_entry_id:
   name:
   platform: roku
   unique_id: YJ00CH439147
 switch.wemo_fish_tan_pumps:
+  config_entry_id:
   name:
   platform: wemo
   unique_id: 231624K120137B
+media_player.ruths_roku:
+  config_entry_id:
+  name:
+  platform: roku
+  unique_id: 5S4674165987
+media_player.plex_server_galaxy_j7_pop:
+  config_entry_id:
+  name:
+  platform: plex
+  unique_id: 3368ce0620abc112-com-plexapp-android

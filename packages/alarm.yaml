@@ -169,6 +169,9 @@ automation:
       - platform: state
         entity_id: binary_sensor.door_window_sensor_back_door
         to: 'on'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_shed_door
+        to: 'on'
     condition:
       condition: or
       conditions:
@@ -188,7 +191,9 @@ automation:
             The {% if is_state('binary_sensor.door_window_sensor_front_door', 'on') %}
             Front Door Has Been Opened
             {% elif is_state('binary_sensor.door_window_sensor_back_door', 'on') %}
-            Back Door Has Been Open
+            Back Door Has Been Opened
+            {% elif is_state('binary_sensor.door_window_sensor_shed_door', 'on') %}
+            Shed Door Has Been Opened
             {% endif %}
       - service: xiaomi_aqara.play_ringtone
         data:
@@ -203,7 +208,9 @@ automation:
              The {% if is_state('binary_sensor.door_window_sensor_front_door', 'on') %}
              Front Door Has Been Opened
              {% elif is_state('binary_sensor.door_window_sensor_back_door', 'on') %}
-             Back Door Has Been Open
+             Back Door Has Been Opened
+             {% elif is_state('binary_sensor.door_window_sensor_shed_door', 'on') %}
+             Shed Door Has Been Opened
              {% endif %}
       - service: automation.turn_on
         entity_id: automation.where_is_motion_alarm_triggered
@@ -258,6 +265,11 @@ automation:
       - platform: state
         entity_id: input_boolean.boolean_sleep
         to: 'on'
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'sleep'
     action:
       - service: alarm_control_panel.alarm_arm_home
-        entity_id: alarm_control_panel.ha_alarm
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code

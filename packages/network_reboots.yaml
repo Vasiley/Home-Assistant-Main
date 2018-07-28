@@ -7,6 +7,9 @@ homeassistant:
     script.driveway_cam_powercycle:
       friendly_name: Driveway Cam Reboot
       icon: mdi:access-point-network
+    script.shed_cam_powercycle:
+      friendly_name: Shed Cam Reboot
+      icon: mdi:access-point-network
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
@@ -16,11 +19,13 @@ homeassistant:
     switch.driveway_camaera:
       friendly_name: Driveway Camera
       icon: mdi:power-settings
-    switch.wemo_mini_rear_network:
-      friendly_name: Netgear Managed Switch
+    switch.wemo_shed_camera:
+      friendly_name: Shed Camera
       icon: mdi:power-settings
     automation.reboot_driveway_camera:
       friendly_name: Driveway Cam Auto Reboot
+    automation.reboot_shed_camera:
+      friendly_name: Shed Cam Auto Reboot
 
 group:
   equip_reboots_card:
@@ -28,11 +33,13 @@ group:
    name: Equipment Reboots
    entities:
      - switch.driveway_camaera
-     - switch.wemo_mini_rear_network
+     - switch.wemo_shed_camera
      - script.webswitch_reboot
      - script.network_reboot
      - script.driveway_cam_powercycle
      - automation.reboot_driveway_camera
+     - script.shed_cam_powercycle
+     - automation.reboot_shed_camera
 
 script:
   #### reboot websitch clients  ####################
@@ -58,11 +65,6 @@ script:
       - delay: '00:01:15'
       - service: rest_command.switch1_reboot
       - delay: '00:01:00'
-      - service: switch.turn_off
-        entity_id: switch.wemo_mini_rear_network
-      - delay: '00:00:30'
-      - service: switch.turn_on
-        entity_id: switch.wemo_mini_rear_network
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -80,20 +82,37 @@ script:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Driveway Camera'
 
+  shed_cam_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.wemo_shed_camera
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.wemo_shed_camera
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rebooting Shed Camera'
+
 automation:
   - alias: reboot_driveway_camera
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.driveway_camera
-        to: 'Offline'
-        for: '00:05:00'
-      - platform: homeassistant
-        event: start
-    condition:
-      - condition: state
-        entity_id: sensor.driveway_camera
-        state: 'Offline'
+        entity_id: binary_sensor.driveway_camera_connect
+        to: 'off'
+        for: '00:01:00'
     action:
       - service: script.turn_on
         entity_id: script.driveway_cam_powercycle
+
+  - alias: reboot_shed_camera
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.shed_camera_connect
+        to: 'off'
+        for: '00:01:00'
+    action:
+      - service: script.turn_on
+        entity_id: script.shed_cam_powercycle

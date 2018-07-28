@@ -200,7 +200,7 @@ sensor:
     name: "Bedroom wallpanel Ac Plugged"
     value_template: '{{ value_json.usbPlugged }}'
   - platform: rest
-    resource: http://192.168.1.52:2971/api/state
+    resource: http://192.168.2.40:2971/api/state
     value_template: '{{ value_json.currentUrl }}'
     name: 'Current Url Master'
   - platform: template
@@ -242,7 +242,7 @@ sensor:
     name: "Living Room wallpanel Ac Plugged"
     value_template: '{{ value_json.acPlugged }}'
   - platform: rest
-    resource: http://192.168.1.182:2971/api/state
+    resource: http://192.168.2.40:2971/api/state
     value_template: '{{ value_json.currentUrl }}'
     name: 'Current Url Living Room'
   - platform: template
@@ -306,14 +306,14 @@ binary_sensor:
     payload_off: '{"value":false}'
     device_class: motion
   - platform: rest
-    resource: http://192.168.1.52:2971/api/state
+    resource: http://192.168.2.40:2971/api/state
     value_template: '{{ value_json.screenOn }}'
     name: 'Master Screen On'
 
 ######### Living Room   ##############
 
   - platform: rest
-    resource: http://192.168.1.182:2971/api/state
+    resource: http://192.168.2.41:2971/api/state
     value_template: '{{ value_json.screenOn }}'
     name: 'Living Room Screen On'
   - platform: template
@@ -460,15 +460,15 @@ script:
 
 shell_command:
 #   gabbies_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.51:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
-   lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
-   master_dash_refresh: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
-   master_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
-   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
-   lv_room_mail: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/mail?skin=default'}\""
-   lv_room_vas: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
-   master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
-   master_dash: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
-   lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
-   server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
-   lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.182:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
-   master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.1.52:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""
+   lv_room_dash_refresh: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+   master_dash_refresh: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d '{'relaunch': true}'"
+   master_dash_wake_up: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
+   lv_room_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/cameras?skin=default'}\""
+   lv_room_mail: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/mail?skin=default'}\""
+   lv_room_vas: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/vas?skin=default'}\""
+   master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
+   master_dash: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
+   lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
+   server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
+   lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
+   master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""

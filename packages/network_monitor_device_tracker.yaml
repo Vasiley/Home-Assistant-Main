@@ -143,16 +143,16 @@ homeassistant:
       icon: mdi:harddisk
       haaska_hidden: true
 ################ Network Equipment ####################################
-    binary_sensor.cable_modem:
-      friendly_name: Cable Modem
-      icon: mdi:ethernet
-      haaska_hidden: true
+    # binary_sensor.cable_modem:
+    #   friendly_name: Cable Modem
+    #   icon: mdi:ethernet
+    #   haaska_hidden: true
     binary_sensor.unifi_gateway:
       friendly_name: Unfi Gateway
       icon: mdi:ethernet
       haaska_hidden: true
-    binary_sensor.netgear_switch:
-      friendly_name: Netgear Switch
+    binary_sensor.switch_ubnt_poe_lv:
+      friendly_name: POE 8 port Unifi Living Room
       icon: mdi:switch
       haaska_hidden: true
     binary_sensor.unificloudkey:
@@ -161,6 +161,10 @@ homeassistant:
       haaska_hidden: true
     binary_sensor.switch_ubnt_poe_16:
       friendly_name: POE 16 port Unifi
+      icon: mdi:switch
+      haaska_hidden: true
+    binary_sensor.switch_ubnt_poe_8_shed:
+      friendly_name: POE 8 port Unifi Shed
       icon: mdi:switch
       haaska_hidden: true
     binary_sensor.ac_pro:
@@ -350,17 +354,21 @@ group:
      - binary_sensor.network_harddrive
 
   esp_led_devices_card:
-   name: Esp Controller's
+   name: Esp Controller's Leds/Power
    entities:
      - binary_sensor.led_kitchen_cabinets
      - binary_sensor.led_small_tank
-     - binary_sensor.blinds_kitchen_table
-     - binary_sensor.blinds_kitchen_sink
      - binary_sensor.dawns_controller
-     - binary_sensor.blinds_couch
-     - binary_sensor.blinds_tv
+
+  esp_blind_devices_card:
+   name: Esp Controller's Blinds
+   entities:
      - binary_sensor.blinds_master_dawns_side
      - binary_sensor.blinds_master_herbs_side
+     - binary_sensor.blinds_kitchen_table
+     - binary_sensor.blinds_kitchen_sink
+     - binary_sensor.blinds_couch
+     - binary_sensor.blinds_tv
      - binary_sensor.blinds_gabbies
 
   etc_devices_card:
@@ -388,11 +396,12 @@ group:
   network_equipment_status_card:
    name: Networking Devices
    entities:
-     - binary_sensor.cable_modem
+#     - binary_sensor.cable_modem
      - binary_sensor.unifi_gateway
-     - binary_sensor.netgear_switch
      - binary_sensor.unificloudkey
      - binary_sensor.switch_ubnt_poe_16
+     - binary_sensor.switch_ubnt_poe_lv
+     - binary_sensor.switch_ubnt_poe_8_shed
      - binary_sensor.ac_pro
      - binary_sensor.ap_master
 
@@ -637,11 +646,11 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.network_harddrive", "home") }}'
 
 #################### Network Devices  ###################
-  - platform: template
-    sensors:
-      cable_modem:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.cable_modem", "home") }}'
+  # - platform: template
+  #   sensors:
+  #     cable_modem:
+  #       device_class: connectivity
+  #       value_template: '{{ is_state("device_tracker.cable_modem", "home") }}'
   - platform: template
     sensors:
       unifi_gateway:
@@ -651,7 +660,7 @@ binary_sensor:
     sensors:
       netgear_switch:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.netgear_switch", "home") }}'
+        value_template: '{{ is_state("device_tracker.switch_ubnt_poe_lv", "home") }}'
   - platform: template
     sensors:
       unificloudkey:
@@ -662,6 +671,11 @@ binary_sensor:
       switch_ubnt_poe_16:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.switch_ubnt_poe_16", "home") }}'
+  - platform: template
+    sensors:
+      switch_ubnt_poe_8_shed:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.switch_ubnt_poe_8_shed", "home") }}'
   - platform: template
     sensors:
       ac_pro:
@@ -839,11 +853,31 @@ device_tracker:
     interval_seconds: 90
     scan_options: " --privileged -sP "
 
+  - platform: ping
+    hosts:
+      driveway_camera: 192.168.2.9
+      shed_camera: 192.168.2.11
+      swamp_camera: 192.168.2.8
+      driveway_number_12: 192.168.2.10
+      frontdoor_camera: 192.168.2.7
+      camera_backdoor: 192.168.2.6
+      blinds_master_dawns_side: 192.168.2.20
+      blinds_master_herbs_side: 192.168.2.21
+      dawns_controller: 192.168.2.22
+      blinds_kitchen_table: 192.168.2.23
+      blinds_kitchen_sink: 192.168.2.24
+      blinds_couch: 192.168.2.25
+      blinds_tv: 192.168.2.26
+      blinds_gabbies: 192.168.2.27
+      dash_master: 192.168.2.40
+      dash_living_room: 192.168.2.41
+      dash_gabbies_room: 192.168.2.42
+
   # - platform: unifi
-  #   host: 192.168.1.181
+  #   host: 192.168.1.6
   #   username: !secret unifi_username
   #   password: !secret unifi_password
-  #   verify_ssl: True
+  #   verify_ssl: false
 
   - platform: owntracks
     max_gps_accuracy: 200
@@ -893,11 +927,12 @@ automation:
           - binary_sensor.media_harddrive
           - binary_sensor.network_harddrive
 #         Network Equipment
-          - binary_sensor.cable_modem
+#          - binary_sensor.cable_modem
           - binary_sensor.unifi_gateway
-          - binary_sensor.netgear_switch
+          - binary_sensor.switch_ubnt_poe_lv
           - binary_sensor.unificloudkey
           - binary_sensor.switch_ubnt_poe_16
+          - binary_sensor.switch_ubnt_poe_8_shed
           - binary_sensor.ac_pro
           - binary_sensor.ap_master
 #         wemos
@@ -912,7 +947,7 @@ automation:
           - binary_sensor.wemo_fish_tan_pumps
 #         Dashboards
           - binary_sensor.dash_master
-#          - binary_sensor.dash_living_room
+          - binary_sensor.dash_living_room
           - binary_sensor.dash_gabbies_room
 #         esp
           - binary_sensor.led_kitchen_cabinets

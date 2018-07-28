@@ -75,6 +75,10 @@ homeassistant:
       friendly_name: Small Tank Signal Strength
       icon: mdi:signal
       hasska_hidden: true
+    sensor.small_tank_power:
+      friendly_name: Small Tank Power
+      icon: mdi:power-plug
+      hasska_hidden: true
 
 group:
   Fish_tank_server_info:
@@ -85,6 +89,7 @@ group:
      - sensor.fish_tank_disk_use
      - sensor.fish_tank_ram_free
      - sensor.fish_tank_ram_used
+     - sensor.small_tank_power
      - sensor.fish_tank_ha_uptime
      - sensor.small_tank_link
      - sensor.small_tank_signal
@@ -195,6 +200,10 @@ sensor:
     state_topic: "small_tank/sensor/link_quality/state"
     name: small_tank_link
 
+  - platform: mqtt
+    state_topic: "small_tank/sensor/check_charger/state"
+    name: small_tank_power
+
 binary_sensor:
   - platform: mqtt
     state_topic: "small_tank/sensor/tank_warning/state"
@@ -225,6 +234,7 @@ binary_sensor:
     name: small_tank_controller
     payload_on: "on"
     payload_off: "off"
+
 
 automation:
   - alias: Tank Temp Problem

@@ -23,9 +23,9 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_sleep
-      - service: media_player.turn_off
-        data:
-          entity_id: media_player.stereo
+      # - service: media_player.turn_off
+      #   data:
+      #     entity_id: media_player.stereo
       - delay: '00:00:03'
       - service: climate.set_hold_mode
         data:

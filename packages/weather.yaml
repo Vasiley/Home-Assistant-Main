@@ -119,6 +119,11 @@ camera:
     still_image_url: 'http://images.intellicast.com/WxImages/RadarLoop/msy_None_anim.gif'
     name: Radar Animated
 
+weather:
+  # - platform: darksky
+  #   api_key: !secret darksky_api
+  - platform: yweather
+
 sensor:
   - platform: wunderground
     api_key: !secret wunderground_api
