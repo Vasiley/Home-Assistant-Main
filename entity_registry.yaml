@@ -1,100 +1,100 @@
 light.kitchen_table_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:1e:fc-0b
 light.bathroom_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f5:8a-0b
 light.bathroom_2:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f8:5d-0b
 light.herbs_bedside_lamp:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:98:7f:16-0b
 light.kids_vanity_2:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f4:da-0b
 light.bathroom_vanity_2:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f8:ca-0b
 light.dawns_bedside_lamp:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:ba:14:59-0b
 light.kids_bathroom_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:10:47-0b
 light.kids_hallway_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:3f:44:09-0b
 light.front_steps:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:39:e4:4d-0b
 light.laundry_room_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:10:30:da:ef-0b
 light.kitchen_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:e9:09-0b
 light.dawns_lamp:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:53:6c-0b
 light.kitchen_2:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:10:28:1d:25-0b
 light.herbs_lamp:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:3d:3c-0b
 light.bathroom_vanity_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:39:eb:a7-0b
 light.door_lamp:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:32:3d:15-0b
 light.rear_steps:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:37:f7:0f-0b
 light.kitchen_tabe_2:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:21:db:c1-0b
 light.kids_vanity_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:5c:00:66-0b
@@ -144,7 +144,7 @@ switch.wemo_kids_bath_fan:
   platform: wemo
   unique_id: 221711K13002A7
 light.gabbies_light:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:3f:51:fd-0b
@@ -154,17 +154,17 @@ media_player.plex_server_living_room:
   platform: plex
   unique_id: edf4d17d835fbee3d16bbf9686635450
 media_player.master_bedroom_cast:
-  config_entry_id:
+  config_entry_id: ce9fef904a4e462a9ca0cedf20b55e37
   name:
   platform: cast
   unique_id: f7473c89-251c-2abf-caf4-7d09ac69bcbc
 media_player.ha_speaker:
-  config_entry_id:
+  config_entry_id: ce9fef904a4e462a9ca0cedf20b55e37
   name:
   platform: cast
   unique_id: 1ce4c0d6-4cc9-ae3b-14db-bf4e093131c7
 light.master_hallway_1:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:02:e7:0c:c2-0b
@@ -214,7 +214,7 @@ sensor.illumination_kids_bathroom:
   platform: xiaomi_aqara
   unique_id: lux158d000222c7d2
 light.hue_master_closet:
-  config_entry_id:
+  config_entry_id: babee54b872445d2bb62991900178c9c
   name:
   platform: hue
   unique_id: 00:17:88:01:03:58:19:0c-0b

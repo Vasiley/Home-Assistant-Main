@@ -174,12 +174,7 @@ group:
        - automation.master_bath_getting_dressed
        - automation.master_bath_humidity_fan_on
        - automation.master_bath_humidity_fan_off
-# binary_sensor:
-#   - platform: rest
-#     resource: !secret MS_rest_36
-#     value_template: '{{ value_json.state.presence }}'
-#     scan_interval: 1
-#     name: bathroom_motion
+
 sensor:
   - platform: rest
     resource: !secret dimmer_rest_33
@@ -228,17 +223,7 @@ sensor:
       master_bath_motion_sensor_batt:
         friendly_name: 'Master Bathroom Motion Sensor'
         value_template: "{{ states.binary_sensor.motion_sensor_master_bath.attributes.battery_level }}"
-  # - platform: rest
-  #   resource: !secret MS_rest_35
-  #   value_template: '{{ value_json.state.temperature | float / 100 }}'
-  #   unit_of_measurement: °C
-  #   name: 'Bathroom Temperature'
-  # - platform: rest
-  #   resource: !secret MS_rest_35
-  #   value_template: '{{ value_json.config.battery }}'
-  #   unit_of_measurement: '%'
-  #   scan_interval: 1800
-  #   name: 'Motion Sensor Bathroom Battery'
+
   - platform: template
     sensors:
       master_humidity_sensor_batt:
@@ -480,12 +465,16 @@ script:
   bath_time_on:
     sequence:
       - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_shower_time
       - service: automation.turn_off
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_off
         entity_id: automation.motion_bathroom_sleep_off
       - service: automation.turn_off
         entity_id: automation.motion_master_bedroom_motion_off
+      - service: switch.turn_on
+        entity_id: switch.master_bath_heater
       - service: light.turn_on
         data:
           entity_id: light.bathroom_vanity
@@ -508,6 +497,8 @@ script:
   bath_time_off:
     sequence:
       - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_shower_time
       - service: automation.turn_on
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_on
@@ -518,10 +509,14 @@ script:
         entity_id: light.bathroom_vanity
       - service: light.turn_off
         entity_id: light.bathroom
+      - service: switch.turn_off
+        entity_id: switch.master_bath_heater
 
   getting_dressed_on:
     sequence:
       - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_getting_dressed
       - service: automation.turn_off
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_off
@@ -551,6 +546,8 @@ script:
   getting_dressed_off:
     sequence:
       - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_getting_dressed
       - service: automation.turn_on
         entity_id: automation.motion_bathroom_home_mode_off
       - service: automation.turn_on

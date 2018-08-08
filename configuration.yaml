@@ -84,15 +84,15 @@ wemo:
      - 192.168.1.233  #washer
      - 192.168.1.232  #Driveway Camera roboot
      - 192.168.1.228  #Kids Bathroom scent
-     - 192.168.1.31   #rear network Reboot
+     - 192.168.1.31   #Shed Cam Reboot
      - 192.168.1.53  #Master Fan
-     - 192.168.1.254 #kids bathroom fan
+     - 192.168.1.176 #kids bathroom fan
 #     - 192.168.1.162  #?
      - 192.168.1.152  #fish tank pumps
 xiaomi_aqara:
   gateways:
      - mac: !secret xiaomi_mac
        key: !secret xiaomi_key
-       host: 192.168.1.8
+       host: 192.168.1.11
 
 vasileys_awesome_pixel_control:

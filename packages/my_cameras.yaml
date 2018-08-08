@@ -51,6 +51,10 @@ group:
    name: Master Bedroom Cam
    entities:
      - camera.master_bedroom_cam
+  camera_master_bedroom_tablet_cam_card:
+   name: Master Bedroom Tablet Cam
+   entities:
+     - camera.master_bedroom_tablet_cam
   camera_gabbie_cam_card:
    name: Gabbie Cam
    entities:
@@ -90,7 +94,7 @@ camera:
     authentication: basic
 
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam7/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
     name: Back Door
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
@@ -104,18 +108,25 @@ camera:
     authentication: basic
 
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam1/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam7/video.mjpeg
     name: Master Bedroom Cam
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic
 
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
-    name: Gabbie Cam
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam1/video.mjpeg
+    name: Master Bedroom Tablet Cam
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic
+
+  # - platform: mjpeg
+  #   mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
+  #   name: Gabbie Cam
+  #   username: !secret blue_iris_camera_stream_usrname
+  #   password: !secret blue_iris_camera_stream_pass
+  #   authentication: basic
 
   - platform: generic
     name: Dawn

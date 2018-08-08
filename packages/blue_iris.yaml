@@ -27,6 +27,9 @@ homeassistant:
       friendly_name: Tablet Camera
       device_class: motion
     binary_sensor.motion_tablet_mb_camera:
+      friendly_name: Master Bedroom Tablet Camera
+      device_class: motion
+    binary_sensor.motion_master_bedroom:
       friendly_name: Master Bedroom Camera
       device_class: motion
     binary_sensor.motion_tablet_gb_camera:
@@ -55,6 +58,7 @@ group:
      - binary_sensor.motion_tablet_lv_camera
      - binary_sensor.motion_tablet_mb_camera
      - binary_sensor.motion_tablet_gb_camera
+     - binary_sensor.motion_master_bedroom
 
 #######################################################################################################################
 ###### Sets profile on blue iris   ####################################################################################
@@ -139,6 +143,12 @@ binary_sensor:
   - platform: mqtt
     state_topic: "blue_iris/bd_dash_cam/state"
     name: motion_tablet_mb_camera
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/masterbedroom_cam/state"
+    name: motion_master_bedroom
     payload_on: "on"
     payload_off: "off"
 
@@ -243,3 +253,11 @@ rest_command:
     url: !secret rest_command_lockdown
   sleep:
     url: !secret rest_command_sleep
+  privacy_master_cam_on:
+    url: !secret rest_command_privacy_master_cam_on
+  privacy_master_tablet_cam_on:
+    url: !secret rest_command_privacy_master_tablet_cam_on
+  privacy_master_cam_off:
+    url: !secret rest_command_privacy_master_cam_off
+  privacy_master_tablet_cam_off:
+    url: !secret rest_command_privacy_master_tablet_cam_off        

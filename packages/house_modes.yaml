@@ -31,9 +31,29 @@ homeassistant:
     input_boolean.boolean_day_time_sleep:
       friendly_name: Day Time Sleep
       hasska_hidden: true
-#      persistent: true
+    input_boolean.boolean_privacy:
+      friendly_name: Privacy
+      hasska_hidden: true
+    input_boolean.boolean_shower_time:
+      friendly_name: Shower Time
+      hasska_hidden: true
+    input_boolean.boolean_getting_dressed:
+      friendly_name: Day Time Sleep
+      hasska_hidden: true
+    input_boolean.boolean_active_outside:
+      friendly_name: Active Outside Boolean
+      haaska_hidden: true
+      icon: mdi:run-fast
     sensor.house_mode_state:
       friendly_name: House Mode
+      hasska_hidden: true
+      icon: mdi:home
+    sensor.sub_mode_state:
+      friendly_name: Sub House Mode
+      hasska_hidden: true
+      icon: mdi:home
+    sensor.privacy_mode_state:
+      friendly_name: Privacy Mode
       hasska_hidden: true
       icon: mdi:home
 
@@ -49,6 +69,21 @@ group:
       - input_boolean.boolean_evening_time
       - input_boolean.boolean_nap_time
       - input_boolean.boolean_day_time_sleep
+      - input_boolean.boolean_privacy
+
+  House_mode:
+   name: Home Mode
+   control: hidden
+   entities:
+     - sensor.house_mode_state
+     - sensor.sub_mode_state
+     - sensor.privacy_mode_state
+     # - input_boolean.boolean_active_outside
+     # - script.lamps_on
+     # - script.home_mode
+     # - script.gone_on
+     # - script.nap_time
+     # - script.daytime_sleep_mode
 
 input_boolean:
   boolean_home:
@@ -67,6 +102,14 @@ input_boolean:
     initial: off
   boolean_day_time_sleep:
     initial: off
+  boolean_privacy:
+    initial: off
+  boolean_shower_time:
+    initial: off
+  boolean_getting_dressed:
+    initial: off
+  boolean_active_outside:
+    initial: off
 
 sensor:
   - platform: template
@@ -81,14 +124,38 @@ sensor:
               Sleep
           {% elif states('input_boolean.boolean_evening_time') == 'on' %}
               Evening Time
-          {% elif states('input_boolean.boolean_movie_time') == 'on' %}
-              Movie Time
           {% elif states('input_boolean.boolean_early_morning') == 'on' %}
               Early Morning
+          {% else %}
+              None
+          {% endif %}
+
+  - platform: template
+    sensors:
+      sub_mode_state:
+        value_template: >-
+          {% if states('input_boolean.boolean_shower_time') == 'on' %}
+              Shower Time
+          {% elif states('input_boolean.boolean_getting_dressed') == 'on' %}
+              Getting Dressed
+          {% elif states('input_boolean.boolean_active_outside') == 'on' %}
+              Active Outside
           {% elif states('input_boolean.boolean_nap_time') == 'on' %}
               Nap Time
           {% elif states('input_boolean.boolean_day_time_sleep') == 'on' %}
               Day Time Sleep
+          {% elif states('input_boolean.boolean_movie_time') == 'on' %}
+              Movie Time
           {% else %}
-              None
+              N/A
+          {% endif %}
+
+  - platform: template
+    sensors:
+      privacy_mode_state:
+        value_template: >-
+          {% if states('input_boolean.boolean_privacy') == 'on' %}
+              On
+          {% else %}
+              Off
           {% endif %}

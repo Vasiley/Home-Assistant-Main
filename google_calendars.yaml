@@ -29,3 +29,10 @@
     name: Dawns Calender
     offset: "!!-480"
     track: true
+
+- cal_id: 3s6b77gqvgicsd2d3g470amfpk@group.calendar.google.com
+  entities:
+  - device_id: addressbookcontactsgroupvcalendargooglecom
+    ignore_availability: true
+    name: addressbook#contacts@group.v.calendar.google.com
+    track: true

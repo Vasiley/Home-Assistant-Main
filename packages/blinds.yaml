@@ -400,6 +400,9 @@ automation:
         entity_id: sensor.house_mode_state
         to: 'Home'
       - platform: state
+        entity_id: sensor.sub_mode_state
+        to: 'N/A'    
+      - platform: state
         entity_id: switch.shower_time
         to: 'off'
       - platform: state
@@ -438,6 +441,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
+      - platform: state
+        entity_id: sensor.sub_mode_state
+        to: 'Privacy'
       - platform: state
         entity_id: switch.shower_time
         to: 'on'

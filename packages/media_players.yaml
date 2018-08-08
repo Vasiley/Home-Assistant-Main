@@ -75,14 +75,6 @@ media_player:
   - platform: roku
     host: 192.168.1.143
 
-  # - platform: cast
-  #   host: 192.168.1.173
-  #   name: master_bedroom_cast
-  #
-  # - platform: cast
-  #   host: 192.168.1.32
-  #   name: Ha Speaker
-
 cast:
   media_player:
   - host: 192.168.1.173

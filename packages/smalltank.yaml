@@ -52,17 +52,6 @@ homeassistant:
       icon: mdi:thermometer-lines
       friendly_name: Small Tank Temp Warning
       hasska_hidden: true
-    sensor.small_tank_water_level:
-      icon: mdi:gauge
-      friendly_name: Small Tank Water Level
-      haaska_hidden: true
-    sensor.small_tank_water_level_ok:
-      icon: mdi:gauge
-      friendly_name: Small Tank Water Level Warning
-      haaska_hidden: true
-    sensor.small_tank_warning:
-      friendly_name: Small Tank Warning
-      haaska_hidden: true
     sensor.small_tank_server_temperature:
       friendly_name: Small Tank Server Temperature
       icon: mdi:temperature-fahrenheit
@@ -79,7 +68,17 @@ homeassistant:
       friendly_name: Small Tank Power
       icon: mdi:power-plug
       hasska_hidden: true
-
+    sensor.small_tank_water_level:      #Reads that water level is ok
+      icon: mdi:gauge
+      friendly_name: Small Tank Water Level
+      haaska_hidden: true
+    binary_sensor.small_tank_water_level_ok:      #binary sensor for water level
+      icon: mdi:gauge
+      friendly_name: Small Tank Water Level Warning
+      haaska_hidden: true
+    binary_sensor.small_tank_warning:                    #binary sensor that tank temp and water level is bad High level Alarm
+      friendly_name: Small Tank Warning
+      haaska_hidden: true
 group:
   Fish_tank_server_info:
    name: Small Tank Server Info
@@ -107,7 +106,7 @@ group:
      - sensor.small_tank_temp_ok
      - sensor.small_tank_temp_reading
      - sensor.small_tank_water_level
-     - sensor.small_tank_water_level_ok
+     - binary_sensor.small_tank_water_level_ok
      - binary_sensor.small_tank_warning
 
   controls:
@@ -206,7 +205,13 @@ sensor:
 
 binary_sensor:
   - platform: mqtt
-    state_topic: "small_tank/sensor/tank_warning/state"
+    state_topic: "small_tank/binary_sensor/water_level/state"
+    name: small_tank_water_level_ok
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "small_tank/binary_sensor/tank_warning/state"
     name: Small Tank Warning
     payload_on: "on"
     payload_off: "off"
@@ -265,7 +270,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.small_tank_water_level_ok
+        entity_id: binary_sensor.small_tank_water_level_ok
         to: 'on'
     action:
       - service: tts.google_say
@@ -292,7 +297,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.small_tank_warning
+        entity_id: binary_sensor.small_tank_warning
         to: 'on'
     action:
       - service: tts.google_say

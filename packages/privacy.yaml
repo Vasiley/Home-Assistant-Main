@@ -1,0 +1,65 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'privacy'
+
+switch:
+  - platform: template
+    switches:
+      privacy:
+        value_template: "{{ is_state('input_boolean.boolean_privacy', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.privacy_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.privacy_off
+
+script:
+  privacy_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_privacy
+      - service: rest_command.privacy_master_cam_off
+      - service: rest_command.privacy_master_tablet_cam_off
+
+
+  privacy_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_privacy
+      - service: rest_command.privacy_master_cam_on
+      - service: rest_command.privacy_master_tablet_cam_on
+
+automation:
+  - alias: privacy_on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_shower_time
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_getting_dressed
+        to: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.privacy_on
+
+  - alias: privacy_off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_shower_time
+        to: 'off'
+      - platform: state
+        entity_id: input_boolean.boolean_getting_dressed
+        to: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.privacy_off        

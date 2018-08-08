@@ -4,10 +4,7 @@ homeassistant:
       friendly_name: Home
       haaska_name: Home
       icon: mdi:home
-    input_boolean.boolean_active_outside:
-      friendly_name: Active Outside Boolean
-      haaska_hidden: true
-      icon: mdi:run-fast
+
     script.active_outside:
       friendly_name: Active Outside
       haaska_name: Active Outside
@@ -22,9 +19,8 @@ homeassistant:
 #                   Home Mode                                                       #####
 #                                                                                   #####
 #########################################################################################
-input_boolean:
-  boolean_active_outside:
-    initial: off
+
+
 
 #### used mostly for tasker when wife gets home
 automation:

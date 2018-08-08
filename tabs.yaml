@@ -112,14 +112,15 @@
      - group.camera_yard_card
      - group.camera_backdoor_card
      - group.camera_livingroom_card
+     - group.camera_master_bedroom_tablet_cam_card
+     - group.camera_master_bedroom_cam_card
+     - group.camera_gabbie_cam_card
+     - group.camera_master_bedroom_cam_card
+     - group.camera_iss_card
      - group.mailscan_card
      - group.camera_dawn_card
      - group.camera_herb_card
      - group.camera_mom_card
-     - group.camera_tablet_card
-     - group.camera_gabbie_cam_card
-     - group.camera_master_bedroom_cam_card
-     - group.camera_iss_card
   Roomview:
    view: yes
    name: Rooms
@@ -308,18 +309,6 @@
      - sensor.illumination_xiaomi_lv
      - sensor.illumination_kids_bathroom
      - sensor.illumination_master_bath
-
-  House_mode:
-   name: Home Mode
-   control: hidden
-   entities:
-     - sensor.house_mode_state
-     - input_boolean.boolean_active_outside
-     - script.lamps_on
-     - script.home_mode
-     - script.gone_on
-     - script.nap_time
-     - script.daytime_sleep_mode
 
   Dimmers_status_card:
    name: Dimmers

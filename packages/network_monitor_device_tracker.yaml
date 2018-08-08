@@ -36,6 +36,10 @@ homeassistant:
       friendly_name: Back Door Camera
       icon: mdi:cctv
       haaska_hidden: true
+    binary_sensor.masterbedroom_camera_connect:
+      friendly_name: Master Bedroom Camera
+      icon: mdi:cctv
+      haaska_hidden: true
 ########### Mobile Devices's  ###############################
     binary_sensor.herbs_laptop:
       friendly_name: Herbs Laptop
@@ -346,6 +350,7 @@ group:
      - binary_sensor.backdoor_camera_connect
      - binary_sensor.frontdoor_camera_connect
      - binary_sensor.swamp_camera_connect
+     - binary_sensor.masterbedroom_camera_connect
 
   NetworkDrives_status_card:
    name: Nas Drives
@@ -504,6 +509,11 @@ binary_sensor:
       backdoor_camera_connect:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.camera_backdoor", "home") }}'
+  - platform: template
+    sensors:
+      masterbedroom_camera_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.camera_master_bedroom", "home") }}'
 
 ######### Mobile Devices  ##########################
 
@@ -855,12 +865,13 @@ device_tracker:
 
   - platform: ping
     hosts:
-      driveway_camera: 192.168.2.9
+      driveway_camera: 192.168.2.10
       shed_camera: 192.168.2.11
-      swamp_camera: 192.168.2.8
+      swamp_camera: 192.168.2.12
       driveway_number_12: 192.168.2.10
       frontdoor_camera: 192.168.2.7
-      camera_backdoor: 192.168.2.6
+      camera_backdoor: 192.168.2.14
+      camera_master_bedroom: 192.168.2.6
       blinds_master_dawns_side: 192.168.2.20
       blinds_master_herbs_side: 192.168.2.21
       dawns_controller: 192.168.2.22
@@ -896,6 +907,7 @@ automation:
           - binary_sensor.swamp_camera_connect
           - binary_sensor.frontdoor_camera_connect
           - binary_sensor.backdoor_camera_connect
+          - binary_sensor.masterbedroom_camera_connect
 #         MOBILE DEVICES
           - binary_sensor.herbs_laptop
           - binary_sensor.herbs_iphone
