@@ -1,0 +1,142 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'alarm_kids_home'
+
+    input_boolean.boolean_kids_home_check:
+      friendly_name: Kids Alarm Check
+      hasska_hidden: true
+
+group:
+  input_boolean_kids_check:
+    name: input_boolean_kids_check
+    entities:
+      - binary_sensor.door_window_sensor_master_bedroom_door
+      - binary_sensor.door_window_sensor_master_closet
+      - binary_sensor.door_window_sensor_shed_door
+      - binary_sensor.door_window_sensor_gabbies_room
+      - binary_sensor.door_window_sensor_ruths_room
+      - binary_sensor.door_window_sensor_kitchen_sink
+      - binary_sensor.door_window_sensor_kitchen_table
+      - binary_sensor.door_window_sensor_dawns_side
+      - binary_sensor.door_window_sensor_herbs_side
+
+input_boolean:
+  boolean_kids_home_check:
+    initial: off
+
+automation:
+  - alias: 'kids_home_armed_failed_door/window open'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_kids_home
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: group.input_boolean_kids_check
+          state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >
+            Please Check! {%- for entity_id in states.group.input_boolean_kids_check.attributes.entity_id -%}
+            {% set parts = entity_id.split('.') -%}
+            {%- if states(entity_id) == 'on' %}
+            {%- if loop.first %} {% elif loop.last %}   {% else %}, {% endif -%}{{ states[parts[0]][parts[1]].name }}{% endif -%}
+            {%- endfor %}. And Try again
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_kids_home
+
+  - alias: 'kids_home_armed_ok_door/window open'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_kids_home
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: group.input_boolean_kids_check
+          state: 'off'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: "Worked have a good day"
+      - service: light.turn_off
+        entity_id:
+          - light.master_table_lamps
+          - light.light_bulb_2
+      - service: script.turn_on
+        entity_id: script.refresh_wink
+      - service: script.turn_on
+        entity_id: script.master_blinds_closed
+      - service: light.turn_off
+        entity_id: light.light_bulb_2
+      - delay: '00:00:15'
+      - service: rest_command.kids_home
+      - service: automation.turn_on
+        entity_id:
+          - automation.kids_home_triggers
+      - service: automation.turn_off
+        entity_id:
+          - automation.blinds_open_master
+          - automation.blinds_halfway_master
+          - automation.blinds_halfway_at_90
+          - automation.blinds_close_at_95
+          - automation.blinds_return_halfway_at_90
+          - automation.blinds_return_open_at_85
+          - automation.motion_master_lights_on
+
+  - alias: 'kids_home_disarmed'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_kids_home
+        to: 'off'
+    action:
+      - service: rest_command.no_motion
+      - service: automation.turn_off
+        entity_id:
+          - automation.kids_home_triggers
+      - service: automation.turn_on
+        entity_id:
+          - automation.blinds_open_master
+          - automation.blinds_halfway_master
+          - automation.blinds_halfway_at_90
+          - automation.blinds_close_at_95
+          - automation.blinds_return_halfway_at_90
+          - automation.blinds_return_open_at_85
+          - automation.motion_master_lights_on
+
+  - alias: 'kids_home_triggers'
+    initial_state: 'off'
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.door_window_sensor_master_bedroom_door
+          - binary_sensor.door_window_sensor_master_closet
+          - binary_sensor.door_window_sensor_shed_door
+          - binary_sensor.master_motion
+          - binary_sensor.motion_tablet_camera
+          - binary_sensor.door_window_sensor_gabbies_room
+          - binary_sensor.door_window_sensor_ruths_room
+          - binary_sensor.door_window_sensor_kitchen_sink
+          - binary_sensor.door_window_sensor_kitchen_table
+          - binary_sensor.door_window_sensor_dawns_side
+          - binary_sensor.door_window_sensor_herbs_side
+        to: 'on'
+    action:
+      - service: notify.Pushbullet
+        data:
+          message: 'An alarm has been Triggered!'
+        data_template:
+          message: >
+            An alarm has been Triggered in the {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }}

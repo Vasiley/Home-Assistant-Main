@@ -1,0 +1,142 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Window Sensors'
+
+    binary_sensor.door_window_sensor_ruths_room:
+      haaska_hidden: true
+      friendly_name: Ruths Window Sensor
+      device_class: window
+    sensor.ruths_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Ruths Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_gabbies_room:
+      haaska_hidden: true
+      friendly_name: Gabbies Window Sensor
+      device_class: window
+    sensor.gabbies_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Gabbies Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_kitchen_sink:
+      haaska_hidden: true
+      friendly_name: Kitchen Sink Window Sensor
+      device_class: window
+    sensor.kitchen_sink_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kitchen Sink Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_kitchen_table:
+      haaska_hidden: true
+      friendly_name: Kitchen Table Window Sensor
+      device_class: window
+    sensor.kitchen_table_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kitchen Table Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_dawns_side:
+      haaska_hidden: true
+      friendly_name: Dawns Side Window Sensor
+      device_class: window
+    sensor.dawns_side_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Dawns Side Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_herbs_side:
+      haaska_hidden: true
+      friendly_name: Herbs Side Window Sensor
+      device_class: window
+    sensor.herbs_side_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Herbs Side Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_livingroom_front:
+      haaska_hidden: true
+      friendly_name: LV Front Window Sensor
+      device_class: window
+    sensor.livingroom_front_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: LV Front Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    sensor.open_window_count:
+      haaska_hidden: true
+      friendly_name: Open Window Count
+      icon: mdi:window-open
+      unit_of_measurement: '#'
+
+group:
+  window_sensors_card:
+   name: Windows
+   entities:
+    - binary_sensor.door_window_sensor_ruths_room
+    - binary_sensor.door_window_sensor_gabbies_room
+    - binary_sensor.door_window_sensor_kitchen_sink
+    - binary_sensor.door_window_sensor_kitchen_table
+    - binary_sensor.door_window_sensor_dawns_side
+    - binary_sensor.door_window_sensor_herbs_side
+    - binary_sensor.door_window_sensor_livingroom_front
+
+  window_sensors_batt_card:
+   name: Windows Battery Levels
+   entities:
+    - sensor.ruths_window_sensor_batt
+    - sensor.gabbies_window_sensor_batt
+    - sensor.kitchen_sink_window_sensor_batt
+    - sensor.kitchen_table_window_sensor_batt
+    - sensor.dawns_side_window_sensor_batt
+    - sensor.herbs_side_window_sensor_batt
+    - sensor.livingroom_front_window_sensor_batt
+
+sensor:
+  - platform: template
+    sensors:
+      ruths_window_sensor_batt:
+        friendly_name: 'Ruths Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      gabbies_window_sensor_batt:
+        friendly_name: 'Gabbies Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_gabbies_room.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      kitchen_sink_window_sensor_batt:
+        friendly_name: 'Gabbies Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kitchen_sink.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      kitchen_table_window_sensor_batt:
+        friendly_name: 'Kitchen Table Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kitchen_table.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      dawns_side_window_sensor_batt:
+        friendly_name: 'Dawns Side Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_dawns_side.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      herbs_side_window_sensor_batt:
+        friendly_name: 'Herbs Side Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_herbs_side.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      livingroom_front_window_sensor_batt:
+        friendly_name: 'Living Room Front Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
+
+
+
+  # - platform: template
+  #   sensors:
+  #     open_window_count:
+  #       value_template: >-
+  #         {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'window') | list | count }}

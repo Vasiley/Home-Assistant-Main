@@ -71,6 +71,8 @@ group:
    entities:
      - light.gabbies_light
      - binary_sensor.gabbies_room_motion
+     - binary_sensor.gabbies_room_occupancy
+     - sensor.gabbies_room_temperature_2
      - sensor.gabbies_room_temperature
      - sensor.gabbies_room_motion_sensor_lux
      - sensor.motion_sensor_gabbies_room_battery
@@ -86,7 +88,12 @@ group:
      - automation.gabbie_not_home
      - automation.gabbie_light_on
      - automation.gabbie_light_off
-     - group.gabbies_blinds_card
+     - switch.driveway_camera
+     - script.driveway_cam_powercycle
+     - automation.reboot_driveway_camera
+
+     - binary_sensor.door_window_sensor_gabbies_room
+     - sensor.gabbies_window_sensor_batt
 
 
 input_boolean:
@@ -253,7 +260,7 @@ script:
         entity_id: input_boolean.boolean_gabbie_sleep
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_gabbie_awake
-      - delay: '00:00:10'  
+      - delay: '00:00:10'
       - service: light.turn_off
         data:
           entity_id: light.gabbies_light

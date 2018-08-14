@@ -19,9 +19,6 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.master
-      - service: input_boolean.turn_off
-        data:
-          entity_id: group.input_boolean_card    
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_day_time_sleep

@@ -1,0 +1,28 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'active_outside'
+
+    script.home_mode:
+      friendly_name: Home
+      haaska_name: Home
+      icon: mdi:home
+    script.active_outside:
+      friendly_name: Active Outside
+      haaska_name: Active Outside
+      icon: mdi:run-fast
+    script.inside:
+      friendly_name: Inside
+      haaska_name: Inside
+      icon: mdi:run
+
+script:
+  active_outside:
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_active_outside
+  inside:
+    sequence:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_active_outside

@@ -100,7 +100,10 @@
      - group.Dimmers_status_card
      - group.blue_iris_motion_card
      - group.lux_card
-     - group.door_window_sensors_card
+     - group.window_sensors_card
+     - group.window_sensors_batt_card
+     - group.door_sensors_card
+     - group.door_sensors_batt_card
 
   MyCameras:
    view: yes
@@ -112,6 +115,7 @@
      - group.camera_yard_card
      - group.camera_backdoor_card
      - group.camera_livingroom_card
+     - group.camera_tablet_card
      - group.camera_master_bedroom_tablet_cam_card
      - group.camera_master_bedroom_cam_card
      - group.camera_gabbie_cam_card
@@ -121,6 +125,7 @@
      - group.camera_dawn_card
      - group.camera_herb_card
      - group.camera_mom_card
+
   Roomview:
    view: yes
    name: Rooms
@@ -147,6 +152,7 @@
      - group.hue_scenes_card
      - group.Routines
      - group.input_boolean_card
+     - group.input_boolean_sub_modes_card
      - group.smellgood_card
      - group.number_of_people_in_space_card
 
@@ -266,13 +272,10 @@
      - sensor.bedroom_wallpanel_battery
      - sensor.gabbies_room_wallpanel_battery
      - sensor.kids_motion_sensor_batt
-     - sensor.front_door_sensor_batt
-     - sensor.back_door_sensor_batt
-     - sensor.shed_door_sensor_batt
-     - sensor.master_closet_door_sensor_batt
      - sensor.kids_humidity_sensor_batt
      - sensor.master_humidity_sensor_batt
      - sensor.master_bath_motion_sensor_batt
+
 
   humidity:
    name: Humidity

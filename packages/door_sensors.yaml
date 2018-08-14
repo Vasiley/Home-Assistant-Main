@@ -2,18 +2,21 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Door Window Sensors'
+        package: 'Door Sensors'
+
     binary_sensor.door_window_sensor_front_door:
       haaska_hidden: true
       friendly_name: Front Door
-    binary_sensor.door_window_sensor_back_door:
-      haaska_hidden: true
-      friendly_name: Back Door
+      device_class: door
     sensor.front_door_sensor_batt:
       haaska_hidden: true
       friendly_name: Front Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
+    binary_sensor.door_window_sensor_back_door:
+      haaska_hidden: true
+      friendly_name: Back Door
+      device_class: door
     sensor.back_door_sensor_batt:
       haaska_hidden: true
       friendly_name: Back Door Sensor Battery
@@ -22,6 +25,7 @@ homeassistant:
     binary_sensor.door_window_sensor_master_closet:
       friendly_name: Master Closet
       haaska_hidden: true
+      device_class: door
     sensor.master_closet_door_sensor_batt:
       friendly_name: Master Closet Sensor Battery
       haaska_hidden: true
@@ -30,19 +34,45 @@ homeassistant:
     binary_sensor.door_window_sensor_shed_door:
       haaska_hidden: true
       friendly_name: Shed Door
+      device_class: door
     sensor.shed_door_sensor_batt:
       haaska_hidden: true
-      friendly_name: Shed Door Battery
+      friendly_name: Shed Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
+    binary_sensor.door_window_sensor_master_bedroom_door:
+      haaska_hidden: true
+      friendly_name: Master Bedroom Door
+      device_class: door
+    sensor.master_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Master Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    sensor.open_door_count:
+      haaska_hidden: true
+      friendly_name: Open Door Count
+      icon: mdi:door-open
+      unit_of_measurement: '#'
 group:
-  door_window_sensors_card:
-   name: Door Windows
+  door_sensors_card:
+   name: Doors
    entities:
     - binary_sensor.door_window_sensor_front_door
     - binary_sensor.door_window_sensor_back_door
     - binary_sensor.door_window_sensor_master_closet
     - binary_sensor.door_window_sensor_shed_door
+    - binary_sensor.door_window_sensor_master_bedroom_door
+
+  door_sensors_batt_card:
+   name: Door Battery Levels
+   entities:
+    - sensor.front_door_sensor_batt
+    - sensor.back_door_sensor_batt
+    - sensor.shed_door_sensor_batt
+    - sensor.master_closet_door_sensor_batt
+    - sensor.master_door_sensor_batt
+
 sensor:
   - platform: template
     sensors:
@@ -64,3 +94,19 @@ sensor:
       shed_door_sensor_batt:
         friendly_name: 'Back Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_shed_door.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      master_door_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_master_bedroom_door.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      ruths_window_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room.attributes.battery_level }}"
+###### counter for open doors ###################
+  # - platform: template
+  #   sensors:
+  #     open_door_count:
+  #       value_template: >-
+  #         {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'door') | list | count }}

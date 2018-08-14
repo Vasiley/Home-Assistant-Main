@@ -1,18 +1,9 @@
 homeassistant:
   customize:
-    script.home_mode:
-      friendly_name: Home
-      haaska_name: Home
-      icon: mdi:home
+    package.node_anchors:
+      customize: &customize
+        package: 'main_home'
 
-    script.active_outside:
-      friendly_name: Active Outside
-      haaska_name: Active Outside
-      icon: mdi:run-fast
-    script.inside:
-      friendly_name: Inside
-      haaska_name: Inside
-      icon: mdi:run
 
 #########################################################################################
 #                                                                                   #####
@@ -34,19 +25,11 @@ automation:
         entity_id: script.home_mode
 
 script:
-  active_outside:
-    sequence:
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.boolean_active_outside
-  inside:
-    sequence:
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.boolean_active_outside
   home_mode:
     sequence:
       - service: input_boolean.turn_off
         data:
-          entity_id: group.input_boolean_card
+          entity_id: group.input_boolean_main_modes_card
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_home

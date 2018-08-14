@@ -1,5 +1,9 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'mode_main_nap'
+            
     script.nap_time:
       friendly_name: Nap
       icon: mdi:sleep
@@ -14,7 +18,7 @@ script:
     sequence:
       - service: input_boolean.turn_off
         data:
-          entity_id: group.input_boolean_card
+          entity_id: group.input_boolean_main_modes_card
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_nap_time
@@ -54,4 +58,3 @@ script:
       - service: light.turn_off
         data:
           entity_id: light.master
-      

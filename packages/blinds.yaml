@@ -84,7 +84,7 @@ group:
      - input_select.lv_room_rear_blinds_status
      - input_select.lv_room_front_blinds_status
      - input_select.master_blinds_status
-     - input_select.gabbies_blinds_status
+     - input_select.ruths_blinds_status
      - script.blinds_closed
      - script.blinds_halfway
      - script.blinds_open
@@ -175,9 +175,9 @@ sensor:
         value_template: "{{ states('input_select.master_blinds_status') }}"
   - platform: template
     sensors:
-      gabbies_blinds_state:
+      ruths_blinds_state:
         friendly_name: 'Master Blinds Status'
-        value_template: "{{ states('input_select.gabbies_blinds_status') }}"
+        value_template: "{{ states('input_select.ruths_blinds_status') }}"
 
   - platform: mqtt
     state_topic: "kitchenblinds/Blinds Wifi/wifi"
@@ -265,7 +265,6 @@ automation:
       - platform: state
         entity_id: sensor.kitchen_blinds_state
         to: 'Closed'
-
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Sleep'
@@ -275,9 +274,9 @@ automation:
       - platform: state
         entity_id: sensor.house_mode_state
         to: 'Away'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Movie Time'
+      # - platform: state
+      #   entity_id: sensor.house_mode_state
+      #   to: 'Movie Time'
     action:
       - service: script.turn_on
         entity_id: script.blinds_closed_kitchen
@@ -401,7 +400,7 @@ automation:
         to: 'Home'
       - platform: state
         entity_id: sensor.sub_mode_state
-        to: 'N/A'    
+        to: 'N/A'
       - platform: state
         entity_id: switch.shower_time
         to: 'off'
@@ -449,6 +448,9 @@ automation:
         to: 'on'
       - platform: state
         entity_id: switch.getting_dressed
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_kids_home
         to: 'on'
     action:
       - service: script.turn_on
@@ -503,9 +505,9 @@ script:
       - service: shell_command.master2_blinds_front_closed
       - service: input_select.select_option
         data:
-          entity_id: input_select.gabbies_blinds_status
+          entity_id: input_select.ruths_blinds_status
           option: 'Closed'
-      - service: shell_command.gabbies_blinds_closed
+      - service: shell_command.ruths_blinds_closed
 
   blinds_halfway:
     sequence:
@@ -533,9 +535,9 @@ script:
       - service: shell_command.master2_blinds_front_halfway
       - service: input_select.select_option
         data:
-          entity_id: input_select.gabbies_blinds_status
+          entity_id: input_select.ruths_blinds_status
           option: 'Halfway'
-      - service: shell_command.gabbies_blinds_halfway
+      - service: shell_command.ruths_blinds_halfway
 
   blinds_open:
     sequence:
@@ -563,9 +565,9 @@ script:
       - service: shell_command.master2_blinds_front_open
       - service: input_select.select_option
         data:
-          entity_id: input_select.gabbies_blinds_status
+          entity_id: input_select.ruths_blinds_status
           option: 'Open'
-      - service: shell_command.gabbies_blinds_open
+      - service: shell_command.ruths_blinds_open
 
 ########################### Kitchen Blinds ####################################
   blinds_closed_kitchen:

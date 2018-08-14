@@ -178,16 +178,6 @@ sensor.illumination_xiaomi_lv:
   name: Kitchen Gateway Lux
   platform: xiaomi_aqara
   unique_id: illumination7811dce1a9b9
-binary_sensor.door_window_sensor_front_door:
-  config_entry_id:
-  name: Front Door
-  platform: xiaomi_aqara
-  unique_id: status158d00020455e9
-binary_sensor.door_window_sensor_back_door:
-  config_entry_id:
-  name: Back Door
-  platform: xiaomi_aqara
-  unique_id: status158d0002047170
 sensor.temperature_kids_bathroom:
   config_entry_id:
   name:
@@ -218,16 +208,6 @@ light.hue_master_closet:
   name:
   platform: hue
   unique_id: 00:17:88:01:03:58:19:0c-0b
-binary_sensor.door_window_sensor_master_closet:
-  config_entry_id:
-  name: Master Closet
-  platform: xiaomi_aqara
-  unique_id: status158d0002059a59
-binary_sensor.door_window_sensor_shed_door:
-  config_entry_id:
-  name: Shed Door
-  platform: xiaomi_aqara
-  unique_id: status158d0002059cf4
 sensor.pressure_master_bathroom:
   config_entry_id:
   name: Master Bath Pressure
@@ -378,3 +358,68 @@ media_player.plex_server_galaxy_j7_pop:
   name:
   platform: plex
   unique_id: 3368ce0620abc112-com-plexapp-android
+binary_sensor.door_window_sensor_master_bedroom_door:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d00022bd50d
+binary_sensor.door_window_sensor_front_door:
+  config_entry_id:
+  name: Front Door
+  platform: xiaomi_aqara
+  unique_id: status158d00020455e9
+binary_sensor.door_window_sensor_back_door:
+  config_entry_id:
+  name: Back Door
+  platform: xiaomi_aqara
+  unique_id: status158d0002047170
+binary_sensor.door_window_sensor_master_closet:
+  config_entry_id:
+  name: Master Closet
+  platform: xiaomi_aqara
+  unique_id: status158d0002059a59
+binary_sensor.door_window_sensor_shed_door:
+  config_entry_id:
+  name: Shed Door
+  platform: xiaomi_aqara
+  unique_id: status158d0002059cf4
+binary_sensor.door_window_sensor_ruths_room:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d000232db96
+binary_sensor.door_window_sensor_gabbies_room:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d000232dc7a
+binary_sensor.door_window_sensor_kitchen_sink:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d00023869b9
+binary_sensor.door_window_sensor_kitchen_table:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d000236f8e0
+binary_sensor.door_window_sensor_dawns_side:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0002386662
+binary_sensor.door_window_sensor_herbs_side:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d000237041e
+binary_sensor.door_window_sensor_livingroom_front:
+  config_entry_id:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d00023866d0
+media_player.plex_server_ruths_roku:
+  config_entry_id:
+  name:
+  platform: plex
+  unique_id: dd8247930c04c4ac229a16b98af099f6

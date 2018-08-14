@@ -5,12 +5,21 @@ homeassistant:
       customize: &customize
         package: 'alarm'
 
+    # sensor.motion_count:
+    #   haaska_hidden: true
+    #   icon: mdi:alert
+    #   friendly_name: Motion Counts
+    #   unit_of_measurement: '#'
+
 group:
   alarm_panel_card:
    name: Alarm
    entities:
      - alarm_control_panel.ha_alarm
      - sensor.blue_iris_profile
+     - sensor.open_door_count
+     - sensor.open_window_count
+#     - sensor.motion_count
 
 ##############################################################################
 ###### see home mode package for setting of the mode house is in      ########
@@ -21,66 +30,26 @@ alarm_control_panel:
     trigger_time: 1
     pending_time: 5
     code: !secret alarm_code
-
-automation:
-  - alias: rerun alarm
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: alarm_control_panel.ha_alarm
-        to: 'triggered'
-    condition:
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'away'
-      - condition: state
-        entity_id: alarm_control_panel.ha_alarm
-        state: 'triggered'
-    action:
-      - delay: '00:00:02'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-          message: 'You are detected and recorded'
-      - service: light.turn_on
-        data:
-          entity_id: group.all_lights
-          flash: short
-      - service: light.turn_off
-        entity_id: light.light_bulb
-
 ########################################################
 #        Notify of where is motion after alarm is triggered
 ########################################################
+automation:
   - alias: 'where_is_motion_alarm_triggered'
     initial_state: 'off'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_sensor_kids_bathroom
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.gabbies_room_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.kids_hallway_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.laundry_room_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.kitchen_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.hallway_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.bathroom_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.master_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.motion_tablet_camera
+        entity_id:
+          - binary_sensor.motion_sensor_kids_bathroom
+          - binary_sensor.gabbies_room_motion
+          - binary_sensor.kids_hallway_motion
+          - binary_sensor.laundry_room_motion
+          - binary_sensor.kitchen_motion
+          - binary_sensor.hallway_motion
+          - binary_sensor.bathroom_motion
+          - binary_sensor.master_motion
+          - binary_sensor.motion_tablet_camera
+          - binary_sensor.motion_master_bedroom
+          - binary_sensor.motion_frontdoor
         to: 'on'
     condition:
       condition: or
@@ -106,25 +75,7 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >
-            An alarm has been Triggered in the {% if is_state('binary_sensor.motion_sensor_kids_bathroom', 'on') %}
-            Kids Bathroom
-            {% elif is_state('binary_sensor.binary_sensor.gabbies_room_motion', 'on') %}
-            Gabbies Room
-            {% elif is_state('binary_sensor.kids_hallway_motion', 'on') %}
-            Kids Hallway
-            {% elif is_state('binary_sensor.kitchen_motion', 'on') %}
-            Kitchen
-            {% elif is_state('binary_sensor.hallway_motion', 'on') %}
-            Hallway
-            {%elif is_state('binary_sensor.bathroom_motion', 'on') %}
-            Master Bath
-            {%elif is_state('binary_sensor.master_motion', 'on') %}
-            Master
-            {% elif is_state('binary_sensor.laundry_room_motion', 'on') %}
-            Laundry Room
-            {% elif is_state('binary_sensor.motion_tablet_camera', 'on') %}
-            Living Room
-            {% endif %}
+            There is motion in the {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }}
       - service: light.turn_on
         data:
           entity_id: group.all_lights
@@ -136,103 +87,12 @@ automation:
           message: 'An alarm has been Triggered!'
         data_template:
           message: >
-            An alarm has been Triggered in the {% if is_state('binary_sensor.motion_sensor_kids_bathroom', 'on') %}
-            Kids Bathroom
-            {% elif is_state('binary_sensor.binary_sensor.gabbies_room_motion', 'on') %}
-            Gabbies Room
-            {% elif is_state('binary_sensor.kids_hallway_motion', 'on') %}
-            Kids Hallway
-            {% elif is_state('binary_sensor.kitchen_motion', 'on') %}
-            Kitchen
-            {% elif is_state('binary_sensor.hallway_motion', 'on') %}
-            Hallway
-            {%elif is_state('binary_sensor.bathroom_motion', 'on') %}
-            Master Bath
-            {%elif is_state('binary_sensor.master_motion', 'on') %}
-            Master
-            {% elif is_state('binary_sensor.laundry_room_motion', 'on') %}
-            Laundry Room
-            {% elif is_state('binary_sensor.motion_tablet_camera', 'on') %}
-            Living Room
-            {% endif %}
+            An alarm has been Triggered in the {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }}
 
 
-#################################################
-# a door opened when armed
-#################################################
-  - alias: 'Triggers for when armed'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.door_window_sensor_front_door
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.door_window_sensor_back_door
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.door_window_sensor_shed_door
-        to: 'on'
-    condition:
-      condition: or
-      conditions:
-        - condition: state
-          entity_id: alarm_control_panel.ha_alarm
-          state: 'armed_home'
-        - condition: state
-          entity_id: alarm_control_panel.ha_alarm
-          state: 'armed_away'
-    action:
-      - service: alarm_control_panel.alarm_trigger
-        entity_id: alarm_control_panel.ha_alarm
-      - service: tts.google_say
-        data_template:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-          message: >
-            The {% if is_state('binary_sensor.door_window_sensor_front_door', 'on') %}
-            Front Door Has Been Opened
-            {% elif is_state('binary_sensor.door_window_sensor_back_door', 'on') %}
-            Back Door Has Been Opened
-            {% elif is_state('binary_sensor.door_window_sensor_shed_door', 'on') %}
-            Shed Door Has Been Opened
-            {% endif %}
-      - service: xiaomi_aqara.play_ringtone
-        data:
-          gw_mac: !secret xiaomi_mac
-          ringtone_id: 1
-          ringtone_vol: 100
-      - service: notify.Pushbullet
-        data:
-          message: 'An alarm has been Triggered!'
-        data_template:
-          message: >
-             The {% if is_state('binary_sensor.door_window_sensor_front_door', 'on') %}
-             Front Door Has Been Opened
-             {% elif is_state('binary_sensor.door_window_sensor_back_door', 'on') %}
-             Back Door Has Been Opened
-             {% elif is_state('binary_sensor.door_window_sensor_shed_door', 'on') %}
-             Shed Door Has Been Opened
-             {% endif %}
-      - service: automation.turn_on
-        entity_id: automation.where_is_motion_alarm_triggered
 
 ###### booleans on and off for alarms
-#################################################
-#             Alarm Auto Arm Away when LEAVE                       #
-#################################################
-  - alias: 'Alarm Away when Leave home'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.set_hold_mode
-        to: 'away'
-      - platform: state
-        entity_id: input_boolean.boolean_away
-        to: 'on'
-    action:
-      - service: alarm_control_panel.alarm_arm_away
-        data:
-          entity_id: alarm_control_panel.ha_alarm
-          code: !secret alarm_code
+
 
 #################################################
 #          Alarm Auto DISARM when RETURN                         #
@@ -255,21 +115,60 @@ automation:
         entity_id: light.light_bulb
       - service: automation.turn_off
         entity_id: automation.where_is_motion_alarm_triggered
-
-######################################################
-#        Alarm auto arm home when house is in sleep
-######################################################
-  - alias: 'Alarm set armed home'
+#################################################
+# a door opened when armed away/home
+#################################################
+  - alias: 'Triggers for when armed'
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: input_boolean.boolean_sleep
+        entity_id:
+          - binary_sensor.door_window_sensor_front_door
+          - binary_sensor.door_window_sensor_back_door
+          - binary_sensor.door_window_sensor_shed_door
+          - binary_sensor.door_window_sensor_gabbies_room
+          - binary_sensor.door_window_sensor_ruths_room
+          - binary_sensor.door_window_sensor_kitchen_sink
+          - binary_sensor.door_window_sensor_kitchen_table
+          - binary_sensor.door_window_sensor_dawns_side
+          - binary_sensor.door_window_sensor_herbs_side
+          - binary_sensor.door_window_sensor_livingroom_front
         to: 'on'
-      - platform: state
-        entity_id: sensor.set_hold_mode
-        to: 'sleep'
-    action:
-      - service: alarm_control_panel.alarm_arm_home
-        data:
+    condition:
+      condition: or
+      conditions:
+        - condition: state
           entity_id: alarm_control_panel.ha_alarm
-          code: !secret alarm_code
+          state: 'armed_home'
+        - condition: state
+          entity_id: alarm_control_panel.ha_alarm
+          state: 'armed_away'
+    action:
+      - service: alarm_control_panel.alarm_trigger
+        entity_id: alarm_control_panel.ha_alarm
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: >
+            The {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }} just opened!
+
+      - service: xiaomi_aqara.play_ringtone
+        data:
+          gw_mac: !secret xiaomi_mac
+          ringtone_id: 1
+          ringtone_vol: 100
+      - service: notify.Pushbullet
+        data:
+          message: 'An alarm has been Triggered!'
+        data_template:
+          message: >
+            The {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }} just opened!
+      - service: automation.turn_on
+        entity_id: automation.where_is_motion_alarm_triggered
+
+# sensor:
+#   - platform: template
+#     sensors:
+#       motion_count:
+#         value_template: >-
+#           {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'motion') | list | count }}

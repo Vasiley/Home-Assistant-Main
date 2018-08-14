@@ -66,6 +66,7 @@ automation:
             {% elif is_state("input_select.harmony", "PowerOff") %}
               -1
             {% else %}
+              -1
             {% endif %}
       - service: input_select.select_option
         entity_id: input_select.harmony

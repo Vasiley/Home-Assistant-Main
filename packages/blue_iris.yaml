@@ -11,7 +11,7 @@ homeassistant:
     binary_sensor.motion_outdoor_driveway:
       friendly_name: Driveway
       device_class: motion
-    binary_sensor.motion_outdoor_frontdoor:
+    binary_sensor.motion_frontdoor:
       friendly_name: Front Door
       device_class: motion
     binary_sensor.motion_outdoor_number12:
@@ -53,7 +53,7 @@ group:
      - binary_sensor.motion_outdoor_driveway
      - binary_sensor.motion_outdoor_number12
      - binary_sensor.motion_outdoor_swamp
-     - binary_sensor.motion_outdoor_frontdoor
+     - binary_sensor.motion_frontdoor
      - binary_sensor.motion_outdoor_backdoor
      - binary_sensor.motion_tablet_lv_camera
      - binary_sensor.motion_tablet_mb_camera
@@ -69,6 +69,8 @@ sensor:
     value_template: >-
        {% if 'profile=1' in value %}
          No Motion Detection
+        {% elif 'profile=2' in value %}
+          Kids Home Alone 
        {% elif 'profile=5' in value %}
          Lockdown Full Motion Detection
        {% elif 'profile=6' in value %}
@@ -253,6 +255,8 @@ rest_command:
     url: !secret rest_command_lockdown
   sleep:
     url: !secret rest_command_sleep
+  kids_home:
+    url: !secret rest_command_kids_home
   privacy_master_cam_on:
     url: !secret rest_command_privacy_master_cam_on
   privacy_master_tablet_cam_on:
@@ -260,4 +264,4 @@ rest_command:
   privacy_master_cam_off:
     url: !secret rest_command_privacy_master_cam_off
   privacy_master_tablet_cam_off:
-    url: !secret rest_command_privacy_master_tablet_cam_off        
+    url: !secret rest_command_privacy_master_tablet_cam_off

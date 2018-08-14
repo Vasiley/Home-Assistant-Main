@@ -12,7 +12,6 @@ group:
     control: hidden
     name: Living Room
     entities:
-     - binary_sensor.door_window_sensor_front_door
      - light.lamps
      - light.herbs_lamp
      - light.dawns_lamp
@@ -37,11 +36,11 @@ group:
      - script.front_cam_dashboard
      - script.vas_dashboard
      - switch.dawns_scent
+     - binary_sensor.door_window_sensor_front_door
+     - sensor.front_door_sensor_batt
+     - binary_sensor.door_window_sensor_livingroom_front
+     - sensor.livingroom_front_window_sensor_batt
 
-
-
-
- 
  carport_lights_card:
     control: hidden
     name: Carport
@@ -82,6 +81,10 @@ group:
       - script.blinds_closed
       - script.blinds_halfway
       - script.blinds_open
+      - binary_sensor.door_window_sensor_kitchen_sink
+      - sensor.kitchen_sink_window_sensor_batt
+      - binary_sensor.door_window_sensor_kitchen_table
+      - sensor.kitchen_table_window_sensor_batt
 
  laundry_room_card:
    control: hidden
@@ -139,9 +142,6 @@ group:
    control: hidden
    name: Ruths Room
    entities:
-     - sensor.ruths_room_temperature
-     - binary_sensor.ruths_room_occupancy
-     - switch.ruths_room_scent
-     - switch.driveway_camera
-     - script.driveway_cam_powercycle
-     - automation.reboot_driveway_camera
+     - group.ruths_blinds_card
+     - binary_sensor.door_window_sensor_ruths_room
+     - sensor.ruths_window_sensor_batt

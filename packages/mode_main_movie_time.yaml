@@ -1,5 +1,8 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'mode movie time'    
     script.movie_time:
       friendly_name: Movie Time
       haaska_name: Movie Time
@@ -23,7 +26,7 @@ script:
     sequence:
       - service: input_boolean.turn_off
         data:
-          entity_id: group.input_boolean_card
+          entity_id: group.input_boolean_main_modes_card
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_movie_time

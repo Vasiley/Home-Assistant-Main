@@ -263,8 +263,8 @@ homeassistant:
       friendly_name: Master Herbs Side Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_gabbies:
-      friendly_name: Gabbies Blinds
+    binary_sensor.blinds_ruths:
+      friendly_name: Ruths Blinds
       icon: mdi:zip-box
       haaska_hidden: true
     binary_sensor.blinds_kitchen_table:
@@ -323,7 +323,7 @@ group:
      - sensor.front_blinds_controller_wifi_signal
      - sensor.master_blinds_controller_dawns_wifi_signal
      - sensor.master_blinds_controller_herbs_wifi_signal
-     - sensor.gabbies_blinds_wifi_signal
+     - sensor.ruths_blinds_wifi_signal
 
   wink_connections_card:
    name: Wink Connections
@@ -374,7 +374,7 @@ group:
      - binary_sensor.blinds_kitchen_sink
      - binary_sensor.blinds_couch
      - binary_sensor.blinds_tv
-     - binary_sensor.blinds_gabbies
+     - binary_sensor.blinds_ruths
 
   etc_devices_card:
    name: Mobile Devices
@@ -807,9 +807,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.blinds_master_herbs_side", "home") }}'
   - platform: template
     sensors:
-      blinds_gabbies:
+      blinds_ruths:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_gabbies", "home") }}'
+        value_template: '{{ is_state("device_tracker.blinds_ruths", "home") }}'
   - platform: template
     sensors:
       blinds_kitchen_table:
@@ -879,7 +879,7 @@ device_tracker:
       blinds_kitchen_sink: 192.168.2.24
       blinds_couch: 192.168.2.25
       blinds_tv: 192.168.2.26
-      blinds_gabbies: 192.168.2.27
+      blinds_ruths: 192.168.2.27
       dash_master: 192.168.2.40
       dash_living_room: 192.168.2.41
       dash_gabbies_room: 192.168.2.42
@@ -969,7 +969,7 @@ automation:
           - binary_sensor.blinds_couch
           - binary_sensor.blinds_master_dawns_side
           - binary_sensor.blinds_master_herbs_side
-          - binary_sensor.blinds_gabbies
+          - binary_sensor.blinds_ruths
           - binary_sensor.blinds_kitchen_table
           - binary_sensor.blinds_kitchen_sink
 #         misc devices

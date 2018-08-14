@@ -1,0 +1,25 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'alarm_arm_home'
+
+######################################################
+#        Alarm auto arm home when house is in sleep
+######################################################
+automation:
+  - alias: 'Alarm set armed home'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_sleep
+        to: 'on'
+      - platform: state
+        entity_id: sensor.set_hold_mode
+        to: 'sleep'
+    action:
+      - service: alarm_control_panel.alarm_arm_home
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code

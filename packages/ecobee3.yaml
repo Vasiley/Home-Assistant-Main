@@ -1,6 +1,6 @@
 homeassistant:
   customize:
-        
+
     package.node_anchors:
       customize: &customize
         package: 'ecobee'
@@ -21,7 +21,7 @@ group:
    name: Occupancy
    entities:
      - binary_sensor.thermostat_occupancy
-     - binary_sensor.ruths_room_occupancy
+     - binary_sensor.gabbies_room_occupancy
      - binary_sensor.master_bedroom_occupancy
      - binary_sensor.living_room_occupancy
   ecobee_sensors_card:
