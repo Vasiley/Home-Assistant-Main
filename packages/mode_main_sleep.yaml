@@ -1,5 +1,37 @@
 homeassistant:
   customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'modes_main_sleep'
+
+    input_boolean.boolean_sleep:
+      friendly_name: Sleep
+      hasska_hidden: true
+
+    input_number.sleep_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.sleep_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.sleep_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+    input_number.onkyo_volume_sleepmode:
+      friendly_name: Onkyo Volume Early Morning
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.sleep_mode_chromecast_livingroom:
+      friendly_name: Chrome Cast LV Volume Early Morning
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+
     script.lamps_on:
       friendly_name: Sleep
       icon: mdi:sleep
@@ -10,22 +42,52 @@ homeassistant:
 #                   Sleep Mode                                                      #####
 #                                                                                   #####
 #########################################################################################
+
+input_boolean:
+  boolean_sleep:
+    initial: off
+
+input_number:
+  sleep_mode_brightness_value:
+    name: Sleep Mode Brightness
+    initial: 20
+    min: 0
+    max: 100
+    step: 1
+  sleep_mode_color_temp_value:
+    name: Sleep Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  sleep_mode_transition_value:
+    name: Sleep Mode Transition
+    initial: 30
+    min: 1
+    max: 90
+    step: 1
+  sleep_mode_chromecast_livingroom:
+    name: Early Morning Chrome Cast living room
+    initial: .3
+    min: 0
+    max: 1
+    step: .1
+  onkyo_volume_sleepmode:
+    name: Onkyo Volume
+    initial: .6
+    min: 0
+    max: 1.75
+    step: .1
+      
 script:
   lamps_on:
     sequence:
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker
-          message: 'Good Night'
       - service: input_boolean.turn_off
         data:
           entity_id: group.input_boolean_main_modes_card
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_sleep
-      # - service: media_player.turn_off
-      #   data:
-      #     entity_id: media_player.stereo
       - delay: '00:00:03'
       - service: climate.set_hold_mode
         data:
@@ -35,6 +97,10 @@ script:
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Good Night'
       - service: fan.turn_off
         data:
           entity_id: fan.living_room_fan

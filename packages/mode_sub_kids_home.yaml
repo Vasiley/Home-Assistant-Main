@@ -5,6 +5,11 @@ homeassistant:
       customize: &customize
         package: 'alarm_kids_home'
 
+    input_boolean.boolean_kids_home:
+      friendly_name: Kids Home Alone
+      haaska_hidden: true
+      icon: mdi:human-child
+
     input_boolean.boolean_kids_home_check:
       friendly_name: Kids Alarm Check
       hasska_hidden: true
@@ -25,6 +30,8 @@ group:
 
 input_boolean:
   boolean_kids_home_check:
+    initial: off
+  boolean_kids_home:
     initial: off
 
 automation:

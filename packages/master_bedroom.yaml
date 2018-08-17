@@ -176,7 +176,6 @@ automation:
              {{ states('input_number.evening_mode_color_temp_value') | int }}
              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
              {{ states('input_number.movie_mode_color_temp_value') | int }}
-             {% elif is_state("input_boolean.boolean_sleep", "on") %}
              {% elif is_state("input_boolean.boolean_home", "on") %}
              {{ states('input_number.home_mode_color_temp_value') | int }}
               {% elif is_state("input_boolean.boolean_nap_time", "on") %}

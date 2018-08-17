@@ -5,7 +5,23 @@ homeassistant:
       customize: &customize
         package: 'daytime_sleep'
 
-    script.daytime_sleep_mode:
+    input_boolean.boolean_day_time_sleep:
+      friendly_name: Day Time Sleep
+      hasska_hidden: true
+
+    script.daytime_sleep_mode_on:
+      haaska_hidden: true
+      hidden: false
+      persistence: false
+      friendly_name: Daytime Sleep On
+      icon: mdi:sleep
+    script.daytime_sleep_mode_off:
+      haaska_hidden: true
+      hidden: false
+      persistence: false
+      friendly_name: Daytime Sleep Off
+      icon: mdi:sleep
+    switch.daytime_sleep:
       haaska_hidden: false
       hidden: false
       persistence: false
@@ -13,22 +29,49 @@ homeassistant:
       haaska_name: Daytime Sleep
       icon: mdi:sleep
 
+input_boolean:
+  boolean_day_time_sleep:
+    initial: off
+
 script:
-  daytime_sleep_mode:
+  daytime_sleep_mode_on:
     sequence:
-      - service: light.turn_on
-        data:
-          entity_id: light.master
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_day_time_sleep
       - service: automation.turn_off
         data:
-          entity_id: automation.motion_master_bedroom
-      - delay: '00:02:00'
+          entity_id: automation.motion_master_lights_on
       - service: light.turn_off
-        data:
-          entity_id: light.master
+        entity_id: light.master
       - service: light.turn_off
         data:
           entity_id: light.master_table_lamps
+          transition: 45
+
+  daytime_sleep_mode_off:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.boolean_day_time_sleep
+      - service: automation.turn_on
+        data:
+          entity_id: automation.motion_master_lights_on
+      - service: light.turn_on
+        entity_id:
+          - light.master
+          - light.master_table_lamps
+
+switch:
+  - platform: template
+    switches:
+      daytime_sleep:
+        value_template: "{{ is_state('input_boolean.boolean_day_time_sleep', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.daytime_sleep_mode_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.daytime_sleep_mode_off

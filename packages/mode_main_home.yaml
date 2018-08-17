@@ -1,17 +1,77 @@
 homeassistant:
   customize:
+
     package.node_anchors:
       customize: &customize
         package: 'main_home'
 
+    input_boolean.boolean_home:
+      friendly_name: Home
+      hasska_hidden: true
+
+    input_number.home_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.home_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.home_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+    input_number.home_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.home_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
 
 #########################################################################################
 #                                                                                   #####
 #                   Home Mode                                                       #####
 #                                                                                   #####
 #########################################################################################
+input_boolean:
+  boolean_home:
+    initial: on
 
-
+input_number:
+  home_mode_brightness_value:
+    name: Home Mode Brightness
+    initial: 100
+    min: 0
+    max: 100
+    step: 1
+  home_mode_color_temp_value:
+    name: Home Mode Color Temp
+    initial: 154
+    min: 154
+    max: 426
+    step: 1
+  home_mode_transition_value:
+    name: Home Mode Transition
+    initial: 10
+    min: 1
+    max: 90
+    step: 1
+  home_mode_chromecast_lv:
+    name: Home Mode TTS Living Room
+    initial: .80
+    min: 0
+    max: 1
+    step: .1
+  home_mode_chromecast_masterbedroom:
+    name: Home Mode TTS Master Bedroom
+    initial: .40
+    min: 0
+    max: 1
+    step: .1
 
 #### used mostly for tasker when wife gets home
 automation:
@@ -59,37 +119,20 @@ script:
           entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:01'
       - service: light.turn_on
-        data:
-          entity_id: light.lamps
-          color_temp: 162
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.kitchen
-          color_temp: 154
-          brightness: 224
-      - service: light.turn_on
-        data:
-          entity_id: light.master_hallway
-          color_temp: 154
-          brightness: 224
-      - service: light.turn_on
-        data:
-          entity_id: light.kids_hallway
-          color_temp: 154
-          brightness: 224
+        data_template:
+          entity_id:
+            - light.lamps
+            - light.kitchen
+            - light.master_hallway
+            - light.kids_hallway
+          color_temp: "{{ states('input_number.home_mode_color_temp_value') | int }}"
+          brightness_pct: "{{ states('input_number.home_mode_brightness_value') | int }}"
       - delay: '00:00:01'
       - service: light.turn_off
-        data:
-          entity_id: light.master_hallway
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data:
-          entity_id: light.kitchen
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data:
-          entity_id: light.kids_hallway
+        entity_id:
+          - light.master_hallway
+          - light.kitchen
+          - light.kids_hallway
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker

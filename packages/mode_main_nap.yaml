@@ -3,7 +3,24 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'mode_main_nap'
-            
+
+    input_boolean.boolean_nap_time:
+      friendly_name: Nap Time
+      hasska_hidden: true
+
+    input_number.nap_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.nap_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.nap_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+
     script.nap_time:
       friendly_name: Nap
       icon: mdi:sleep
@@ -13,6 +30,30 @@ homeassistant:
 #                  Nap Time Mode                                                    #####
 #                                                                                   #####
 #########################################################################################
+input_boolean:
+  boolean_nap_time:
+    initial: off
+
+input_number:
+  nap_mode_brightness_value:
+    name: Nap Mode Brightness
+    initial: 60
+    min: 0
+    max: 100
+    step: 1
+  nap_mode_color_temp_value:
+    name: Nap Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  nap_mode_transition_value:
+    name: Nap Mode Transition
+    initial: 20
+    min: 1
+    max: 90
+    step: 1
+
 script:
   nap_time:
     sequence:
@@ -48,13 +89,7 @@ script:
           brightness: 125
       - service: light.turn_off
         data:
-          entity_id: light.kitchen
-      - service: light.turn_off
-        data:
-          entity_id: light.master_hallway
-      - service: light.turn_off
-        data:
-          entity_id: light.bathroom
-      - service: light.turn_off
-        data:
-          entity_id: light.master
+          entity_id:
+            - light.kitchen
+            - light.master_hallway
+            - light.bathroom

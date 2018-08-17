@@ -5,6 +5,21 @@ homeassistant:
       customize: &customize
         package: 'away_mode'
 
+    input_boolean.boolean_away:
+      friendly_name: Away
+      hasska_hidden: true
+
+    input_number.alarm_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.alarm_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+
     script.gone_on:
       friendly_name: Away
       icon: mdi:security-home
@@ -14,6 +29,24 @@ homeassistant:
     script.alarm_repeat:
       friendly_name: Alarm Repeat
       haaska_hidden: true
+
+input_boolean:
+  boolean_away:
+    initial: off
+
+input_number:
+  alarm_mode_chromecast_lv:
+    name: Home Mode TTS Living Room
+    initial: .99
+    min: 0
+    max: 1
+    step: .1
+  alarm_mode_chromecast_masterbedroom:
+    name: Home Mode TTS Master Bedroom
+    initial: .99
+    min: 0
+    max: 1
+    step: .1
 
 ######## Away Mode Script   #############
 script:

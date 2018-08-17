@@ -1,0 +1,28 @@
+input_label:
+  set_name:
+    description: Use this service to set or update the name of input label
+    fields:
+      entity_id:
+        description: Entity id of the input label
+        example: 'input.label.my_label'
+      value:
+        description:  string value you want to set as name
+        example: "This is an input label"
+  set_value:
+    description: Use this service to set or update value of input label
+    fields:
+      entity_id:
+        description: Entity id of the input label
+        example: 'input.label.my_label'
+      value:
+        description: String value you want to set
+        example: "Hello, Home Assistant!"
+  set_icon:
+    description: Use this service to set or update the icon of input label
+    fields:
+      entity_id:
+        description: Entity id of the input label
+        example: 'input.label.my_label'
+      value:
+        description:  icon value (as string) you want to set
+        example: "mdi:thumbsup"

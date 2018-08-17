@@ -1,0 +1,176 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'early_morning'
+
+    input_boolean.boolean_early_morning:
+      friendly_name: Early Morning
+      hasska_hidden: true
+
+    input_number.earlymorning_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.earlymorning_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.earlymorning_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+    input_number.onkyo_volume_earlymorning:
+      friendly_name: Onkyo Volume Early Morning
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.earlymorning_mode_chromecast_livingroom:
+      friendly_name: Chrome Cast LV Volume Early Morning
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+
+    script.herbearly_on:        #Invoke word for alexa
+      friendly_name: Morning
+
+    script.workday_off:
+      friendly_name: Herb up Early
+      haaska_hidden: true
+    script.work_days_on:
+      friendly_name: Work Days
+      haaska_hidden: true
+
+
+#########################################################################################
+#                                                                                   #####
+#                   Early Morning Mode                                              #####
+#                                                                                   #####
+#########################################################################################
+input_boolean:
+  boolean_early_morning:
+    initial: off
+
+input_number:
+  earlymorning_mode_brightness_value:
+    name: Early Morning Mode Brightness
+    initial: 60
+    min: 0
+    max: 100
+    step: 1
+  earlymorning_mode_color_temp_value:
+    name: Early Morning Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  earlymorning_mode_transition_value:
+    name: Early Morning Mode Transition
+    initial: 20
+    min: 1
+    max: 90
+    step: 1
+  earlymorning_mode_chromecast_livingroom:
+    name: Early Morning Chrome Cast living room
+    initial: .3
+    min: 0
+    max: 1
+    step: .1
+  onkyo_volume_earlymorning:
+    name: Onkyo Volume
+    initial: .6
+    min: 0
+    max: 1.75
+    step: .1
+
+automation:
+  - alias: 'early_morning_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+    action:
+
+      - service: script.turn_on
+        entity_id: script.led_yellow
+      - service: switch.turn_on
+        data:
+          entity_id: switch.network_switch_blue_iris_monitor
+      - delay: '00:00:01'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.ha_speaker
+          volume_level: '{{ states.earlymorning_mode_chromecast_livingroom.state }}'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'Good Morning Herb how are you this morning The weather for today is{{states.sensor.dark_sky_daily_summary.state}}'
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+            {% if is_state("binary_sensor.workday_sensor", "on") %}
+               script.workday_on
+            {% else %}
+               script.workday_off
+            {% endif %}
+      - delay: '00:00:15'
+      - service: light.turn_on
+        data:
+          entity_id: light.herbs_lamp
+          color_temp: 200
+          brightness: 175
+      - service: rest_command.no_motion
+      - service: rest_command.no_motion
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "home"
+
+script:
+  workday_off:
+    sequence:
+      - delay: '00:00:19'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'I am turning on some Classical Music for your pleasure'
+      - delay: '00:00:07'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.harmony
+          option: 'Classical Music'
+      - delay: '00:00:10'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.stereo
+          volume_level: '{{ states.input_number.onkyo_volume_earlymorning.state }}'
+
+  workday_on:
+    sequence:
+      - delay: '00:00:19'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'I am turning on the TV'
+      - delay: '00:00:07'
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.harmony
+          option: 'Directv'
+      - delay: '00:00:10'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.stereo
+          volume_level: '{{ states.input_number.onkyo_volume_earlymorning.state }}'
+
+############# this is what alexa/hadashboard is turning on to invoke the mode
+  herbearly_on:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean_main_modes_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_early_morning
+# rest_command sets profile of blue iris software

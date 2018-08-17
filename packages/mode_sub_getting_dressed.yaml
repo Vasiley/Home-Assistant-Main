@@ -1,0 +1,103 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'mode_getting_dressed'
+
+    input_boolean.boolean_getting_dressed:
+      friendly_name: Day Time Sleep
+      hasska_hidden: true
+
+    switch.getting_dressed:
+      friendly_name: Getting Dressed
+      icon: mdi:room-service
+      haaska_hidden: false
+      haaska_name: Getting Dressed
+    automation.master_bath_getting_dressed:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    script.getting_dressed_on:
+      friendly_name: Getting Dressed Script On
+      haaska_hidden: true
+    script.getting_dressed_off:
+      friendly_name: Getting Dressed Script Off
+      haaska_hidden: true
+
+input_boolean:
+  boolean_getting_dressed:
+    initial: off
+
+automation:
+  - alias: Master Bath Getting Dressed
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_bathroom_dimmer_state
+        to: 'Getting Dressed'
+    action:
+      - service: script.turn_on
+        entity_id: script.getting_dressed_on
+
+script:
+  getting_dressed_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_getting_dressed
+      - service: automation.turn_off
+        entity_id: automation.motion_bathroom_home_mode_off
+      - service: automation.turn_off
+        entity_id: automation.motion_bathroom_sleep_off
+      - service: automation.turn_off
+        entity_id: automation.motion_master_bedroom_motion_off
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom_vanity
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.bathroom
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.master_table_lamps
+          color_temp: 154
+          brightness: 255
+      - service: light.turn_on
+        data:
+          entity_id: light.light_bulb_2
+
+
+  getting_dressed_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_getting_dressed
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_home_mode_off
+      - service: automation.turn_on
+        entity_id: automation.motion_bathroom_sleep_off
+      - service: automation.turn_on
+        entity_id: automation.motion_master_bedroom_motion_off
+      - service: light.turn_off
+        entity_id: light.bathroom_vanity
+      - service: light.turn_off
+        entity_id: light.bathroom
+
+switch:
+  - platform: template
+    switches:
+      getting_dressed:
+        value_template: "{{ is_state('input_boolean.boolean_getting_dressed', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.getting_dressed_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.getting_dressed_off

@@ -5,6 +5,7 @@
    entities:
      - group.House_mode
      - group.alarm_panel_card
+     - group.alarm_clock
      - light.lamps
      - light.kitchen
      - light.master_hallway
@@ -151,7 +152,7 @@
      - group.Effects
      - group.hue_scenes_card
      - group.Routines
-     - group.input_boolean_card
+     - group.input_boolean_main_modes_card
      - group.input_boolean_sub_modes_card
      - group.smellgood_card
      - group.number_of_people_in_space_card

@@ -5,6 +5,14 @@ homeassistant:
       customize: &customize
         package: 'privacy'
 
+    input_boolean.boolean_privacy:
+      friendly_name: Privacy
+      hasska_hidden: true
+
+input_boolean:
+  boolean_privacy:
+    initial: off
+
 switch:
   - platform: template
     switches:
@@ -62,4 +70,4 @@ automation:
         to: 'off'
     action:
       - service: script.turn_on
-        entity_id: script.privacy_off        
+        entity_id: script.privacy_off

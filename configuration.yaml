@@ -96,3 +96,18 @@ xiaomi_aqara:
        host: 192.168.1.11
 
 vasileys_awesome_pixel_control:
+
+binary_sensor:
+  - platform: workday
+    country: US
+    workdays: [mon, tue, wed, thu]
+    excludes: [fri, sat, sun, holiday]
+
+input_label:
+  some_string1:
+    name: Some String 1
+    icon: mdi:alphabetical
+  input_label:
+    name: Some String 2
+    value: 'Hello, Home Assistant!'
+    icon: mdi:alphabetical    

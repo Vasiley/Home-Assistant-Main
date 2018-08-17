@@ -2,10 +2,74 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'mode movie time'    
+        package: 'mode movie time'
+
+    input_boolean.boolean_movie_time:
+      friendly_name: Movie Time
+      hasska_hidden: true
+
+    input_number.movie_mode_brightness_value:
+      friendly_name: Light Brightness %
+      icon: mdi:lightbulb-on-outline
+      persistent: true
+    input_number.movie_mode_color_temp_value:
+      friendly_name: Light Color Temperature
+      icon: mdi:lightbulb-on
+      persistent: true
+    input_number.movie_mode_transition_value:
+      friendly_name: Light Transition Time
+      icon: mdi:timer
+      persistent: true
+    input_number.movie_mode_chromecast_lv:
+      friendly_name: Chrome Cast Living Room Value
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+    input_number.movie_mode_chromecast_masterbedroom:
+      friendly_name: Chrome Cast Master Bedroom
+      icon: mdi:volume-high
+      persistent: true
+      haaska_hidden: true
+
     script.movie_time:
       friendly_name: Movie Time
       haaska_name: Movie Time
+
+input_boolean:
+  boolean_movie_time:
+    initial: off
+
+input_number:
+  movie_mode_brightness_value:
+    name: Movie Mode Brightness
+    initial: 30
+    min: 0
+    max: 100
+    step: 1
+  movie_mode_color_temp_value:
+    name: Movie Mode Color Temp
+    initial: 426
+    min: 154
+    max: 426
+    step: 1
+  movie_mode_transition_value:
+    name: Movie Mode Transition
+    initial: 45
+    min: 0
+    max: 90
+    step: 1
+  movie_mode_chromecast_lv:
+    name: Movie Time TTS Living Room
+    initial: .75
+    min: 0
+    max: 1
+    step: .1
+  movie_mode_chromecast_masterbedroom:
+    name: Movie Time Mode TTS Master Bedroom
+    initial: .35
+    min: 0
+    max: 1
+    step: .1
 
 automation:
   - alias: Automate Movie time
@@ -36,7 +100,7 @@ script:
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker
-          volume_level: '{{ states.input_number.movi_mode_chromecast_lv.state }}'
+          volume_level: '{{ states.input_number.movie_mode_chromecast_lv.state }}'
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.master_bedroom_cast
@@ -50,14 +114,10 @@ script:
           entity_id: light.door_lamp
           transition: 10
       - service: light.turn_on
-        data:
-          entity_id: light.herbs_lamp
-          color_temp: 426
-          brightness: 125
-          transition: 45
-      - service: light.turn_on
-        data:
-          entity_id: light.dawns_lamp
-          color_temp: 426
-          brightness: 125
-          transition: 45
+        data_template:
+          entity_id:
+            - light.herbs_lamp
+            - light.dawns_lamp
+          color_temp: '{{ states.input_number.movie_mode_color_temp_value.state }}'
+          brightness_pct: '{{ states.input_number.movie_mode_brightness_value.state }}'
+          transition: '{{ states.input_number.movie_mode_transition_value.state }}'

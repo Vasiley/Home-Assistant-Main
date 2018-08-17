@@ -11,31 +11,11 @@ homeassistant:
     switch.wemo_master_bath_fan:
       friendly_name: Master Bath Humidity Fan
       icon: mdi:fan
-    switch.getting_dressed:
-      friendly_name: Getting Dressed
-      icon: mdi:room-service
-      haaska_hidden: false
-      haaska_name: Getting Dressed
     automation.master_bath_light_left_on:
       haaska_hidden: true
       hidden: false
       persistence: true
-    automation.master_bath_shower_time_off:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.master_bath_shower_time_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.master_bath_shower_time_warmup_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: false
-    automation.master_bath_shower_time_warmup_off:
-      haaska_hidden: true
-      hidden: false
-      persistence: false
+
     automation.motion_bathroom_home_mode_off:
       haaska_hidden: true
       hidden: false
@@ -53,10 +33,6 @@ homeassistant:
       hidden: false
       persistence: true
     automation.motion_bathroom_sleep_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.master_bath_getting_dressed:
       haaska_hidden: true
       hidden: false
       persistence: true
@@ -81,22 +57,6 @@ homeassistant:
       icon: mdi:battery
     sensor.bathroom_temperature:
       friendly_name: Master Bath Temperature
-    script.bath_time_on:
-      friendly_name: Shower Time Script
-      haaska_hidden: true
-    script.bath_time_off:
-      friendly_name: Finished Shower Script
-      haaska_hidden: true
-    script.getting_dressed_on:
-      friendly_name: Getting Dressed Script On
-      haaska_hidden: true
-    script.getting_dressed_off:
-      friendly_name: Getting Dressed Script Off
-      haaska_hidden: true
-    switch.shower_time:
-      friendly_name: Shower Time
-      haaska_hidden: false
-      haaska_name: Shower Time
     switch.master_bath_heater:
       friendly_name: Master Bath Heater
       haaska_name: Master Bath Heater
@@ -142,9 +102,6 @@ group:
        - switch.wemo_master_bath_fan
        - switch.getting_dressed
        - switch.master_bath
-#       - binary_sensor.bathroom_motion
-#       - sensor.bathroom_temperature
-#       - sensor.motion_sensor_bathroom_battery
        - sensor.master_humidity_sensor_batt
        - sensor.master_bathroom_dimmer_state
        - sensor.master_bathroom_dimmer_last_update
@@ -348,80 +305,6 @@ automation:
       - service: light.turn_off
         entity_id: light.bathroom
 
-  - alias: Master Bath Shower Time Warmup On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
-        to: 'Preshower warmup'
-    action:
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-          message: 'Disabling  Master Bedroom Speakers and turning on preshower warmup'
-      - delay: '00:00:30'
-      - service: switch.turn_off
-        entity_id: switch.master_bedroom_mixer
-      - service: script.turn_on
-        entity_id: script.bath_heater_on
-
-  - alias: Master Bath Shower Time Warmup Off
-    initial_state: 'on'
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.bathroom_temperature
-        above: '75'
-    action:
-      - service: script.turn_on
-        entity_id: script.bath_heater_off
-      - service: switch.turn_on
-        entity_id: switch.master_bedroom_mixer
-      - service: tts.google_say
-        data:
-          entity_id: media_player.master_bedroom_cast
-          message: 'Renabling Master Bedroom Speakers'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker, media_player_master_bedroom_cast_card
-          message: 'The Bathroom is warm time for a shower'
-
-  - alias: Master Bath Getting Dressed
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
-        to: 'Getting Dressed'
-    action:
-      - service: script.turn_on
-        entity_id: script.getting_dressed_on
-
-  - alias: Master Bath Shower Time On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
-        to: 'On'
-    action:
-      - service: script.turn_on
-        entity_id: script.bath_time_on
-
-  - alias: Master Bath Shower Time Off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
-        to: 'Off'
-    action:
-      - service: switch.turn_on
-        entity_id: switch.master_bedroom_mixer
-      - delay: '00:00:15'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.master_bedroom_cast
-          message: 'Renabling Master Bedroom Speakers, Hope you had a good bath'
-      - service: script.turn_on
-        entity_id: script.bath_time_off
-
   - alias: Master Bath light left on
     initial_state: 'on'
     trigger:
@@ -461,130 +344,7 @@ automation:
       - service: switch.turn_off
         entity_id: switch.wemo_master_bath_fan
 
-script:
-  bath_time_on:
-    sequence:
-      - delay: '00:00:01'
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.boolean_shower_time
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_sleep_off
-      - service: automation.turn_off
-        entity_id: automation.motion_master_bedroom_motion_off
-      - service: switch.turn_on
-        entity_id: switch.master_bath_heater
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom_vanity
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.master_table_lamps
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.light_bulb_2
-
-  bath_time_off:
-    sequence:
-      - delay: '00:00:01'
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.boolean_shower_time
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_off
-      - service: automation.turn_on
-        entity_id: automation.motion_master_bedroom_motion_off
-      - service: light.turn_off
-        entity_id: light.bathroom_vanity
-      - service: light.turn_off
-        entity_id: light.bathroom
-      - service: switch.turn_off
-        entity_id: switch.master_bath_heater
-
-  getting_dressed_on:
-    sequence:
-      - delay: '00:00:01'
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.boolean_getting_dressed
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_sleep_off
-      - service: automation.turn_off
-        entity_id: automation.motion_master_bedroom_motion_off
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom_vanity
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.master_table_lamps
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.light_bulb_2
-
-
-  getting_dressed_off:
-    sequence:
-      - delay: '00:00:01'
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.boolean_getting_dressed
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_off
-      - service: automation.turn_on
-        entity_id: automation.motion_master_bedroom_motion_off
-      - service: light.turn_off
-        entity_id: light.bathroom_vanity
-      - service: light.turn_off
-        entity_id: light.bathroom
-######## for alexa to say turn on and turn Off
-
 switch:
-  - platform: template
-    switches:
-      shower_time:
-        value_template: "{{ is_state('light.bathroom_vanity', 'on') }}"
-        turn_on:
-          - service: script.turn_on
-            data:
-              entity_id: script.bath_time_on
-        turn_off:
-          - service: script.turn_on
-            data:
-              entity_id: script.bath_time_off
-  - platform: template
-    switches:
-      getting_dressed:
-        value_template: "{{ is_state('light.bathroom_vanity', 'on') }}"
-        turn_on:
-          - service: script.turn_on
-            data:
-              entity_id: script.getting_dressed_on
-        turn_off:
-          - service: script.turn_on
-            data:
-              entity_id: script.getting_dressed_off
   - platform: template
     switches:
       master_bath_heater:

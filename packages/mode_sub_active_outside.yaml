@@ -4,6 +4,11 @@ homeassistant:
       customize: &customize
         package: 'active_outside'
 
+    input_boolean.boolean_active_outside:
+      friendly_name: Active Outside Boolean
+      haaska_hidden: true
+      icon: mdi:run-fast
+
     script.home_mode:
       friendly_name: Home
       haaska_name: Home
@@ -16,6 +21,10 @@ homeassistant:
       friendly_name: Inside
       haaska_name: Inside
       icon: mdi:run
+
+input_boolean:
+  boolean_active_outside:
+    initial: off
 
 script:
   active_outside:

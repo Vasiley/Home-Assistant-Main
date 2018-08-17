@@ -1,0 +1,200 @@
+homeassistant:
+  customize:
+
+    ################################################
+    ## Node Anchors
+    ################################################
+
+    package.node_anchors:
+      customize: &customize
+        package: 'alarmclock'
+
+      exposed: &exposed
+        <<: *customize
+        emulated_hue_hidden: true
+        homebridge_hidden: false
+        critical: true
+
+      not_exposed: &not_exposed
+        <<: *customize
+        emulated_hue_hidden: false
+        homebridge_hidden: true
+        critical: false
+
+      hidden: &hidden
+        <<: *customize
+        hidden: true
+        critical: false
+
+    automation.alarm_clock:
+      icon: mdi:alarm-check
+
+group:
+  alarm_clock:
+    name: Alarm Clock
+    control: hidden
+    entities:
+      - input_number.slider_hours
+      - input_number.slider_minutes
+      - input_boolean.am
+      - input_boolean.pm
+      - input_label.alarm_current_time
+      - input_boolean.week_day_only
+      - automation.alarm_clock
+
+input_number:
+  slider_hours:
+    name: Hours
+    initial: 6
+    min: 0
+    max: 11
+    step: 1
+
+  slider_minutes:
+    name: Minutes
+    initial: 0
+    min: 0
+    max: 59
+    step: 5
+
+input_boolean:
+  week_day_only:
+    name: Weekdays Only
+    initial: on
+    icon: mdi:calendar-check
+
+  am:
+    name: AM
+    initial: on
+    icon: mdi:weather-sunny
+
+  pm:
+    name: PM
+    initial: off
+    icon: mdi:weather-night
+
+input_label:
+  alarm_current_time:
+    name: Current Alarm Time
+    icon: mdi:timer
+
+automation:
+  - alias: Update Current Alarm Time
+    initial_state: true
+    hide_entity: true
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id:
+          - input_boolean.am
+          - input_boolean.pm
+          - input_number.slider_hours
+          - input_number.slider_minutes
+    action:
+      - service: input_label.set_value
+        entity_id: input_label.alarm_current_time
+        data_template:
+          value: >
+            {%- if states.input_number.slider_hours.state | int < 10 -%}
+              {%- if states.input_number.slider_hours.state|int == 0 %}
+                12
+              {%- else -%}
+                {{- 0 ~ states.input_number.slider_hours.state|int -}}
+              {%- endif -%}
+            {%- else -%}
+              {{- states.input_number.slider_hours.state |int -}}
+            {% endif -%}:
+            {%- if states.input_number.slider_minutes.state | int < 10 -%}
+              {{- 0 ~ states.input_number.slider_minutes.state |int -}}
+            {%- else -%}
+              {{- states.input_number.slider_minutes.state|int -}}
+            {%- endif -%}{%- if states.input_boolean.am.state == "on" %} AM{%- else %} PM{%- endif -%}
+
+  - alias: AM Change OFF
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.am
+      from: 'on'
+      to: 'off'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.pm
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.am
+
+  - alias: AM Change ON
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.am
+      from: 'off'
+      to: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.pm
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.am
+
+  - alias: PM Change OFF
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.pm
+      from: 'on'
+      to: 'off'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.am
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.pm
+
+  - alias: PM Change ON
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: input_boolean.pm
+      from: 'off'
+      to: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.am
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.pm
+
+  - alias: Alarm Clock
+    initial_state: true
+    hide_entity: true
+    trigger:
+      platform: time
+      minutes: '/1'
+      seconds: 00
+    condition:
+      - condition: template
+        value_template: '{{ states.binary_sensor.workday_sensor.state == "on" }}'
+      - condition: template
+        value_template: '{{ states.input_boolean.alarm_clock.state == "on" }}'
+      - condition: template
+        value_template: >
+          {% if states.input_boolean.am.state == "on" %}
+            {% set hour = (states.input_number.slider_hours.state | int) %}
+          {% else %}
+            {% set hour = (states.input_number.slider_hours.state | int) + 12 %}
+          {% endif %}
+          {{ 'true' if states.sensor.time.state.split(':')[0] |int == hour else 'false' }}
+      - condition: template
+        value_template: "{{ 'true' if (states.sensor.time.state.split(':')[1]  |int == states.input_number.slider_minutes.state |int) else 'false' }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'good morning'
+      - service: light.turn_on
+        data:
+          entity_id: light.master_table_lamps
+          transition: 45
