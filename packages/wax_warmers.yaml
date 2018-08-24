@@ -4,7 +4,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Wax Warmers'
-
     switch.dawn_day:
       friendly_name: Dawns Scent
       haaska_name: Dawns Scent
@@ -31,12 +30,22 @@ group:
    name: Wax Warmers
    control: hidden
    entities:
-     - switch.dawns_scent
      - switch.dawn_day
      - switch.kids_bathroom_scent
      - switch.kids_bathroom_scent_2
      - automation.warmers_scent_on
      - automation.warmers_scent_off
+
+switch:
+  - platform: mqtt
+    name: "dawn_day"
+    state_topic: "dawns/relay/state"
+    command_topic: "dawns/gpio/14"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
 
 automation:
   - alias: warmers_scent_on
@@ -46,24 +55,22 @@ automation:
         to: 'Home'
     action:
       - service: switch.turn_on
-        entity_id: switch.kids_bathroom_scent_2
-      - service: switch.turn_on
-        entity_id: switch.master_bath
-      - service: switch.turn_on
-        entity_id: switch.kids_bathroom_scent
+        entity_id:
+          - switch.kids_bathroom_scent_2
+          - switch.kids_bathroom_scent
+          - switch.dawn_day
 
   - alias: warmers_scent_off
     trigger:
       - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Evening Time'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Away'
+        entity_id:
+          - input_boolean.boolean_sleep
+          - input_boolean.boolean_evening_time
+          - input_boolean.boolean_away
+        to: 'on'
     action:
       - service: switch.turn_off
-        entity_id: switch.kids_bathroom_scent_2
-      - service: switch.turn_off
-        entity_id: switch.master_bath
-      - service: switch.turn_off
-        entity_id: switch.kids_bathroom_scent
+        entity_id:
+          - switch.kids_bathroom_scent
+          - switch.kids_bathroom_scent_2
+          - switch.dawn_day

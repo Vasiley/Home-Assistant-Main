@@ -1,0 +1,102 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Kids Shower Time'
+    input_boolean.boolean_kids_shower_time:
+      friendly_name: Kids Shower Time
+      hasska_hidden: true
+    automation.motion_kids_bathroom_sleep_off:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    automation.kids_bath_shower_time_on:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    script.kids_shower_time_on:
+      friendly_name: Kids Shower Time Script
+      haaska_hidden: true
+    script.kids_shower_time_off:
+      friendly_name: Kids Finished Shower Script
+      haaska_hidden: true
+    switch.kids_shower_time:
+      friendly_name: Kids Shower Time
+      haaska_hidden: false
+      haaska_name: Kids Shower TIme
+
+
+input_boolean:
+  boolean_kids_shower_time:
+    initial: off
+
+automation:
+  - alias: Kids Bath Shower Time On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_bathroom_dimmer_state
+        to: 'On'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_shower_time_on
+
+  - alias: Kids Bath Shower Time Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_bathroom_dimmer_state
+        to: 'Off'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_shower_time_off
+
+script:
+  kids_shower_time_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_kids_shower_time
+      - service: light.turn_on
+        data:
+          entity_id:
+            - light.kids_bathroom
+            - light.kids_bathroom_vanity
+          color_temp: 154
+          brightness: 255
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'A stinky Kid is taking a shower'
+
+
+  kids_shower_time_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_kids_shower_time
+      - service: light.turn_off
+        entity_id:
+          - light.kids_bathroom_vanity
+          - light.kids_bathroom
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'No More Stinky Kid'
+switch:
+  - platform: template
+    switches:
+      kids_shower_time:
+        value_template: "{{ is_state('light.kids_bathroom_vanity', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.kids_shower_time_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.kids_shower_time_off

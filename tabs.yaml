@@ -40,6 +40,7 @@
      - group.theme_input_select_card
      - group.google_calender_card
      - group.test_led_card
+     - weather.yweather
   Devicesview:
    view: yes
    name: Equipment
@@ -152,8 +153,6 @@
      - group.Effects
      - group.hue_scenes_card
      - group.Routines
-     - group.input_boolean_main_modes_card
-     - group.input_boolean_sub_modes_card
      - group.smellgood_card
      - group.number_of_people_in_space_card
 
@@ -166,6 +165,7 @@
      - group.water_sensors
      - group.controls
      - group.fish_leds_card
+     - group.arduino_card
 
   fish_tank_main_view:
    view: yes

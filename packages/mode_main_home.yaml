@@ -152,11 +152,11 @@ script:
           message: 'Home Mode Set Volume Set for Master Bedroom'
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
-          message: 'Home Mode is Activated'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.master_bedroom_cast
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
           message: 'Home Mode is Activated'
       - service: light.turn_off
         entity_id: light.gateway_light_xiaomi_lv
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_extra_work_day

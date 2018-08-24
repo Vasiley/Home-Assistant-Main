@@ -30,30 +30,17 @@ homeassistant:
       friendly_name: Kids Bathroom Lux
       haaska_hidden: true
       unit_of_measurement: 'Lux'
-    automation.motion_kids_bathroom_home_mode_on:
+    automation.motion_kids_bathroom_motion_on:
+      friendly_name: Kids Bathroom Motion On
       haaska_hidden: true
       hidden: false
       persistence: true
-    automation.motion_kids_bathroom_evening_mode_on:
+    automation.motion_kids_bathroom_motion_off:
+      friendly_name: Kids Bathroom Motion Off
       haaska_hidden: true
       hidden: false
       persistence: true
-    automation.motion_kids_bathroom_home_mode_off:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.motion_kids_bathroom_sleep_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.motion_kids_bathroom_sleep_off:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.kids_bath_shower_time_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
+
     automation.kids_bath_light_left_on:
       haaska_hidden: true
       hidden: false
@@ -62,16 +49,8 @@ homeassistant:
       haaska_hidden: true
     automation.kids_humidity_fan_off:
       haaska_hidden: true
-    script.kids_shower_time_on:
-      friendly_name: Kids Shower Time Script
-      haaska_hidden: true
-    script.kids_shower_time_off:
-      friendly_name: Kids Finished Shower Script
-      haaska_hidden: true
-    switch.kids_shower_time:
-      friendly_name: Kids Shower Time
-      haaska_hidden: false
-      haaska_name: Kids Shower TIme
+
+
     light.kids_bathroom:
       persistence: false
     light.kids_bathroom_vanity:
@@ -105,11 +84,8 @@ group:
       - automation.kids_bath_light_left_on
       - automation.kids_bath_shower_time_off
       - automation.kids_bath_shower_time_on
-      - automation.motion_kids_bathroom_home_mode_off
-      - automation.motion_kids_bathroom_home_mode_on
-      - automation.motion_kids_bathroom_evening_mode_on
-      - automation.motion_kids_bathroom_sleep_off
-      - automation.motion_kids_bathroom_sleep_on
+      - automation.motion_kids_bathroom_motion_on
+      - automation.motion_kids_bathroom_motion_off
 
 
 sensor:
@@ -161,12 +137,9 @@ sensor:
         value_template: "{{ states.sensor.humidity_kids_bathroom.attributes.battery_level }}"
 
 automation:
-  - alias: Motion Kids Bathroom Home Mode On
+  - alias: Motion Kids Bathroom Motion On
     initial_state: 'on'
     trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_bathroom_motion
-        to: 'on'
       - platform: state
         entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'on'
@@ -174,148 +147,80 @@ automation:
       condition: and
       conditions:
       - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
+        entity_id: input_boolean.boolean_kids_shower_time
+        state: 'off'        
     action:
       - service: light.turn_on
-        data:
+        data_template:
           entity_id: light.kids_bathroom
-          color_temp: 154
-          brightness: 255
+          color_temp: >-
+             {% if is_state("input_boolean.boolean_evening_time", "on") %}
+             {{ states('input_number.evening_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+             {{ states('input_number.movie_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_sleep", "on") %}
+             {{ states('input_number.sleep_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+             {{ states('input_number.earlymorning_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_home", "on") %}
+             {{ states('input_number.home_mode_color_temp_value') | int }}
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+              {{ states('input_number.nap_mode_color_temp_value') | int }}
+             {% else %}
+               180
+             {% endif %}
+          brightness_pct: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+              {{ states('input_number.evening_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+              {{ states('input_number.movie_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+              {{ states('input_number.earlymorning_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+              {{ states('input_number.home_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+              {{ states('input_number.nap_mode_brightness_value') | int }}
+              {% else %}
+                100
+              {% endif %}
 
-  - alias: Motion Kids Bathroom Evening Mode On
+
+  - alias: Motion Kids Bathroom Motion On
     initial_state: 'on'
     trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_bathroom_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_kids_bathroom
-        to: 'on'
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.kids_bathroom
-          color_temp: 392
-          brightness: 74
-
-  - alias: Motion Kids Bathroom Home Mode off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_bathroom_motion
-        to: 'off'
-        for:
-          minutes: 3
       - platform: state
         entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'off'
         for:
           minutes: 3
     condition:
-      condition: or
+      condition: and
       conditions:
       - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'
+        entity_id: input_boolean.boolean_kids_shower_time
+        state: 'off'
     action:
       - service: light.turn_off
-        entity_id: light.kids_bathroom
-
-  - alias: Motion Kids Bathroom Sleep On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_bathroom_motion
-        to: 'on'
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_kids_bathroom
-        to: 'on'
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'sleep'
-      - condition: state
-        entity_id: input_boolean.boolean_sleep
-        state: 'on'
-    action:
-      - service: light.turn_on
-        data:
+        data_template:
           entity_id: light.kids_bathroom
-          color_temp: 426
-          brightness: 50
-
-  - alias: Motion Kids Bathroom Sleep Off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kids_bathroom_motion
-        to: 'off'
-        for:
-          minutes: 5
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_kids_bathroom
-        to: 'off'
-        for:
-          minutes: 5
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'sleep'
-      - condition: state
-        entity_id: input_boolean.boolean_sleep
-        state: 'on'
-    action:
-      - service: light.turn_off
-        entity_id: light.kids_bathroom
-
-  - alias: Kids Bath Shower Time On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kids_bathroom_dimmer_state
-        to: 'On'
-    action:
-      - service: script.turn_on
-        entity_id: script.kids_shower_time_on
-
-  - alias: Kids Bath Shower Time Off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kids_bathroom_dimmer_state
-        to: 'Off'
-    action:
-      - service: script.turn_on
-        entity_id: script.kids_shower_time_off
+          transition: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+              {{ states('input_number.evening_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+              {{ states('input_number.movie_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+              {{ states('input_number.earlymorning_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+              {{ states('input_number.home_mode_transition_value') | int }}
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+              {{ states('input_number.nap_mode_transition_value') | int }}
+              {% else %}
+                15
+              {% endif %}
 
   - alias: Kids Bath light left on
     initial_state: 'on'
@@ -323,19 +228,13 @@ automation:
       - platform: state
         entity_id: light.kids_bathroom_vanity
         to: 'on'
-        for:
-          hours: 1
-          minutes: 00
-          seconds: 00
+        for: '01:00:00'
     action:
-      - service: automation.turn_on
-        entity_id: automation.motion_kids_bathroom_home_mode_on
-      - service: automation.turn_on
-        entity_id: automation.motion_kids_bathroom_sleep_on
       - service: light.turn_off
-        entity_id: light.kids_bathroom_vanity
-      - service: light.turn_off
-        entity_id: light.kids_bathroom
+        entity_id:
+          - light.kids_bathroom_vanity
+          - light.kids_bathroom
+
 ###############################################################################
 ###  vent fan if humidity is over 60 control                            #######
 ###############################################################################
@@ -355,53 +254,3 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.wemo_kids_bath_fan
-
-
-script:
-  kids_shower_time_on:
-    sequence:
-      - delay: '00:00:05'
-      - service: automation.turn_off
-        entity_id: automation.motion_kids_bathroom_home_mode_off
-      - service: automation.turn_off
-        entity_id: automation.motion_kids_bathroom_sleep_off
-      - service: light.turn_on
-        data:
-          entity_id: light.kids_bathroom
-          color_temp: 154
-          brightness: 255
-      - service: light.turn_on
-        data:
-          entity_id: light.kids_bathroom_vanity
-          color_temp: 154
-          brightness: 255
-      # - service: switch.turn_on
-      #   entity_id: switch.wemo_kids_bath_fan
-  kids_shower_time_off:
-    sequence:
-      - delay: '00:00:05'
-      - service: automation.turn_on
-        entity_id: automation.motion_kids_bathroom_home_mode_off
-      - service: automation.turn_on
-        entity_id: automation.motion_kids_bathroom_sleep_off
-      - service: light.turn_off
-        entity_id: light.kids_bathroom_vanity
-      - service: homeassistant.turn_off
-        entity_id: light.kids_bathroom
-      # - service: switch.turn_off
-      #   entity_id: switch.wemo_kids_bath_fan
-
-
-switch:
-  - platform: template
-    switches:
-      kids_shower_time:
-        value_template: "{{ is_state('light.kids_bathroom_vanity', 'on') }}"
-        turn_on:
-          - service: script.turn_on
-            data:
-              entity_id: script.kids_shower_time_on
-        turn_off:
-          - service: script.turn_on
-            data:
-              entity_id: script.kids_shower_time_off

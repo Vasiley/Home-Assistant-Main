@@ -21,6 +21,8 @@ group:
      - group.ha_server_automations
      - group.bi_server_automations
      - group.setting_humdity_settings_card
+     - group.input_boolean_main_modes_card
+     - group.input_boolean_sub_modes_card
 
 ################  EVENING MODE #################################################
   setting_evening_mode_settings_card:

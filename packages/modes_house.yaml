@@ -18,11 +18,12 @@ homeassistant:
       icon: mdi:home
     binary_sensor.workday_sensor:
       friendly_name: Work Today
-      haaska_hidden: true  
+      haaska_hidden: true
 
 group:
   input_boolean_main_modes_card:
     name: Input Boolean House Mode
+    control: hidden
     entities:
       - input_boolean.boolean_home
       - input_boolean.boolean_away
@@ -34,12 +35,16 @@ group:
 
   input_boolean_sub_modes_card:
     name: Input Boolean Sub House Mode
+    control: hidden
     entities:
       - input_boolean.boolean_privacy
       - input_boolean.boolean_kids_home
       - input_boolean.boolean_day_time_sleep
       - input_boolean.boolean_privacy
       - input_boolean.boolean_kids_home
+      - input_boolean.boolean_active_outside
+      - input_boolean.boolean_kids_shower_time
+      - input_boolean.boolean_shower_time
 
 
   House_mode:
@@ -51,12 +56,6 @@ group:
      - sensor.privacy_mode_state
      - input_boolean.boolean_kids_home
      - binary_sensor.workday_sensor
-     # - input_boolean.boolean_active_outside
-     # - script.lamps_on
-     # - script.home_mode
-     # - script.gone_on
-     # - script.nap_time
-     # - script.daytime_sleep_mode
 
 sensor:
   - platform: template
@@ -87,6 +86,8 @@ sensor:
         value_template: >-
           {% if states('input_boolean.boolean_shower_time') == 'on' %}
               Shower Time
+          {% elif states('input_boolean.boolean_kids_shower_time') == 'on' %}
+              Kids Shower Time
           {% elif states('input_boolean.boolean_getting_dressed') == 'on' %}
               Getting Dressed
           {% elif states('input_boolean.boolean_active_outside') == 'on' %}

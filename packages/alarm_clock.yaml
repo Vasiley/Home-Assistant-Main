@@ -34,30 +34,37 @@ group:
     name: Alarm Clock
     control: hidden
     entities:
+      - input_boolean.alarm_clock
       - input_number.slider_hours
       - input_number.slider_minutes
       - input_boolean.am
       - input_boolean.pm
       - input_label.alarm_current_time
       - input_boolean.week_day_only
+      - input_boolean.boolean_extra_work_day
       - automation.alarm_clock
 
 input_number:
   slider_hours:
     name: Hours
-    initial: 6
+    initial: 4
     min: 0
     max: 11
     step: 1
 
   slider_minutes:
     name: Minutes
-    initial: 0
+    initial: 30
     min: 0
     max: 59
     step: 5
 
 input_boolean:
+  alarm_clock:
+    name: Alarm On
+    initial: on
+    icon: mdi:alarm-multiple
+
   week_day_only:
     name: Weekdays Only
     initial: on
@@ -73,10 +80,31 @@ input_boolean:
     initial: off
     icon: mdi:weather-night
 
+  boolean_extra_work_day:
+    name: Extra Workday
+    initial: off
+    icon: mdi:calendar-check
+
 input_label:
   alarm_current_time:
     name: Current Alarm Time
     icon: mdi:timer
+
+sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
+
+binary_sensor:
+  - platform: workday
+    country: US
+    workdays: [mon, tue, wed, thu]
+    excludes: [fri, sat, sun, holiday]
 
 automation:
   - alias: Update Current Alarm Time
@@ -176,7 +204,8 @@ automation:
       seconds: 00
     condition:
       - condition: template
-        value_template: '{{ states.binary_sensor.workday_sensor.state == "on" }}'
+        value_template: >-
+          {{ is_state('binary_sensor.workday_sensor', 'on')  or is_state('input_boolean.boolean_extra_work_day', 'on') }}
       - condition: template
         value_template: '{{ states.input_boolean.alarm_clock.state == "on" }}'
       - condition: template
@@ -193,8 +222,14 @@ automation:
       - service: tts.google_say
         data:
           entity_id: media_player.master_bedroom_cast
-          message: 'good morning'
+          message: 'Good Morning Time to Get Up'
       - service: light.turn_on
         data:
           entity_id: light.master_table_lamps
-          transition: 45
+          transition: 90
+      - delay: '00:00:90'
+      - service: light.turn_on
+        entity_id: light.light_bulb_2
+      - delay: '00:00:90'  
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_early_morning

@@ -120,6 +120,13 @@ group:
     - sensor.small_tank_weather_mode
     - history_graph.tank_graph
 
+  arduino_card:
+   name: Arduino
+   entities:
+    - sensor.arduino_controller_status
+    - sensor.arduino_controller_ip
+    - sensor.arduino_controller_client
+      
 history_graph:
   tank_temps:
     name: Tank Graph
@@ -202,6 +209,18 @@ sensor:
   - platform: mqtt
     state_topic: "small_tank/sensor/check_charger/state"
     name: small_tank_power
+
+  - platform: mqtt
+    state_topic: "arduino/small_tank/status"
+    name: Arduino Controller Status
+
+  - platform: mqtt
+    state_topic: "arduino/small_tank/ip"
+    name: Arduino Controller IP
+
+  - platform: mqtt
+    state_topic: "arduino/small_tank/client_id"
+    name: Arduino Controller Client
 
 binary_sensor:
   - platform: mqtt

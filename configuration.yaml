@@ -45,13 +45,16 @@ mqtt:
   keepalive: 60
   username: !secret mqtt_username
   password: !secret mqtt_password
+  will_message:
+    topic: 'arduino/small_tank/status'
+    payload: 'offline'
 
 mqtt_eventstream:
   publish_topic: master/topic
   subscribe_topic: slaves/#
-  # ignore_event:
-  #   - call_service
-  #   - state_changed
+  ignore_event:
+    - call_service
+    - state_changed
 
 intent_script: !include intent_scripts.yaml
 alexa:
@@ -97,11 +100,7 @@ xiaomi_aqara:
 
 vasileys_awesome_pixel_control:
 
-binary_sensor:
-  - platform: workday
-    country: US
-    workdays: [mon, tue, wed, thu]
-    excludes: [fri, sat, sun, holiday]
+
 
 input_label:
   some_string1:
@@ -110,4 +109,4 @@ input_label:
   input_label:
     name: Some String 2
     value: 'Hello, Home Assistant!'
-    icon: mdi:alphabetical    
+    icon: mdi:alphabetical

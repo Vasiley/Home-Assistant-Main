@@ -13,16 +13,6 @@ homeassistant:
       hidden: false
       persistence: true
       friendly_name: Master Bedroom Automate Off
-    automation.candle_on_during_home_mode:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-      friendly_name: Master Bedroom Candle On
-    automation.candle_off_when_not_home_mode:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-      friendly_name: Master Bedroom Candle Off
     automation.master_bedroom_home_mode:
       haaska_hidden: true
       hidden: false
@@ -42,9 +32,6 @@ homeassistant:
       friendly_name: Dawns Side
     light.herbs_bedside_lamp:
       friendly_name: Herbs Side
-    switch.dawn_day:
-      friendly_name: Dawns controls Day
-      haaska_name: Dawns Wax Warmer
     switch.dawn_night:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan
@@ -75,7 +62,6 @@ group:
       - switch.fan_on
       - switch.dawn_day
       - switch.dawn_night
-      - automation.candle_on_during_home_mode
       - automation.motion_master_lights_on
       - automation.motion_master_bedroom_motion_off
       - input_select.master_blinds_status
@@ -123,16 +109,6 @@ sensor:
     name: Dawns Controller Wifi Signal
 
 switch:
-  - platform: mqtt
-    name: "dawn_day"
-    state_topic: "dawns/relay/state"
-    command_topic: "dawns/gpio/14"
-    payload_on: "1"
-    payload_off: "0"
-    optimistic: false
-    qos: 0
-    retain: true
-
   - platform: mqtt
     name: "dawn_night"
     state_topic: "dawns/relay1/state"
@@ -208,26 +184,6 @@ automation:
         entity_id: light.light_bulb_2
       - service: light.turn_off
         entity_id: light.master_table_lamps
-
-  - alias: Candle On during Home mode
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.boolean_home
-        to: 'on'
-    action:
-      - service: switch.turn_on
-        entity_id: switch.dawn_day
-
-  - alias: Candle Off when not Home mode
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.boolean_home
-        to: 'off'
-    action:
-      - service: switch.turn_off
-        entity_id: switch.dawn_day
 
   - alias: Master Bedroom Sleep mode
     initial_state: 'on'
