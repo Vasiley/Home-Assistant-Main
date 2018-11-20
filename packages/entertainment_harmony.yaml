@@ -1,10 +1,12 @@
 homeassistant:
   customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'harmony'
     sensor.remote_entertainment:
       icon: mdi:theater
 
-group:
-  harmony_card:
+  entertainment_card:
    name: Entertainment Center
    entities:
      - remote.entertainment
@@ -21,7 +23,7 @@ sensor:
     sensors:
       remote_entertainment:
         value_template: '{{ states.remote.entertainment.attributes.current_activity }}'
-        friendly_name: 'Living Room'
+        friendly_name: 'Harmony Last Activity'
 
 input_select:
   harmony:
@@ -33,7 +35,9 @@ input_select:
       - Netflix
       - Classical Music
       - Amazon
-      - Directv
+      - Philo
+      - Plex
+      - Tablo DVR
       - PowerOff
     icon: mdi:monitor
 
@@ -61,8 +65,12 @@ automation:
               25501845
             {% elif is_state("input_select.harmony", "Amazon") %}
               27189210
-            {% elif is_state("input_select.harmony", "Directv") %}
+            {% elif is_state("input_select.harmony", "Philo") %}
               32645868
+            {% elif is_state("input_select.harmony", "Plex") %}
+              34744050
+            {% elif is_state("input_select.harmony", "Tablo DVR") %}
+              35801439
             {% elif is_state("input_select.harmony", "PowerOff") %}
               -1
             {% else %}

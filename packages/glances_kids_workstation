@@ -1,0 +1,85 @@
+homeassistant:
+  customize:
+    sensor.glances_cpu_load:
+      friendly_name: Cpu Load
+      icon: mdi:desktop-tower
+    sensor.glances_disk_free:
+      friendly_name: Hard Drive Free Space
+      icon: mdi:harddisk
+    sensor.glances_disk_used:
+      friendly_name: Hard Drive Used
+      icon: mdi:harddisk
+    sensor.glances_disk_used_2:
+      friendly_name: Hard Drive Use
+      icon: mdi:harddisk
+    sensor.glances_ram_free:
+      friendly_name: Ram Free
+      icon: mdi:chip
+    sensor.glances_ram_used:
+      friendly_name: Ram Used
+      icon: mdi:chip
+    sensor.glances_ram_used_2:
+      friendly_name: Ram Used
+      icon: mdi:chip
+    sensor.glances_running:
+      friendly_name: Running Threads
+      icon: mdi:chart-line
+    sensor.glances_sleeping:
+      friendly_name: Sleeping
+      icon: mdi:chart-line
+    sensor.glances_swap_free:
+      friendly_name: Swap Free
+      icon: mdi:harddisk
+    sensor.glances_swap_used:
+      friendly_name: Swap Use
+      icon: mdi:harddisk
+    sensor.glances_swap_used_2:
+      friendly_name: Swap Used
+      icon: mdi:harddisk
+    sensor.glances_thread:
+      friendly_name: Threads
+      icon: mdi:chart-line
+    sensor.glances_total:
+      friendly_name: Total
+      icon: mdi:chart-line
+
+group:
+  network_workstation_info_card:
+   name: Network Pc Svr Info
+   entities:
+     - sensor.network_workstation
+     - sensor.glances_cpu_load
+     - sensor.glances_disk_used
+     - sensor.glances_disk_free
+     - sensor.glances_disk_used_2
+     - sensor.glances_swap_free
+     - sensor.glances_swap_used
+     - sensor.glances_swap_used_2
+     - sensor.glances_ram_used
+     - sensor.glances_ram_free
+     - sensor.glances_ram_used_2
+     - sensor.glances_running
+     - sensor.glances_sleeping
+     - sensor.glances_thread
+     - sensor.glances_total
+
+sensor:
+  - platform: glances
+    host: !secret glances_kids_workstation
+    port: !secret glances_kids_workstation_port
+    resources:
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'memory_use_percent'
+      - 'memory_use'
+      - 'memory_free'
+      - 'swap_use_percent'
+      - 'swap_use'
+      - 'swap_free'
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+

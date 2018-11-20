@@ -3,6 +3,7 @@
    name: Home
    icon: mdi:home-assistant
    entities:
+     - group.vacuum_card
      - group.House_mode
      - group.alarm_panel_card
      - group.alarm_clock
@@ -21,6 +22,7 @@
      - light.bathroom
      - light.light_bulb_2
      - light.gabbies_light
+     - light.kids_main
      - light.hue_master_closet
      - light.gateway_light_xiaomi_lv
      - group.Family
@@ -29,7 +31,7 @@
      - group.usps_mail_card
      - group.livingroomfan_card
      - group.washing_machine_card_frontend
-     - group.harmony_card
+     - group.entertainment_card
      - group.blinds_card
      - script.media_player_source
      - group.kitchen_leds_card
@@ -46,6 +48,7 @@
    name: Equipment
    entities:
      - group.equip_reboots_card
+     - group.unifi_poe_card
      - group.Ads_Blocked_card
      - group.DigitalLoggers_card
      - group.NetworkNmap_status_card
@@ -64,6 +67,7 @@
      - group.linux_server_card
      - group.blue_iris_info_card
      - group.Fish_tank_server_info
+     - group.kids_workstation_info_card
 
   media:
    view: yes
@@ -73,16 +77,26 @@
      - group.stereo_avr_card
      - group.stereo_avr_card_zone_2
      - group.stereo_avr_card_zone_3
+     - group.media_player_rz_810
      - group.Ruths_roku_media_player_card
-     - group.media_player_ha_speaker_card
+     - group.media_player_roku_kids_bedroom_card
      - group.media_player_living_room_card
      - group.media_player_plex_server_card
+     - group.media_player_kodi_card
+     - group.sensor_plex
+     - group.residence_radio
+     - group.media_player_ha_speaker_card
      - group.media_player_master_bedroom_cast_card
+     - group.media_player_onkyo_cast_card
+     - group.media_player_kids_room_card
+#     - group.media_player_whole_house
+     - group.media_player_home_group
 
   Weather_view:
    view: yes
    name: Weather
    entities:
+     - group.alerts_card
      - group.Conditions_card
      - group.ForecastWeather_card
      - group.daily_forecast_card
@@ -122,11 +136,6 @@
      - group.camera_master_bedroom_cam_card
      - group.camera_gabbie_cam_card
      - group.camera_master_bedroom_cam_card
-     - group.camera_iss_card
-     - group.mailscan_card
-     - group.camera_dawn_card
-     - group.camera_herb_card
-     - group.camera_mom_card
 
   Roomview:
    view: yes
@@ -165,7 +174,6 @@
      - group.water_sensors
      - group.controls
      - group.fish_leds_card
-     - group.arduino_card
 
   fish_tank_main_view:
    view: yes
@@ -190,9 +198,9 @@
      - group.big_tank_reminder_card
      - history_graph.gits
 
-  network_status:
+  network_equipment_status:
    view: yes
-   name: Network Status
+   name: Network Equipment Online
    entities:
      - group.clients_online_card
      - group.network_equipment_status_card
@@ -211,12 +219,19 @@
      - group.wink_connections_card
      - group.wifi_signal_card
 
+  network__services_status:
+    view: yes
+    name: Network Services Online
+    entities:
+      - group.services_online_card
+
   Family:
     entities:
      - sensor.herb
      - sensor.dawn
      - sensor.gabbie_status
      - sensor.mom
+     - sensor.tristan
 
   Routines:
     control: hidden
@@ -233,7 +248,7 @@
      - script.nap_time
      - script.movie_time
      - script.evening_time
-     - script.daytime_sleep_mode
+     - switch.daytime_sleep
 
   Effects:
     control: hidden

@@ -1,4 +1,4 @@
-# homeassistant:
+homeassistant:
 #
 # light:
 #   - platform: group
@@ -144,3 +144,23 @@
 #         data:
 #           operation_mode: 'Eco'
 #           entity_id: 'climate.hallway'
+
+# automation:
+#   alias: Check if phones are still online
+#   trigger:
+#     - platform: time
+# #    hour: '/1'
+#       minutes: /5
+#       seconds: 0
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: group.devices
+#         state: 'home'
+#       - condition: time
+#         after: '15:00:00'
+#         before: '02:00:00'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.blue_iris

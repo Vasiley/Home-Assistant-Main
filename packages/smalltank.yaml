@@ -20,12 +20,12 @@ homeassistant:
     sensor.fish_tank_ha_uptime:
       friendly_name: Fish Tank Ha Uptime
       icon: mdi:home-assistant
-    sensor.ha_temperature:
-      friendly_name: Ha Temperature
+    sensor.hood_temperature:
+      friendly_name: Hood Temperature
       icon: mdi:temperature-fahrenheit
       hasska_hidden: true
-    sensor.ha_humidity:
-      friendly_name: Ha Humidity
+    sensor.hood_humidity:
+      friendly_name: Hood Humidity
       icon: mdi:water-percent
       hasska_hidden: true
     sensor.small_tank_water_temperature:
@@ -40,13 +40,9 @@ homeassistant:
       icon: mdi:water-pump
       friendly_name: Filter Pump
       hasska_hidden: true
-    binary_sensor.small_tank_controller:
-      icon: mdi:led-strip
-      friendly_name: Controller
-      hasska_hidden: true
-    binary_sensor.small_tank_white_lights:
-      icon: mdi:led-strip
-      friendly_name: Small Tank White Lights
+    binary_sensor.small_tank_wave_maker:
+      icon: mdi:water-pump
+      friendly_name: Wave Maker
       hasska_hidden: true
     sensor.small_tank_temp_ok:
       icon: mdi:thermometer-lines
@@ -96,8 +92,8 @@ group:
   Fish_tank_server_ext_info:
      name: Server Exterior Info
      entities:
-       - sensor.ha_temperature
-       - sensor.ha_humidity
+       - sensor.hood_temperature
+       - sensor.hood_humidity
 
   water_sensors:
    name: Small Tank Sensors
@@ -113,26 +109,18 @@ group:
    name: Controls
    entities:
     - binary_sensor.small_tank_heater
-    - binary_sensor.small_tank_white_lights
-    - binary_sensor.small_tank_controller
     - binary_sensor.small_tank_hob_filter
+    - binary_sensor.small_tank_wave_maker
     - sensor.small_tank_lighting_mode
     - sensor.small_tank_weather_mode
     - history_graph.tank_graph
 
-  arduino_card:
-   name: Arduino
-   entities:
-    - sensor.arduino_controller_status
-    - sensor.arduino_controller_ip
-    - sensor.arduino_controller_client
-      
 history_graph:
   tank_temps:
     name: Tank Graph
     entities:
       - sensor.small_tank_water_temperature
-      - sensor.ha_temperature
+      - sensor.hood_temperature
     hours_to_show: 72
     refresh: 180
 
@@ -168,16 +156,16 @@ sensor:
 
   - platform: mqtt
     state_topic: "small_tank/sensor/dht_sensor_temperature/state"
-    name: Ha Temperature
+    name: Hood Temperature
     unit_of_measurement: '°F'
 
   - platform: mqtt
     state_topic: "small_tank/sensor/dht_sensor_humidity/state"
-    name: Ha Humidity
+    name: Hood Humidity
     unit_of_measurement: "%"
 
   - platform: mqtt
-    state_topic: "small_tank/sensor/water_temp_temperature/state"
+    state_topic: "small_tank/sensor/water_temperature/state"
     name: Small Tank Water Temperature
     unit_of_measurement: '°F'
 
@@ -210,18 +198,6 @@ sensor:
     state_topic: "small_tank/sensor/check_charger/state"
     name: small_tank_power
 
-  - platform: mqtt
-    state_topic: "arduino/small_tank/status"
-    name: Arduino Controller Status
-
-  - platform: mqtt
-    state_topic: "arduino/small_tank/ip"
-    name: Arduino Controller IP
-
-  - platform: mqtt
-    state_topic: "arduino/small_tank/client_id"
-    name: Arduino Controller Client
-
 binary_sensor:
   - platform: mqtt
     state_topic: "small_tank/binary_sensor/water_level/state"
@@ -237,7 +213,7 @@ binary_sensor:
 
   - platform: mqtt
     state_topic: "small_tank/switch/relay_one/state"
-    name: small_tank_white_lights
+    name: small_tank_wave_maker
     payload_on: "on"
     payload_off: "off"
 
@@ -255,7 +231,7 @@ binary_sensor:
 
   - platform: mqtt
     state_topic: "small_tank/switch/relay_four/state"
-    name: small_tank_controller
+    name: relay_four
     payload_on: "on"
     payload_off: "off"
 

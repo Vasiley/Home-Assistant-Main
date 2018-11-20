@@ -81,6 +81,9 @@ automation:
       - platform: state
         entity_id: sensor.remote_entertainment
         to: 'Amazon'
+      - platform: state
+        entity_id: sensor.remote_entertainment
+        to: 'Plex'        
     action:
       - service: script.turn_on
         entity_id: script.movie_time

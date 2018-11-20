@@ -45,7 +45,7 @@ homeassistant:
 input_boolean:
   boolean_evening_time:
     initial: off
-      
+
 input_number:
   evening_mode_brightness_value:
     name: Evening Mode Brightness
@@ -118,8 +118,6 @@ script:
           entity_id: script.blinds_halfway
         - service: script.turn_on
           entity_id: script.vas_dashboard
-        - service: script.turn_on
-          entity_id: script.led_off
         - service: media_player.volume_set
           data_template:
             entity_id: media_player.ha_speaker

@@ -56,6 +56,7 @@ sensor:
       washer_status:
         value_template: '{% if is_state("sensor.washing_machine_power_up", "True") %}Cleaning{% else %}Idle{% endif %}'
       stopwatch:
+        entity_id: sun.sun
         value_template: >
                 {% if is_state('input_boolean.stopwatch', 'on') %}
                 {{ relative_time(states.automation.stopwatch_start.attributes.last_triggered) }}

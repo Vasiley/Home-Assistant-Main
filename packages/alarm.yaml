@@ -19,7 +19,7 @@ group:
      - sensor.blue_iris_profile
      - sensor.open_door_count
      - sensor.open_window_count
-#     - sensor.motion_count
+     - sensor.motion_count
 
 ##############################################################################
 ###### see home mode package for setting of the mode house is in      ########
@@ -28,7 +28,8 @@ group:
 alarm_control_panel:
   - platform: manual
     trigger_time: 1
-    pending_time: 5
+    pending_time: 60
+    delay_time: 120
     code: !secret alarm_code
 ########################################################
 #        Notify of where is motion after alarm is triggered
@@ -89,32 +90,6 @@ automation:
           message: >
             An alarm has been Triggered in the {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }}
 
-
-
-###### booleans on and off for alarms
-
-
-#################################################
-#          Alarm Auto DISARM when RETURN                         #
-#################################################
-  - alias: 'Alarm disarm when return home'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.set_hold_mode
-        to: 'home'
-      - platform: state
-        entity_id: input_boolean.boolean_home
-        to: 'on'
-    action:
-      - service: alarm_control_panel.alarm_disarm
-        data:
-          entity_id: alarm_control_panel.ha_alarm
-          code: !secret alarm_code
-      - service: light.turn_off
-        entity_id: light.light_bulb
-      - service: automation.turn_off
-        entity_id: automation.where_is_motion_alarm_triggered
 #################################################
 # a door opened when armed away/home
 #################################################
@@ -157,6 +132,12 @@ automation:
           gw_mac: !secret xiaomi_mac
           ringtone_id: 1
           ringtone_vol: 100
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen_under_cabinet
+          # effect: solid
+          brightness: 255
+          effect: "police all"
       - service: notify.Pushbullet
         data:
           message: 'An alarm has been Triggered!'

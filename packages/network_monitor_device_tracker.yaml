@@ -2,7 +2,7 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Network Monitor'
+        package: 'Network Monitor devices'
 ######### Speedtest ###############################
     sensor.speedtest_download:
       entity_picture: /local/speedtest.png
@@ -53,6 +53,10 @@ homeassistant:
       friendly_name: Dawns Samsung
       icon: mdi:cellphone-android
       haaska_hidden: true
+    binary_sensor.tristans_phone:
+      friendly_name: Tristans Phone
+      icon: mdi:cellphone-android
+      haaska_hidden: true
     binary_sensor.ruths_tablet:
       friendly_name: Ruths Tablet
       icon: mdi:tablet
@@ -97,7 +101,10 @@ homeassistant:
       friendly_name: Homeassistant FishTank
       icon: mdi:server-network
       haaska_hidden: true
-
+    binary_sensor.kids_workstation:
+      friendly_name: Kids Workstation
+      icon: mdi:server-network
+      haaska_hidden: true
 ############### Alexa'es   ##########################################
     binary_sensor.alexa_master_dot:
       friendly_name: Master Bedroom Dot
@@ -121,6 +128,10 @@ homeassistant:
       friendly_name: Living Room Ruko
       icon: mdi:play-network
       haaska_hidden: true
+    binary_sensor.kids_room_roku:
+      friendly_name: Kids Room Ruko
+      icon: mdi:play-network
+      haaska_hidden: true
     binary_sensor.media_player_onkyo_lv:
       friendly_name: Onkyo Reciever
       icon: mdi:theater
@@ -136,6 +147,18 @@ homeassistant:
     binary_sensor.chromecast_livingroom:
       friendly_name: Chromecast Living Room
       icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.chromecast_kids_room:
+      friendly_name: Chromecast Kids Room
+      icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.chromecast_radio:
+      friendly_name: Chromecast Onkyo
+      icon: mdi:play-network
+      haaska_hidden: true
+    binary_sensor.tablo:
+      friendly_name: Tablo
+      icon: mdi:theater
       haaska_hidden: true
 ##################### NAS ############################################
     binary_sensor.media_harddrive:
@@ -235,39 +258,39 @@ homeassistant:
       friendly_name: Kitchen Led Controller
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.led_small_tank:
-      friendly_name: Small Fish Tank Led Controller
+    binary_sensor.kids_room_controller:
+      friendly_name: Kids Room Controller
       icon: mdi:zip-box
       haaska_hidden: true
     binary_sensor.dawns_controller:
       friendly_name: Dawns Controller
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_tv:
+    binary_sensor.esp_blinds_front_tv:
       friendly_name: Front Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_couch:
+    binary_sensor.esp_blinds_rear_couch:
       friendly_name: Couch Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_kitchen_sink:
+    binary_sensor.esp_blinds_kitchen_sink:
       friendly_name: Kitchen Sink Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_master_dawns_side:
+    binary_sensor.esp_blinds_master_dawns_side:
       friendly_name: Master Dawns Side Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_master_herbs_side:
+    binary_sensor.esp_blinds_master_herbs_side:
       friendly_name: Master Herbs Side Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_ruths:
+    binary_sensor.esp_blinds_ruths:
       friendly_name: Ruths Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.blinds_kitchen_table:
+    binary_sensor.esp_blinds_kitchen_table:
       friendly_name: Kitchen Table Blinds
       icon: mdi:zip-box
       haaska_hidden: true
@@ -306,6 +329,10 @@ homeassistant:
       friendly_name: Fish Tank Wave Pumps
       icon: mdi:power-plug
       haaska_hidden: true
+    binary_sensor.rockrobo:
+      friendly_name: Susie
+      icon: mdi:power-plug
+      haaska_hidden: true
 
 group:
   clients_online_card:
@@ -324,6 +351,7 @@ group:
      - sensor.master_blinds_controller_dawns_wifi_signal
      - sensor.master_blinds_controller_herbs_wifi_signal
      - sensor.ruths_blinds_wifi_signal
+     - sensor.kids_controller_wifi_signal
 
   wink_connections_card:
    name: Wink Connections
@@ -362,19 +390,19 @@ group:
    name: Esp Controller's Leds/Power
    entities:
      - binary_sensor.led_kitchen_cabinets
-     - binary_sensor.led_small_tank
+     - binary_sensor.kids_room_controller
      - binary_sensor.dawns_controller
 
   esp_blind_devices_card:
    name: Esp Controller's Blinds
    entities:
-     - binary_sensor.blinds_master_dawns_side
-     - binary_sensor.blinds_master_herbs_side
-     - binary_sensor.blinds_kitchen_table
-     - binary_sensor.blinds_kitchen_sink
-     - binary_sensor.blinds_couch
-     - binary_sensor.blinds_tv
-     - binary_sensor.blinds_ruths
+     - binary_sensor.esp_blinds_master_dawns_side
+     - binary_sensor.esp_blinds_master_herbs_side
+     - binary_sensor.esp_blinds_kitchen_table
+     - binary_sensor.esp_blinds_kitchen_sink
+     - binary_sensor.esp_blinds_rear_couch
+     - binary_sensor.esp_blinds_front_tv
+     - binary_sensor.esp_blinds_ruths
 
   etc_devices_card:
    name: Mobile Devices
@@ -382,6 +410,7 @@ group:
      - binary_sensor.herbs_laptop
      - binary_sensor.herbs_iphone
      - binary_sensor.dawns_phone
+     - binary_sensor.tristans_phone
      - binary_sensor.ruths_tablet
      - binary_sensor.gabbies_laptop
 
@@ -390,6 +419,7 @@ group:
    entities:
      - binary_sensor.server_blue_iris
      - binary_sensor.server_homeassistant_fishtank
+     - binary_sensor.kids_workstation
 
   alexa_status_card:
    name: Alexa
@@ -415,10 +445,14 @@ group:
    entities:
      - binary_sensor.ruths_ruko
      - binary_sensor.livingroom_roku
+     - binary_sensor.kids_room_roku
      - binary_sensor.media_player_onkyo_lv
      - binary_sensor.samsung_tv
      - binary_sensor.chromecast_master
      - binary_sensor.chromecast_livingroom
+     - binary_sensor.chromecast_kids_room
+     - binary_sensor.chromecast_radio
+     - binary_sensor.tablo
 
   wemos_status_card:
    name: Wemos
@@ -450,6 +484,7 @@ group:
     - binary_sensor.printer_hp
     - binary_sensor.ecobee
     - binary_sensor.power_relay
+    - binary_sensor.rockrobo
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -472,6 +507,7 @@ sensor:
     sensors:
       clients:
         unit_of_measurement: '#'
+        entity_id: sun.sun
         value_template: >-
             {%- for d in states.device_tracker if d.state == 'home' -%}
             {{- loop.length if loop.first -}}
@@ -483,27 +519,27 @@ binary_sensor:
     sensors:
       driveway_camera_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.driveway_camera", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_driveway", "home") }}'
   - platform: template
     sensors:
       shed_camera_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.shed_camera", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_shed", "home") }}'
   - platform: template
     sensors:
       swamp_camera_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.swamp_camera", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_swamp", "home") }}'
   - platform: template
     sensors:
       number12_camera_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.driveway_number_12", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_number12", "home") }}'
   - platform: template
     sensors:
       frontdoor_camera_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.frontdoor_camera", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_living_room", "home") }}'
   - platform: template
     sensors:
       backdoor_camera_connect:
@@ -542,6 +578,12 @@ binary_sensor:
       gabbies_laptop:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.gabbies_laptop", "home") }}'
+  - platform: template
+    sensors:
+      tristans_phone:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.tristans_phone", "home") }}'
+
 
 ############ Hubs ######################################
 
@@ -587,6 +629,11 @@ binary_sensor:
       server_homeassistant_fishtank:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.server_homeassistant_fishtank", "home") }}'
+  - platform: template
+    sensors:
+      kids_workstation:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.kids_workstation", "home") }}'
 
 #################### alexa's ###################
 
@@ -613,11 +660,19 @@ binary_sensor:
       ruths_ruko:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.ruths_ruko", "home") }}'
+
   - platform: template
     sensors:
       livingroom_roku:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.livingroom_roku", "home") }}'
+
+  - platform: template
+    sensors:
+      kids_room_roku:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.kids_room_roku", "home") }}'
+
   - platform: template
     sensors:
       media_player_onkyo_lv:
@@ -642,6 +697,24 @@ binary_sensor:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.chromecast_livingroom", "home") }}'
 
+  - platform: template
+    sensors:
+      chromecast_kids_room:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.media_player_cast_kids_room", "home") }}'
+
+  - platform: template
+    sensors:
+      chromecast_radio:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.chromecast_radio", "home") }}'
+
+  - platform: template
+    sensors:
+      tablo:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.tablo", "home") }}'
+
 #################### NAS  ###################
 
   - platform: template
@@ -656,11 +729,6 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.network_harddrive", "home") }}'
 
 #################### Network Devices  ###################
-  # - platform: template
-  #   sensors:
-  #     cable_modem:
-  #       device_class: connectivity
-  #       value_template: '{{ is_state("device_tracker.cable_modem", "home") }}'
   - platform: template
     sensors:
       unifi_gateway:
@@ -695,7 +763,7 @@ binary_sensor:
     sensors:
       ap_master:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.ap_master", "home") }}'
+        value_template: '{{ is_state("device_tracker.ac_master", "home") }}'
 #################### Wemo Devices  ###################
 
   - platform: template
@@ -751,7 +819,7 @@ binary_sensor:
     sensors:
       dash_master:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.dash_master", "home") }}'
+        value_template: '{{ is_state("device_tracker.dash_master_bedroom", "home") }}'
   - platform: template
     sensors:
       dash_living_room:
@@ -761,20 +829,20 @@ binary_sensor:
     sensors:
       dash_gabbies_room:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.dash_gabbies_room", "home") }}'
+        value_template: '{{ is_state("device_tracker.dash_gabbies", "home") }}'
 
 #################### Esp Devices  ###################
-
   - platform: template
     sensors:
       led_kitchen_cabinets:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.led_kitchen_cabinets", "home") }}'
+
   - platform: template
     sensors:
-      led_small_tank:
+      kids_room_controller:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.led_small_tank", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_kids_room_relay", "home") }}'
   - platform: template
     sensors:
       dawns_controller:
@@ -782,39 +850,39 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.dawns_controller", "home") }}'
   - platform: template
     sensors:
-      blinds_tv:
+      esp_blinds_front_tv:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_tv", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_front_tv", "home") }}'
   - platform: template
     sensors:
-      blinds_couch:
+      esp_blinds_rear_couch:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_couch", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_rear_couch", "home") }}'
   - platform: template
     sensors:
-      blinds_kitchen_sink:
+      esp_blinds_kitchen_sink:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_kitchen_sink", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_kitchen_sink", "home") }}'
   - platform: template
     sensors:
-      blinds_master_dawns_side:
+      esp_blinds_master_dawns_side:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_master_dawns_side", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_master2", "home") }}'
   - platform: template
     sensors:
-      blinds_master_herbs_side:
+      esp_blinds_master_herbs_side:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_master_herbs_side", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_master1", "home") }}'
   - platform: template
     sensors:
-      blinds_ruths:
+      esp_blinds_ruths:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_ruths", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_ruths", "home") }}'
   - platform: template
     sensors:
-      blinds_kitchen_table:
+      esp_blinds_kitchen_table:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.blinds_kitchen_table", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_blinds_kitchen_table", "home") }}'
 
 ################### Misc Devices  ##########################
   - platform: template
@@ -852,43 +920,28 @@ binary_sensor:
       ecobee:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.ecobee', 'home') }}"
+  - platform: template
+    sensors:
+      rockrobo:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.rockrobo', 'home') }}"
 
 device_tracker:
-  - platform: nmap_tracker
-    hosts:
-      - 192.168.1.1/24
-    exclude:
-     - 192.168.1.153
-    home_interval: 180
-    interval_seconds: 90
-    scan_options: " --privileged -sP "
-
   - platform: ping
     hosts:
-      driveway_camera: 192.168.2.10
-      shed_camera: 192.168.2.11
-      swamp_camera: 192.168.2.12
-      driveway_number_12: 192.168.2.10
-      frontdoor_camera: 192.168.2.7
-      camera_backdoor: 192.168.2.14
-      camera_master_bedroom: 192.168.2.6
-      blinds_master_dawns_side: 192.168.2.20
-      blinds_master_herbs_side: 192.168.2.21
-      dawns_controller: 192.168.2.22
-      blinds_kitchen_table: 192.168.2.23
-      blinds_kitchen_sink: 192.168.2.24
-      blinds_couch: 192.168.2.25
-      blinds_tv: 192.168.2.26
-      blinds_ruths: 192.168.2.27
-      dash_master: 192.168.2.40
-      dash_living_room: 192.168.2.41
-      dash_gabbies_room: 192.168.2.42
+      unifi_gateway: 192.168.1.1
+      switch_ubnt_poe_lv: 192.168.1.3
+      switch_ubnt_poe_16: 192.168.1.2
+      switch_ubnt_poe_8_shed: 192.168.1.4
+      ac_pro: 192.168.1.9
+      ac_master: 192.168.1.8
 
-  # - platform: unifi
-  #   host: 192.168.1.6
-  #   username: !secret unifi_username
-  #   password: !secret unifi_password
-  #   verify_ssl: false
+  - platform: unifi
+    host: 192.168.1.6
+    username: !secret unifi_username
+    password: !secret unifi_password
+    verify_ssl: false
+    site_id: default
 
   - platform: owntracks
     max_gps_accuracy: 200
@@ -912,6 +965,7 @@ automation:
           - binary_sensor.herbs_laptop
           - binary_sensor.herbs_iphone
           - binary_sensor.dawns_phone
+          - binary_sensor.tristans_phone
           - binary_sensor.ruths_tablet
           - binary_sensor.gabbies_laptop
 #         HUBS
@@ -924,6 +978,7 @@ automation:
 #         Servers
           - binary_sensor.server_blue_iris
           - binary_sensor.server_homeassistant_fishtank
+          - binary_sensor.kids_workstation
 #         alexa
           - binary_sensor.alexa_master_dot
           - binary_sensor.alexa_gabbies_room_dot
@@ -931,10 +986,14 @@ automation:
 #         media Players
           - binary_sensor.ruths_ruko
           - binary_sensor.livingroom_roku
+          - binary_sensor.kids_room_roku
           - binary_sensor.media_player_onkyo_lv
           - binary_sensor.samsung_tv
           - binary_sensor.chromecast_master
           - binary_sensor.chromecast_livingroom
+          - binary_sensor.chromecast_radio
+          - binary_sensor.chromecast_kids_room
+          - binary_sensor.tablo
 #         NAS
           - binary_sensor.media_harddrive
           - binary_sensor.network_harddrive
@@ -963,15 +1022,15 @@ automation:
           - binary_sensor.dash_gabbies_room
 #         esp
           - binary_sensor.led_kitchen_cabinets
-          - binary_sensor.led_small_tank
+          - binary_sensor.kids_room_controller
           - binary_sensor.dawns_controller
-          - binary_sensor.blinds_tv
-          - binary_sensor.blinds_couch
-          - binary_sensor.blinds_master_dawns_side
-          - binary_sensor.blinds_master_herbs_side
-          - binary_sensor.blinds_ruths
-          - binary_sensor.blinds_kitchen_table
-          - binary_sensor.blinds_kitchen_sink
+          - binary_sensor.esp_blinds_front_tv
+          - binary_sensor.esp_blinds_rear_couch
+          - binary_sensor.esp_blinds_master_dawns_side
+          - binary_sensor.esp_blinds_master_herbs_side
+          - binary_sensor.esp_blinds_ruths
+          - binary_sensor.esp_blinds_kitchen_table
+          - binary_sensor.esp_blinds_kitchen_sink
 #         misc devices
           - binary_sensor.game_console_ps4
           - binary_sensor.game_console_ps3
@@ -979,7 +1038,8 @@ automation:
           - binary_sensor.webswitch_network
           - binary_sensor.printer_hp
           - binary_sensor.ecobee
-          - binary_sensor.power_relay
+          - binary_sensor.rockrobo
+#          - binary_sensor.power_relay
     condition:
       condition: and
       conditions:

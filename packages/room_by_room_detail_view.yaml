@@ -55,36 +55,7 @@ group:
       - script.front_bright_outside
       - script.front_normal_outside
 
- kitchen_card:
-   control: hidden
-   name: Kitchen
-   entities:
-      - light.kitchen_under_cabinet
-      - light.kitchen
-      - light.kitchen_table
-      - input_number.led_animation_speed
-      - light.kitchen_white
-      - script.led_white
-      - script.led_yellow
-      - script.led_off
-      - automation.kitchen_lights_off_with_dimmer
-      - automation.kitchen_lights_on_white_with_dimmer
-      - automation.led_animation_speed
-      - automation.kitchen_leds_low_light_on
-      - automation.kitchen_leds_low_light_off
-      - automation.motion_kitchen_main_light_on
-      - automation.motion_kitchen_off
-      - sensor.Kitchen_dimmer_test
-      - sensor.motion_sensor_kitchen_lux
-      - input_select.kitchen_blinds_status
-      - sensor.kitchen_blinds_state
-      - script.blinds_closed
-      - script.blinds_halfway
-      - script.blinds_open
-      - binary_sensor.door_window_sensor_kitchen_sink
-      - sensor.kitchen_sink_window_sensor_batt
-      - binary_sensor.door_window_sensor_kitchen_table
-      - sensor.kitchen_table_window_sensor_batt
+
 
  laundry_room_card:
    control: hidden

@@ -138,6 +138,9 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_sleep
         state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_day_time_sleep
+        state: 'off'
       - condition: numeric_state
         entity_id: sensor.motion_sensor_master_lux
         below: '15000'
@@ -190,6 +193,9 @@ automation:
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_sleep
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_day_time_sleep
         to: 'on'
     action:
       - service: switch.turn_on

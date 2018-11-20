@@ -1,0 +1,139 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'radio'
+    script.radio:
+      friendly_name: Start Playing
+      icon: mdi:play
+    script.radio_stop:
+      friendly_name: Stop Playing
+      icon: mdi:stop
+
+group:
+ residence_radio:
+  name: Radio
+  entities:
+    - input_select.radio_station
+    - input_select.chromecast_radio
+    - input_number.volume_radio
+    - script.radio
+    - script.radio_stop
+
+input_number:
+  volume_radio:
+    name: Volume
+    icon: mdi:volume-high
+    min: 0
+    max: 1
+    step: 0.05
+    initial: .40
+
+input_select:
+  radio_station:
+    name: 'Select Radio Station:'
+    options:
+      - 80's Rock
+      - Todays Hits
+      - Old Country
+      - Grunge Radio
+      - Classic Rock
+      - Heavy Metal
+      - Folk
+      - Classic FM
+      - BNR Nieuwsradio
+      - SLAM! Hardstyle
+      - Sleep Radio
+      - Ambient Sleeping Pill
+      - Radio Art - Sleep
+      - Ambi Nature Radio
+      - Calm Radio - Sleep
+      - Dinamo.FM Sleep
+  chromecast_radio:
+    name: 'Select Speakers:'
+    options:
+      - Livingroom
+      - Master Bedroom
+      - Kids Bedroom
+      - Everywhere
+    initial: Everywhere
+    icon: mdi:speaker-wireless
+
+automation:
+  - alias: 'Set Radio Volume'
+    trigger:
+      platform: state
+      entity_id: input_number.volume_radio
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.onkyo_cast
+            {% elif is_state("input_select.chromecast_radio", "Master Bedroom") %}  media_player.master_bedroom_cast
+            {% elif is_state("input_select.chromecast_radio", "Kids Bedroom") %} media_player.kids_room_cast
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.onkyo_cast, media_player.master_bedroom_cast, media_player.kids_room_cast
+            {% endif %}
+          volume_level: '{{ states.input_number.volume_radio.state }}'
+      # - service: media_player.volume_set
+      #   data_template:
+      #     entity_id: >
+      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
+      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+      #       {% endif %}
+      #     volume_level: '.5'
+
+script:
+  radio:
+    alias: Play Radio on Chromecast Audio
+    sequence:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+            {% endif %}
+          volume_level: '.85'
+      - service: media_player.select_source
+        data_template:
+          entity_id: >-
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.stereo
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+            {% endif %}
+          source: 'Cast'
+      - service: media_player.play_media
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.onkyo_cast
+            {% elif is_state("input_select.chromecast_radio", "Master Bedroom") %} media_player.master_bedroom_cast
+            {% elif is_state("input_select.chromecast_radio", "Kids Bedroom") %} media_player.kids_room_cast
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} group.media_player_whole_house
+            {% endif %}
+          media_content_id: >
+            {% if is_state("input_select.radio_station", "80's Rock") %} http://19763.live.streamtheworld.com:3690/977_80_SC?DIST=TuneIn&TGT=TuneIn&maxServers=2&ua=RadioTime&ttag=RadioTime
+            {% elif is_state("input_select.radio_station", "Todays Hits") %} http://rfcmedia.streamguys1.com/MusicPulse.mp3?aw_0_1st.playerid=RadioTime&aw_0_1st.skey=1538240769
+            {% elif is_state("input_select.radio_station", "Old Country") %} http://tunein4.streamguys1.com/vtcntfree1?aw_0_1st.playerid=RadioTime&aw_0_1st.skey=1538321687
+            {% elif is_state("input_select.radio_station", "Grunge Radio") %} http://bigrradio-edge31.cdnstream.com/5200_128
+            {% elif is_state("input_select.radio_station", "Classic Rock") %} http://rfcmedia.streamguys1.com/classicrock.mp3?aw_0_1st.playerid=RadioTime&aw_0_1st.skey=1538324888
+            {% elif is_state("input_select.radio_station", "Heavy Metal") %} http://listen.djcmedia.com/metalmixxlow
+            {% elif is_state("input_select.radio_station", "Folk") %} http://rfcmedia.streamguys1.com/Newport.mp3?aw_0_1st.playerid=RadioTime&aw_0_1st.skey=1538326450
+            {% elif is_state("input_select.radio_station", "Classic FM") %} http://19143.live.streamtheworld.com/CLASSICFM_SC
+            {% elif is_state("input_select.radio_station", "BNR Nieuwsradio") %} http://icecast-bnr.cdp.triple-it.nl/bnr_mp3_96_03
+            {% elif is_state("input_select.radio_station", "SLAM! Hardstyle") %} http://vip-icecast.538.lw.triple-it.nl/WEB17_MP3
+            {% elif is_state("input_select.radio_station", "Sleep Radio") %} http://37.59.28.208:8722/stream
+            {% elif is_state("input_select.radio_station", "Ambient Sleeping Pill") %} http://perseus.shoutca.st:8447/h
+            {% elif is_state("input_select.radio_station", "Radio Art - Sleep") %} http://live.radioart.com/fSleep.mp3
+            {% elif is_state("input_select.radio_station", "Ambi Nature Radio") %} http://94.23.252.14:8067/stream
+            {% elif is_state("input_select.radio_station", "Calm Radio - Sleep") %} http://streams.calmradio.com/api/39/128/stream
+            {% elif is_state("input_select.radio_station", "Dinamo.FM Sleep") %} http://channels.dinamo.fm/sleep-aac
+            {% endif %}
+          media_content_type: 'audio/mp4'
+
+  radio_stop:
+    alias: Stop Radio on Chromecast Audio
+    sequence:
+      -  service: media_player.media_stop
+         entity_id:
+           - media_player.onkyo_cast
+           - media_player.master_bedroom_cast
+           - media_player.kids_room_cast
+           - media_player.home_group

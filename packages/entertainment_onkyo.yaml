@@ -1,0 +1,123 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Onkyo'
+
+group:
+  stereo_avr_card:
+   name: stereo Amp
+   entities:
+     - media_player.stereo
+  stereo_avr_card_zone_2:
+   name: stereo Amp
+   entities:
+     - media_player.stereo_zone_2
+  stereo_avr_card_zone_3:
+   name: stereo Amp
+   entities:
+     - media_player.stereo_zone_3
+  media_player_rz_810:
+    name: Onkyo Built in Cast
+    entities:
+      - media_player.rz_810
+
+media_player:
+  - platform: onkyo
+    host: 192.168.1.81
+    name: Stereo
+    sources:
+      dvd: 'Blue Iris'
+      game: 'PS4'
+#      pc: 'Kodi'
+      cd: 'Cast'
+      fm: 'FM Radio'
+      net: 'Net'
+      strm-box: 'Roku'
+    max_volume: 160
+
+sensor:
+  - platform: template
+    sensors:
+      onkyo_source:
+        entity_id: media_player.stereo
+        value_template: '{{ states. media_player.stereo.attributes.source }}'
+        friendly_name: 'Onkyo Source'
+
+input_select:
+  onkyo:
+    name: Onkyo
+    options:
+      - Select Input
+      - Blue Iris
+      - PS4
+      - Cast
+      - FM Radio
+      - Net
+      - Roku
+    icon: mdi:monitor
+
+input_number:
+  onkyo_volume:
+    name: Onkyo Volume
+    min: 0
+    max: 160
+    step: .5
+
+# Onkyo input select Automation
+automation:
+  - alias: Onkyo Input Select Automation
+    initial_state: on
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.onkyo
+        from: 'Select Input'
+    action:
+      - service: media_player.select_source
+        entity_id: media_player.stereo
+        data_template:
+          source: >-
+            {% if is_state("input_select.onkyo", "Blue Iris") %}
+              Blue Iris
+            {% elif is_state("input_select.onkyo", "PS4") %}
+              PS4
+            {% elif is_state("input_select.onkyo", "Cast") %}
+              Cast
+            {% elif is_state("input_select.onkyo", "FM Radio") %}
+              fm
+            {% elif is_state("input_select.onkyo", "Net") %}
+              Net
+            {% elif is_state("input_select.onkyo", "Roku") %}
+              Roku
+            {% else %}
+              Unknown
+            {% endif %}
+      - service: input_select.select_option
+        entity_id: input_select.onkyo
+        data_template:
+          option: "Select Input"
+
+  - alias: Onkyo Volume Slider Set
+    trigger:
+      - platform: state
+        entity_id: input_number.onkyo_volume
+    condition:
+      - condition: state
+        entity_id: media_player.stereo
+        state: 'on'
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.stereo
+          volume_level: '{{ states.input_number.onkyo_volume.state | float / 160 }}'
+
+  - alias: Onkyo Volume Slider Get
+    trigger:
+      platform: state
+      entity_id: media_player.stereo
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.onkyo_volume
+        value: '{{ states.media_player.stereo.attributes.volume_level | float * 160 }}'

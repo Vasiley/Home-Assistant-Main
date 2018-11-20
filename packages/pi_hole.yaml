@@ -118,6 +118,7 @@ sensor:
   - platform: template
     sensors:
       pihole_dns:
+        entity_id: sensor.pi_hole_status_raw
         value_template: "{{states.sensor.pihole_status_raw.state.split('[✓]')[1][1:-3]}}"
         icon_template: >-
           {%- if states.sensor.pihole_status_raw.state.split('[✓]')[1][1:-3] == 'DNS service is running' -%}
@@ -129,6 +130,7 @@ sensor:
   - platform: template
     sensors:
       pihole_blocking:
+        entity_id: sensor.pi_hole_status_raw
         value_template:  "{{states.sensor.pihole_status_raw.state.split('[✓]')[2][1:]}}"
         icon_template: >-
           {% if states.sensor.pihole_blocking.state == 'Pi-hole blocking is Enabled' %}

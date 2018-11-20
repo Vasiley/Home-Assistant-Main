@@ -78,7 +78,7 @@ input_number:
     min: 0
     max: 1.75
     step: .1
-      
+
 script:
   lamps_on:
     sequence:
@@ -110,9 +110,9 @@ script:
           color_temp: 426
           brightness: 125
       - service: light.turn_on
-        data:
+        data_template:
           entity_id: light.master_table_lamps
-          brightness: 255
+          brightness_pct: 50
       - service: light.turn_on
         data:
           entity_id: light.bathroom
@@ -146,6 +146,8 @@ script:
 #      - wait_template: "{{ states.binary_sensor.motion_sensor_master_bath.state == 'off' }}"
       - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
+        entity_id: light.light_bulb_2
+      - service: light.turn_off
         data:
           entity_id: light.bathroom
       - delay: '00:00:45'
@@ -158,5 +160,6 @@ script:
       - service: rest_command.sleep
       - service: automation.turn_on
         entity_id: automation.motion_bathroom_sleep_on
-
+      - service: switch.turn_off
+        entity_id: switch.daytime_sleep
 # rest_command changes profile on blue iris

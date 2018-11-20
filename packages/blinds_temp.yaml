@@ -1,6 +1,5 @@
 homeassistant:
   customize:
-
     package.node_anchors:
       customize: &customize
         package: 'blinds_temp'

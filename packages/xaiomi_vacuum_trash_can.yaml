@@ -1,0 +1,32 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'robot_vacuum_trash_can'
+    script.susie_trash_can:
+      friendly_name: Susie at Trash Can
+      haaska_name: Susie Go to Trash Can
+
+input_boolean:
+  boolean_susie_trash_can:
+    initial: off
+
+script:
+  susie_trash_can:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_vacuum_jobs_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_susie_trash_can
+      - service: vacuum.send_command
+        data:
+          entity_id: vacuum.susie
+          command: app_goto_target
+          params: [26800,28750]
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie is going to trash can'

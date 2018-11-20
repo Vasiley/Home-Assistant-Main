@@ -175,6 +175,12 @@ automation:
       - platform: template
         value_template: "{{ states('sensor.processor_use')|int > states('input_number.cpu_alert_value')| int }}"
 #        for: '00:00:30'
+    condition:
+      condition: and
+      conditions:
+        - condition: numeric_state                           #takes care of unkown values
+          entity_id: 'sensor.load_15m'
+          above: '2'
     action:
       - service: tts.google_say
         data:

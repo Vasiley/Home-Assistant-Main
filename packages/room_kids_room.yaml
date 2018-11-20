@@ -3,14 +3,24 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Gabbies Room'
+    light.kids_main:
+      haaska_name: Kids Light
+      friendly_name: Kids Light
+    light.gabbies_light:
+      haaska_name: Kids Lamp
+      friendly_name: Kids Lamp
+    switch.kids_fan:
+      friendly_name: Kids Fan
+      haaska_name: Kids Fan
+      icon: mdi:fan
+    switch.kids_plasma_light:
+      friendly_name: Plasma Ball
+      haaska_name: Plasma Ball
+      icon: mdi:flash-outline  
     binary_sensor.gabbies_room_motion:
       haaska_hidden: true
       device_class: motion
       friendly_name: Gabbies Room Motion
-    switch.gabbies_lamp:
-      friendly_name: Gabbies Lamp
-      haaska_name: Gabbies Lamp
-      icon: mdi:lamp
     sensor.gabbies_room_temperature:
       haaska_hidden: true
     sensor.motion_sensor_gabbies_room_battery:
@@ -22,6 +32,12 @@ homeassistant:
       friendly_name: Gabbie
       icon: mdi:human-child
       haaska_hidden: true
+    sensor.kids_room_mode:
+      friendly_name: Kids Room Mode
+      icon: mdi:human-child
+      haaska_hidden: true
+    sensor.kids_controller_wifi_signal:
+      icon: mdi:signal
     input_boolean.boolean_gabbie_home:
       friendly_name: Gabbie Home
       haaska_hidden: true
@@ -66,10 +82,13 @@ homeassistant:
 
 group:
   gabbies_room_card:
-   name: Gabbie's Room
+   name: Kid's Room
    control: hidden
    entities:
      - light.gabbies_light
+     - light.kids_main
+     - sensor.kids_room_mode
+     - sensor.gabbie_status
      - binary_sensor.gabbies_room_motion
      - binary_sensor.gabbies_room_occupancy
      - sensor.gabbies_room_temperature_2
@@ -91,10 +110,11 @@ group:
      - switch.driveway_camera
      - script.driveway_cam_powercycle
      - automation.reboot_driveway_camera
-
      - binary_sensor.door_window_sensor_gabbies_room
      - sensor.gabbies_window_sensor_batt
-
+     - sensor.kids_controller_wifi_signal
+     - switch.kids_fan
+     - switch.kids_plasma_light
 
 input_boolean:
   boolean_gabbie_home:
@@ -109,6 +129,10 @@ sensor:
     sensors:
       gabbie_status:
         value_template: '{% if is_state("input_boolean.boolean_gabbie_home", "on") %}Home{% else %}Gone{% endif %}'
+  - platform: template
+    sensors:
+      kids_room_mode:
+        value_template: '{% if is_state("input_boolean.boolean_gabbie_sleep", "on") %}Sleep{% else %}Awake{% endif %}'
   - platform: rest
     resource: !secret MS_rest_29
     value_template: '{{ value_json.state.temperature | float / 100 }}'
@@ -126,12 +150,40 @@ sensor:
     unit_of_measurement: Lux
     scan_interval: 5
     name: 'Gabbies Room Motion Sensor Lux'
+
+  - platform: mqtt
+    state_topic: "kids_room_relay/Wifi Connect/wifi"
+    unit_of_measurement: 'dbm'
+    name: Kids Controller Wifi Signal
+
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_30
     value_template: '{{ value_json.state.presence }}'
     scan_interval: 2
     name: gabbies_room_motion
+
+switch:
+  - platform: mqtt
+    name: "kids_fan"
+    state_topic: "kids_room_relay/relay/state"
+    command_topic: "kids_room_relay/gpio/14"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+
+  - platform: mqtt
+    name: "kids_plasma_light"
+    state_topic: "kids_room_relay/relay1/state"
+    command_topic: "kids_room_relay/gpio/12"
+    payload_on: "1"
+    payload_off: "0"
+    optimistic: false
+    qos: 0
+    retain: true
+
 
 automation:
   - alias: 'gabbie_home'
@@ -146,7 +198,9 @@ automation:
     action:
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kodi
           message: 'Welcome Home Gabbie'
   - alias: 'gabbie_not_home'
     trigger:
@@ -160,36 +214,58 @@ automation:
     action:
        - service: tts.google_say
          data:
-           entity_id: media_player.ha_speaker
+           entity_id:
+             - media_player.ha_speaker
+             - media_player.kodi
            message: 'Goodbye Gabbie'
   - alias: 'gabbie_going_sleep'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_sleep
         to: 'on'
+      - platform: time
+        at: '21:00:00'
     condition:
       - condition: state
         entity_id: input_boolean.ha_start
         state: 'off'
+      # - condition: state
+      #   entity_id: input_boolean.boolean_gabbie_sleep
+      #   state: 'off'
     action:
        - service: tts.google_say
          data:
-           entity_id: media_player.ha_speaker
+           entity_id:
+             - media_player.ha_speaker
+             - media_player.kodi
            message: 'Goodnight Gabbie'
+       - service: script.turn_on
+         entity_id: script.gabbies_bedtime
+
   - alias: 'gabbie_waking_up'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_awake
         to: 'on'
+      - platform: time
+        at: '08:00:00'
     condition:
       - condition: state
         entity_id: input_boolean.ha_start
         state: 'off'
+      # - condition: state
+      #   entity_id: input_boolean.boolean_gabbie_awake
+      #   state: 'off'
     action:
-       - service: tts.google_say
-         data:
-           entity_id: media_player.ha_speaker
-           message: 'Goodmorning Gabbie'
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kodi
+          message: 'Goodmorning Gabbie'
+      - service: script.turn_on
+        entity_id: script.gabbies_awake
+
 
   - alias: 'gabbie_light_on'
     trigger:
@@ -203,7 +279,9 @@ automation:
     action:
        - service: light.turn_on
          data_template:
-           entity_id: light.gabbies_light
+           entity_id:
+             - light.gabbies_light
+             - light.kids_main
            brightness_pct: >-
              {% if is_state("input_boolean.boolean_evening_time", "on") %}
              {{ states('input_number.evening_mode_brightness_value') | int }}
@@ -233,8 +311,9 @@ automation:
         state: 'on'
     action:
        - service: light.turn_off
-         entity_id: light.gabbies_light
-
+         entity_id:
+           - light.gabbies_light
+           - light.kids_main
 
 script:
   gabbies_bedtime:
@@ -245,13 +324,16 @@ script:
         entity_id: input_boolean.boolean_gabbie_sleep
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_gabbie_awake
-      - service: script.turn_on
-        entity_id: script.gabbies_blinds_closed
+      - service: switch.turn_on
+        entity_id: switch.kids_fan
       - delay: '00:05:00'
       - service: light.turn_off
         data:
-          entity_id: light.gabbies_light
+          entity_id:
+            - light.gabbies_light
+            - light.kids_main
           transition: 45
+
   gabbies_awake:
     sequence:
       - service: light.turn_on
@@ -265,3 +347,5 @@ script:
         data:
           entity_id: light.gabbies_light
           transition: 180
+      - service: switch.turn_off
+        entity_id: switch.kids_fan

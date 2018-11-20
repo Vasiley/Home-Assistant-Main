@@ -31,18 +31,6 @@ group:
    name: Front Door
    entities:
      - camera.front_door_Camera
-  camera_dawn_card:
-   name: Dawn
-   entities:
-     - camera.dawn
-  camera_herb_card:
-   name: Herb
-   entities:
-     - camera.herb
-  camera_mom_card:
-   name: Mom
-   entities:
-     - camera.mom
   camera_tablet_card:
    name: Tablet Cam
    entities:
@@ -62,7 +50,7 @@ group:
 
 camera:
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     name: Number 12
@@ -74,7 +62,7 @@ camera:
     name: Front Door Camera
 
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     name: Driveway
@@ -120,25 +108,3 @@ camera:
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic
-
-  # - platform: mjpeg
-  #   mjpeg_url: http://192.168.1.80:81/mjpg/cam3/video.mjpeg
-  #   name: Gabbie Cam
-  #   username: !secret blue_iris_camera_stream_usrname
-  #   password: !secret blue_iris_camera_stream_pass
-  #   authentication: basic
-
-  - platform: generic
-    name: Dawn
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:green%7Clabel:P%7C{{ states.device_tracker.dawn_baby.attributes.latitude }},{{ states.device_tracker.dawn_baby.attributes.longitude }}
-    limit_refetch_to_url_change: true
-
-  - platform: generic
-    name: Herb
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.lsp_herb.attributes.latitude }},{{ states.device_tracker.lsp_herb.attributes.longitude }}
-    limit_refetch_to_url_change: true
-
-  - platform: generic
-    name: Mom
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.homeassistant_mom.attributes.latitude }},{{ states.device_tracker.homeassistant_mom.attributes.longitude }}&zoom=13&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.homeassistant_mom.attributes.latitude }},{{ states.device_tracker.homeassistant_mom.attributes.longitude }}
-    limit_refetch_to_url_change: true

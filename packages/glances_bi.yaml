@@ -348,6 +348,12 @@ automation:
     trigger:
       - platform: template
         value_template: "{{ states('sensor.glances_cpu_load') > states('input_number.bi_ram_alert_value') }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: numeric_state                           #takes care of unkown values
+          entity_id: 'sensor.glances_cpu_load'
+          above: '1'
     action:
       - service: tts.google_say
         data:

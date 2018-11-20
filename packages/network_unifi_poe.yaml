@@ -1,0 +1,20 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'network_unifi_poe'
+    switch.unificloudkey:
+      friendly_name: Cloud Key
+      icon: mdi:cloud-tags
+    switch.backdoor:
+      friendly_name: Back Door Camera
+      icon: mdi:cctv        
+
+group:
+  unifi_poe_card:
+   name: Unifi Poe Switches
+   control: hidden
+   entities:
+     - switch.unificloudkey
+     - switch.backdoor

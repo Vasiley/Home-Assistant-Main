@@ -26,7 +26,7 @@ homeassistant:
       hidden: false
       persistence: false
       friendly_name: Daytime Sleep
-      haaska_name: Daytime Sleep
+      haaska_name: Bed Early
       icon: mdi:sleep
 
 input_boolean:
@@ -39,28 +39,29 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_day_time_sleep
-      - service: automation.turn_off
-        data:
-          entity_id: automation.motion_master_lights_on
       - service: light.turn_off
         entity_id: light.master
+      - service: light.turn_on
+        data:
+          entity_id: light.master_table_lamps
+          brightness_pct: 50
       - service: light.turn_off
         data:
           entity_id: light.master_table_lamps
           transition: 45
+      - service: switch.turn_on
+        entity_id: switch.dawn_night
+      - service: fan.turn_on
+        data:
+          entity_id: fan.master_bedroom_fan
+          speed: "high"
 
   daytime_sleep_mode_off:
     sequence:
       - service: input_boolean.turn_off
         data:
           entity_id: input_boolean.boolean_day_time_sleep
-      - service: automation.turn_on
-        data:
-          entity_id: automation.motion_master_lights_on
-      - service: light.turn_on
-        entity_id:
-          - light.master
-          - light.master_table_lamps
+
 
 switch:
   - platform: template

@@ -151,112 +151,60 @@ automation:
           topic: "vasiley/kitchen/set"
           payload: '{"transition":{{ trigger.to_state.state | int }}}'
 
-  - alias: Kitchen Lights On White with Dimmer
+  # - alias: Kitchen Lights On White with Dimmer
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: state
+  #       entity_id: sensor.kitchen_led_dimmer_state
+  #       to: 'On'
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.led_white
+  #
+  # - alias: Kitchen Lights Off with Dimmer
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: state
+  #       entity_id: sensor.kitchen_led_dimmer_state
+  #       to: 'Off'
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.led_off
+
+
+  - alias: Kitchen Leds low light on when in home mode
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.kitchen_led_dimmer_state
-        to: 'On'
-    action:
-      - service: script.turn_on
-        entity_id: script.led_white
-
-  - alias: Kitchen Lights Off with Dimmer
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kitchen_led_dimmer_state
-        to: 'Off'
-    action:
-      - service: script.turn_on
-        entity_id: script.led_off
-
-
-  - alias: Kitchen Leds low light ON
-    initial_state: 'on'
-    trigger:
-      - platform: time
-        minutes: '/1'
-        seconds: 00
-    condition:
-      - condition: numeric_state
-        entity_id: sensor.motion_sensor_kitchen_lux
-        below: 10000
-      - condition: state
         entity_id: input_boolean.boolean_home
-        state: 'on'
-    action:
-      - service: script.turn_on
-        entity_id: script.led_white
-
-  - alias: Kitchen Leds low light OFF
-    initial_state: 'on'
-    trigger:
-      - platform: time
-        minutes: '/5'
-        seconds: 00
-    condition:
-      - condition: numeric_state
-        entity_id: sensor.motion_sensor_kitchen_lux
-        above: 9001
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
-    action:
-      - service: script.turn_on
-        entity_id: script.led_off
-
-  - alias: Kitchen Leds on with motion when not in home mode
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.kitchen_motion
         to: 'on'
-    condition:
-      condition: or
-      conditions:
-        - condition: state
-          entity_id: input_boolean.boolean_early_morning
-          state: 'on'
-        - condition: state
-          entity_id: input_boolean.boolean_movie_time
-          state: 'on'
-        - condition: state
-          entity_id: input_boolean.boolean_evening_time
-          state: 'on'
-        - condition: state
-          entity_id: input_boolean.boolean_nap_time
-          state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_white
+
+  - alias: Kitchen Leds Yellow
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id:
+          - input_boolean.boolean_early_morning
+          - input_boolean.boolean_evening_time
+        to: 'on'
     action:
       - service: script.turn_on
         entity_id: script.led_yellow
 
-  - alias: Kitchen Leds on with motion when not in home mode
+  - alias: Kitchen Leds off
     initial_state: 'on'
     trigger:
-     - platform: state
-       entity_id: binary_sensor.kitchen_motion
-       to: 'off'
-       for:
-         minutes: 3
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_nap_time
-        state: 'on'
+      - platform: state
+        entity_id:
+          - input_boolean.boolean_sleep
+          - input_boolean.boolean_away
+        to: 'on'
     action:
-     - service: script.turn_on
-       entity_id: script.led_off
+      - service: script.turn_on
+        entity_id: script.led_off
 
 script:
   led_white:
@@ -264,7 +212,7 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
-          # effect: solid
+#          effect: solid
           brightness: 255
           rgb_color: [255,166,87]
 
@@ -273,7 +221,7 @@ script:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
-          # effect: solid
+          effect: solid
           brightness: 255
           rgb_color: [255,136,13]
 

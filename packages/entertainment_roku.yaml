@@ -1,0 +1,84 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Ruko_media_player'
+
+####### roku's  #################
+group:
+  media_player_roku_kids_bedroom_card:
+   name: Kids Bedroom Roku
+   entities:
+     - media_player.roku_kids_bedroom
+  media_player_living_room_card:
+   name: Living Room Roku
+   entities:
+     - media_player.living_room
+  ruths_roku_media_player_card:
+   name: Ruths Roku
+   entities:
+     - media_player.ruths_roku
+
+media_player:
+  - platform: roku
+    host: 192.168.1.143
+  - platform: roku
+    host: 192.168.1.234
+  - platform: roku
+    host: 192.168.1.156
+
+sensor:
+  - platform: template
+    sensors:
+      roku_living_room_source:
+        entity_id: media_player.living_room
+        value_template: '{{ states.media_player.living_room.attributes.source }}'
+        friendly_name: 'Roku App'
+
+
+input_select:
+  roku_living_room_source:
+    name: Roku Living Room
+    options:
+      - Select Input
+      - Netflix
+      - Philo
+      - Tablo
+      - Amazon Prime Video
+      - Plex
+      - YouTube
+    icon: mdi:monitor
+
+# Harmony input select Automation
+automation:
+  - alias: Roku Input Select Automation
+    initial_state: on
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.roku_living_room_source
+        from: 'Select Input'
+    action:
+      - service: media_player.select_source
+        entity_id: media_player.living_room
+        data_template:
+          source: >
+            {% if is_state("input_select.roku_living_room_source", "Philo") %}
+              Philo
+            {% elif is_state("input_select.roku_living_room_source", "Netflix") %}
+              Netflix
+            {% elif is_state("input_select.roku_living_room_source", "Tablo") %}
+              Tablo
+            {% elif is_state("input_select.roku_living_room_source", "Amazon Prime Video") %}
+              Amazon Prime Video
+            {% elif is_state("input_select.roku_living_room_source", "Plex") %}
+              Plex
+            {% elif is_state("input_select.roku_living_room_source", "YouTube") %}
+              YouTube
+            {% else %}
+              Unknown
+            {% endif %}
+      - service: input_select.select_option
+        entity_id: input_select.roku_living_room_source
+        data_template:
+          option: "Select Input"

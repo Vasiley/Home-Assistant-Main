@@ -270,6 +270,8 @@ automation:
         value_template: "{{ states.sensor.days_to_next_appointment.state | int > 0 and states.sensor.days_to_next_appointment.state | int < 4 }}"
       - condition: template
         value_template: "{{ states.sensor.days_to_next_appointment.state != 'Unknown' }}"
+      - condition: template
+        value_template: "{{ states.calendar.main_calender.attributes.description != 'None' }}"
     action:
       - delay: '00:01:15'
       - service: tts.google_say
@@ -306,10 +308,14 @@ automation:
         - condition: state
           entity_id: input_boolean.boolean_home
           state: 'on'
-        - condition: template
-          value_template: "{{ states.sensor.days_to_next_appointment.state | int == 0 }}"
         # - condition: template
-        #   value_template: "{{ states.sensor.days_to_next_appointment.state != 'Unknown' }}"
+        #   value_template: "{{ states.sensor.days_to_next_appointment.state | int == 0 }}"
+        # - condition: template
+        #   value_template: "{{ states.calendar.main_calender.attributes is defined }}"
+        - condition: template
+          value_template: "{{ state_attr('calendar.main', 'description') != None }}"
+        # - condition: template
+        #   value_template: "{{ state_attr('calendar.main', 'start_time') != '' }}"
     action:
       - delay: '00:01:30'
       - service: tts.google_say

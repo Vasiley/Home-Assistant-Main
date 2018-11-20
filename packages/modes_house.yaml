@@ -53,6 +53,7 @@ group:
    entities:
      - sensor.house_mode_state
      - sensor.sub_mode_state
+     - sensor.kids_room_mode
      - sensor.privacy_mode_state
      - input_boolean.boolean_kids_home
      - binary_sensor.workday_sensor
@@ -70,8 +71,6 @@ sensor:
               Sleep
           {% elif states('input_boolean.boolean_evening_time') == 'on' %}
               Evening Time
-          {% elif states('input_boolean.boolean_early_morning') == 'on' %}
-              Early Morning
           {% elif states('input_boolean.boolean_nap_time') == 'on' %}
               Nap Time
           {% elif states('input_boolean.boolean_movie_time') == 'on' %}
@@ -86,6 +85,8 @@ sensor:
         value_template: >-
           {% if states('input_boolean.boolean_shower_time') == 'on' %}
               Shower Time
+          {% elif states('input_boolean.boolean_early_morning') == 'on' %}
+              Early Morning
           {% elif states('input_boolean.boolean_kids_shower_time') == 'on' %}
               Kids Shower Time
           {% elif states('input_boolean.boolean_getting_dressed') == 'on' %}

@@ -10,6 +10,10 @@ homeassistant:
       friendly_name: Mom
       haaska_hidden: true
       icon: mdi:account
+    sensor.tristan:
+      friendly_name: Tristan
+      haaska_hidden: true
+      icon: mdi:account
 
 
 # geo locate for device trackers
@@ -30,4 +34,10 @@ sensor:
     name: Mom
     api_key: !secret family_geo_locate
     origin: device_tracker.homeassistant_mom
-    scan_interval: 30
+    scan_interval: 90
+
+  - platform: google_geocode
+    name: Tristan
+    api_key: !secret family_geo_locate
+    origin: device_tracker.tristan_tw
+    scan_interval: 90

@@ -74,7 +74,7 @@ script:
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.stereo
-          volume_level: '.99'
+          volume_level: '.25'
       - service: switch.turn_off
         data:
           entity_id: switch.network_switch_blue_iris_monitor
