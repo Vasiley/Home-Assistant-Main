@@ -1,0 +1,33 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'robot_vacuum_ruths_room'
+    script.susie_clean_ruths_room:
+      friendly_name: Susie Clean Ruths Room
+      haaska_name: Susie Clean Ruths Room
+
+
+input_boolean:
+  boolean_susie_clean_ruths_room:
+    initial: off
+
+script:
+  susie_clean_ruths_room:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_vacuum_jobs_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_susie_clean_ruths_room
+      - service: vacuum.send_command
+        data:
+          entity_id: vacuum.susie
+          command: app_zoned_clean
+          params: [[ 33950, 25200, 36450, 29600, 1]]
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie is cleaning Ruths Room'

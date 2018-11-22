@@ -1,0 +1,123 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'dryer'
+
+    sensor.dyer_status:
+      friendly_name: Dryer Status
+      icon: mdi:power-settings
+    sensor.stopwatch_dryer:
+      friendly_name: Cycle TIme
+      icon: mdi:timer
+
+
+group:
+  dryer_card_frontend:
+   name: Dryer
+   entities:
+    - binary_sensor.vibration_158d0002b12b62
+    - sensor.bed_activity_158d0002b12b62
+    - sensor.coordination_158d0002b12b62
+    - sensor.dryer_status
+    - sensor.stopwatch_dryer
+
+input_boolean:
+  dryer_switch:
+    initial: off
+    icon: mdi:water
+  dyer_stopwatch:
+    name: Stopwatch
+    initial: off
+  dryer_dummy:
+    name: Dummy
+    initial: off
+
+# sensor:
+#   - platform: template
+#     sensors:
+#       washer_status:
+#         value_template: '{% if is_state("sensor.washing_machine_power_up", "True") %}Cleaning{% else %}Idle{% endif %}'
+#       stopwatch:
+#         entity_id: sun.sun
+#         value_template: >
+#                 {% if is_state('input_boolean.stopwatch', 'on') %}
+#                 {{ relative_time(states.automation.stopwatch_start.attributes.last_triggered) }}
+#                 {# states.automation.stopwatch_update #}
+#                 {% elif is_state('sensor.stopwatch', 'unknown') %}
+#                   0 seconds
+#                 {% else %}
+#                 {{ states('sensor.stopwatch') }}
+#                 {% endif %}
+# #        entity_id:
+# #             - automation.stopwatch_start
+# #             - automation.stopwatch_update
+# #             - automation.stopwatch_stop
+#
+# automation:
+#   - alias: 'Washer Start'
+#     trigger:
+#       - platform: state
+#         entity_id: sensor.washing_machine_power_down
+#         from: 'True'
+#         to: 'False'
+#     action:
+#       - service: input_boolean.turn_on
+#         entity_id: input_boolean.washer_switch
+#       - service: input_boolean.turn_on
+#         entity_id: input_boolean.stopwatch
+#
+#   - alias: 'Washer Done'
+#     trigger:
+#       - platform: state
+#         entity_id: sensor.washing_machine_power_down
+#         from: 'False'
+#         to: 'True'
+#         for:
+#           minutes: 3
+#     condition:
+#       - condition: state
+#         entity_id: input_boolean.washer_switch
+#         state: 'on'
+#     action:
+#       - service: tts.google_say
+#         data:
+#           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+#           message: 'Check the Clothes Washer Is Done'
+#       - service: notify.Pushbullet
+#         data:
+#           message: 'Check the Clothes Washer Is Done'
+#       - service: input_boolean.turn_off
+#         entity_id: input_boolean.washer_switch
+#       - service: input_boolean.turn_off
+#         entity_id: input_boolean.stopwatch
+#
+#   - alias: 'Stopwatch start'
+#     trigger:
+#       - platform: state
+#         entity_id: input_boolean.stopwatch
+#         to: 'on'
+#     action:
+#       - service: input_boolean.toggle
+#         entity_id: input_boolean.dummy
+#
+#   - alias: Stopwatch stop
+#     trigger:
+#       - platform: state
+#         entity_id: input_boolean.stopwatch
+#         to: 'off'
+#     action:
+#       - service: input_boolean.toggle
+#         entity_id: input_boolean.dummy
+#
+#   - alias: Stopwatch update
+#     trigger:
+#       - platform: time
+#         seconds: '/1'
+#     condition:
+#       - condition: state
+#         entity_id: input_boolean.stopwatch
+#         state: 'on'
+#     action:
+#       - service: input_boolean.toggle
+#         entity_id: input_boolean.dummy

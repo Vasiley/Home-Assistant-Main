@@ -1,0 +1,33 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'robot_vacuum_kids_bathroom'
+    script.susie_clean_kids_bathroom:
+      friendly_name: Susie Clean Kids Bathroom
+      haaska_name: Susie Clean Kids Bathroom
+
+
+input_boolean:
+  boolean_susie_clean_kids_bathroom:
+    initial: off
+
+script:
+  susie_clean_kids_bathroom:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_vacuum_jobs_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_susie_clean_kids_bathroom
+      - service: vacuum.send_command
+        data:
+          entity_id: vacuum.susie
+          command: app_zoned_clean
+          params: [[ 36450, 26120, 37950, 28000, 1]]
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie is cleaning Kids Bathroom'
