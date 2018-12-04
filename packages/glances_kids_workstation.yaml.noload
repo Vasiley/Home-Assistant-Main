@@ -44,7 +44,7 @@ homeassistant:
       icon: mdi:chart-line
 
 group:
-  network_workstation_info_card:
+  kids_workstation_info_card:
    name: Network Pc Svr Info
    entities:
      - sensor.network_workstation
@@ -82,4 +82,3 @@ sensor:
       - 'process_total'
       - 'process_thread'
       - 'process_sleeping'
-

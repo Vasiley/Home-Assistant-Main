@@ -124,7 +124,7 @@ script:
         entity_id: automation.motion_bathroom_sleep_on
       - service: switch.turn_off
         data:
-          entity_id: switch.network_switch_blue_iris_monitor
+          entity_id: switch.blue_iris_monitor
       - delay: '00:00:10'
       - service: light.turn_off
         data:

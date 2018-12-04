@@ -69,7 +69,7 @@ script:
           entity_id: fan.living_room_fan
       - service: switch.turn_off
         data:
-          entity_id: switch.network_switch_blue_iris_monitor
+          entity_id: switch.blue_iris_monitor
       - service: media_player.turn_off
         data:
           entity_id: media_player.stereo

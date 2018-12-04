@@ -118,6 +118,10 @@ homeassistant:
       friendly_name: Gabbies Dot
       icon: mdi:voice
       haaska_hidden: true
+    binary_sensor.alexa_kitchen_echo:
+      friendly_name: Kitchen Echo
+      icon: mdi:voice
+      haaska_hidden: true
 
 ############### Media Players  ##########################################
     binary_sensor.ruths_ruko:
@@ -161,10 +165,6 @@ homeassistant:
       icon: mdi:theater
       haaska_hidden: true
 ##################### NAS ############################################
-    binary_sensor.media_harddrive:
-      friendly_name: Media Nas
-      icon: mdi:harddisk
-      haaska_hidden: true
     binary_sensor.network_harddrive:
       friendly_name: Network Nas
       icon: mdi:harddisk
@@ -304,6 +304,10 @@ homeassistant:
       friendly_name: Gabbies Ps3
       icon: mdi:playstation
       haaska_hidden: true
+    binary_sensor.game_console_xboxone:
+      friendly_name: Tristans Xbox One
+      icon: mdi:xbox
+      haaska_hidden: true
     binary_sensor.voip_nettalk:
       friendly_name: NetDuo
       icon: mdi:phone-voip
@@ -325,13 +329,13 @@ homeassistant:
       friendly_name: Clients Tracked
       icon: mdi:network
       haaska_hidden: true
-    binary_sensor.power_relay:
-      friendly_name: Fish Tank Wave Pumps
-      icon: mdi:power-plug
-      haaska_hidden: true
     binary_sensor.rockrobo:
       friendly_name: Susie
       icon: mdi:power-plug
+      haaska_hidden: true
+    binary_sensor.living_room_purifer:
+      friendly_name: Living Room Purifer
+      icon: mdi:fan
       haaska_hidden: true
 
 group:
@@ -383,7 +387,6 @@ group:
   NetworkDrives_status_card:
    name: Nas Drives
    entities:
-     - binary_sensor.media_harddrive
      - binary_sensor.network_harddrive
 
   esp_led_devices_card:
@@ -427,6 +430,7 @@ group:
      - binary_sensor.alexa_master_dot
      - binary_sensor.alexa_gabbies_room_dot
      - binary_sensor.alexa_living_room_echo
+     - binary_sensor.alexa_kitchen_echo
 
   network_equipment_status_card:
    name: Networking Devices
@@ -479,12 +483,14 @@ group:
    entities:
     - binary_sensor.game_console_ps4
     - binary_sensor.game_console_ps3
+    - binary_sensor.game_console_xboxone
     - binary_sensor.voip_nettalk
     - binary_sensor.webswitch_network
     - binary_sensor.printer_hp
     - binary_sensor.ecobee
-    - binary_sensor.power_relay
     - binary_sensor.rockrobo
+    - binary_sensor.living_room_purifer
+
 sensor:
   ############## Public Ip
   - platform: dnsip
@@ -652,6 +658,12 @@ binary_sensor:
       alexa_master_dot:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.alexa_master_dot", "home") }}'
+  - platform: template
+    sensors:
+      alexa_kitchen_echo:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.alexa_kitchen_echo", "home") }}'
+
 
 #################### media players ###################
 
@@ -717,11 +729,6 @@ binary_sensor:
 
 #################### NAS  ###################
 
-  - platform: template
-    sensors:
-      media_harddrive:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.media_harddrive", "home") }}'
   - platform: template
     sensors:
       network_harddrive:
@@ -897,6 +904,11 @@ binary_sensor:
         value_template: "{{ is_state('device_tracker.game_console_ps3', 'home') }}"
   - platform: template
     sensors:
+      game_console_xboxone:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.game_console_xboxone', 'home') }}"
+  - platform: template
+    sensors:
       voip_nettalk:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.voip_nettalk', 'home') }}"
@@ -905,11 +917,6 @@ binary_sensor:
       webswitch_network:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.webswitch_network', 'home') }}"
-  - platform: template
-    sensors:
-      power_relay:
-        device_class: connectivity
-        value_template: "{{ is_state('device_tracker.power_relay', 'home') }}"
   - platform: template
     sensors:
       printer_hp:
@@ -925,6 +932,11 @@ binary_sensor:
       rockrobo:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.rockrobo', 'home') }}"
+  - platform: template
+    sensors:
+      living_room_purifer:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.living_room_purifer', 'home') }}"
 
 device_tracker:
   - platform: ping
@@ -943,8 +955,7 @@ device_tracker:
     verify_ssl: false
     site_id: default
 
-  - platform: owntracks
-    max_gps_accuracy: 200
+
 
 #### Notify if device goes offline
 
@@ -983,6 +994,7 @@ automation:
           - binary_sensor.alexa_master_dot
           - binary_sensor.alexa_gabbies_room_dot
           - binary_sensor.alexa_living_room_echo
+          - binary_sensor.alexa_kitchen_echo
 #         media Players
           - binary_sensor.ruths_ruko
           - binary_sensor.livingroom_roku
@@ -995,7 +1007,6 @@ automation:
           - binary_sensor.chromecast_kids_room
           - binary_sensor.tablo
 #         NAS
-          - binary_sensor.media_harddrive
           - binary_sensor.network_harddrive
 #         Network Equipment
 #          - binary_sensor.cable_modem
@@ -1034,12 +1045,14 @@ automation:
 #         misc devices
           - binary_sensor.game_console_ps4
           - binary_sensor.game_console_ps3
+          - binary_sensor.game_console_xboxone
           - binary_sensor.voip_nettalk
           - binary_sensor.webswitch_network
           - binary_sensor.printer_hp
           - binary_sensor.ecobee
           - binary_sensor.rockrobo
-#          - binary_sensor.power_relay
+          - binary_sensor.living_room_purifer
+
     condition:
       condition: and
       conditions:

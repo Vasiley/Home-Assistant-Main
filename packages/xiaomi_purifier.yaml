@@ -1,0 +1,63 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'air_puirfier'
+    fan.living_room_purifer:
+      friendly_name: Living room Purifer
+      haaska_hidden: true
+
+group:
+  air_puirfier_card:
+   name: Air Purifer
+   entities:
+     - fan.living_room_purifer
+fan:
+  - platform: xiaomi_miio
+    host:  192.168.1.60
+    token: !secret xiaomi_purifer
+    name: Living Room Purifer
+
+script:
+  living_room_purifer_led_off:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_off
+        entity_id: fan.living_room_purifer
+  living_room_purifer_led_on:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_on
+        entity_id: fan.living_room_purifer
+##### service call not working need to open pr        
+  living_room_purifer_led_dim:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_brightness
+        data:
+          entity_id: fan.living_room_purifer
+          brightness: 1
+
+automation:
+  - alias: 'led_control_xiaomi_purifer'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_sleep
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+    action:
+      - service: script.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_boolean.boolean_home", "on") %}
+              script.living_room_purifer_led_on
+            {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+              script.living_room_purifer_led_on
+            {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              script.living_room_purifer_led_off
+            {% else %}
+              script.living_room_purifer_led_off
+            {% endif %}

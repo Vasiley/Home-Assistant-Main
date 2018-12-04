@@ -182,6 +182,21 @@ automation:
       - service: script.turn_on
         entity_id: script.led_white
 
+#### reset leds due to esp8266 crashing
+  - alias: home mode led white reset
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        minutes: '/30'
+        seconds: 00
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_white
+##############################################
   - alias: Kitchen Leds Yellow
     initial_state: 'on'
     trigger:
@@ -192,8 +207,35 @@ automation:
         to: 'on'
     action:
       - service: script.turn_on
+        entity_id: script.led_off
+      - delay: '00:00:10'               
+      - service: script.turn_on
         entity_id: script.led_yellow
 
+#### reset leds due to esp8266 crashing
+  - alias: early/evening mode led yellow reset
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        minutes: '/30'
+        seconds: 00
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_early_morning
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.boolean_evening_time
+          state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_off
+      - delay: '00:00:10'
+      - service: script.turn_on
+        entity_id: script.led_yellow
+
+#############################################################
   - alias: Kitchen Leds off
     initial_state: 'on'
     trigger:

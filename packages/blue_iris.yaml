@@ -4,7 +4,9 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'blue_iris'
-
+    switch.blue_iris_monitor:
+      friendly_name: Blue Iris Monitor
+      haaska_name: Blue Iris Monitor
     binary_sensor.motion_outdoor_shed:
       friendly_name: Shed Camera
       device_class: motion
@@ -70,7 +72,7 @@ sensor:
        {% if 'profile=1' in value %}
          No Motion Detection
         {% elif 'profile=2' in value %}
-          Kids Home Alone 
+          Kids Home Alone
        {% elif 'profile=5' in value %}
          Lockdown Full Motion Detection
        {% elif 'profile=6' in value %}
@@ -187,6 +189,9 @@ automation:
         state: 'on'
       - condition: state
         entity_id: input_boolean.boolean_active_outside
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_front_door
         state: 'off'
     action:
       - service: light.turn_on

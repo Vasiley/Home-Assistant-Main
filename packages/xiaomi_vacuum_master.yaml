@@ -4,9 +4,10 @@ homeassistant:
       customize: &customize
         package: 'robot_vacuum_master'
     script.susie_clean_master:
-      friendly_name: Susie Clean Master
-      haaska_name: Susie Clean Master
-    susie_clean_master_door_closed:
+      friendly_name: Susie Clean Master Bedroom
+      haaska_name: Susie Clean Master Bedroom
+
+    script.susie_clean_master_door_closed:
       haaska_hidden: true
 
 

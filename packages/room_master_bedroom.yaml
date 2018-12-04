@@ -75,6 +75,7 @@ group:
       - binary_sensor.door_window_sensor_herbs_side
       - sensor.herbs_side_window_sensor_batt
 
+
 binary_sensor:
   - platform: rest
     resource: !secret MS_rest_40

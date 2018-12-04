@@ -1,0 +1,19 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'robot_vacuum_automations'
+    automation.automation_susie_clean_up_nightly:
+      haaska_hidden: true
+
+automation:
+  - alias: 'automation_susie_clean_up_nightly'
+    trigger:
+      - platform: time
+        at: '01:00:00'
+    action:
+      - service: script.turn_on
+        entity_id: script.susie_clean_livingroom
+      - wait_template: "{{ is_state('input_boolean.boolean_susie_home', 'on') }}"
+      - service: script.turn_on
+        entity_id: script.susie_clean_kitchen

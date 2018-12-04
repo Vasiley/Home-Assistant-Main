@@ -116,7 +116,7 @@ script:
       - service: rest_command.no_motion
       - service: switch.turn_on
         data:
-          entity_id: switch.network_switch_blue_iris_monitor
+          entity_id: switch.blue_iris_monitor
       - delay: '00:00:01'
       - service: light.turn_on
         data_template:

@@ -54,6 +54,7 @@ group:
       - input_boolean.boolean_susie_clean_kids_hallway
       - input_boolean.boolean_susie_clean_ruths_room
       - input_boolean.boolean_susie_clean_kids_bathroom
+      - input_boolean.boolean_susie_clean_kids_room
 
 vacuum:
   - platform: xiaomi_miio
@@ -76,6 +77,7 @@ input_select:
       - Clean Kids Hallway
       - Clean Ruths Room
       - Clean Kids Bathroom
+      - Clean Kids Room
 
 input_boolean:
   boolean_susie_home:
@@ -111,6 +113,8 @@ sensor:
               Cleaning Ruths Room
           {% elif states('input_boolean.boolean_susie_clean_kids_bathroom') == 'on' %}
               Cleaning Kids Bathroom
+          {% elif states('input_boolean.boolean_susie_clean_kids_room') == 'on' %}
+              Cleaning Kids Room
           {% else %}
               Unknown Do Better
           {% endif %}
@@ -174,17 +178,24 @@ automation:
       entity_id: vacuum.susie
       to: 'docked'
     action:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_vacuum_jobs_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_susie_home
+      - service: input_select.select_option
+        entity_id: input_select.susie_selection
+        data_template:
+          option: 'Select Task'
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
       - service: tts.google_say
         data:
           entity_id:
             - media_player.ha_speaker
             - media_player.master_bedroom_cast
           message: 'Susie is docked'
-      - service: input_boolean.turn_off
-        data:
-          entity_id: group.input_boolean_vacuum_jobs_card
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.boolean_susie_home
 
   - alias: 'susie_is_returning_home'
     trigger:
@@ -192,6 +203,9 @@ automation:
       entity_id: vacuum.susie
       to: 'returning'
     action:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
       - service: tts.google_say
         data_template:
           entity_id:
@@ -214,6 +228,8 @@ automation:
                 Susie is finished cleaning Ruths Room returing home
              {% elif states('input_boolean.boolean_susie_clean_kids_bathroom') == 'on' %}
                 Susie is finished cleaning Kids Bathroom returing home
+             {% elif states('input_boolean.boolean_susie_clean_kids_room') == 'on' %}
+                Susie is finished cleaning Kids Room returing home
              {% else %}
                 Unknown Do Better
              {% endif %}
@@ -234,7 +250,7 @@ automation:
   - alias: 'susie_todo'
     trigger:
       platform: state
-      entity_id: input_select.susie_todo
+      entity_id: input_select.susie_selection
       from: 'Select Task'
     action:
       - service: script.turn_on
@@ -249,18 +265,19 @@ automation:
             {% elif is_state("input_select.susie_selection", "Clean Master Hallway") %}
               script.susie_clean.master_hallway
             {% elif is_state("input_select.susie_selection", "Clean Master") %}
-              script.susie_clean.master
+              script.susie_clean_master
             {% elif is_state("input_select.susie_selection", "Clean Livingroom") %}
-              script.susie_clean.Livingroom
+              script.susie_clean_Livingroom
             {% elif is_state("input_select.susie_selection", "Clean Kids Hallway") %}
-              script.susie_clean.kids_hallway
+              script.susie_clean_kids_hallway
             {% elif is_state("input_select.susie_selection", "Clean Ruths Room") %}
-              script.susie_clean.ruths_room
+              script.susie_clean_ruths_room
             {% elif is_state("input_select.susie_selection", "Clean Kids Bathroom") %}
-              script.susie_clean.kids_bathroom
+              script.susie_clean_kids_bathroom
+            {% elif is_state("input_select.susie_selection", "Clean Kids Room") %}
+              script.susie_clean_kids_room
             {% endif %}
-
       - service: input_select.select_option
-        entity_id: input_select.susie_todo
+        entity_id: input_select.susie_selection
         data_template:
-          option: "Select Task"
+          option: 'Select Task'

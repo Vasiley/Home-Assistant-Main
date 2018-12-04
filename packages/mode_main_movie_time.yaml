@@ -99,7 +99,7 @@ script:
           entity_id: input_boolean.boolean_movie_time
       - service: switch.turn_off
         data:
-          entity_id: switch.network_switch_blue_iris_monitor
+          entity_id: switch.blue_iris_monitor
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker

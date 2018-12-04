@@ -25,6 +25,9 @@ script:
           entity_id: vacuum.susie
           command: app_zoned_clean
           params: [[25500, 25500, 29500, 28900, 1]]
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
       - service: tts.google_say
         data:
           entity_id:

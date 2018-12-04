@@ -44,6 +44,9 @@
      - group.google_calender_card
      - group.test_led_card
      - weather.yweather
+     - group.medicine_safe_card
+     - group.air_puirfier_card
+     
   Devicesview:
    view: yes
    name: Equipment
@@ -176,12 +179,12 @@
      - group.controls
      - group.fish_leds_card
 
-  fish_tank_main_view:
+  xmas_tree_main_view:
    view: yes
-   name: Main Tank
+   name: Xmas Tree
    entities:
-     - group.main_tank_power
-     - group.main_tank_automations
+     - group.xams_tree_power
+     - group.xmas_tree_automations
 
   dashboard:
    view: yes
@@ -225,14 +228,6 @@
     name: Network Services Online
     entities:
       - group.services_online_card
-
-  Family:
-    entities:
-     - sensor.herb
-     - sensor.dawn
-     - sensor.gabbie_status
-     - sensor.mom
-     - sensor.tristan
 
   Routines:
     control: hidden
@@ -292,6 +287,7 @@
      - sensor.kids_humidity_sensor_batt
      - sensor.master_humidity_sensor_batt
      - sensor.master_bath_motion_sensor_batt
+     - sensor.vibration_sensor_batt
 
 
   humidity:

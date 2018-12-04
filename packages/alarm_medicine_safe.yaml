@@ -1,0 +1,89 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'dryer'
+
+    input_boolean.boolean_safe_tamper:
+      friendly_name: Safe Tamper
+      icon: mdi:safe
+    sensor.vibration_sensor_batt:
+      friendly_name: Safe Batt Level
+      icon: mdi:battery
+      device_class: battery
+      unit_of_measurement: '%'
+
+######### Enties Created by Xiaomi Vibration Sensors
+# sensor.activity_safe
+# sensor.coordination_safe
+# binary_sensor.safe_vibration
+#
+# As of now 11/23/2018 the binary sensor is always off (hope that will improve)
+
+group:
+  medicine_safe_card:
+   name: Medicine Safe
+   entities:
+    - input_boolean.boolean_safe_tamper
+    - binary_sensor.safe_vibration
+    - sensor.activity_safe
+    - sensor.coordination_safe
+    - sensor.vibration_sensor_batt
+    - alert.medicine_safe_alert
+
+
+input_boolean:
+  boolean_safe_tamper:
+    initial: off
+    icon: mdi:water
+
+sensor:
+  - platform: template
+    sensors:
+      vibration_sensor_batt:
+        friendly_name: 'Medicine Safe Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.safe_vibration.attributes.battery_level }}"
+
+automation:
+  - alias: 'Alarm is safe is tampered with'
+    trigger:
+      - platform: event
+        event_type: xiaomi_aqara.movement
+        event_data:
+          entity_id: binary_sensor.safe_vibration
+          movement_type: vibrate
+      - platform: event
+        event_type: xiaomi_aqara.movement
+        event_data:
+          entity_id: binary_sensor.safe_vibration
+          movement_type: tilt
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_safe_tamper
+      - service: notify.Pushbullet
+        data:
+          message: 'Medicine Safe has been tampered with'
+      - service: notify.chrome_push
+        data_template:
+          title: ""
+          message: "Medicine Safe - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          # data:
+          #   url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "Medicine Safe"
+          message: "Medicine Safe Tamper - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Medicine Safe"
+
+alert:
+  medicine_safe_alert:
+    name: Medicine Safe has been tampered with
+    entity_id: input_boolean.boolean_safe_tamper
+    state: 'on'   # Optional, 'on' is the default value
+    repeat:
+      - 15
+      - 30
+      - 60
+    can_acknowledge: False  # Optional, default is True
+    skip_first: False  # Optional, false is the default
+    notifiers: Pushbullet
