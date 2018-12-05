@@ -7,17 +7,54 @@ homeassistant:
     fan.living_room_purifer:
       friendly_name: Living room Purifer
       haaska_hidden: true
+    sensor.living_room_purifer_mode:
+      hasska_hidden: true
+      friendly_name: Living room Purifer Mode
+    sensor.living_room_purifer_temp:
+      hasska_hidden: true
+      friendly_name: Living Room Temperature
+    sensor.living_room_purifer_humd:
+      hasska_hidden: true
+      friendly_name: Living Room Humidity
+      icon: mdi:water-percent
+    sensor.living_room_purifer_aqi_current:
+      hasska_hidden: true
+      friendly_name: Living Room AQI
+      icon: mdi:crosshairs
+    script.living_room_purifer_led_off:
+      haaska_name: Living Room Purifier Led Off
+    script.living_room_purifer_led_on:
+      haaska_name: Living Room Purifier Led On
 
 group:
   air_puirfier_card:
    name: Air Purifer
    entities:
      - fan.living_room_purifer
+     - sensor.living_room_purifer_mode
+     - sensor.living_room_purifer_aqi_current
+
 fan:
   - platform: xiaomi_miio
     host:  192.168.1.60
     token: !secret xiaomi_purifer
     name: Living Room Purifer
+
+sensor:
+  - platform: template
+    sensors:
+      living_room_purifer_mode:
+        value_template: '{{ states.fan.living_room_purifer.attributes["mode"] }}'
+      living_room_purifer_temp:
+        value_template: '{{ states.fan.living_room_purifer.attributes["temperature"] }}'
+        unit_of_measurement: '°C'
+      living_room_purifer_humd:
+        value_template: '{{ states.fan.living_room_purifer.attributes["humidity"] }}'
+        unit_of_measurement: '%'
+      living_room_purifer_aqi_current:
+        value_template: '{{ states.fan.living_room_purifer.attributes["aqi"] }}'
+        unit_of_measurement: '%'
+
 
 script:
   living_room_purifer_led_off:
@@ -28,7 +65,7 @@ script:
     sequence:
       - service: fan.xiaomi_miio_set_led_on
         entity_id: fan.living_room_purifer
-##### service call not working need to open pr        
+##### service call not working need to open pr
   living_room_purifer_led_dim:
     sequence:
       - service: fan.xiaomi_miio_set_led_brightness

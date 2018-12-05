@@ -46,7 +46,7 @@
      - weather.yweather
      - group.medicine_safe_card
      - group.air_puirfier_card
-     
+
   Devicesview:
    view: yes
    name: Equipment
@@ -265,6 +265,7 @@
      - sensor.temperature_kids_bathroom
      - sensor.gabbies_room_temperature
      - sensor.temperature_master_bathroom
+     - sensor.living_room_purifer_temp
 
 
   battery:
@@ -297,6 +298,7 @@
      - sensor.ha_humidity
      - sensor.humidity_kids_bathroom
      - sensor.humidity_master_bathroom
+     - sensor.living_room_purifer_humd
 
   Motion_card:
    name: Motion

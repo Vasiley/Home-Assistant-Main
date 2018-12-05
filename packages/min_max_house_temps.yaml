@@ -24,6 +24,7 @@ sensor:
       - sensor.ha_temperature
       - sensor.temperature_kids_bathroom
       - sensor.temperature_master_bathroom
+      - sensor.living_room_purifer_temp
 
   - platform: min_max
     type: mean
@@ -33,3 +34,4 @@ sensor:
       - sensor.ha_humidity
       - sensor.humidity_kids_bathroom
       - sensor.humidity_master_bathroom
+      - sensor.living_room_purifer_humd
