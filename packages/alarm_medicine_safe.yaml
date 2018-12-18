@@ -8,7 +8,7 @@ homeassistant:
       friendly_name: Safe Tamper
       icon: mdi:safe
     sensor.vibration_sensor_batt:
-      friendly_name: Safe Batt Level
+      friendly_name: Medicine Safe
       icon: mdi:battery
       device_class: battery
       unit_of_measurement: '%'

@@ -5,7 +5,7 @@ homeassistant:
         package: 'dashboards'
     sensor.gabbies_room_wallpanel_battery:
       icon: mdi:battery
-      friendly_name: Gabbies Room Dash Battery
+      friendly_name: Gabbies Room Dashboard
       haaska_hidden: true
     sensor.gabbies_room_wallpanel_charging:
       friendly_name: Gabbies Room Dash Battery Charging
@@ -27,11 +27,12 @@ homeassistant:
       device_class: motion
     sensor.bedroom_wallpanel_battery:
       icon: mdi:battery
+      friendly_name: Master Bedroom Dashboard
     sensor.bedroom_wallpanel_brightness:
       friendly_name: Master Bedroom Dash Light Level
       icon: mdi:theme-light-dark
     sensor.living_room_wallpanel_battery:
-      friendly_name: Living Room Dash Battery
+      friendly_name: Living Room Dashboard
       icon: mdi:battery
     sensor.living_room_wallpanel_charging:
       friendly_name: Living Room Dash Battery Charging

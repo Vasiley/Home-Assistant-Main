@@ -11,7 +11,6 @@ group:
   entertainment_card:
    name: Entertainment Center
    entities:
-#     - remote.entertainment
      - sensor.remote_entertainment
      - input_select.harmony
      - sensor.onkyo_source
@@ -35,13 +34,6 @@ group:
     name: Plex Server
     entities:
       - media_player.plex_server_living_room
-
-  media_player_kodi_card:
-    name: Kids Room Kodi
-    entities:
-      - media_player.kodi
-
-
 
 ######### Cast Devices #################
 
@@ -83,16 +75,6 @@ media_player:
     host: 192.168.1.14
     port: 8001
     name: Smart Tv
-  - platform: kodi
-    host: 192.168.1.149
-    username: !secret media_player_kodi_username
-    password: !secret media_player_kodi_password
-
-
-# cast:
-#   media_player:
-#   - host: 192.168.1.173
-#   - host: 192.168.1.32
 
 sensor:
   - platform: plex

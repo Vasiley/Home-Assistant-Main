@@ -16,16 +16,15 @@ homeassistant:
     switch.kids_plasma_light:
       friendly_name: Plasma Ball
       haaska_name: Plasma Ball
-      icon: mdi:flash-outline  
+      icon: mdi:flash-outline
     binary_sensor.gabbies_room_motion:
       haaska_hidden: true
       device_class: motion
       friendly_name: Gabbies Room Motion
-    sensor.gabbies_room_temperature:
-      haaska_hidden: true
     sensor.motion_sensor_gabbies_room_battery:
       icon: mdi:battery
-    sensor.gabbies_room_motion_sensor_lux:
+      unit_of_measurement: '%'
+    sensor.illumination_gabbies_room_motion_sensor:
       friendly_name: Gabbies Room Light Level
       icon: mdi:theme-light-dark
     sensor.gabbie_status:
@@ -87,13 +86,13 @@ group:
    entities:
      - light.gabbies_light
      - light.kids_main
+     - binary_sensor.door_window_sensor_kids_bedroom_door
      - sensor.kids_room_mode
      - sensor.gabbie_status
      - binary_sensor.gabbies_room_motion
      - binary_sensor.gabbies_room_occupancy
-     - sensor.gabbies_room_temperature_2
      - sensor.gabbies_room_temperature
-     - sensor.gabbies_room_motion_sensor_lux
+     - sensor.illumination_gabbies_room_motion_sensor
      - sensor.motion_sensor_gabbies_room_battery
      - input_boolean.boolean_gabbie_home
      - input_boolean.boolean_gabbie_sleep
@@ -133,35 +132,15 @@ sensor:
     sensors:
       kids_room_mode:
         value_template: '{% if is_state("input_boolean.boolean_gabbie_sleep", "on") %}Sleep{% else %}Awake{% endif %}'
-  - platform: rest
-    resource: !secret MS_rest_29
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Gabbies Room Temperature'
-  - platform: rest
-    resource: !secret MS_rest_30
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Gabbies Room Battery'
-  - platform: rest
-    resource: !secret MS_rest_31
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Gabbies Room Motion Sensor Lux'
-
+  - platform: template
+    sensors:
+      motion_sensor_gabbies_room_battery:
+        friendly_name: 'Gabbies Room Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.gabbies_room_motion', 'battery_level') }}"
   - platform: mqtt
     state_topic: "kids_room_relay/Wifi Connect/wifi"
     unit_of_measurement: 'dbm'
     name: Kids Controller Wifi Signal
-
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_30
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: gabbies_room_motion
 
 switch:
   - platform: mqtt
@@ -216,7 +195,7 @@ automation:
          data:
            entity_id:
              - media_player.ha_speaker
-             - media_player.kodi
+             - media_player.kids_room_cast
            message: 'Goodbye Gabbie'
   - alias: 'gabbie_going_sleep'
     trigger:
@@ -229,15 +208,12 @@ automation:
       - condition: state
         entity_id: input_boolean.ha_start
         state: 'off'
-      # - condition: state
-      #   entity_id: input_boolean.boolean_gabbie_sleep
-      #   state: 'off'
     action:
        - service: tts.google_say
          data:
            entity_id:
              - media_player.ha_speaker
-             - media_player.kodi
+             - media_player.kids_room_cast
            message: 'Goodnight Gabbie'
        - service: script.turn_on
          entity_id: script.gabbies_bedtime
@@ -253,15 +229,12 @@ automation:
       - condition: state
         entity_id: input_boolean.ha_start
         state: 'off'
-      # - condition: state
-      #   entity_id: input_boolean.boolean_gabbie_awake
-      #   state: 'off'
     action:
       - service: tts.google_say
         data:
           entity_id:
             - media_player.ha_speaker
-            - media_player.kodi
+            - media_player.kids_room_cast
           message: 'Goodmorning Gabbie'
       - service: script.turn_on
         entity_id: script.gabbies_awake

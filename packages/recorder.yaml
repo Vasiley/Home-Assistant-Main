@@ -41,6 +41,6 @@ recorder:
       - sun.sun
       - sensor.pihole_status_raw
 
-  db_url: !secret recorder_db_url
+#  db_url: !secret recorder_db_url
   purge_interval: 2
   purge_keep_days: 5

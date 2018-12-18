@@ -10,21 +10,14 @@ sensor:
     type: mean
     name: House Avg Temperature
     entity_ids:
-      - sensor.kitchen_temperature
       - sensor.hallway_temperature
-      - sensor.laundry_temperature
-      - sensor.kids_hallway_temperature
-      - sensor.master_temperature
-#      - sensor.bathroom_temperature       #old hue in master bathroom
-      - sensor.gabbies_room_temperature
+      - sensor.gabbies_room_temperature  #Ecobee sensor
       - sensor.master_bedroom_temperature
-      - sensor.living_room_temperature
-      - sensor.ruths_room_temperature
-      - sensor.thermostat_temperature
+      - sensor.living_room_temperature #Ecobee sensor
+      - sensor.thermostat_temperature #Ecobee thermostat
       - sensor.ha_temperature
-      - sensor.temperature_kids_bathroom
-      - sensor.temperature_master_bathroom
-      - sensor.living_room_purifer_temp
+      - sensor.temperature_kids_bathroom # Xiaomi humidity temp sensor
+      - sensor.living_room_purifer_temp #Xiaomi Purifer 2s
 
   - platform: min_max
     type: mean
@@ -32,6 +25,6 @@ sensor:
     entity_ids:
       - sensor.thermostat_humidity
       - sensor.ha_humidity
-      - sensor.humidity_kids_bathroom
-      - sensor.humidity_master_bathroom
-      - sensor.living_room_purifer_humd
+      - sensor.humidity_kids_bathroom # Xiaomi humidity temp senso
+      - sensor.humidity_master_bathroom # Xiaomi humidity temp senso
+      - sensor.living_room_purifer_humd #Xiaomi Purifer 2s

@@ -7,8 +7,10 @@ homeassistant:
       friendly_name: Kitchen Motion
       device_class: motion
     sensor.kitchen_battery_motion:
-      friendly_name: Kitchen Motion Battery
-    sensor.motion_sensor_kitchen_lux:
+      friendly_name: Kitchen Motion Sensor
+      icon: mdi:battery
+      unit_of_measurement: '%'
+    sensor.illumination_motion_sensor_kitchen:
       friendly_name: Kitchen Light Level
       icon: mdi:theme-light-dark
     sensor.kitchen_table_dimmer_battery:
@@ -17,6 +19,9 @@ homeassistant:
       icon: mdi:clock
     sensor.kitchen_table_dimmer_state:
       icon: mdi:remote
+    sensor.illumination_xiaomi_hub_kitchen:
+      friendly_name: Kitchen Hub Lux Level
+      icon: mdi:theme-light-dark
 
 group:
  kitchen_card:
@@ -39,7 +44,9 @@ group:
       - automation.motion_kitchen_main_light_on
       - automation.motion_kitchen_off
       - sensor.Kitchen_dimmer_test
-      - sensor.motion_sensor_kitchen_lux
+      - binary_sensor.kitchen_motion
+      - sensor.illumination_motion_sensor_kitchen
+      - sensor.kitchen_battery_motion
       - input_select.kitchen_blinds_status
       - sensor.kitchen_blinds_state
       - script.blinds_closed
@@ -49,38 +56,19 @@ group:
       - sensor.kitchen_sink_window_sensor_batt
       - binary_sensor.door_window_sensor_kitchen_table
       - sensor.kitchen_table_window_sensor_batt
-        
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_6
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 1
-    name: kitchen_motion
+      - sensor.illumination_xiaomi_hub_kitchen
 
 sensor:
-  - platform: rest
-    resource: !secret MS_rest_5
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Kitchen Temperature'
-  - platform: rest
-    resource: !secret MS_rest_5
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Kitchen Battery'
-  - platform: rest
-    resource: !secret MS_rest_7
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Motion Sensor Kitchen Lux'
+  - platform: template
+    sensors:
+      kitchen_battery_motion:
+        friendly_name: 'Kitchen Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.kitchen_motion', 'battery_level') }}"
   - platform: rest
     resource: !secret dimmer_rest_9
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
-    name: 'Kitchen Table Dimmer Battery'
   - platform: rest
     resource: !secret dimmer_rest_9
     value_template: '{{ value_json.state.buttonevent }}'
@@ -121,7 +109,6 @@ automation:
           minutes: 3
     action:
       - service: light.turn_off
-#      - delay: '00:{{ states.input_number.evening_time_off.state | int }}:00'
         data_template:
           entity_id: light.kitchen
           transition: >-
@@ -150,10 +137,6 @@ automation:
       - platform: state
         entity_id: input_boolean.boolean_sleep
         to: 'on'
-    condition:
-      - condition: numeric_state
-        entity_id: sensor.motion_sensor_kitchen_lux
-        below: '14000'
     action:
       - service: light.turn_on
         data_template:

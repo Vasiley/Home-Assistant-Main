@@ -45,7 +45,6 @@ group:
      - sensor.packets_sent_enp3s0
      - sensor.ipv4_address_enp3s0
      - sensor.last_boot
-     - sensor.since_last_boot
      - sensor.myipopendnscom
 ########## In setting #######################
   ha_server_automations:
@@ -88,7 +87,7 @@ sensor:
       - type: ipv4_address
         arg: enp3s0
       - type: last_boot
-      - type: since_last_boot
+
 
   - platform: command_line
     name: Ha Cpu Temperature

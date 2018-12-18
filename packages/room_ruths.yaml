@@ -31,6 +31,15 @@ homeassistant:
       icon: mdi:signal
 
 group:
+  ruths_room_card:
+   control: hidden
+   name: Ruths Room
+   entities:
+     - group.ruths_blinds_card
+     - binary_sensor.door_window_sensor_ruths_room_door
+     - binary_sensor.door_window_sensor_ruths_room
+     - sensor.ruths_window_sensor_batt
+
   ruths_blinds_card:
    control: hidden
    name: Ruths Blinds

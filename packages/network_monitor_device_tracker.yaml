@@ -308,6 +308,10 @@ homeassistant:
       friendly_name: Tristans Xbox One
       icon: mdi:xbox
       haaska_hidden: true
+    binary_sensor.game_console_xboxone_x:
+      friendly_name: Herbs Xbox One X
+      icon: mdi:xbox
+      haaska_hidden: true
     binary_sensor.voip_nettalk:
       friendly_name: NetDuo
       icon: mdi:phone-voip
@@ -484,6 +488,7 @@ group:
     - binary_sensor.game_console_ps4
     - binary_sensor.game_console_ps3
     - binary_sensor.game_console_xboxone
+    - binary_sensor.game_console_xboxone_x
     - binary_sensor.voip_nettalk
     - binary_sensor.webswitch_network
     - binary_sensor.printer_hp
@@ -909,6 +914,11 @@ binary_sensor:
         value_template: "{{ is_state('device_tracker.game_console_xboxone', 'home') }}"
   - platform: template
     sensors:
+      game_console_xboxone_x:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.game_console_xboxone_x', 'home') }}"
+  - platform: template
+    sensors:
       voip_nettalk:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.voip_nettalk', 'home') }}"
@@ -1046,6 +1056,7 @@ automation:
           - binary_sensor.game_console_ps4
           - binary_sensor.game_console_ps3
           - binary_sensor.game_console_xboxone
+          - binary_sensor.game_console_xboxone_x
           - binary_sensor.voip_nettalk
           - binary_sensor.webswitch_network
           - binary_sensor.printer_hp

@@ -8,53 +8,32 @@ homeassistant:
       device_class: motion
     sensor.motion_sensor_kids_hall_battery:
       icon: mdi:battery
-    sensor.kids_hallway_motion_sensor_lux:
+      unit_of_measurement: '%'
+      friendly_name: Kids Hallway Motion Sensor
+    sensor.illumination_motion_sensor_kids_hallway:
       friendly_name: Kids Hallway Light Level
       icon: mdi:theme-light-dark
-    sensor.kids_hallway_temperature:
-      friendly_name: Kids Hallway Temperature
 
-####### Binary sensor motion   #############
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_24
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: kids_hallway_motion
 
-################# sensor temp ########################
+group:
+  kids_hallway_card:
+    control: hidden
+    name: Kids Hallway
+    entities:
+      - light.kids_hallway
+      - sensor.motion_sensor_hallway_battery
+      - binary_sensor.kids_hallway_motion
+      - sensor.illumination_motion_sensor_kids_hallway
+      - automation.motion_kids_hallway_motion_on
+      - automation.motion_kids_hallway_motion_off
+
 sensor:
-  - platform: rest
-    resource: !secret MS_rest_23
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Kids Hallway Temperature'
-  - platform: rest
-    resource: !secret MS_rest_23
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Kids Hall Battery'
-  - platform: rest
-    resource: !secret MS_rest_25
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Kids Hallway Motion Sensor Lux'
-############################################################################
-###### In a package of room views
-############################################################################
-# group:
-#   kids_hallway_card:
-#     name: Kids Hallway
-#     entities:
-#       - light.kids_hallway
-#       - sensor.motion_sensor_hallway_battery
-#       - binary_sensor.kids_hallway_motion
-#       - sensor.kids_hallway_temperature
-#       - sensor.kids_hallway_motion_sensor_lux
-#       - automation.motion_kids_hallway_motion_on
-#       - automation.motion_kids_hallway_motion_off
+  - platform: template
+    sensors:
+      motion_sensor_kids_hall_battery:
+        friendly_name: 'Kids Hallway Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.kids_hallway_motion', 'battery_level') }}"
+
 
 automation:
   - alias: Motion Kids Hallway Motion On
@@ -63,12 +42,6 @@ automation:
       - platform: state
         entity_id: binary_sensor.kids_hallway_motion
         to: 'on'
-    condition:
-      condition: and
-      conditions:
-      - condition: numeric_state
-        entity_id: sensor.kids_hallway_motion_sensor_lux
-        below: '10000'
     action:
       - service: light.turn_on
         data_template:

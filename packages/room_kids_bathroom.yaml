@@ -29,7 +29,7 @@ homeassistant:
     sensor.illumination_kids_bathroom:
       friendly_name: Kids Bathroom Lux
       haaska_hidden: true
-      unit_of_measurement: 'Lux'
+      icon: mdi:theme-light-dark
     automation.motion_kids_bathroom_motion_on:
       friendly_name: Kids Bathroom Motion On
       haaska_hidden: true
@@ -66,6 +66,7 @@ group:
      entities:
       - light.kids_bathroom
       - light.kids_bathroom_vanity
+      - binary_sensor.door_window_sensor_kids_bathroom_door
       - switch.wemo_kids_bath_fan
       - switch.kids_bathroom_scent
       - sensor.temperature_kids_bathroom
@@ -129,12 +130,13 @@ sensor:
     sensors:
       kids_motion_sensor_batt:
         friendly_name: 'Kids Bathroom Motion Sensor'
-        value_template: "{{ states.binary_sensor.motion_sensor_kids_bathroom.attributes.battery_level }}"
+        value_template: "{{ state_attr('binary_sensor.motion_sensor_kids_bathroom', 'battery_level') }}"
+
   - platform: template
     sensors:
       kids_humidity_sensor_batt:
         friendly_name: 'Kids Bathroom Humidity Sensor Battery Level'
-        value_template: "{{ states.sensor.humidity_kids_bathroom.attributes.battery_level }}"
+        value_template: "{{ state_attr('sensor.humidity_kids_bathroom', 'battery_level') }}"
 
 automation:
   - alias: Motion Kids Bathroom Motion On
@@ -148,7 +150,7 @@ automation:
       conditions:
       - condition: state
         entity_id: input_boolean.boolean_kids_shower_time
-        state: 'off'        
+        state: 'off'
     action:
       - service: light.turn_on
         data_template:

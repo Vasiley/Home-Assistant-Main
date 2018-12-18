@@ -15,11 +15,14 @@ input_boolean:
 script:
   susie_clean_ruths_room:
     sequence:
+      - service: script.turn_on
+        entity_id: script.susie_clean_ruths_room_door_closed
       - service: input_boolean.turn_off
         data:
           entity_id: group.input_boolean_vacuum_jobs_card
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_susie_clean_ruths_room
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_ruths_room_door', 'on') }}"
       - service: vacuum.send_command
         data:
           entity_id: vacuum.susie
@@ -31,3 +34,16 @@ script:
             - media_player.ha_speaker
             - media_player.master_bedroom_cast
           message: 'Susie is cleaning Ruths Room'
+
+  susie_clean_ruths_room_door_closed:
+    sequence:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_ruths_room_door
+        state: 'off'
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+            - media_player.kids_room_cast
+          message: 'Susie Cant Clean if Ruths door is closed'          

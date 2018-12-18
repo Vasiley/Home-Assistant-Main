@@ -7,28 +7,26 @@ homeassistant:
       haaska_hidden: true     #hide single bulb its referred to as room name
     sensor.motion_sensor_hallway_battery:
       icon: mdi:battery
+      friendly_name: Master Hallway Motion Sensor
     binary_sensor.hallway_motion:
       friendly_name: Hallway Motion
       device_class: motion
     sensor.master_hallway_motion_sensor_lux:
       friendly_name: Master Hallway Light Level
       icon: mdi:theme-light-dark
-############################################################################
-###### In a package of room views
-############################################################################
-# group:
-#   master_hallway_card:
-#     name: Master Hallway
-#     entities:
-#       - light.master_hallway
-#       - sensor.motion_sensor_hallway_battery
-#       - binary_sensor.hallway_motion
-#       - sensor.hallway_temperature
-#       - sensor.master_hallway_motion_sensor_lux
-#       - automation.motion_master_hallway_motion_homemode
-#       - automation.motion_master_hallway_motion_not_homemode
-#       - automation.motion_master_hallway_motion_off
 
+group:
+  master_hallway_card:
+    control: hidden
+    name: Master Hallway
+    entities:
+      - light.master_hallway
+      - sensor.motion_sensor_hallway_battery
+      - binary_sensor.hallway_motion
+      - sensor.hallway_temperature
+      - sensor.master_hallway_motion_sensor_lux
+      - automation.motion_master_hallway_motion_on
+      - automation.motion_master_hallway_motion_off
 
 sensor:
   - platform: rest

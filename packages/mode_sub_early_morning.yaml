@@ -172,9 +172,6 @@ script:
 ############# this is what alexa/hadashboard is turning on to invoke the mode
   herbearly_on:
     sequence:
-      - service: input_boolean.turn_off
-        data:
-          entity_id: input_boolean_main_modes_card
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_early_morning
 # rest_command sets profile of blue iris software

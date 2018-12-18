@@ -52,6 +52,21 @@ homeassistant:
     light.rear_steps:
       persistence: true
 
+group:
+ carport_lights_card:
+    control: hidden
+    name: Carport
+    entities:
+      - light.carport
+      - light.front_steps
+      - light.rear_steps
+      - automation.porch_lights_on
+      - automation.porch_lights_off
+      - automation.front_carport_bright_and_white_on_motion
+      - automation.front_back_to_yellow_dim_after_Motion
+      - script.front_bright_outside
+      - script.front_normal_outside
+        
 automation:
   - alias: Porch Lights on
     initial_state: 'on'

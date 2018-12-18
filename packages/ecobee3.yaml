@@ -29,7 +29,7 @@ group:
    entities:
      - sensor.master_bedroom_temperature
      - sensor.living_room_temperature
-     - sensor.ruths_room_temperature
+     - sensor.gabbies_room_temperature
      - sensor.thermostat_humidity
      - sensor.thermostat_temperature
   climate_temp_card:

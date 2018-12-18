@@ -5,9 +5,6 @@ homeassistant:
       customize: &customize
         package: 'Master Bathroom'
 
-    binary_sensor.kids_bathroom_motion:
-      friendly_name: Kids Bathroom Motion
-      device_class: motion
     switch.wemo_master_bath_fan:
       friendly_name: Master Bath Humidity Fan
       icon: mdi:fan
@@ -15,7 +12,6 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
-
     automation.motion_bathroom_home_mode_off:
       haaska_hidden: true
       hidden: false
@@ -50,6 +46,7 @@ homeassistant:
       icon: mdi:clock
     sensor.master_bathroom_dimmer_battery:
       icon: mdi:battery
+      friendly_name: Master Bath Dimmer
     binary_sensor.bathroom_motion:
       friendly_name: Bathroom Motion
       device_class: motion
@@ -81,7 +78,7 @@ homeassistant:
     sensor.illumination_master_bath:
       haaska_hidden: true
       friendly_name: Master Bath Lux
-      unit_of_measurement: 'Lux'
+      icon: mdi:theme-light-dark
     sensor.master_bath_motion_sensor_batt:
       icon: mdi:battery
       unit_of_measurement: '%'
@@ -93,6 +90,7 @@ group:
       entities:
        - light.bathroom_vanity
        - light.bathroom
+       - binary_sensor.door_window_sensor_master_bath_door
        - sensor.humidity_master_bathroom
        - sensor.temperature_master_bathroom
        - sensor.pressure_master_bathroom
@@ -179,13 +177,14 @@ sensor:
     sensors:
       master_bath_motion_sensor_batt:
         friendly_name: 'Master Bathroom Motion Sensor'
-        value_template: "{{ states.binary_sensor.motion_sensor_master_bath.attributes.battery_level }}"
+        value_template: "{{ state_attr('binary_sensor.motion_sensor_master_bath', 'battery_level') }}"
+
 
   - platform: template
     sensors:
       master_humidity_sensor_batt:
         friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
-        value_template: "{{ states.sensor.humidity_master_bathroom.attributes.battery_level }}"
+        value_template: "{{ state_attr('sensor.humidity_master_bathroom', 'battery_level') }}"
 
 automation:
   - alias: Motion Bathroom Home Mode On

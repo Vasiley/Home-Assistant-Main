@@ -5,13 +5,7 @@ homeassistant:
         package: 'harmony'
     sensor.remote_entertainment:
       icon: mdi:theater
-
-  entertainment_card:
-   name: Entertainment Center
-   entities:
-     - remote.entertainment
-     - sensor.remote_entertainment
-     - input_select.harmony
+      friendly_name: Harmony Remote
 
 remote:
   - platform: harmony
@@ -31,7 +25,7 @@ input_select:
     options:
       - Select Input
       - PS4
-      - Blue Iris
+      - XBOX ONE X
       - Netflix
       - Classical Music
       - Amazon
@@ -57,7 +51,7 @@ automation:
           activity: >
             {% if is_state("input_select.harmony", "PS4") %}
               25501031
-            {% elif is_state("input_select.harmony", "Blue Iris") %}
+            {% elif is_state("input_select.harmony", "XBOX ONE X") %}
               25486501
             {% elif is_state("input_select.harmony", "Netflix") %}
               25498037

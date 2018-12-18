@@ -7,6 +7,9 @@ homeassistant:
     light.kitchen_under_cabinet:
       friendly_name: Kitchen Under Cabinets
       haaska_hidden: false
+    sensor.kitchen_led_dimmer_battery:
+      icon: mdi:battery
+      friendly_name: Kitchen Led Dimmer
   #  light.kitchen_under_cabinet1:
   #    haaska_hidden: false
     input_number.led_animation_speed:
@@ -48,7 +51,8 @@ group:
 
 light:
 ################## Microwave side
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: kitchen_under_cabinet
     state_topic: "vasiley/kitchenled"
     command_topic: "vasiley/kitchenled/set"
@@ -208,7 +212,7 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.led_off
-      - delay: '00:00:10'               
+      - delay: '00:00:10'
       - service: script.turn_on
         entity_id: script.led_yellow
 

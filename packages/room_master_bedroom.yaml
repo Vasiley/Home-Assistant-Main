@@ -23,9 +23,11 @@ homeassistant:
       device_class: motion
     sensor.motion_sensor_master_battery:
       icon: mdi:battery
+      friendly_name: Master Motion Sensor
+      unit_of_measurement: '%'
     sensor.dawns_controller_wifi_signal:
       icon: mdi:signal
-    sensor.motion_sensor_master_lux:
+    sensor.illumination_master_bedroom:
       friendly_name: Master Bedroom Light Level
       icon: mdi:theme-light-dark
     light.dawns_bedside_lamp:
@@ -52,10 +54,9 @@ group:
       - sensor.fan_speed_master
       - binary_sensor.gang_1
       - binary_sensor.master_motion
-      - binary_sensor.bedroom_motion
       - sensor.master_bedroom_temperature
       - sensor.motion_sensor_master_battery
-      - sensor.motion_sensor_master_lux
+      - sensor.illumination_master_bedroom
       - sensor.bedroom_wallpanel_battery
       - sensor.bedroom_wallpanel_brightness
       - binary_sensor.master_bedroom_occupancy
@@ -75,34 +76,12 @@ group:
       - binary_sensor.door_window_sensor_herbs_side
       - sensor.herbs_side_window_sensor_batt
 
-
-binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_40
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 1
-    name: master_motion
-
 sensor:
-  - platform: rest
-    resource: !secret MS_rest_39
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Master Temperature'
-
-  - platform: rest
-    resource: !secret MS_rest_39
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Master Battery'
-
-  - platform: rest
-    resource: !secret MS_rest_41
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Motion Sensor Master Lux'
+  - platform: template
+    sensors:
+      motion_sensor_master_battery:
+        friendly_name: 'Master Bedroom Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.master_motion', 'battery_level') }}"
 
   - platform: mqtt
     state_topic: "dawns/Wifi Connect/wifi"
@@ -142,9 +121,6 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_day_time_sleep
         state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.motion_sensor_master_lux
-        below: '15000'
     action:
       - service: light.turn_on
         data_template:

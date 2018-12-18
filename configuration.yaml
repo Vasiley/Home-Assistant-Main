@@ -91,8 +91,6 @@ xiaomi_aqara:
        key: !secret xiaomi_key
        host: 192.168.1.11
 
-vasileys_awesome_pixel_control:
-
 input_label:
   some_string1:
     name: Some String 1

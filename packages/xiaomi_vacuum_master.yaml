@@ -20,12 +20,15 @@ script:
     sequence:
       - service: script.turn_on
         entity_id: script.susie_clean_master_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_master_bath_door_closed
       - service: input_boolean.turn_off
         data:
           entity_id: group.input_boolean_vacuum_jobs_card
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_susie_clean_master
       - wait_template: "{{ is_state('binary_sensor.door_window_sensor_master_bedroom_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_master_bath_door', 'on') }}"
       - service: vacuum.send_command
         data:
           entity_id: vacuum.susie
@@ -49,3 +52,15 @@ script:
             - media_player.ha_speaker
             - media_player.master_bedroom_cast
           message: 'Susie Cant Clean if Master Bedroom door is closed'
+
+  susie_clean_master_bath_door_closed:
+    sequence:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_master_bath_door
+        state: 'off'
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie Cant Clean if Master Bath door is closed'

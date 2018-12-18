@@ -230,6 +230,6 @@ automation:
       - delay: '00:00:90'
       - service: light.turn_on
         entity_id: light.light_bulb_2
-      - delay: '00:00:90'  
+      - delay: '00:00:90'
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_early_morning

@@ -89,8 +89,8 @@ sensor:
     sensors:
       operating_mode_bathroom_heater:
         friendly_name: 'Bathroom Current Operation'
-        value_template: "{{ states.climate.lasko_heater.attributes.operation_mode }}"
-
+        value_template: "{{ state_attr('climate.lasko_heater', 'operation_mode') }}"
+          
 automation:
   - alias: master bath heater state on
     initial_state: 'on'

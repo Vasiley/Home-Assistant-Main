@@ -29,7 +29,7 @@ media_player:
     sources:
       dvd: 'Blue Iris'
       game: 'PS4'
-#      pc: 'Kodi'
+      pc: 'Xbox X'
       cd: 'Cast'
       fm: 'FM Radio'
       net: 'Net'
