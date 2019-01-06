@@ -46,6 +46,7 @@ sensor:
 
 automation:
   - alias: 'Alarm is safe is tampered with'
+    initial_state: 'on'
     trigger:
       - platform: event
         event_type: xiaomi_aqara.movement

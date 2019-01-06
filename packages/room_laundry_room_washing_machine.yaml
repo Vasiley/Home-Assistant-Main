@@ -73,6 +73,7 @@ sensor:
 
 automation:
   - alias: 'Washer Start'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.washing_machine_power_down
@@ -85,6 +86,7 @@ automation:
         entity_id: input_boolean.stopwatch
 
   - alias: 'Washer Done'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.washing_machine_power_down
@@ -110,6 +112,7 @@ automation:
         entity_id: input_boolean.stopwatch
 
   - alias: 'Stopwatch start'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.stopwatch
@@ -128,6 +131,7 @@ automation:
         entity_id: input_boolean.dummy
 
   - alias: Stopwatch update
+    initial_state: 'on'
     trigger:
       - platform: time
         seconds: '/1'

@@ -118,6 +118,7 @@ input_number:
 automation:
 ############# Ram usuage high on HA server #####################################
   - alias: ha_ram_overload
+    initial_state: 'on'
     trigger:
       - platform: template
         value_template: "{{ states('sensor.memory_use_percent') > states('input_number.ram_alert_value')}}"
@@ -144,6 +145,7 @@ automation:
 
 ############# Disk usuage high on HA server #####################################
   - alias: ha_disk_overload
+    initial_state: 'on'
     trigger:
       - platform: template
         value_template: "{{ states('sensor.disk_use_percent_home') > states('input_number.disk_alert_value') }}"
@@ -170,6 +172,7 @@ automation:
 
 ####################### High Cpu Usage #########################################
   - alias: ha_cpu_overload
+    initial_state: 'on'
     trigger:
       - platform: template
         value_template: "{{ states('sensor.processor_use')|int > states('input_number.cpu_alert_value')| int }}"

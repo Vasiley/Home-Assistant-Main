@@ -35,7 +35,7 @@
      - group.blinds_card
      - script.media_player_source
      - group.google_calender_card
-     - group.test_led_card
+     - group.kitchen_leds_card
      - weather.yweather
      - group.air_puirfier_card
      - group.vacuum_card
@@ -172,12 +172,12 @@
      - group.controls
      - group.fish_leds_card
 
-  xmas_tree_main_view:
-   view: yes
-   name: Xmas Tree
-   entities:
-     - group.xams_tree_power
-     - group.xmas_tree_automations
+  # xmas_tree_main_view:
+  #  view: yes
+  #  name: Xmas Tree
+  #  entities:
+  #    - group.xams_tree_power
+  #    - group.xmas_tree_automations
 
   dashboard:
    view: yes
@@ -249,6 +249,7 @@
      - sensor.gabbies_room_temperature
      - sensor.temperature_master_bathroom
      - sensor.living_room_purifer_temp
+     - sensor.master_bdrm_purifer_temp
 
 
   battery:
@@ -291,6 +292,7 @@
      - sensor.humidity_kids_bathroom
      - sensor.humidity_master_bathroom
      - sensor.living_room_purifer_humd
+     - sensor.master_bdrm_purifer_humd
 
   Motion_card:
    name: Motion

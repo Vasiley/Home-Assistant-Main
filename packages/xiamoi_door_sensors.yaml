@@ -85,6 +85,15 @@ homeassistant:
       friendly_name: Ruths Room Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
+    binary_sensor.door_window_sensor_laundry_room_door:
+      haaska_hidden: true
+      friendly_name: Laundry Room Door
+      device_class: door
+    sensor.laundry_room_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Laundry Room Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
     sensor.open_door_count:
       haaska_hidden: true
       friendly_name: Open Door Count
@@ -104,6 +113,7 @@ group:
     - binary_sensor.door_window_sensor_kids_bedroom_door
     - binary_sensor.door_window_sensor_kids_bathroom_door
     - binary_sensor.door_window_sensor_ruths_room_door
+    - binary_sensor.door_window_sensor_laundry_room_door
 
   door_sensors_batt_card:
    name: Door Battery Levels
@@ -117,13 +127,19 @@ group:
     - sensor.kids_room_sensor_batt
     - sensor.kids_bathroom_sensor_batt
     - sensor.ruths_room_sensor_batt
+    - sensor.laundry_room_door_sensor_batt
 
 sensor:
   - platform: template
     sensors:
       front_door_sensor_batt:
-        friendly_name: 'Front Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_front_door.attributes.battery_level }}"
+        friendly_name: 'Front Door Sensor Battery'
+        value_template: "{{ state_attr('binary_sensor.door_window_sensor_front_door', 'battery_level') }}"
+  - platform: template
+    sensors:
+      laundry_room_door_sensor_batt:
+        friendly_name: 'Laundry Room Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_laundry_room_door.attributes.battery_level }}"
   - platform: template
     sensors:
       back_door_sensor_batt:
@@ -132,7 +148,7 @@ sensor:
   - platform: template
     sensors:
       master_closet_door_sensor_batt:
-        friendly_name: 'Back Door Sensor Battery Level'
+        friendly_name: 'Master Closet Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_master_closet.attributes.battery_level }}"
   - platform: template
     sensors:

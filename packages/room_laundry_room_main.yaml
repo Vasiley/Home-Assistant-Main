@@ -19,6 +19,7 @@ group:
     name: Laundry Room
     entities:
       - binary_sensor.door_window_sensor_back_door
+      - binary_sensor.door_window_sensor_laundry_room_door
       - light.laundry_room
       - binary_sensor.laundry_room_motion
       - sensor.motion_sensor_laundry_battery

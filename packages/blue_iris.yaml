@@ -156,23 +156,6 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
 
-  # - platform: template
-  #   sensors:
-  #     motion_tablet_camera:
-  #       value_template: >-
-  #         {% if states('binary_sensor.blueiriscam8') %}
-  #         {% if is_state('binary_sensor.blueiriscam8', 'on') %}
-  #            True
-  #         {% elif is_state('binary_sensor.blueiriscam8', 'off') %}
-  #            False
-  #         {% else %}
-  #         {{ states('binary_sensor.blueiriscam8') }}
-  #         {% endif %}
-  #         {% else %}
-  #           False
-  #         {% endif %}
-
-
   ######################################################
 # Flash Door lamp when motion at shed camera and backdoor
 ######################################################
@@ -204,6 +187,33 @@ automation:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Somebody is at Front Door'
 
+  - alias: flash_green_motion_truck
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_driveway
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_active_outside
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_front_door
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          flash: short
+          color_name: Green
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'Somebody is near truck'
+
 
   - alias: flash_blue_motion_backdoor
     initial_state: 'on'
@@ -218,6 +228,11 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_active_outside
         state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.dark_sky_wind_speed
+        below: '8'
+      - condition: template
+        value_template: "{{ not is_state('sensor.dark_sky_summary', 'Foggy') }}"
     action:
       - service: light.turn_on
         data:
@@ -229,6 +244,35 @@ automation:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Somebody is at Back Door'
 
+  - alias: flash_blue_motion_swamp
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_swamp
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_active_outside
+        state: 'off'
+      - condition: template
+        value_template: "{{ not is_state('sensor.dark_sky_summary', 'Foggy') }}"
+      - condition: numeric_state
+        entity_id: sensor.dark_sky_wind_speed
+        below: '8'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.door_lamp
+          flash: short
+          color_name: Blue
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          message: 'Somebody is in Swamp'
+
 
   - alias: white_no_motion
     initial_state: 'on'
@@ -238,6 +282,12 @@ automation:
         to: 'off'
       - platform: state
         entity_id: binary_sensor.motion_outdoor_backdoor
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_driveway
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_swamp
         to: 'off'
     condition:
       - condition: state

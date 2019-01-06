@@ -25,20 +25,50 @@ homeassistant:
       haaska_name: Living Room Purifier Led Off
     script.living_room_purifer_led_on:
       haaska_name: Living Room Purifier Led On
+    fan.master_bedroom_purifer:
+      friendly_name: Master Bedroom Purifer
+      haaska_hidden: true
+    sensor.master_bdrm_purifer_mode:
+      hasska_hidden: true
+      friendly_name: Master Bedroom Purifer Mode
+    sensor.master_bdrm_purifer_temp:
+      hasska_hidden: true
+      friendly_name: Master Bedroom Temperature
+    sensor.master_bdrm_purifer_humd:
+      hasska_hidden: true
+      friendly_name: Master Bedroom Humidity
+      icon: mdi:water-percent
+    sensor.master_bdrm_purifer_aqi_current:
+      hasska_hidden: true
+      friendly_name: Master Bedroom AQI
+      icon: mdi:crosshairs
+    script.master_bdrm_purifer_led_off:
+      haaska_name: Master Bedroom Purifier Led Off
+    script.master_bdrm_purifer_led_on:
+      haaska_name: Master Bedroom Purifier Led On
 
 group:
   air_puirfier_card:
+   control: hidden
    name: Air Purifer
    entities:
      - fan.living_room_purifer
+     - fan.master_bedroom_purifer
+     - sensor.house_avg_aqi
      - sensor.living_room_purifer_mode
      - sensor.living_room_purifer_aqi_current
+     - sensor.master_bdrm_purifer_mode
+     - sensor.master_bdrm_purifer_aqi_current
 
 fan:
   - platform: xiaomi_miio
     host:  192.168.1.60
-    token: !secret xiaomi_purifer
+    token: !secret xiaomi_purifer_lv
     name: Living Room Purifer
+  - platform: xiaomi_miio
+    host:  192.168.1.62
+    token: !secret xiaomi_purifer_mstr_bdrm
+    name: Master Bedroom Purifer
 
 sensor:
   - platform: template
@@ -54,7 +84,23 @@ sensor:
       living_room_purifer_aqi_current:
         value_template: '{{ states.fan.living_room_purifer.attributes["aqi"] }}'
         unit_of_measurement: '%'
-
+      master_bdrm_purifer_mode:
+        value_template: '{{ states.fan.master_bedroom_purifer.attributes["mode"] }}'
+      master_bdrm_purifer_temp:
+        value_template: '{{ states.fan.master_bedroom_purifer.attributes["temperature"] }}'
+        unit_of_measurement: '°C'
+      master_bdrm_purifer_humd:
+        value_template: '{{ states.fan.master_bedroom_purifer.attributes["humidity"] }}'
+        unit_of_measurement: '%'
+      master_bdrm_purifer_aqi_current:
+        value_template: '{{ states.fan.master_bedroom_purifer.attributes["aqi"] }}'
+        unit_of_measurement: '%'
+  - platform: min_max
+    type: mean
+    name: House Avg AQI
+    entity_ids:
+      - sensor.living_room_purifer_aqi_current
+      - sensor.master_bdrm_purifer_aqi_current
 
 script:
   living_room_purifer_led_off:
@@ -65,6 +111,14 @@ script:
     sequence:
       - service: fan.xiaomi_miio_set_led_on
         entity_id: fan.living_room_purifer
+  master_bdrm_purifer_led_off:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_off
+        entity_id: fan.master_bedroom_purifer
+  master_bdrm_purifer_led_on:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_on
+        entity_id: fan.master_bedroom_purifer
 ##### service call not working need to open pr
   living_room_purifer_led_dim:
     sequence:
@@ -75,6 +129,7 @@ script:
 
 automation:
   - alias: 'led_control_xiaomi_purifer'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_home
@@ -97,4 +152,14 @@ automation:
               script.living_room_purifer_led_off
             {% else %}
               script.living_room_purifer_led_off
+            {% endif %}
+      - service: script.turn_on
+        data_template:
+          entity_id: >
+            {% if is_state("input_boolean.boolean_home", "on") %}
+              script.master_bdrm_purifer_led_on
+            {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              script.master_bdrm_purifer_led_off
+            {% else %}
+              script.master_bdrm_purifer_led_off
             {% endif %}

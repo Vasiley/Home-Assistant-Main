@@ -25,7 +25,7 @@ input_select:
     options:
       - Select Input
       - PS4
-      - XBOX ONE X
+      - Play Xbox
       - Netflix
       - Classical Music
       - Amazon
@@ -51,10 +51,10 @@ automation:
           activity: >
             {% if is_state("input_select.harmony", "PS4") %}
               25501031
-            {% elif is_state("input_select.harmony", "XBOX ONE X") %}
-              25486501
+            {% elif is_state("input_select.harmony", "Play Xbox") %}
+              37132665
             {% elif is_state("input_select.harmony", "Netflix") %}
-              25498037
+              35812383
             {% elif is_state("input_select.harmony", "Classical Music") %}
               25501845
             {% elif is_state("input_select.harmony", "Amazon") %}
@@ -62,7 +62,7 @@ automation:
             {% elif is_state("input_select.harmony", "Philo") %}
               32645868
             {% elif is_state("input_select.harmony", "Plex") %}
-              34744050
+              35813072
             {% elif is_state("input_select.harmony", "Tablo DVR") %}
               35801439
             {% elif is_state("input_select.harmony", "PowerOff") %}

@@ -61,6 +61,7 @@ input_select:
 
 automation:
   - alias: 'Set Radio Volume'
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: input_number.volume_radio

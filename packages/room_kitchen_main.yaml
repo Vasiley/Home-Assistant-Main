@@ -31,7 +31,6 @@ group:
       - light.kitchen_under_cabinet
       - light.kitchen
       - light.kitchen_table
-      - input_number.led_animation_speed
       - light.kitchen_white
       - script.led_white
       - script.led_yellow
@@ -62,6 +61,7 @@ sensor:
   - platform: template
     sensors:
       kitchen_battery_motion:
+        entity_id: sun.sun
         friendly_name: 'Kitchen Motion Sensor'
         value_template: "{{ state_attr('binary_sensor.kitchen_motion', 'battery_level') }}"
   - platform: rest
@@ -127,6 +127,8 @@ automation:
               {% else %}
                 15
               {% endif %}
+      - service: script.turn_on
+        entity_id: script.led_off
 
   - alias: Motion Kitchen Main Light On
     initial_state: 'on'
@@ -172,4 +174,22 @@ automation:
               {{ states('input_number.nap_mode_brightness_value') | int }}
               {% else %}
                 100
+              {% endif %}
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.led_white
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+                script.led_white
+              {% else %}
+                script.led_yellow
               {% endif %}

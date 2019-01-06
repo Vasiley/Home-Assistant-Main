@@ -115,6 +115,8 @@ sensor:
               Cleaning Kids Bathroom
           {% elif states('input_boolean.boolean_susie_clean_kids_room') == 'on' %}
               Cleaning Kids Room
+          {% elif states('input_boolean.boolean_susie_clean_house') == 'on' %}
+              Cleaning House
           {% else %}
               Unknown Do Better
           {% endif %}
@@ -173,6 +175,7 @@ script:
 
 automation:
   - alias: 'susie_is_docked'
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: vacuum.susie
@@ -198,6 +201,7 @@ automation:
           message: 'Susie is docked'
 
   - alias: 'susie_is_returning_home'
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: vacuum.susie
@@ -235,6 +239,7 @@ automation:
              {% endif %}
 
   - alias: 'susie_error'
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: sensor.susie_error
@@ -248,6 +253,7 @@ automation:
           message: "Susie has a error {{states('sensor.susie_error')}}"
 
   - alias: 'susie_todo'
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: input_select.susie_selection

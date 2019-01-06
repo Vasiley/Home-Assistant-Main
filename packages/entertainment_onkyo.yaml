@@ -67,7 +67,7 @@ input_number:
 # Onkyo input select Automation
 automation:
   - alias: Onkyo Input Select Automation
-    initial_state: on
+    initial_state: 'on'
     hide_entity: true
     trigger:
       - platform: state
@@ -99,6 +99,7 @@ automation:
           option: "Select Input"
 
   - alias: Onkyo Volume Slider Set
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_number.onkyo_volume
@@ -113,6 +114,7 @@ automation:
           volume_level: '{{ states.input_number.onkyo_volume.state | float / 160 }}'
 
   - alias: Onkyo Volume Slider Get
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: media_player.stereo

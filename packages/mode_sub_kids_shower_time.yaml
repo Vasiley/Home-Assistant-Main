@@ -47,6 +47,10 @@ automation:
       - platform: state
         entity_id: sensor.kids_bathroom_dimmer_state
         to: 'Off'
+      - platform: state
+        entity_id: input_boolean.boolean_kids_shower_time
+        to: 'on'
+        for: '00:30:00'        
     action:
       - service: script.turn_on
         entity_id: script.kids_shower_time_off

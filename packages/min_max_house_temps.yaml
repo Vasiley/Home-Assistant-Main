@@ -18,6 +18,7 @@ sensor:
       - sensor.ha_temperature
       - sensor.temperature_kids_bathroom # Xiaomi humidity temp sensor
       - sensor.living_room_purifer_temp #Xiaomi Purifer 2s
+      - sensor.master_bdrm_purifer_temp #Xiaomi Purifer 2s
 
   - platform: min_max
     type: mean
@@ -28,3 +29,4 @@ sensor:
       - sensor.humidity_kids_bathroom # Xiaomi humidity temp senso
       - sensor.humidity_master_bathroom # Xiaomi humidity temp senso
       - sensor.living_room_purifer_humd #Xiaomi Purifer 2s
+      - sensor.master_bdrm_purifer_humd #Xiaomi Purifer 2s

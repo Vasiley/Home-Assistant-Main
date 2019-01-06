@@ -5,15 +5,100 @@ homeassistant:
         package: 'robot_vacuum_automations'
     automation.automation_susie_clean_up_nightly:
       haaska_hidden: true
+    script.susie_clean_house:
+      friendly_name: Susie Clean House
+      haaska_name: Susie Clean House
+
+
+input_boolean:
+  boolean_susie_clean_house:
+    initial: off
 
 automation:
   - alias: 'automation_susie_clean_up_nightly'
+    initial_state: 'on'
     trigger:
       - platform: time
         at: '01:00:00'
     action:
       - service: script.turn_on
         entity_id: script.susie_clean_livingroom
+      - delay: '00:10:00'  
       - wait_template: "{{ is_state('input_boolean.boolean_susie_home', 'on') }}"
       - service: script.turn_on
         entity_id: script.susie_clean_kitchen
+
+  - alias: 'automation_susie_clean_up_sundays'
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '12:15:00'
+    condition:
+      condition: time
+      weekday:
+        - sun
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie needs to clean starting in 10 minutes'
+      - delay: '00:10:00'
+      - service: script.turn_on
+        entity_id: script.susie_clean_house
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie is starting to clean house'
+
+script:
+  susie_clean_house:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: group.input_boolean_vacuum_jobs_card
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_susie_clean_house
+      - service: script.turn_on
+        entity_id: script.susie_clean_master_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_master_bath_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_ruths_room_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_kids_bathroom_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_kids_bedroom_door_closed
+      - service: script.turn_on
+        entity_id: script.susie_clean_laundy_room_door_open
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_kids_bathroom_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_master_bedroom_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_master_bath_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_ruths_room_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_kids_bedroom_door', 'on') }}"
+      - wait_template: "{{ is_state('binary_sensor.door_window_sensor_laundry_room_door', 'off') }}"
+      - service: vacuum.start
+        data:
+          entity_id: vacuum.susie
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+          message: 'Susie is cleaning House'
+
+  susie_clean_laundy_room_door_open:
+    sequence:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_laundry_room_door
+        state: 'on'
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
+            - media_player.kids_room_cast
+          message: 'Susie Cant Clean if Laundry Door is open'

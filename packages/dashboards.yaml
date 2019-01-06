@@ -73,6 +73,14 @@ homeassistant:
       friendly_name: Back Door Dash
       haaska_name: Back Door Dash
       icon: mdi:chevron-right
+    script.dash_swamp_cam:
+      friendly_name: Swamp Dash
+      haaska_name: Back Door Dash
+      icon: mdi:chevron-right
+    script.dash_driveway_cam:
+      friendly_name: Driveway Dash
+      haaska_name: Driveway Dash
+      icon: mdi:chevron-right
     script.dash_reset_after_motion:
       friendly_name: Main Dash
       haaska_name: Main Dash
@@ -332,6 +340,7 @@ binary_sensor:
 
 automation:
   - alias: dashboards_refresh
+    initial_state: 'on'
     trigger:
       - platform: time
         hours: '/1'
@@ -369,7 +378,35 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.dash_backdoor_cam
-
+############# Swamp Camera #############################################
+  - alias: navigate_swamp_cameradash_camera_motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_swamp
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_swamp_cam
+############# Back Door Camera #############################################
+  - alias: navigate_driveway_cameradash_camera_motion
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_driveway
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.dash_driveway_cam
+############# Reset Dashboard ##########################################
   - alias: back_to_main_dash_motion
     initial_state: 'on'
     trigger:
@@ -379,6 +416,14 @@ automation:
         for: '00:05:00'
       - platform: state
         entity_id: binary_sensor.motion_outdoor_backdoor
+        to: 'off'
+        for: '00:05:00'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_driveway
+        to: 'off'
+        for: '00:05:00'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_swamp
         to: 'off'
         for: '00:05:00'
     condition:
@@ -403,6 +448,7 @@ automation:
       - service: script.turn_on
         entity_id: script.master_dash_wake_up
   - alias: power_lost_to_dashboards
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.master_ac_power
@@ -449,6 +495,20 @@ script:
       - service: shell_command.lv_room_dash_wake_up
       - service: shell_command.master_dash_backdoor_cam
       - service: shell_command.master_dash_wake_up
+  dash_swamp_cam:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_swamp_cam
+      - service: shell_command.lv_room_dash_wake_up
+      - service: shell_command.master_dash_swamp_cam
+      - service: shell_command.master_dash_wake_up
+  dash_driveway_cam:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_driveway_cam
+      - service: shell_command.lv_room_dash_wake_up
+      - service: shell_command.master_dash_driveway_cam
+      - service: shell_command.master_dash_wake_up
   dash_reset_after_motion:
     sequence:
       - delay: '00:00:01'
@@ -473,3 +533,7 @@ shell_command:
    server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
    lv_room_backdoor_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/backdoor?skin=default'}\""
    master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""
+   lv_room_swamp_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/swamp?skin=default'}\""
+   master_dash_swamp_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_swamp?skin=default'}\""
+   lv_room_driveway_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/driveway?skin=default'}\""
+   master_dash_driveway_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_driveway?skin=default'}\""

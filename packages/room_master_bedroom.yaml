@@ -37,6 +37,7 @@ homeassistant:
     switch.dawn_night:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan
+      icon: mdi:fan
 
 group:
   master_bedroom_card:

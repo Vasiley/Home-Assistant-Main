@@ -12,6 +12,7 @@ feedreader:
 
 automation:
   - alias: Send notification of RSS feed title when updated
+    initial_state: 'on'
     trigger:
       platform: event
       event_type: feedreader

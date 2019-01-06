@@ -49,6 +49,7 @@ switch:
 
 automation:
   - alias: warmers_scent_on
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.house_mode_state
@@ -61,6 +62,7 @@ automation:
           - switch.dawn_day
 
   - alias: warmers_scent_off
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id:

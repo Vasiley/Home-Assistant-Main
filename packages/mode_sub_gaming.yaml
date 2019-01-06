@@ -1,0 +1,221 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'mode_gaming'
+
+    input_boolean.boolean_play_xbox:
+      friendly_name: Play Xbox
+      hasska_hidden: true
+    input_boolean.boolean_play_ps4:
+      friendly_name: Play PS4
+      hasska_hidden: true
+    switch.play_xbox:
+      friendly_name: Play Xbox
+      icon: mdi:xbox
+      haaska_hidden: false
+      haaska_name: Play Xbox
+    switch.play_ps4:
+      friendly_name: Play PS4
+      icon: mdi:playstation
+      haaska_hidden: false
+      haaska_name: Play PS4
+    automation.play_xbox:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    automation.play_ps4:
+      haaska_hidden: true
+      hidden: false
+      persistence: true
+    script.play_xbox_on:
+      friendly_name: Play Xbox
+      haaska_hidden: true
+    script.play_xbox_off:
+      friendly_name: Stop Playing Xbox
+      haaska_hidden: true
+    script.play_ps4_on:
+      friendly_name: Play PS4
+      haaska_hidden: true
+    script.play_ps4_off:
+      friendly_name: Stop Playing PS4
+      haaska_hidden: true
+
+input_boolean:
+  boolean_play_xbox:
+    initial: off
+  boolean_play_ps4:
+    initial: off
+
+automation:
+  - alias: Play Xbox
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.game_console_xboxone_x
+        to: 'on'
+      - platform: state
+        entity_id: sensor.remote_entertainment
+        to: 'Play Xbox'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.play_xbox
+
+  - alias: stop playing Xbox
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.game_console_xboxone_x
+        to: 'off'
+      - platform: state
+        entity_id: sensor.remote_entertainment
+        from: 'Play Xbox'                  
+    action:
+      - service: switch.turn_off
+        entity_id: switch.play_xbox
+
+  - alias: Play PS4
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.game_console_ps4
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.play_ps4
+
+  - alias: stop playing ps4
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.game_console_ps4
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.play_ps4
+
+script:
+  play_xbox_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_play_xbox
+      - service: script.turn_on
+        entity_id: script.lv_front_blinds_closed
+      - service: script.turn_on
+        entity_id: script.lv_couch_blinds_closed
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Play Xbox"
+      - delay: '00:05:00'
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"
+
+
+  play_xbox_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_play_xbox
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Tablo DVR"
+      - delay: '00:05:00'
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.lv_couch_blinds_halfway, script.lv_front_blinds_halfway
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.lv_couch_blinds_closed, script.lv_front_blinds_closed
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.lv_couch_blinds_halfway, script.lv_front_blinds_halfway
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.lv_couch_blinds_open, script.lv_front_blinds_open
+              {% else %}
+                script.lv_couch_blinds_open, script.lv_front_blinds_open
+              {% endif %}
+  play_ps4_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_play_ps4
+      - service: script.turn_on
+        entity_id: script.lv_front_blinds_closed
+      - service: script.turn_on
+        entity_id: script.lv_couch_blinds_closed
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "PS4"
+      - delay: '00:05:00'
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"
+
+
+  play_ps4_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_play_ps4
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Tablo DVR"
+      - delay: '00:05:00'
+      - service: input_select.select_option
+        entity_id: input_select.harmony
+        data_template:
+          option: "Select Input"
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.lv_couch_blinds_halfway, script.lv_front_blinds_halfway
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.lv_couch_blinds_closed, script.lv_front_blinds_closed
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.lv_couch_blinds_halfway, script.lv_front_blinds_halfway
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.lv_couch_blinds_open, script.lv_front_blinds_open
+              {% else %}
+                script.lv_couch_blinds_open, script.lv_front_blinds_open
+              {% endif %}
+
+switch:
+  - platform: template
+    switches:
+      play_xbox:
+        value_template: "{{ is_state('input_boolean.boolean_play_xbox', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.play_xbox_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.play_xbox_off
+
+  - platform: template
+    switches:
+      play_xbox:
+        value_template: "{{ is_state('input_boolean.boolean_play_ps4', 'on') }}"
+        turn_on:
+          - service: script.turn_on
+            data:
+              entity_id: script.play_ps4_on
+        turn_off:
+          - service: script.turn_on
+            data:
+              entity_id: script.play_ps4_off

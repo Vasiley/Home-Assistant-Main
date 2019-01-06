@@ -164,3 +164,55 @@ homeassistant:
 #   action:
 #     - service: switch.turn_off
 #       entity_id: switch.blue_iris
+# automation:
+#   - alias: Climate Control Adjustment (Sunrise)
+#     initial_state: true
+#     trigger:
+#       platform: sun
+#       event: sunrise
+#       offset: '-00:15:00'
+#     action:
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider1
+#           value: "{{ (state_attr('input_number.slider1', 'initial') | float ) - 0.0 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider2
+#           value: "{{ (state_attr('input_number.slider2', 'initial') | float ) - 0.0 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider3
+#           value: "{{ (state_attr('input_number.slider3', 'initial') | float ) - 0.25 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider4
+#           value: "{{ (state_attr('input_number.slider4', 'initial') | float ) - 0.25 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider5
+#           value: "{{ (state_attr('input_number.slider5', 'initial') | float ) - 0.25 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider6
+#           value: "{{ (state_attr('input_number.slider6', 'initial') | float ) - 0.5 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider7
+#           value: "{{ (state_attr('input_number.slider7', 'initial') | float ) - 0.5 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider8
+#           value: "{{ (state_attr('input_number.slider8', 'initial') | float ) - 0.75 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider9
+#           value: "{{ (state_attr('input_number.slider9', 'initial') | float ) - 0.75 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider10
+#           value: "{{ (state_attr('input_number.slider10', 'initial') | float ) - 1.0 }}"
+#       - service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.slider11
+#           value: "{{ (state_attr('input_number.slider11', 'initial') | float ) - 1.0 }}"

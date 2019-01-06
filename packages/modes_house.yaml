@@ -45,7 +45,7 @@ group:
       - input_boolean.boolean_active_outside
       - input_boolean.boolean_kids_shower_time
       - input_boolean.boolean_shower_time
-
+      - input_boolean.boolean_play_xbox
 
   House_mode:
    name: Home Mode
@@ -97,6 +97,10 @@ sensor:
               Day Time Sleep
           {% elif states('input_boolean.boolean_kids_home') == 'on' %}
               Armed Kids Home
+          {% elif states('input_boolean.boolean_play_xbox') == 'on' %}
+              Playing Xbox
+          {% elif states('input_boolean.boolean_play_ps4') == 'on' %}
+              Playing PS4
           {% else %}
               N/A
           {% endif %}

@@ -166,6 +166,7 @@ switch:
 
 automation:
   - alias: 'gabbie_home'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_home
@@ -182,6 +183,7 @@ automation:
             - media_player.kodi
           message: 'Welcome Home Gabbie'
   - alias: 'gabbie_not_home'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_home
@@ -198,6 +200,7 @@ automation:
              - media_player.kids_room_cast
            message: 'Goodbye Gabbie'
   - alias: 'gabbie_going_sleep'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_sleep
@@ -219,6 +222,7 @@ automation:
          entity_id: script.gabbies_bedtime
 
   - alias: 'gabbie_waking_up'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: input_boolean.boolean_gabbie_awake
@@ -241,6 +245,7 @@ automation:
 
 
   - alias: 'gabbie_light_on'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.gabbies_room_motion
@@ -273,6 +278,7 @@ automation:
              {% endif %}
 
   - alias: 'gabbie_light_off'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.gabbies_room_motion
