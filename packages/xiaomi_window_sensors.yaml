@@ -133,10 +133,8 @@ sensor:
         friendly_name: 'Living Room Front Window Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
 
-
-
-  # - platform: template
-  #   sensors:
-  #     open_window_count:
-  #       value_template: >-
-  #         {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'window') | list | count }}
+  - platform: template
+    sensors:
+      open_window_count:
+        value_template: >-
+          {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'window') | list | count }}

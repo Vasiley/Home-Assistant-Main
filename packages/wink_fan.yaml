@@ -86,20 +86,27 @@ group:
      - fan.living_room_fan
      - switch.fan_override
      - script.living_room_fan_auto
-     - sensor.fan_speed
+     - input_select.living_room_ceiling_fan_speeds
      - binary_sensor.gang
      - script.refresh_wink
 
-################## In Room By Room View Package
-  # masterfan_card:
-  #  control: hidden
-  #  name: Master Fan
-  #  entities:
-  #    - fan.master_bedroom_fan
-  #    - light.light_bulb_2
-  #    - script.master_fan_auto
-  #    - sensor.fan_speed_master
-  #    - binary_sensor.gang_1
+input_select:
+  master_ceiling_fan_speeds:
+    name: Master Ceiling Speeds
+    options:
+      - Select Input
+      - Fast
+      - Medium
+      - Slow
+
+  living_room_ceiling_fan_speeds:
+    name: Living Room Ceiling Fan Speeds
+    options:
+      - Select Input
+      - High
+      - Medium
+      - Low
+      - Lowest
 
 sensor:
   - platform: template
@@ -114,76 +121,95 @@ sensor:
         value_template: "{{ states.fan.master_bedroom_fan.attributes.speed }}"
 
 automation:
-  # - alias: fan_set_speed
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: event
-  #       event_type: call_service
-  #       event_data:
-  #         domain: fan
-  #         service: turn_on
-  #   condition:
-  #     - condition: template
-  #       value_template: "{{ trigger.event.data.service_data.speed is defined }}"
-  #   action:
-  #     - service: automation.turn_off
-  #       data:
-  #         entity_id:
-  #           - automation.fan_set_speed
-  #           - automation.fan_turn_on
-  #     - service: fan.set_speed
-  #       data_template:
-  #         entity_id: "{{ trigger.event.data.service_data.entity_id }}"
-  #         speed: "{{ trigger.event.data.service_data.speed }}"
-  #     - service: fan.turn_on
-  #       data_template:
-  #         entity_id: "{{ trigger.event.data.service_data.entity_id }}"
-  #     - service: automation.turn_on
-  #       data:
-  #         entity_id:
-  #           - automation.fan_set_speed
-  #           - automation.fan_turn_on
-  #
-  # - alias: fan_turn_on
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: event
-  #       event_type: call_service
-  #       event_data:
-  #         domain: fan
-  #         service: turn_on
-  #   condition:
-  #     - condition: template
-  #       value_template: "{{ trigger.event.data.service_data.speed is not defined }}"
-  #   action:
-  #     - service: automation.turn_off
-  #       data:
-  #         entity_id:
-  #           - automation.fan_set_speed
-  #           - automation.fan_turn_on
-  #     - service: fan.set_speed
-  #       data_template:
-  #         entity_id: >-
-  #           {% if trigger.event.data.service_data.entity_id is string %}
-  #             {{ trigger.event.data.service_data.entity_id }}
-  #           {% else %}
-  #             {{ trigger.event.data.service_data.entity_id|join(', ') }}
-  #           {% endif %}
-  #         speed: "medium"
-  #     - service: fan.turn_on
-  #       data_template:
-  #         entity_id: >-
-  #           {% if trigger.event.data.service_data.entity_id is string %}
-  #             {{ trigger.event.data.service_data.entity_id }}
-  #           {% else %}
-  #             {{ trigger.event.data.service_data.entity_id|join(', ') }}
-  #           {% endif %}
-  #     - service: automation.turn_on
-  #       data:
-  #         entity_id:
-  #           - automation.fan_set_speed
-  #           - automation.fan_turn_on
-  #
+  - alias: master_fan_mode_select
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.master_ceiling_fan_speeds
+    action:
+      - service: fan.set_speed
+        entity_id: fan.master_bedroom_fan
+        data_template:
+          speed: >-
+            {% if is_state("input_select.master_ceiling_fan_speeds", "high") %}
+              High
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "medium") %}
+              Medium
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "low") %}
+              Low
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "lowest") %}
+              Lowest
+            {% else %}
+              Medium
+            {% endif %}
+  - alias: master_ceiling_update_input_select
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.fan_speed_master
+    action:
+      - service: input_select.select_option
+        entity_id: input_select.master_ceiling_fan_speeds
+        data_template:
+          option: >-
+            {% if is_state("sensor.fan_speed_master", "high") %}
+               High
+            {% elif is_state("sensor.fan_speed_master", "medium") %}
+               Medium
+            {% elif is_state("sensor.fan_speed_master", "low") %}
+               Low
+            {% elif is_state("sensor.fan_speed_master", "lowest") %}
+               Lowest
+            {% else %}
+               Medium
+            {% endif %}
+
+  - alias: living_room_fan_mode_select
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.living_room_ceiling_fan_speeds
+    action:
+      - service: fan.set_speed
+        entity_id: fan.living_room_fan
+        data_template:
+          speed: >-
+            {% if is_state("input_select.living_room_ceiling_fan_speeds", "High") %}
+              high
+            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "Medium") %}
+              medium
+            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "Low") %}
+              low
+            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "Lowest") %}
+              lowest
+            {% else %}
+              medium
+            {% endif %}
+
+  - alias: living_room_ceiling_update_input_select
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.fan_speed
+    action:
+      - service: input_select.select_option
+        entity_id: input_select.living_room_ceiling_fan_speeds
+        data_template:
+          option: >-
+            {% if is_state("sensor.fan_speed", "high") %}
+               High
+            {% elif is_state("sensor.fan_speed", "medium") %}
+               Medium
+            {% elif is_state("sensor.fan_speed", "low") %}
+               Low
+            {% elif is_state("sensor.fan_speed", "lowest") %}
+               Lowest
+            {% else %}
+               Medium
+            {% endif %}
+
 ##########################################################################
 ############################  cieling fan automation with Hvac    ########
 ##########################################################################
@@ -202,10 +228,6 @@ automation:
         data:
           entity_id: fan.living_room_fan
           speed: "low"
-      # - service: fan.turn_on   # gotta hit fan twice dont know why
-      #   data:
-      #     entity_id: fan.living_room_fan
-      #     speed: "lowest"
 
   - alias: Fan medium with hvac automation
     initial_state: 'on'
@@ -222,10 +244,7 @@ automation:
         data:
           entity_id: fan.living_room_fan
           speed: "medium"
-      # - service: fan.turn_on
-      #   data:
-      #     entity_id: fan.living_room_fan
-      #     speed: "low"
+
 
 # if wife turns disables fan automation this reenables it
   - alias: Reenable Fan Automation

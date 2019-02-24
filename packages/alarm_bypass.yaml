@@ -16,7 +16,7 @@ automation:
 #################################################
 #          Alarm Auto DISARM when RETURN                         #
 #################################################
-  - alias: 'Alarm disarm when return home'
+  - alias: 'alarm disarm when return home'
     initial_state: 'on'
     trigger:
       - platform: state

@@ -27,7 +27,7 @@ automation:
           gw_mac: !secret xiaomi_mac
           ringtone_id: 1
           ringtone_vol: 100
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Shed Door Has Been Opened'
                      

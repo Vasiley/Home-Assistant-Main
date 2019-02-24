@@ -7,11 +7,12 @@ homeassistant:
     light.kitchen_under_cabinet:
       friendly_name: Kitchen Under Cabinets
       haaska_hidden: false
+    light.kitchen_pantry:
+      friendly_name: Pantry Lights
+      haaska_hidden: true
     sensor.kitchen_led_dimmer_battery:
       icon: mdi:battery
       friendly_name: Kitchen Led Dimmer
-  #  light.kitchen_under_cabinet1:
-  #    haaska_hidden: false
     input_number.led_animation_speed:
       friendly_name: Kitchen Cabinets Speed
       haaska_hidden: true
@@ -30,7 +31,7 @@ homeassistant:
     automation.kitchen_lights_on_white_with_dimmer:
       friendly_name: Kitchen Leds White
       haaska_hidden: true
-    sensor.kitchen_led_dimmer_last_update:
+    sensor.kitchen_undercabinet_led_dimmer_state:
       icon: mdi:clock
     sensor.kitchen_led_dimmer_state:
       icon: mdi:remote
@@ -52,6 +53,24 @@ light:
     name: kitchen_under_cabinet
     state_topic: "diy/esps/counter"
     command_topic: "diy/esps/counter/set"
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list:
+      - Solid
+      - Blink
+      - Flash
+      - Rainbow
+      - Chase
+      - Fire flicker
+      - Lightning
+      - Breathe
+
+  - platform: mqtt
+    schema: json
+    name: kitchen_pantry
+    state_topic: "diy/esp/led_pantry"
+    command_topic: "diy/esp/led_pantry/set"
     brightness: true
     rgb: true
     effect: true
@@ -95,12 +114,24 @@ sensor:
 
   - platform: template
     sensors:
-      kitchen_led_dimmer_state:
+      kitchen_undercabinet_led_dimmer_state:
         friendly_name: 'Kitchen Dimmer Last Button Push'
         value_template: >-
                       {% if states('sensor.kitchen_led_dimmer_state_2')[0] == "1" %}
                         On
                       {% elif states('sensor.kitchen_led_dimmer_state_2')[0] == "4" %}
+                        Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: template
+    sensors:
+      kitchen_pantry_dimmer_state:
+        friendly_name: 'Kitchen Pantry Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kitchen_led_dimmer_state_2')[0] == "2" %}
+                        On
+                      {% elif states('sensor.kitchen_led_dimmer_state_2')[0] == "3" %}
                         Off
                       {% else %}
                         None
@@ -117,29 +148,43 @@ sensor:
         value_template: >-
          {{as_timestamp(strptime(states('sensor.kitchen_led_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
 
-
-
-  # - alias: Kitchen Lights On White with Dimmer
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.kitchen_led_dimmer_state
-  #       to: 'On'
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.led_white
-  #
-  # - alias: Kitchen Lights Off with Dimmer
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.kitchen_led_dimmer_state
-  #       to: 'Off'
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.led_off
-
 automation:
+  - alias: Kitchen Pantry Lights On with Dimmer
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_dimmer_test
+        to: 'click_2'
+    action:
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.led_pantry_yellow
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+                script.led_pantry_yellow
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.led_pantry_yellow
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.led_pantry_yellow
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.led_pantry_white
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+                script.led_pantry_yellow
+              {% else %}
+                script.led_pantry_white
+              {% endif %}
+
+  - alias: Kitchen Pantry Lights Off with Dimmer
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kitchen_dimmer_test
+        to: 'click_3'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_pantry_off
+
   - alias: Kitchen Leds White
     initial_state: 'on'
     trigger:
@@ -152,7 +197,7 @@ automation:
       - delay: '00:00:10'
       - service: script.turn_on
         entity_id: script.led_white
-      - delay: '00:10:00'  
+      - delay: '00:10:00'
       - service: script.turn_on
         entity_id: script.led_off
 
@@ -195,6 +240,18 @@ script:
           brightness: 220
           rgb_color: [200,200,200]
 
+  led_pantry_white:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen_pantry
+          effect: Solid
+          brightness: 220
+          rgb_color: [200,200,200]
+      - delay: '00:10:00'
+      - service: light.turn_off
+        entity_id: light.kitchen_pantry
+        
   led_yellow:
     sequence:
       - service: light.turn_on
@@ -204,7 +261,24 @@ script:
           brightness: 220
           rgb_color: [200,200,0]
 
+  led_pantry_yellow:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.kitchen_pantry
+          effect: Solid
+          brightness: 220
+          rgb_color: [200,200,0]
+      - delay: '00:10:00'
+      - service: light.turn_off
+        entity_id: light.kitchen_pantry
+
   led_off:
     sequence:
       - service: light.turn_off
         entity_id: light.kitchen_under_cabinet
+
+  led_pantry_off:
+    sequence:
+      - service: light.turn_off
+        entity_id: light.kitchen_pantry

@@ -94,7 +94,7 @@ automation:
     action:
       - service: switch.turn_on
         data:
-          entity_id: switch.blue_iris_monitor
+          entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:01'
       - service: media_player.volume_set
         data_template:
@@ -113,7 +113,9 @@ automation:
       - delay: '00:00:15'
       - service: light.turn_on
         data:
-          entity_id: light.herbs_lamp
+          entity_id:
+            - light.herbs_lamp
+            - light.living_room_lamp_5
           color_temp: 200
           brightness: 175
       - service: rest_command.no_motion

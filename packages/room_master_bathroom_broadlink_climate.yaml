@@ -55,7 +55,7 @@ climate:
     min_temp: 70
     max_temp: 80
     target_temp: 70
-    temp_sensor: sensor.temperature_master_bathroom
+    temp_sensor: sensor.master_bdrm_purifer_temp
     default_operation: idle
     default_fan_mode: auto
     customize:
@@ -90,7 +90,7 @@ sensor:
       operating_mode_bathroom_heater:
         friendly_name: 'Bathroom Current Operation'
         value_template: "{{ state_attr('climate.lasko_heater', 'operation_mode') }}"
-          
+
 automation:
   - alias: master bath heater state on
     initial_state: 'on'

@@ -107,7 +107,7 @@ binary_sensor:
     excludes: [fri, sat, sun, holiday]
 
 automation:
-  - alias: Update Current Alarm Time
+  - alias: update current alarm time
     initial_state: true
     hide_entity: true
     trigger:
@@ -139,7 +139,7 @@ automation:
               {{- states.input_number.slider_minutes.state|int -}}
             {%- endif -%}{%- if states.input_boolean.am.state == "on" %} AM{%- else %} PM{%- endif -%}
 
-  - alias: AM Change OFF
+  - alias: am change off
     initial_state: true
     hide_entity: true
     trigger:
@@ -153,7 +153,7 @@ automation:
       - service: input_boolean.turn_off
         entity_id: input_boolean.am
 
-  - alias: AM Change ON
+  - alias: am change on
     initial_state: true
     hide_entity: true
     trigger:
@@ -167,7 +167,7 @@ automation:
       - service: input_boolean.turn_on
         entity_id: input_boolean.am
 
-  - alias: PM Change OFF
+  - alias: pm change off
     initial_state: true
     hide_entity: true
     trigger:
@@ -181,7 +181,7 @@ automation:
       - service: input_boolean.turn_off
         entity_id: input_boolean.pm
 
-  - alias: PM Change ON
+  - alias: pm change on
     initial_state: true
     hide_entity: true
     trigger:
@@ -195,11 +195,11 @@ automation:
       - service: input_boolean.turn_on
         entity_id: input_boolean.pm
 
-  - alias: Alarm Clock
+  - alias: alarm clock
     initial_state: true
     hide_entity: true
     trigger:
-      platform: time
+      platform: time_pattern
       minutes: '/1'
       seconds: 00
     condition:

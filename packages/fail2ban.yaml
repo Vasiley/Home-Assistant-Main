@@ -48,7 +48,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Failed Login Attempt'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Failed Login Attempt'
       - service: notify.chrome_push

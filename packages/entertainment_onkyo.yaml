@@ -1,3 +1,4 @@
+
 homeassistant:
   customize:
     package.node_anchors:
@@ -34,7 +35,7 @@ media_player:
       fm: 'FM Radio'
       net: 'Net'
       strm-box: 'Roku'
-    max_volume: 160
+    max_volume: 160   #set back to 80 on upgrade until change package
 
 sensor:
   - platform: template

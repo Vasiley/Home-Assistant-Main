@@ -1,62 +1,35 @@
 homeassistant:
   customize:
-    sensor.dark_sky_humidity:
-      friendly_name: Humidity
-    sensor.dark_sky_temperature:
-      friendly_name: Temperature
-    sensor.dark_sky_wind_bearing:
-      icon: mdi:compass-outline
-      friendly_name: Direction
-      unit_of_measurement: 'deg'
-    sensor.dark_sky_wind_speed:
-      icon: mdi:speedometer
-      friendly_name: Wind Speed
-    sensor.dark_sky_precip_intensity:
-      icon: mdi:weather-pouring
-      friendly_name: Rain Intensity
     sensor.dark_sky_daily_summary:
-      friendly_name: Daily
+      friendly_name: Daily Summary
+      haaska_hidden: true
     sensor.dark_sky_hourly_summary:
-      friendly_name: Hourly
+      friendly_name: Hourly Summary
+      haaska_hidden: true
     sensor.dark_sky_minutely_summary:
-      friendly_name: To the Minute
+      friendly_name: To The Minute
+      haaska_hidden: true
+    sensor.dark_sky_daytime_high_temperature_0:
+      friendly_name: Daytime High
+      haaska_hidden: true
+    sensor.dark_sky_overnight_low_temperature_0:
+      friendly_name: Overnight Low
+      haaska_hidden: true
+    sensor.dark_sky_nearest_storm_bearing:
+      friendly_name: Nearest Storm Bearing
+      haaska_hidden: true
+    sensor.dark_sky_nearest_storm_distance:
+      friendly_name: Nearest Storm Distance
+      haaska_hidden: true
+    sensor.dark_sky_precip_intensity:
+      friendly_name: Precip Instensity
+      haaska_hidden: True
+#     sensor.dark_sky_precip_intensity_0:
+    sensor.dark_sky_precip_probability:
+      friendly_name: Percip Probability
+      haaska_hidden: true
+#     sensor.dark_sky_precip_probability_0
 
-group:
-  ForecastWeather_card:
-   name: Predication
-   entities:
-     - sensor.dark_sky_summary
-     - sensor.dark_sky_daily_summary
-     - sensor.dark_sky_hourly_summary
-     - sensor.dark_sky_minutely_summary
-     - sensor.dark_sky_daily_high_temperature
-     - sensor.dark_sky_daily_low_temperature
-     - sensor.dark_sky_precip_probability
-     - sensor.dark_sky_nearest_storm_bearing
-     - sensor.dark_sky_nearest_storm_distance
-
-  daily_forecast_card:
-    name: Daily Forecast
-    entities:
-      - sensor.pws_weather_1d
-      - sensor.pws_weather_1n
-      - sensor.pws_weather_2d
-      - sensor.pws_weather_2n
-      - sensor.pws_weather_3d
-      - sensor.pws_weather_3n
-      - sensor.pws_weather_4d
-      - sensor.pws_weather_4n
-
-  Conditions_card:
-   name: Current Weather
-   entities:
-     - sensor.dark_sky_icon
-     - sensor.dark_sky_temperature
-     - sensor.dark_sky_humidity
-     - sensor.dark_sky_wind_speed
-     - sensor.dark_sky_wind_bearing
-     - sensor.dark_sky_precip_intensity
-     - sun.sun
 
   animated_radar_card:
    name: Animated Radar
@@ -77,10 +50,6 @@ camera:
     still_image_url: 'http://images.intellicast.com/WxImages/RadarLoop/msy_None_anim.gif'
     name: Radar Animated
 
-#weather:
-  # - platform: darksky
-  #   api_key: !secret darksky_api
-
 sensor:
   - platform: wunderground
     api_key: !secret wunderground_api
@@ -96,23 +65,36 @@ sensor:
 
   - platform: darksky
     api_key: !secret darksky_api
-
+    latitude: !secret latitude
+    longitude: !secret longitude
+    scan_interval: "00:15:00"
+    forecast:
+      - 0
     monitored_conditions:
-      - summary
+      - temperature_high
+      - temperature_low
       - nearest_storm_distance
       - nearest_storm_bearing
       - precip_probability
-      - minutely_summary
+      - precip_intensity
       - hourly_summary
+      - minutely_summary
       - daily_summary
-      - temperature_max
-      - temperature_min
       - temperature
+      - apparent_temperature
+      - temperature_min
+      - temperature_max
       - humidity
       - precip_probability
       - precip_intensity
+      - precip_type
       - wind_speed
-      - pressure
       - wind_bearing
-      - apparent_temperature
+      - pressure
       - icon
+
+  - platform: moon
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api

@@ -8,16 +8,6 @@ homeassistant:
       friendly_name: Dawns Scent
       haaska_name: Dawns Scent
       icon: mdi:flower
-    switch.kids_bathroom_scent:
-      friendly_name: Kids Bath Scent
-      haaska_name: Kids Bath Scent
-      icon: mdi:flower
-    switch.kids_bathroom_scent_2:
-      haaska_name: Living room Scent
-      friendly_name: Living Room Scent
-      icon: mdi:flower
-      persistent: true
-      assumed_state: false
     automation.warmers_scent_on:
       friendly_name: Warmers On
       haaska_hidden: true
@@ -31,8 +21,8 @@ group:
    control: hidden
    entities:
      - switch.dawn_day
-     - switch.kids_bathroom_scent
-     - switch.kids_bathroom_scent_2
+     - switch.wemo_kids_bathroom_scent
+     - switch.wemo_livingroom_scent
      - automation.warmers_scent_on
      - automation.warmers_scent_off
 
@@ -57,9 +47,10 @@ automation:
     action:
       - service: switch.turn_on
         entity_id:
-          - switch.kids_bathroom_scent_2
-          - switch.kids_bathroom_scent
+          - switch.wemo_livingroom_scent
+          - switch.wemo_kids_bathroom_scent
           - switch.dawn_day
+          - switch.wemo_ruths_room_wax
 
   - alias: warmers_scent_off
     initial_state: 'on'
@@ -73,6 +64,7 @@ automation:
     action:
       - service: switch.turn_off
         entity_id:
-          - switch.kids_bathroom_scent
-          - switch.kids_bathroom_scent_2
+          - switch.wemo_kids_bathroom_scent
+          - switch.wemo_livingroom_scent
           - switch.dawn_day
+          - switch.wemo_ruths_room_wax

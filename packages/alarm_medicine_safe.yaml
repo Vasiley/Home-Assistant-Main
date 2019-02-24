@@ -2,7 +2,7 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'dryer'
+        package: 'medicine_safe'
 
     input_boolean.boolean_safe_tamper:
       friendly_name: Safe Tamper
@@ -61,7 +61,7 @@ automation:
     action:
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_safe_tamper
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Medicine Safe has been tampered with'
       - service: notify.chrome_push
@@ -87,4 +87,4 @@ alert:
       - 60
     can_acknowledge: False  # Optional, default is True
     skip_first: False  # Optional, false is the default
-    notifiers: Pushbullet
+    notifiers: pushbullet

@@ -4,7 +4,7 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'blue_iris'
-    switch.blue_iris_monitor:
+    switch.network_switch_blue_iris_monitor:
       friendly_name: Blue Iris Monitor
       haaska_name: Blue Iris Monitor
     binary_sensor.motion_outdoor_shed:
@@ -13,7 +13,7 @@ homeassistant:
     binary_sensor.motion_outdoor_driveway:
       friendly_name: Driveway
       device_class: motion
-    binary_sensor.motion_frontdoor:
+    binary_sensor.motion_indoor_frontdoor:
       friendly_name: Front Door
       device_class: motion
     binary_sensor.motion_outdoor_number12:
@@ -55,7 +55,7 @@ group:
      - binary_sensor.motion_outdoor_driveway
      - binary_sensor.motion_outdoor_number12
      - binary_sensor.motion_outdoor_swamp
-     - binary_sensor.motion_frontdoor
+     - binary_sensor.motion_indoor_frontdoor
      - binary_sensor.motion_outdoor_backdoor
      - binary_sensor.motion_tablet_lv_camera
      - binary_sensor.motion_tablet_mb_camera
@@ -110,7 +110,7 @@ binary_sensor:
 
   - platform: mqtt
     state_topic: "blue_iris/frontdoor_cam/state"
-    name: motion_outdoor_frontdoor
+    name: motion_indoor_frontdoor
     payload_on: "on"
     payload_off: "off"
 
@@ -134,7 +134,7 @@ binary_sensor:
 
   - platform: mqtt
     state_topic: "blue_iris/number12_cam/state"
-    name: motion_outdoor_number12_camera
+    name: motion_outdoor_number12
     payload_on: "on"
     payload_off: "off"
 
@@ -179,7 +179,10 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.door_lamp
+          entity_id:
+            - light.living_room_lamp_4
+            - light.living_room_lamp_3
+            - light.living_room_lamp_1
           flash: short
           color_name: Red
       - service: tts.google_say
@@ -206,7 +209,10 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.door_lamp
+          entity_id:
+            - light.living_room_lamp_4
+            - light.living_room_lamp_3
+            - light.living_room_lamp_1
           flash: short
           color_name: Green
       - service: tts.google_say
@@ -236,7 +242,10 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.door_lamp
+          entity_id:
+            - light.living_room_lamp_4
+            - light.living_room_lamp_3
+            - light.living_room_lamp_1
           flash: short
           color_name: Blue
       - service: tts.google_say
@@ -265,7 +274,10 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.door_lamp
+          entity_id:
+            - light.living_room_lamp_4
+            - light.living_room_lamp_3
+            - light.living_room_lamp_1
           flash: short
           color_name: Blue
       - service: tts.google_say
@@ -296,7 +308,10 @@ automation:
     action:
       - service: light.turn_on
         data:
-          entity_id: light.door_lamp
+          entity_id:
+            - light.living_room_lamp_4
+            - light.living_room_lamp_3
+            - light.living_room_lamp_1
           color_temp: 154
           brightness: 255
 

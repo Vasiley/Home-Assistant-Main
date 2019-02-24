@@ -87,27 +87,33 @@ script:
   radio:
     alias: Play Radio on Chromecast Audio
     sequence:
-      - service: media_player.volume_set
-        data_template:
-          entity_id: >
-            {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
-            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
-            {% endif %}
-          volume_level: '.85'
-      - service: media_player.select_source
-        data_template:
-          entity_id: >-
-            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.stereo
-            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
-            {% endif %}
-          source: 'Cast'
+      # - service: media_player.volume_set
+      #   data_template:
+      #     entity_id: >
+      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
+      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+      #       {% endif %}
+      #     volume_level: '.85'
+      # - service: media_player.select_source
+      #   data_template:
+      #     entity_id: >-
+      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.stereo
+      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+      #       {% endif %}
+      #     source: 'Cast'
       - service: media_player.play_media
         data_template:
-          entity_id: >
-            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.onkyo_cast
-            {% elif is_state("input_select.chromecast_radio", "Master Bedroom") %} media_player.master_bedroom_cast
-            {% elif is_state("input_select.chromecast_radio", "Kids Bedroom") %} media_player.kids_room_cast
-            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} group.media_player_whole_house
+          entity_id: >-
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %}
+               media_player.onkyo_cast
+            {% elif is_state("input_select.chromecast_radio", "Master Bedroom") %}
+               media_player.master_bedroom_cast
+            {% elif is_state("input_select.chromecast_radio", "Kids Bedroom") %}
+               media_player.kids_room_cast
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %}
+               group.media_player_whole_house
+            {% else %}
+               group.media_player_whole_house   
             {% endif %}
           media_content_id: >
             {% if is_state("input_select.radio_station", "80's Rock") %} http://19763.live.streamtheworld.com:3690/977_80_SC?DIST=TuneIn&TGT=TuneIn&maxServers=2&ua=RadioTime&ttag=RadioTime

@@ -35,8 +35,8 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.kids_bathroom_dimmer_state
-        to: 'On'
+        entity_id: switch.kids_bathroom_vanitity
+        to: 'on'
     action:
       - service: script.turn_on
         entity_id: script.kids_shower_time_on
@@ -45,12 +45,12 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.kids_bathroom_dimmer_state
+        entity_id: switch.kids_bathroom_vanitity
         to: 'Off'
       - platform: state
         entity_id: input_boolean.boolean_kids_shower_time
         to: 'on'
-        for: '00:30:00'        
+        for: '00:30:00'
     action:
       - service: script.turn_on
         entity_id: script.kids_shower_time_off
@@ -65,7 +65,7 @@ script:
         data:
           entity_id:
             - light.kids_bathroom
-            - light.kids_bathroom_vanity
+            - light.kids_vanity
           color_temp: 154
           brightness: 255
       - service: tts.google_say
@@ -83,8 +83,8 @@ script:
         entity_id: input_boolean.boolean_kids_shower_time
       - service: light.turn_off
         entity_id:
-          - light.kids_bathroom_vanity
-          - light.kids_bathroom
+            - light.kids_bathroom
+            - light.kids_vanity
       - service: tts.google_say
         data:
           entity_id:
@@ -95,7 +95,7 @@ switch:
   - platform: template
     switches:
       kids_shower_time:
-        value_template: "{{ is_state('light.kids_bathroom_vanity', 'on') }}"
+        value_template: "{{ is_state('switch.kids_bathroom_vanitity', 'on') }}"
         turn_on:
           - service: script.turn_on
             data:

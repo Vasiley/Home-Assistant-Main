@@ -23,7 +23,7 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.susie_clean_livingroom
-      - delay: '00:10:00'  
+      - delay: '00:10:00'
       - wait_template: "{{ is_state('input_boolean.boolean_susie_home', 'on') }}"
       - service: script.turn_on
         entity_id: script.susie_clean_kitchen
@@ -32,7 +32,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: time
-        at: '12:15:00'
+        at: '13:00:00'
     condition:
       condition: time
       weekday:

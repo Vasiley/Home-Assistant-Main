@@ -5,7 +5,6 @@ homeassistant:
   elevation: 1
   unit_system: imperial
   time_zone: America/Chicago
-  customize: !include customize.yaml
   packages: !include_dir_named packages
 
 ####Zone files
@@ -27,7 +26,7 @@ http:
 
 sun:
 
-sensor: !include Sensors.yaml
+sensor: !include sensors.yaml
 
 group: !include tabs.yaml
 
@@ -61,7 +60,7 @@ hue:
     - host: 192.168.1.185
       allow_unreachable: True
 
-scene: !include Scenes.yaml
+scene: !include scenes.yaml
 
 rest_command: !include restcommands.yaml
 
@@ -72,19 +71,6 @@ wink:
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
-#discovery:
-wemo:
-   static:
-     - 192.168.1.230  #Living Room Scent
-     - 192.168.1.231  #master bedroom mixer
-     - 192.168.1.233  #washer
-     - 192.168.1.232  #Driveway Camera roboot
-     - 192.168.1.228  #Kids Bathroom scent
-     - 192.168.1.31   #Shed Cam Reboot
-     - 192.168.1.53  #Master Fan
-     - 192.168.1.176 #kids bathroom fan
-#     - 192.168.1.162  #?
-     - 192.168.1.152  #fish tank pumps
 xiaomi_aqara:
   gateways:
      - mac: !secret xiaomi_mac
@@ -100,4 +86,12 @@ input_label:
     value: 'Hello, Home Assistant!'
     icon: mdi:alphabetical
 
-discovery:
+system_health:
+
+speedtestdotnet:
+  scan_interval:
+    minutes: 30
+  monitored_conditions:
+    - ping
+    - download
+    - upload

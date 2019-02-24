@@ -181,8 +181,8 @@ sensor:
         friendly_name: 'Ruths Room Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_door.attributes.battery_level }}"
 ###### counter for open doors ###################
-  # - platform: template
-  #   sensors:
-  #     open_door_count:
-  #       value_template: >-
-  #         {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'door') | list | count }}
+  - platform: template
+    sensors:
+      open_door_count:
+        value_template: >-
+          {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'door') | list | count }}

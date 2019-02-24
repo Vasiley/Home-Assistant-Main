@@ -141,7 +141,7 @@ automation:
           - binary_sensor.door_window_sensor_herbs_side
         to: 'on'
     action:
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'An alarm has been Triggered!'
         data_template:

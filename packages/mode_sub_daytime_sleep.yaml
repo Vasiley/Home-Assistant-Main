@@ -56,7 +56,7 @@ script:
           entity_id: fan.master_bedroom_fan
           speed: "high"
       - service: switch.turn_off
-        entity_id: switch.master_bedroom_mixer
+        entity_id: switch.wemo_master_bedroom_mixer
 
   daytime_sleep_mode_off:
     sequence:
@@ -64,7 +64,7 @@ script:
         data:
           entity_id: input_boolean.boolean_day_time_sleep
       - service: switch.turn_on
-        entity_id: switch.master_bedroom_mixer
+        entity_id: switch.wemo_master_bedroom_mixer
 
 switch:
   - platform: template

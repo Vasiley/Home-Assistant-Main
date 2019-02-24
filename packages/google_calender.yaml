@@ -159,16 +159,6 @@ sensor:
               {%- else -%}
                 {{ numOfDays }}
               {%- endif -%}
-################# Time Date Sensor ####################################
-
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'time_date'
-      - 'time_utc'
-      - 'beat'
 
 automation:
 
@@ -195,7 +185,7 @@ automation:
     initial_state: 'on'
     hide_entity: false
     trigger:
-      platform: time
+      platform: time_pattern
       hours: '/1'
       minutes: 3
       seconds: 00
@@ -237,7 +227,7 @@ automation:
     initial_state: 'on'
     hide_entity: false
     trigger:
-      platform: time
+      platform: time_pattern
       hours: '/1'
       minutes: 3
       seconds: 00
@@ -281,7 +271,7 @@ automation:
             Appointment Reminder {{ states.calendar.main_calender.attributes.message }}
             with {{ states.calendar.main_calender.attributes.description }} is
             {{ states.sensor.days_to_next_appointment.state }} days away
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data_template:
           message: >-
             Appointment Reminder {{ states.calendar.main_calender.attributes.message }}
@@ -324,7 +314,7 @@ automation:
           message: >-
             Dr appointment today {{ states.calendar.main_calender.attributes.description }}
             at {{ as_timestamp(states.calendar.main_calender.attributes.start_time) | timestamp_custom('%-I:%M %P') }}
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data_template:
           message: >-
             Appointment Today {{ states.calendar.main_calender.attributes.message }}

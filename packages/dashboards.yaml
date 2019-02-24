@@ -342,7 +342,7 @@ automation:
   - alias: dashboards_refresh
     initial_state: 'on'
     trigger:
-      - platform: time
+      - platform: time_pattern
         hours: '/1'
         minutes: 00
         seconds: 00
@@ -470,7 +470,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker, media_player.chromecast_master
           message: 'Power is Lost to A Dashboard Please Check'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Power has been Lost to a Dashboard'
 

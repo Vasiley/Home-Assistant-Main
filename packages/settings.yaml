@@ -2,7 +2,7 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Settings'
+        package: 'settings'
 
 
 group:
@@ -31,11 +31,10 @@ group:
      - input_number.evening_mode_brightness_value
      - input_number.evening_mode_color_temp_value
      - input_number.evening_time_mode_transition_value
-#     - input_number.evening_mode_transition_value
      - input_number.evening_mode_chromecast_lv
      - input_number.evening_mode_chromecast_masterbedroom
      - input_number.evening_time_off
-     - automation.motion_off
+
 
 ################  Movie MODE #################################################
   setting_movie_mode_settings_card:

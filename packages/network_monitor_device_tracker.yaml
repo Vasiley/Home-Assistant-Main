@@ -2,14 +2,14 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Network Monitor devices'
+        package: 'network_monitor_devices'
 ######### Speedtest ###############################
-    sensor.speedtest_download:
-      entity_picture: /local/speedtest.png
-    sensor.speedtest_upload:
-      entity_picture: /local/speedtest.png
-    sensor.speedtest_ping:
-      entity_picture: /local/ping.jpg
+    # sensor.speedtest_download:
+    #   entity_picture: /local/speedtest.png
+    # sensor.speedtest_upload:
+    #   entity_picture: /local/speedtest.png
+    # sensor.speedtest_ping:
+    #   entity_picture: /local/ping.jpg
 
 ########### Camera's ##################################
     binary_sensor.driveway_camera_connect:
@@ -53,10 +53,17 @@ homeassistant:
       friendly_name: Dawns Samsung
       icon: mdi:cellphone-android
       haaska_hidden: true
-    binary_sensor.tristans_phone:
-      friendly_name: Tristans Phone
+    binary_sensor.tristans_phone1:
+      friendly_name: Tristans Phone (old)
       icon: mdi:cellphone-android
       haaska_hidden: true
+    binary_sensor.tristans_phone2:
+      friendly_name: Tristans Phone (new)
+      icon: mdi:cellphone-android
+      haaska_hidden: true
+    binary_sensor.gabbies_phone:
+      friendly_name: Gabbie Phone
+      icon: mdi:cellphone-android
     binary_sensor.ruths_tablet:
       friendly_name: Ruths Tablet
       icon: mdi:tablet
@@ -211,8 +218,8 @@ homeassistant:
       friendly_name: Wemos Kids Bath Fan
       icon: mdi:power-settings
       haaska_hidden: true
-    binary_sensor.wemo_rear_network:
-      friendly_name: Wemos Rear Network
+    binary_sensor.wemo_shed_switch_network:
+      friendly_name: Wemos Shed Switch
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.master_bedroom_mixer:
@@ -236,10 +243,21 @@ homeassistant:
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.wemo_fish_tan_pumps:
-      friendly_name: FishTank Filters
+      friendly_name: Blue Iris Monitor
       icon: mdi:power-settings
       haaska_hidden: true
-
+    binary_sensor.wemo_kids_bathroom_vanity:
+      friendly_name: Kids Bathroom Vanity
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_master_bath_vanity:
+      friendly_name: Master Bathroom Vanity
+      icon: mdi:power-settings
+      haaska_hidden: true
+    binary_sensor.wemo_ruths_room_wax_warmer:
+      friendly_name: Ruths Room Wax Warmer
+      icon: mdi:power-settings
+      haaska_hidden: true
 ############## Dashboards ################
     binary_sensor.dash_master:
       friendly_name: Dashboard Tablet Bedroom
@@ -341,6 +359,10 @@ homeassistant:
       friendly_name: Living Room Purifer
       icon: mdi:fan
       haaska_hidden: true
+    binary_sensor.master_bedroom_purifer:
+     friendly_name: Master Bedroom Purifer
+     icon: mdi:fan
+     haaska_hidden: true
 
 group:
   clients_online_card:
@@ -417,7 +439,9 @@ group:
      - binary_sensor.herbs_laptop
      - binary_sensor.herbs_iphone
      - binary_sensor.dawns_phone
-     - binary_sensor.tristans_phone
+     - binary_sensor.tristans_phone1
+     - binary_sensor.tristans_phone2
+     - binary_sensor.gabbies_phone
      - binary_sensor.ruths_tablet
      - binary_sensor.gabbies_laptop
 
@@ -467,13 +491,16 @@ group:
    entities:
      - binary_sensor.wemo_master_bath_fan
      - binary_sensor.wemo_kids_bathroom_fan
-     - binary_sensor.wemo_rear_network
+     - binary_sensor.wemo_shed_switch_network
      - binary_sensor.master_bedroom_mixer
      - binary_sensor.wemo_kids_bathroom_scent
      - binary_sensor.wemo_washing_machine
      - binary_sensor.wemo_lv_scent
      - binary_sensor.wemo_driveway_reboot
      - binary_sensor.wemo_fish_tan_pumps
+     - binary_sensor.wemo_kids_bathroom_vanity
+     - binary_sensor.wemo_master_bath_vanity
+     - binary_sensor.wemo_ruths_room_wax_warmer
 
   dashboard_status_card:
    name: Dashboards
@@ -495,23 +522,14 @@ group:
     - binary_sensor.ecobee
     - binary_sensor.rockrobo
     - binary_sensor.living_room_purifer
+    - binary_sensor.master_bedroom_purifer
 
 sensor:
   ############## Public Ip
   - platform: dnsip
 
-######## Equipment ########
-  - platform: speedtest
-    minute: 30
-    hour:
-      - 0
-      - 6
-      - 12
-      - 18
-    monitored_conditions:
-      - ping
-      - download
-      - upload
+
+
 
 #################### ALL CLIENTS ###################
   - platform: template
@@ -591,10 +609,19 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.gabbies_laptop", "home") }}'
   - platform: template
     sensors:
-      tristans_phone:
+      tristans_phone1:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.tristans_phone", "home") }}'
-
+        value_template: '{{ is_state("device_tracker.tristans_phone1", "home") }}'
+  - platform: template
+    sensors:
+      tristans_phone2:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.tristans_phone2", "home") }}'
+  - platform: template
+    sensors:
+      gabbies_phone:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.gabbies_phone", "home") }}'
 
 ############ Hubs ######################################
 
@@ -748,7 +775,7 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.unifi_gateway", "home") }}'
   - platform: template
     sensors:
-      netgear_switch:
+      switch_ubnt_poe_lv:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.switch_ubnt_poe_lv", "home") }}'
   - platform: template
@@ -790,9 +817,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.wemo_kids_bathroom_fan", "home") }}'
   - platform: template
     sensors:
-      wemo_rear_network:
+      wemo_shed_switch_network:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.wemo_rear_network", "home") }}'
+        value_template: '{{ is_state("device_tracker.wemo_shed_switch_network", "home") }}'
   - platform: template
     sensors:
       master_bedroom_mixer:
@@ -824,6 +851,22 @@ binary_sensor:
       wemo_fish_tan_pumps:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.wemo_fish_tan_pumps", "home") }}'
+  - platform: template
+    sensors:
+      wemo_kids_bathroom_vanity:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_kids_bathroom_vanity", "home") }}'
+  - platform: template
+    sensors:
+      wemo_master_bath_vanity:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_master_bath_vanity", "home") }}'
+  - platform: template
+    sensors:
+      wemo_ruths_room_wax_warmer:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_ruths_room_wax_warmer", "home") }}'
+
 
 #################### Dashboards Devices  ###################
 
@@ -947,6 +990,11 @@ binary_sensor:
       living_room_purifer:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.living_room_purifer', 'home') }}"
+  - platform: template
+    sensors:
+      master_bedroom_purifer:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.master_bedroom_purifer', 'home') }}"
 
 device_tracker:
   - platform: ping
@@ -971,7 +1019,7 @@ device_tracker:
 
 automation:
   - alias: Notify Device Status
-    initial_state: 'off'
+    initial_state: 'on'
     trigger:
       - platform: state
         entity_id:
@@ -986,7 +1034,9 @@ automation:
           - binary_sensor.herbs_laptop
           - binary_sensor.herbs_iphone
           - binary_sensor.dawns_phone
-          - binary_sensor.tristans_phone
+          - binary_sensor.tristans_phone1
+          - binary_sensor.tristans_phone2
+          - binary_sensor.gabbies_phone
           - binary_sensor.ruths_tablet
           - binary_sensor.gabbies_laptop
 #         HUBS
@@ -1030,13 +1080,16 @@ automation:
 #         wemos
           - binary_sensor.wemo_master_bath_fan
           - binary_sensor.wemo_kids_bathroom_fan
-          - binary_sensor.wemo_rear_network
+          - binary_sensor.wemo_shed_switch_network
           - binary_sensor.master_bedroom_mixer
           - binary_sensor.wemo_kids_bathroom_scent
           - binary_sensor.wemo_washing_machine
           - binary_sensor.wemo_lv_scent
           - binary_sensor.wemo_driveway_reboot
           - binary_sensor.wemo_fish_tan_pumps
+          - binary_sensor.wemo_kids_bathroom_vanity
+          - binary_sensor.wemo_master_bath_vanity
+          - binary_sensor.wemo_ruths_room_wax_warmer
 #         Dashboards
           - binary_sensor.dash_master
           - binary_sensor.dash_living_room
@@ -1063,6 +1116,7 @@ automation:
           - binary_sensor.ecobee
           - binary_sensor.rockrobo
           - binary_sensor.living_room_purifer
+          - binary_sensor.master_bedroom_purifer
 
     condition:
       condition: and
@@ -1072,6 +1126,9 @@ automation:
         - condition: state
           entity_id: input_boolean.boolean_home
           state: 'on'
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
     action:
       - service: tts.google_say
         data_template:

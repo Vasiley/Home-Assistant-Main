@@ -251,7 +251,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Fish Tank Temperature Problem'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'There is Problem with Fish Tank Temperature'
       - service: notify.chrome_push
@@ -272,7 +272,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Fish Tank Water Level Problem'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'There is Problem with Fish Tank Water Level'
       - service: notify.chrome_push
@@ -299,7 +299,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Fish Tank Warning'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'There is Problem with The Fish Tank'
       - service: notify.chrome_push

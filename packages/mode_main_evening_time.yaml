@@ -90,7 +90,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: time
-        at: '18:01'
+        at: '18:01:00'
     condition:
       - condition: state
         entity_id: sensor.house_mode_state
@@ -114,6 +114,11 @@ script:
             entity_id: light.lamps
             color_temp: 426
             brightness: 125
+        - service: light.turn_off
+          entity_id:
+            - light.living_room_lamp_1
+            - light.living_room_lamp_3
+            - light.living_room_lamp_4
         - service: script.turn_on
           entity_id: script.blinds_halfway
         - service: script.turn_on

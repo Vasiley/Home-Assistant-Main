@@ -1,4 +1,4 @@
-homeassistant:
+#homeassistant:
 #
 # light:
 #   - platform: group

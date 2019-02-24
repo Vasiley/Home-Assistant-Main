@@ -5,11 +5,11 @@ homeassistant:
       customize: &customize
         package: 'alarm'
 
-    # sensor.motion_count:
-    #   haaska_hidden: true
-    #   icon: mdi:alert
-    #   friendly_name: Motion Counts
-    #   unit_of_measurement: '#'
+    sensor.motion_count:
+      haaska_hidden: true
+      icon: mdi:alert
+      friendly_name: Motion Counts
+      unit_of_measurement: '#'
 
 group:
   alarm_panel_card:
@@ -83,7 +83,7 @@ automation:
           flash: short
       - service: light.turn_off
         entity_id: light.light_bulb
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'An alarm has been Triggered!'
         data_template:
@@ -138,7 +138,7 @@ automation:
           # effect: solid
           brightness: 255
           effect: "police all"
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'An alarm has been Triggered!'
         data_template:
@@ -147,9 +147,9 @@ automation:
       - service: automation.turn_on
         entity_id: automation.where_is_motion_alarm_triggered
 
-# sensor:
-#   - platform: template
-#     sensors:
-#       motion_count:
-#         value_template: >-
-#           {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'motion') | list | count }}
+sensor:
+  - platform: template
+    sensors:
+      motion_count:
+        value_template: >-
+          {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'motion') | list | count }}

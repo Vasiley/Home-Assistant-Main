@@ -1,0 +1,91 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'wemo switches'
+    switch.wemo_unifi_shed_switch:
+      friendly_name: Unifi 8 port shed switch
+      icon: mdi:power-settings
+    switch.wemo_8port_livingroom:
+      friendly_name: Unifi 8 port Living Room switch
+      icon: mdi:power-settings
+    switch.wemo_driveway_camaera:
+      friendly_name: Driveway Camera
+      icon: mdi:cctv
+    switch.wemo_washing_machine:
+      friendly_name: Washing Machine switch
+      haaska_hidden: true
+      icon: mdi:power-settings
+    switch.wemo_master_bath_fan:
+      friendly_name: Master Bath Humidity Fan
+      icon: mdi:fan
+    switch.wemo_kids_bath_fan:
+      friendly_name: Kids Bath Humidity Fan
+      icon: mdi:fan
+    switch.wemo_kids_bathroom_scent:
+      friendly_name: Kids Bath Scent
+      haaska_name: Kids Bath Scent
+      icon: mdi:flower
+    switch.wemo_livingroom_scent:
+      haaska_name: Living room Scent
+      friendly_name: Living Room Scent
+      icon: mdi:flower
+    switch.wemo_master_bedroom_mixer:
+      haaska_name: Master Bedroom
+      friendly_name: Master Bedroom Mixer
+      icon: mdi:audio-video
+    switch.wemo_ruths_room_wax:
+      haaska_name: Ruths Room Wax
+      friendly_name: Ruths Room Wax
+      icon: mdi:flower
+    switch.wemo_master_bath_vanity:
+      haaska_name: Master Bath Vanity
+      friendly_name: Master Bath Vanity
+      icon: mdi:lightbulb
+    switch.kids_bathroom_vanitity:
+      haaska_name: Kids Bath Vanity
+      friendly_name: Kids Bath Vanity
+      icon: mdi:lightbulb
+
+
+
+group:
+  wemo_switches_card:
+   control: hidden
+   name: Wemo Equipment
+   entities:
+     - switch.wemo_unifi_shed_switch
+     - switch.wemo_8port_livingroom
+     - switch.wemo_driveway_camaera
+     - switch.wemo_washing_machine
+     - switch.wemo_kids_bath_fan
+     - switch.wemo_master_bath_fan
+     - switch.wemo_kids_bathroom_scent
+     - switch.wemo_livingroom_scent
+     - switch.wemo_ruths_room_wax
+     - switch.wemo_master_bedroom_mixer
+     - switch.wemo_master_bath_vanity
+     - switch.kids_bathroom_vanitity
+
+wemo:
+   static:
+     - 192.168.1.230  #Living Room Scent
+     - 192.168.1.231  #master bedroom mixer
+     - 192.168.1.233  #washer
+     - 192.168.1.232  #Driveway Camera roboot
+     - 192.168.1.228  #Kids Bathroom scent
+     - 192.168.1.31   #Shed Cam Reboot
+     - 192.168.1.53  #Master Fan
+     - 192.168.1.176 #kids bathroom fan
+     - 192.168.1.152  #8 port living room
+     - 192.168.1.197  #master bath vanity
+     - 192.168.1.198 #ruths room wax warmer
+     - 192.168.1.199 #kids bathroom vanity
+
+light:
+  - platform: switch
+    name: Kids Vanity
+    entity_id: switch.kids_bathroom_vanitity
+  - platform: switch
+    name: Master Bath Vanity
+    entity_id: switch.wemo_master_bath_vanity    

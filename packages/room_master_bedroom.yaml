@@ -48,11 +48,9 @@ group:
       - light.herbs_bedside_lamp
       - light.master_table_lamps
       - light.light_bulb_2
-      - switch.master_bedroom_network
-      - switch.master_bedroom_mixer
-      - fan.master_bedroom_fan
+      - switch.wemo_master_bedroom_mixer
+      - input_select.master_ceiling_fan_speeds
       - script.master_fan_auto
-      - sensor.fan_speed_master
       - binary_sensor.gang_1
       - binary_sensor.master_motion
       - sensor.master_bedroom_temperature
@@ -193,7 +191,7 @@ automation:
       - service: switch.turn_off
         entity_id: switch.dawn_night
       - service: switch.turn_on
-        entity_id: switch.master_bedroom_mixer
+        entity_id: switch.wemo_master_bedroom_mixer
       - service: fan.turn_off
         data:
           entity_id: fan.master_bedroom_fan

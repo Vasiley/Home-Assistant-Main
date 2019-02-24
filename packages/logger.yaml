@@ -48,11 +48,11 @@ logger:
     requests.packages.urllib3.connectionpool: fatal
     urllib3.connectionpool.py: fatal
 
-group:
-  logger_input_select_card:
-   name: Log Level
-   entities:
-     - input_select.log_level
+# group:
+#   logger_input_select_card:
+#    name: Log Level
+#    entities:
+#      - input_select.log_level
 
   ################### Logger level
 input_select:

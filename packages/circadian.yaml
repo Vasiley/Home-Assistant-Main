@@ -1,0 +1,60 @@
+
+circadian_lighting:
+switch:
+######### Normal Family room lighting  #########
+  - platform: circadian_lighting
+    name: Circadian Lamps
+    lights_ct:
+      - light.lamps
+###############  Evening Lights ################
+  - platform: circadian_lighting
+    name: Circadian Lamps Evening
+    lights_ct:
+      - light.living_room_lamp_2
+      - light.living_room_lamp_5
+
+automation:
+  - alias: circadian_lighting_evening_mode
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_evening_time
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_away
+        state: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id:  switch.circadian_lighting_circadian_lamps
+      - service: switch.turn_on
+        entity_id:  switch.circadian_lighting_circadian_lamps_evening
+
+  - alias: circadian_lighting_early_home_mode
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_home
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_away
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        entity_id:  switch.circadian_lighting_circadian_lamps
+
+  - alias: circadian_lighting_sleep_mode
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_sleep
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_away
+        to: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id:  switch.circadian_lighting_circadian_lamps_evening
+      - service: switch.turn_off
+        entity_id:  switch.circadian_lighting_circadian_lamps

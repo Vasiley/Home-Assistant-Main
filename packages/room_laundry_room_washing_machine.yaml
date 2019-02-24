@@ -19,9 +19,7 @@ homeassistant:
     sensor.stopwatch:
       friendly_name: Cycle TIme
       icon: mdi:timer
-    switch.wemo_washing_machine:
-      friendly_name: Washing Machine switch
-      haaska_hidden: true
+
 
 group:
 
@@ -103,7 +101,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: 'Check the Clothes Washer Is Done'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Check the Clothes Washer Is Done'
       - service: input_boolean.turn_off
@@ -133,7 +131,7 @@ automation:
   - alias: Stopwatch update
     initial_state: 'on'
     trigger:
-      - platform: time
+      - platform: time_pattern
         seconds: '/1'
     condition:
       - condition: state

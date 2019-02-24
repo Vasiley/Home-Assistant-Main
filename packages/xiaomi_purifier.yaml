@@ -7,9 +7,6 @@ homeassistant:
     fan.living_room_purifer:
       friendly_name: Living room Purifer
       haaska_hidden: true
-    sensor.living_room_purifer_mode:
-      hasska_hidden: true
-      friendly_name: Living room Purifer Mode
     sensor.living_room_purifer_temp:
       hasska_hidden: true
       friendly_name: Living Room Temperature
@@ -28,9 +25,6 @@ homeassistant:
     fan.master_bedroom_purifer:
       friendly_name: Master Bedroom Purifer
       haaska_hidden: true
-    sensor.master_bdrm_purifer_mode:
-      hasska_hidden: true
-      friendly_name: Master Bedroom Purifer Mode
     sensor.master_bdrm_purifer_temp:
       hasska_hidden: true
       friendly_name: Master Bedroom Temperature
@@ -54,12 +48,29 @@ group:
    entities:
      - fan.living_room_purifer
      - fan.master_bedroom_purifer
+     - input_select.air_puirfier_living
+     - input_select.air_puirfier_master
      - sensor.house_avg_aqi
-     - sensor.living_room_purifer_mode
      - sensor.living_room_purifer_aqi_current
-     - sensor.master_bdrm_purifer_mode
      - sensor.master_bdrm_purifer_aqi_current
 
+input_select:
+  air_puirfier_master:
+    name: Master Purifer Mode
+    options:
+      - Select Input
+      - Auto
+      - Silent
+      - Favorite
+      - Idle
+  air_puirfier_living:
+    name: Living Purifer Mode
+    options:
+      - Select Input
+      - Auto
+      - Silent
+      - Favorite
+      - Idle
 fan:
   - platform: xiaomi_miio
     host:  192.168.1.60
@@ -95,6 +106,7 @@ sensor:
       master_bdrm_purifer_aqi_current:
         value_template: '{{ states.fan.master_bedroom_purifer.attributes["aqi"] }}'
         unit_of_measurement: '%'
+
   - platform: min_max
     type: mean
     name: House Avg AQI
@@ -162,4 +174,93 @@ automation:
               script.master_bdrm_purifer_led_off
             {% else %}
               script.master_bdrm_purifer_led_off
+            {% endif %}
+
+  - alias: living_room_purifer_mode_select
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.air_puirfier_living
+    action:
+      - service: fan.set_speed
+        entity_id: fan.living_room_purifer
+        data_template:
+          speed: >-
+            {% if is_state("input_select.air_puirfier_living", "Auto") %}
+              Auto
+            {% elif is_state("input_select.air_puirfier_living", "Silent") %}
+              Silent
+            {% elif is_state("input_select.air_puirfier_living", "Favorite") %}
+              Cast
+            {% elif is_state("input_select.air_puirfier_living", "Idle") %}
+              Idle
+            {% else %}
+              Auto
+            {% endif %}
+
+  - alias: livingroom_purifer_update_input_select
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.living_room_purifer_mode
+    action:
+      - service: input_select.select_option
+        entity_id: input_select.air_puirfier_living
+        data_template:
+          option: >-
+            {% if is_state("sensor.living_room_purifer_mode", "favorite") %}
+               Favorite
+            {% elif is_state("sensor.living_room_purifer_mode", "auto") %}
+               Auto
+            {% elif is_state("sensor.living_room_purifer_mode", "idle") %}
+               Idle
+            {% elif is_state("sensor.living_room_purifer_mode", "silent") %}
+               Silent
+            {% else %}
+               Auto
+            {% endif %}
+
+  - alias: master_purifer_mode_select
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.air_puirfier_master
+    action:
+      - service: fan.set_speed
+        entity_id: fan.master_bedroom_purifer
+        data_template:
+          speed: >-
+            {% if is_state("input_select.air_puirfier_master", "Auto") %}
+              Auto
+            {% elif is_state("input_select.air_puirfier_master", "Silent") %}
+              Silent
+            {% elif is_state("input_select.air_puirfier_master", "Favorite") %}
+              Cast
+            {% elif is_state("input_select.air_puirfier_master", "Idle") %}
+              Idle
+            {% else %}
+              Auto
+            {% endif %}
+  - alias: master_purifer_update_input_select
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.master_bdrm_purifer_mode
+    action:
+      - service: input_select.select_option
+        entity_id: input_select.air_puirfier_master
+        data_template:
+          option: >-
+            {% if is_state("sensor.master_bdrm_purifer_mode", "favorite") %}
+               Favorite
+            {% elif is_state("sensor.master_bdrm_purifer_mode", "auto") %}
+               Auto
+            {% elif is_state("sensor.master_bdrm_purifer_mode", "idle") %}
+               Idle
+            {% elif is_state("sensor.master_bdrm_purifer_mode", "silent") %}
+               Silent
+            {% else %}
+               Auto
             {% endif %}

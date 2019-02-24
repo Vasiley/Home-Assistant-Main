@@ -77,7 +77,7 @@ script:
           volume_level: '.25'
       - service: switch.turn_off
         data:
-          entity_id: switch.blue_iris_monitor
+          entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:05'
       - service: light.turn_off
         data:

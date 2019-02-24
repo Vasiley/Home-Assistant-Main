@@ -127,7 +127,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Ram Usage On HA Server is Excessive'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Ram Usage Is Excessive On HA Server'
       - service: notify.chrome_push
@@ -154,7 +154,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Disk Usage On HA Server is Excessive'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Disk Usage Is Excessive On HA Server'
       - service: notify.chrome_push
@@ -188,7 +188,7 @@ automation:
         data:
           entity_id: media_player.ha_speaker
           message: 'Cpu Usage On HA Server is Excessive'
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data:
           message: 'Disk Usage Is Excessive On HA Server'
       - service: notify.chrome_push

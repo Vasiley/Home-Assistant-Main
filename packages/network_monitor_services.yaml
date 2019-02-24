@@ -1,28 +1,28 @@
-homeassistant:
-  customize:
-    package.node_anchors:
-      customize: &customize
-        package: 'Network Monitor services'
-
-group:
-  services_online_card:
-    name: Services Online
-    entities:
-      - binary_sensor.kids_workstation_glances
-
-device_tracker:
-  - platform: ping
-    hosts:
-      kids_workstation_glances: 192.168.1.149
-  - platform: nmap_tracker
-    hosts: 192.168.1.149
-    scan_options: "--privileged -sP -p 61208"
-    name: "Tristans Glances"
-
-
-binary_sensor:
-  - platform: template
-    sensors:
-      kids_workstation_glances:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.kids_workstation_glances", "home") }}'
+# homeassistant:
+#   customize:
+#     package.node_anchors:
+#       customize: &customize
+#         package: 'Network Monitor services'
+#
+# group:
+#   services_online_card:
+#     name: Services Online
+#     entities:
+#       - binary_sensor.kids_workstation_glances
+#
+# device_tracker:
+#   - platform: ping
+#     hosts:
+#       kids_workstation_glances: 192.168.1.149
+#   - platform: nmap_tracker
+#     hosts: 192.168.1.149
+#     scan_options: "--privileged -sP -p 61208"
+#     name: "Tristans Glances"
+#
+#
+# binary_sensor:
+#   - platform: template
+#     sensors:
+#       kids_workstation_glances:
+#         device_class: connectivity
+#         value_template: '{{ is_state("device_tracker.kids_workstation_glances", "home") }}'

@@ -7,16 +7,22 @@ homeassistant:
 
     switch.network_switch_charter_modem:
       friendly_name: Charter Modem
-    switch.blue_iris_monitor:
-      friendly_name: Blue Iris Monitor
+      icon: mdi:ethernet-cable
     switch.network_switch_unifi_router:
       friendly_name: UniFi Router
+      icon: mdi:security-network
     switch.network_switch_unifi_switch:
       friendly_name: UniFi Poe Managed Switch
+      icon: mdi:switch
     switch.network_switch_blue_iris_server:
       friendly_name: Blue Iris Server
+      icon: mdi:server-network
+    switch.network_switch_blue_iris_monitor:
+      friendly_name: Blue Iris Monitor
+      icon: mdi:monitor
     switch.network_switch_home_assistant_server:
       friendly_name: HASS Server
+      icon: mdi:server-network
 
 
 group:
@@ -29,6 +35,7 @@ group:
      - switch.network_switch_unifi_switch
      - switch.network_switch_home_assistant_server
      - switch.network_switch_blue_iris_server
+     - switch.network_switch_blue_iris_monitor
 
 switch:
   - platform: digitalloggers

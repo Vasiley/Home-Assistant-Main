@@ -4,10 +4,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Master Bathroom'
-
-    switch.wemo_master_bath_fan:
-      friendly_name: Master Bath Humidity Fan
-      icon: mdi:fan
     automation.master_bath_light_left_on:
       haaska_hidden: true
       hidden: false

@@ -50,7 +50,7 @@ input_number:
     step: 1
   home_mode_color_temp_value:
     name: Home Mode Color Temp
-    initial: 154
+    initial: 212
     min: 154
     max: 426
     step: 1
@@ -116,7 +116,7 @@ script:
       - service: rest_command.no_motion
       - service: switch.turn_on
         data:
-          entity_id: switch.blue_iris_monitor
+          entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:01'
       - service: light.turn_on
         data_template:

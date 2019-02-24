@@ -32,7 +32,7 @@ automation:
           entity_id: media_player.ha_speaker
           message: >
             Good bye {{ tigger.from_state.state }}!, and Say Hello to {{ tigger.from_state.state }}.
-      - service: notify.Pushbullet
+      - service: notify.pushbullet
         data_template:
            message: >
              Good bye {{ tigger.from_state.state }}!, and Say Hello to {{ tigger.from_state.state }}.

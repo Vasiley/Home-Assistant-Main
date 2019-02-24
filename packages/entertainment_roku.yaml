@@ -19,13 +19,10 @@ group:
    entities:
      - media_player.ruths_roku
 
-media_player:
-  - platform: roku
-    host: 192.168.1.143
-  - platform: roku
-    host: 192.168.1.234
-  - platform: roku
-    host: 192.168.1.156
+roku:
+  - host: 192.168.1.143
+  - host: 192.168.1.234
+  - host: 192.168.1.156
 
 sensor:
   - platform: template

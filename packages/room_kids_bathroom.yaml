@@ -21,6 +21,7 @@ homeassistant:
       haaska_hidden: true
     binary_sensor.motion_sensor_kids_bathroom:
       haaska_hidden: true
+
     sensor.kids_humidity_sensor_batt:
       haaska_hidden: true
       friendly_name: Kids Bathroom Humidity Sensor
@@ -40,7 +41,6 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
-
     automation.kids_bath_light_left_on:
       haaska_hidden: true
       hidden: false
@@ -49,8 +49,6 @@ homeassistant:
       haaska_hidden: true
     automation.kids_humidity_fan_off:
       haaska_hidden: true
-
-
     light.kids_bathroom:
       persistence: false
     light.kids_bathroom_vanity:
@@ -68,11 +66,12 @@ group:
       - light.kids_bathroom_vanity
       - binary_sensor.door_window_sensor_kids_bathroom_door
       - switch.wemo_kids_bath_fan
-      - switch.kids_bathroom_scent
+      - switch.wemo_kids_bathroom_scent
       - sensor.temperature_kids_bathroom
       - sensor.pressure_kids_bathroom
       - sensor.humidity_kids_bathroom
       - binary_sensor.motion_sensor_kids_bathroom
+      - binary_sensor.hue_motion_kids_bathroom
       - sensor.illumination_kids_bathroom
       - sensor.kids_motion_sensor_batt
       - sensor.kids_humidity_sensor_batt
@@ -138,12 +137,16 @@ sensor:
         friendly_name: 'Kids Bathroom Humidity Sensor Battery Level'
         value_template: "{{ state_attr('sensor.humidity_kids_bathroom', 'battery_level') }}"
 
+
 automation:
   - alias: Motion Kids Bathroom Motion On
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_sensor_kids_bathroom
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.hue_motion_kids_bathroom
         to: 'on'
     condition:
       condition: and
@@ -194,6 +197,11 @@ automation:
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_sensor_kids_bathroom
+        to: 'off'
+        for:
+          minutes: 3
+      - platform: state
+        entity_id: binary_sensor.hue_motion_kids_bathroom
         to: 'off'
         for:
           minutes: 3

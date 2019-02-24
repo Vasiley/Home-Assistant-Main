@@ -1,9 +1,9 @@
 notify:
-  - name: Pushbullet
+  - name: pushbullet
     platform: pushbullet
     api_key: !secret pushbullet_api_key
 
-  - name: Chrome Push
+  - name: chrome push
     platform: html5
     gcm_api_key: !secret gcm_api_key
     gcm_sender_id: !secret gcm_sender_id

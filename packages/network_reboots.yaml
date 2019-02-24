@@ -10,36 +10,39 @@ homeassistant:
     script.shed_cam_powercycle:
       friendly_name: Shed Cam Reboot
       icon: mdi:access-point-network
+    script.swamp_cam_powercycle:
+      friendly_name: Swamp Cam Reboot
+      icon: mdi:access-point-network
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
     script.network_reboot:
       friendly_name: Network Reboot
       icon: mdi:power-settings
-    switch.driveway_camaera:
-      friendly_name: Driveway Camera
-      icon: mdi:power-settings
-    switch.wemo_shed_camera:
-      friendly_name: Shed Camera
-      icon: mdi:power-settings
     automation.reboot_driveway_camera:
       friendly_name: Driveway Cam Auto Reboot
     automation.reboot_shed_camera:
       friendly_name: Shed Cam Auto Reboot
+    automation.reboot_swamp_camera:
+      friendly_name: Swamp Cam Auto Reboot
 
 group:
   equip_reboots_card:
    control: hidden
    name: Equipment Reboots
    entities:
-     - switch.driveway_camaera
-     - switch.wemo_shed_camera
      - script.webswitch_reboot
      - script.network_reboot
      - script.driveway_cam_powercycle
      - automation.reboot_driveway_camera
      - script.shed_cam_powercycle
      - automation.reboot_shed_camera
+     - script.swamp_cam_powercycle
+     - automation.reboot_swamp_camera
+
+input_boolean:
+  boolean_network_reboot:
+    initial: off
 
 script:
   #### reboot websitch clients  ####################
@@ -58,13 +61,27 @@ script:
         data:
           entity_id: media_player.ha_speaker
           message: 'Network is going down Gabbie and Grandma chill it will be okay'
-      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_network_reboot
       - service: rest_command.modem_reboot
       - delay: '00:01:30'
       - service: rest_command.router_reboot
       - delay: '00:01:15'
       - service: rest_command.switch1_reboot
-      - delay: '00:01:00'
+      - delay: '00:07:00'
+      - service: switch.turn_off
+        entity_id: switch.wemo_8port_livingroom
+      - service: switch.turn_off
+        entity_id: switch.wemo_unifi_shed_switch
+      - delay: '00:00:01'
+      - service: switch.turn_on
+        entity_id: switch.wemo_unifi_shed_switch
+      - delay: '00:00:10'
+      - service: switch.turn_on
+        entity_id: switch.wemo_8port_livingroom
+      - delay: '00:03:00'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_network_reboot
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -73,10 +90,10 @@ script:
   driveway_cam_powercycle:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.driveway_camaera
+        entity_id: switch.wemo_driveway_camaera
       - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.driveway_camaera
+        entity_id: switch.wemo_driveway_camaera
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -85,14 +102,26 @@ script:
   shed_cam_powercycle:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.wemo_shed_camera
+        entity_id: switch.shed_camera_outlet_one
       - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.wemo_shed_camera
+        entity_id: switch.shed_camera_outlet_one
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Shed Camera'
+
+  swamp_cam_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.swamp_camera_outlet_two
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.swamp_camera_outlet_two
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rebooting Swamp Camera'
 
 automation:
   - alias: reboot_driveway_camera
@@ -102,6 +131,12 @@ automation:
         entity_id: binary_sensor.driveway_camera_connect
         to: 'off'
         for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.driveway_cam_powercycle
@@ -113,6 +148,29 @@ automation:
         entity_id: binary_sensor.shed_camera_connect
         to: 'off'
         for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.shed_cam_powercycle
+
+  - alias: reboot_swamp_camera
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.swamp_camera_connect
+        to: 'off'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'                          
+    action:
+      - service: script.turn_on
+        entity_id: script.swamp_cam_powercycle

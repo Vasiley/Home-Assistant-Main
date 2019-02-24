@@ -30,6 +30,10 @@ logbook:
       - sensor.glances_sleeping
       - sensor.glances_thread
       - sensor.glances_total
+      - sensor.date
+      - sensor.time
+      - input_boolean.dummy
+      - input_boolean.stopwatch
 
    domains:
       - input_select
@@ -41,4 +45,3 @@ logbook:
       - notify
       - scene
       - sun
-      

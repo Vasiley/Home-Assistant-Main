@@ -38,3 +38,55 @@ group:
      - sensor.front_door_sensor_batt
      - binary_sensor.door_window_sensor_livingroom_front
      - sensor.livingroom_front_window_sensor_batt
+
+automation:
+  - alias: Motion Turn on Living Room light Sleep On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_tablet_lv_camera
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_indoor_frontdoor
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'sleep'
+      - condition: state
+        entity_id: input_boolean.boolean_sleep
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_early_morning
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.living_room_lamp_5
+          color_temp: 426
+          brightness: 50
+
+  - alias: Motion Turn off Living Room light Sleep On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_indoor_frontdoor
+        to: 'off'
+        for: '00:05:00'
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: sensor.set_hold_mode
+        state: 'sleep'
+      - condition: state
+        entity_id: input_boolean.boolean_sleep
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_early_morning
+        state: 'off'
+    action:
+      - service: light.turn_off
+        entity_id: light.living_room_lamp_5

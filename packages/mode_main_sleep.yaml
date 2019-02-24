@@ -79,6 +79,7 @@ input_number:
     max: 1.75
     step: .1
 
+
 script:
   lamps_on:
     sequence:
@@ -114,7 +115,7 @@ script:
           entity_id: light.master_table_lamps
           brightness_pct: 50
       - service: light.turn_off
-        entity_id: light.master          
+        entity_id: light.master
       - service: light.turn_on
         data:
           entity_id: light.bathroom
@@ -126,14 +127,14 @@ script:
         entity_id: automation.motion_bathroom_sleep_on
       - service: switch.turn_off
         data:
-          entity_id: switch.blue_iris_monitor
+          entity_id: switch.network_switch_blue_iris_monitor
       - delay: '00:00:10'
       - service: light.turn_off
         data:
           entity_id: light.lamps
       - service: light.turn_on
         data:
-          entity_id: light.dawns_lamp
+          entity_id: light.living_room_lamp_5
           color_temp: 426
           brightness: 125
       - delay: '00:00:10'
