@@ -41,19 +41,6 @@ homeassistant:
     script.master_bdrm_purifer_led_on:
       haaska_name: Master Bedroom Purifier Led On
 
-group:
-  air_puirfier_card:
-   control: hidden
-   name: Air Purifer
-   entities:
-     - fan.living_room_purifer
-     - fan.master_bedroom_purifer
-     - input_select.air_puirfier_living
-     - input_select.air_puirfier_master
-     - sensor.house_avg_aqi
-     - sensor.living_room_purifer_aqi_current
-     - sensor.master_bdrm_purifer_aqi_current
-
 input_select:
   air_puirfier_master:
     name: Master Purifer Mode

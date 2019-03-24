@@ -46,7 +46,7 @@ automation:
     trigger:
       - platform: state
         entity_id: switch.kids_bathroom_vanitity
-        to: 'Off'
+        to: 'off'
       - platform: state
         entity_id: input_boolean.boolean_kids_shower_time
         to: 'on'

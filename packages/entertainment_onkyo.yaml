@@ -5,24 +5,6 @@ homeassistant:
       customize: &customize
         package: 'Onkyo'
 
-group:
-  stereo_avr_card:
-   name: stereo Amp
-   entities:
-     - media_player.stereo
-  stereo_avr_card_zone_2:
-   name: stereo Amp
-   entities:
-     - media_player.stereo_zone_2
-  stereo_avr_card_zone_3:
-   name: stereo Amp
-   entities:
-     - media_player.stereo_zone_3
-  media_player_rz_810:
-    name: Onkyo Built in Cast
-    entities:
-      - media_player.rz_810
-
 media_player:
   - platform: onkyo
     host: 192.168.1.81

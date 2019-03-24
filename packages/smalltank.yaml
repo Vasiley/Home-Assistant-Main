@@ -75,45 +75,6 @@ homeassistant:
     binary_sensor.small_tank_warning:                    #binary sensor that tank temp and water level is bad High level Alarm
       friendly_name: Small Tank Warning
       haaska_hidden: true
-group:
-  Fish_tank_server_info:
-   name: Small Tank Server Info
-   entities:
-     - sensor.small_tank_server_temperature
-     - sensor.fish_tank_cpu_use
-     - sensor.fish_tank_disk_use
-     - sensor.fish_tank_ram_free
-     - sensor.fish_tank_ram_used
-     - sensor.small_tank_power
-     - sensor.fish_tank_ha_uptime
-     - sensor.small_tank_link
-     - sensor.small_tank_signal
-
-  Fish_tank_server_ext_info:
-     name: Server Exterior Info
-     entities:
-       - sensor.hood_temperature
-       - sensor.hood_humidity
-
-  water_sensors:
-   name: Small Tank Sensors
-   entities:
-     - sensor.small_tank_water_temperature
-     - sensor.small_tank_temp_ok
-     - sensor.small_tank_temp_reading
-     - sensor.small_tank_water_level
-     - binary_sensor.small_tank_water_level_ok
-     - binary_sensor.small_tank_warning
-
-  controls:
-   name: Controls
-   entities:
-    - binary_sensor.small_tank_heater
-    - binary_sensor.small_tank_hob_filter
-    - binary_sensor.small_tank_wave_maker
-    - sensor.small_tank_lighting_mode
-    - sensor.small_tank_weather_mode
-    - history_graph.tank_graph
 
 history_graph:
   tank_temps:

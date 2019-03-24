@@ -5,19 +5,6 @@ homeassistant:
         package: 'Ruko_media_player'
 
 ####### roku's  #################
-group:
-  media_player_roku_kids_bedroom_card:
-   name: Kids Bedroom Roku
-   entities:
-     - media_player.roku_kids_bedroom
-  media_player_living_room_card:
-   name: Living Room Roku
-   entities:
-     - media_player.living_room
-  ruths_roku_media_player_card:
-   name: Ruths Roku
-   entities:
-     - media_player.ruths_roku
 
 roku:
   - host: 192.168.1.143

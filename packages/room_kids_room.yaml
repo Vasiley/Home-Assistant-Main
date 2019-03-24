@@ -9,14 +9,6 @@ homeassistant:
     light.gabbies_light:
       haaska_name: Kids Lamp
       friendly_name: Kids Lamp
-    switch.kids_fan:
-      friendly_name: Kids Fan
-      haaska_name: Kids Fan
-      icon: mdi:fan
-    switch.kids_plasma_light:
-      friendly_name: Plasma Ball
-      haaska_name: Plasma Ball
-      icon: mdi:flash-outline
     binary_sensor.gabbies_room_motion:
       haaska_hidden: true
       device_class: motion
@@ -35,8 +27,12 @@ homeassistant:
       friendly_name: Kids Room Mode
       icon: mdi:human-child
       haaska_hidden: true
-    sensor.kids_controller_wifi_signal:
+    sensor.esp_kids_tv_state_wifi_signal:
       icon: mdi:signal
+      friendly_name: Kids Tv State
+    sensor.esp_kids_blinds_wifi_signal:
+      icon: mdi:signal
+      friendly_name: Kids Blinds WIFI
     input_boolean.boolean_gabbie_home:
       friendly_name: Gabbie Home
       haaska_hidden: true
@@ -60,6 +56,9 @@ homeassistant:
       friendly_name: Gabbie Awake
       icon: mdi:sleep-off
       haaska_name: Gabbie Awake
+    script.watch_roku:
+      friendly_name: Watch TV
+      haaska_name: Watch TV
     automation.gabbie_going_sleep:
       friendly_name: Gabbie Going Asleep
       haaska_hidden: true
@@ -72,48 +71,13 @@ homeassistant:
     automation.gabbie_not_home:
       friendly_name: Gabbie Gone
       haaska_hidden: true
-    automation.gabbie_light_on:
+    automation.kids_light_on:
       friendly_name: Gabbies Light On
       haaska_hidden: true
-    automation.gabbie_light_off:
+    automation.kids_light_off:
       friendly_name: Gabbies Light Off
       haaska_hidden: true
 
-group:
-  gabbies_room_card:
-   name: Kid's Room
-   control: hidden
-   entities:
-     - light.gabbies_light
-     - light.kids_main
-     - binary_sensor.door_window_sensor_kids_bedroom_door
-     - sensor.kids_room_mode
-     - sensor.gabbie_status
-     - binary_sensor.gabbies_room_motion
-     - binary_sensor.gabbies_room_occupancy
-     - sensor.gabbies_room_temperature
-     - sensor.illumination_gabbies_room_motion_sensor
-     - sensor.motion_sensor_gabbies_room_battery
-     - input_boolean.boolean_gabbie_home
-     - input_boolean.boolean_gabbie_sleep
-     - input_boolean.boolean_gabbie_awake
-     - switch.gabbies_tv_power
-     - script.gabbies_awake
-     - script.gabbies_bedtime
-     - automation.gabbie_going_sleep
-     - automation.gabbie_waking_up
-     - automation.gabbie_home
-     - automation.gabbie_not_home
-     - automation.gabbie_light_on
-     - automation.gabbie_light_off
-     - switch.driveway_camera
-     - script.driveway_cam_powercycle
-     - automation.reboot_driveway_camera
-     - binary_sensor.door_window_sensor_gabbies_room
-     - sensor.gabbies_window_sensor_batt
-     - sensor.kids_controller_wifi_signal
-     - switch.kids_fan
-     - switch.kids_plasma_light
 
 input_boolean:
   boolean_gabbie_home:
@@ -138,30 +102,10 @@ sensor:
         friendly_name: 'Gabbies Room Motion Sensor'
         value_template: "{{ state_attr('binary_sensor.gabbies_room_motion', 'battery_level') }}"
   - platform: mqtt
-    state_topic: "kids_room_relay/Wifi Connect/wifi"
+    state_topic: "esp_kids_tv_state/Wifi Connect/wifi"
     unit_of_measurement: 'dbm'
-    name: Kids Controller Wifi Signal
+    name: esp_kids_tv_state_wifi_signal
 
-switch:
-  - platform: mqtt
-    name: "kids_fan"
-    state_topic: "kids_room_relay/relay/state"
-    command_topic: "kids_room_relay/gpio/14"
-    payload_on: "1"
-    payload_off: "0"
-    optimistic: false
-    qos: 0
-    retain: true
-
-  - platform: mqtt
-    name: "kids_plasma_light"
-    state_topic: "kids_room_relay/relay1/state"
-    command_topic: "kids_room_relay/gpio/12"
-    payload_on: "1"
-    payload_off: "0"
-    optimistic: false
-    qos: 0
-    retain: true
 
 
 automation:
@@ -182,6 +126,7 @@ automation:
             - media_player.ha_speaker
             - media_player.kodi
           message: 'Welcome Home Gabbie'
+
   - alias: 'gabbie_not_home'
     initial_state: 'on'
     trigger:
@@ -199,6 +144,7 @@ automation:
              - media_player.ha_speaker
              - media_player.kids_room_cast
            message: 'Goodbye Gabbie'
+
   - alias: 'gabbie_going_sleep'
     initial_state: 'on'
     trigger:
@@ -244,7 +190,7 @@ automation:
         entity_id: script.gabbies_awake
 
 
-  - alias: 'gabbie_light_on'
+  - alias: 'kids_light_on'
     initial_state: 'on'
     trigger:
       - platform: state
@@ -277,7 +223,7 @@ automation:
                100
              {% endif %}
 
-  - alias: 'gabbie_light_off'
+  - alias: 'kids_light_off'
     initial_state: 'on'
     trigger:
       - platform: state
@@ -294,6 +240,33 @@ automation:
            - light.gabbies_light
            - light.kids_main
 
+  - alias: 'kids_room_xbox_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: device_tracker.xboxone_ping
+        to: 'home'
+    action:
+      - service: media_player.turn_on
+        entity_id: media_player.kids_room_tv
+      - delay: '00:00:20'
+      - service: media_player.select_source
+        data:
+          entity_id: media_player.kids_room_tv
+          source: HDMI Side
+
+  - alias: 'kids_room_xbox_off'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: device_tracker.xboxone_ping
+        to: 'not_home'
+    action:
+      - service: media_player.select_source
+        data:
+          entity_id: media_player.kids_room_tv
+          source: HDMI
+
 script:
   gabbies_bedtime:
     sequence:
@@ -304,7 +277,7 @@ script:
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_gabbie_awake
       - service: switch.turn_on
-        entity_id: switch.kids_fan
+        entity_id: switch.wemo_kids_fan
       - delay: '00:05:00'
       - service: light.turn_off
         data:
@@ -327,4 +300,14 @@ script:
           entity_id: light.gabbies_light
           transition: 180
       - service: switch.turn_off
-        entity_id: switch.kids_fan
+        entity_id: switch.wemo_kids_fan
+
+  watch_roku:
+    sequence:
+      - service: media_player.turn_on
+        entity_id: media_player.kids_room_tv
+      - delay: '00:00:20'
+      - service: media_player.select_source
+        data:
+          entity_id: media_player.kids_room_tv
+          source: HDMI

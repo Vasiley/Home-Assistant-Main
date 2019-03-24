@@ -43,7 +43,7 @@ automation:
         state: 'off'
     action:
       - service: switch.turn_on
-        entity_id:  switch.circadian_lighting_circadian_lamps
+        entity_id:  switch.circadian_lighting_circadian_lamps_evening
 
   - alias: circadian_lighting_sleep_mode
     trigger:

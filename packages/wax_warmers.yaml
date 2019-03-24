@@ -15,17 +15,6 @@ homeassistant:
       friendly_name: Warmers Off
       haaska_hidden: true
 
-group:
-  smellgood_card:
-   name: Wax Warmers
-   control: hidden
-   entities:
-     - switch.dawn_day
-     - switch.wemo_kids_bathroom_scent
-     - switch.wemo_livingroom_scent
-     - automation.warmers_scent_on
-     - automation.warmers_scent_off
-
 switch:
   - platform: mqtt
     name: "dawn_day"

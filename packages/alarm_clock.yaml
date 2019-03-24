@@ -29,21 +29,6 @@ homeassistant:
     automation.alarm_clock:
       icon: mdi:alarm-check
 
-group:
-  alarm_clock:
-    name: Alarm Clock
-    control: hidden
-    entities:
-      - input_boolean.alarm_clock
-      - input_number.slider_hours
-      - input_number.slider_minutes
-      - input_boolean.am
-      - input_boolean.pm
-      - input_label.alarm_current_time
-      - input_boolean.week_day_only
-      - input_boolean.boolean_extra_work_day
-      - automation.alarm_clock
-
 input_number:
   slider_hours:
     name: Hours

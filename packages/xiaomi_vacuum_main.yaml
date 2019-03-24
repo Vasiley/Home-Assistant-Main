@@ -30,32 +30,6 @@ homeassistant:
     automation.susie_error:
       haaska_hidden: true
 
-
-group:
-  vacuum_card:
-    name: Vacuum
-    entities:
-      - vacuum.susie
-      - input_select.susie_selection
-      - binary_sensor.susie_docked
-      - sensor.susie_mode_state
-      - sensor.susie_mode_error
-
-  input_boolean_vacuum_jobs_card:
-    name: Input Boolean Vacuum Mode
-    control: hidden
-    entities:
-      - input_boolean.boolean_susie_home
-      - input_boolean.boolean_susie_trash_can
-      - input_boolean.boolean_susie_clean_kitchen
-      - input_boolean.boolean_susie_clean_master_hallway
-      - input_boolean.boolean_susie_clean_master
-      - input_boolean.boolean_susie_clean_livingroom
-      - input_boolean.boolean_susie_clean_kids_hallway
-      - input_boolean.boolean_susie_clean_ruths_room
-      - input_boolean.boolean_susie_clean_kids_bathroom
-      - input_boolean.boolean_susie_clean_kids_room
-
 vacuum:
   - platform: xiaomi_miio
     host: 192.168.1.12

@@ -5,50 +5,11 @@ homeassistant:
     camera.dawn:
       friendly_name: Dawn
 
-# group cameras to thier own group for better view
-group:
-  camera12_card:
-   name: Park Driveway Rear
-   entities:
-     - camera.number_12
-  camera_driveway_card:
-   name: Driveway
-   entities:
-     - camera.driveway
-  camera_swamp_card:
-   name: Swamp
-   entities:
-     - camera.swamp
-  camera_yard_card:
-   name: Yard
-   entities:
-     - camera.yard
-  camera_backdoor_card:
-   name: Back Door
-   entities:
-     - camera.back_door
-  camera_livingroom_card:
-   name: Front Door
-   entities:
-     - camera.front_door_Camera
-  camera_tablet_card:
-   name: Tablet Cam
-   entities:
-     - camera.Tablet_Cam
-  camera_master_bedroom_cam_card:
-   name: Master Bedroom Cam
-   entities:
-     - camera.master_bedroom_cam
-  camera_master_bedroom_tablet_cam_card:
-   name: Master Bedroom Tablet Cam
-   entities:
-     - camera.master_bedroom_tablet_cam
-  camera_gabbie_cam_card:
-   name: Gabbie Cam
-   entities:
-     - camera.gabbie_Cam
-
 camera:
+  - platform: generic
+    still_image_url: http://192.168.1.80:81/image/cam2
+    stream_source: http://192.168.1.80:81/h264/cam2/temp.m3u8
+    name: test
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
@@ -105,6 +66,13 @@ camera:
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam1/video.mjpeg
     name: Master Bedroom Tablet Cam
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam9/video.mjpeg
+    name: Gabbie Cam
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic

@@ -5,40 +5,6 @@ homeassistant:
       customize: &customize
         package: 'living_room'
 
-group:
- livingroom_card:
-    control: hidden
-    name: Living Room
-    entities:
-     - light.lamps
-     - light.herbs_lamp
-     - light.dawns_lamp
-     - light.door_lamp
-     - fan.living_room_fan
-     - script.living_room_fan_auto
-     - sensor.fan_speed
-     - binary_sensor.gang
-     - script.refresh_wink
-     - automation.fan_low_with_hvac_automation
-     - automation.fan_medium_with_hvac_automation
-     - automation.reenable_fan_automation
-     - switch.fan_override
-     - automation.evening_time_turn_on
-     - light.light_bulb
-     - automation.evening_time
-     - script.evening_time
-     - script.movie_time
-     - automation.back_to_white_after_motion
-     - automation.back_to_yellow_dim_after_motion
-     - script.nap_time
-     - script.front_cam_dashboard
-     - script.vas_dashboard
-     - switch.dawns_scent
-     - binary_sensor.door_window_sensor_front_door
-     - sensor.front_door_sensor_batt
-     - binary_sensor.door_window_sensor_livingroom_front
-     - sensor.livingroom_front_window_sensor_batt
-
 automation:
   - alias: Motion Turn on Living Room light Sleep On
     initial_state: 'on'

@@ -8,13 +8,6 @@ homeassistant:
     sensor.hassctl_version:
       friendly_name: Version
 
-
-group:
-  hassctl_card:
-    name: Hassctl
-    control: hidden
-    entities:
-      - sensor.hassctl_version
 sensor:
   ###### VERSIONS
     - platform: command_line

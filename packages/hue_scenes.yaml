@@ -20,17 +20,6 @@ homeassistant:
       friendly_name: Supernatural
       haaska_hidden: false
 
-group:
-  hue_scenes_card:
-   control: hidden
-   name: Hue Scenes
-   entities:
-     - script.spring
-     - script.savanna
-     - script.arctic
-     - script.tropical
-     - script.supernatural
-
 script:
       ####### Hue Scenes ##########
 

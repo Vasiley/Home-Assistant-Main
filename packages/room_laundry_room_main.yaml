@@ -13,35 +13,6 @@ homeassistant:
       friendly_name: Laundry Room Light Level
       icon: mdi:theme-light-dark
 
-group:
-  laundry_room_card:
-    control: hidden
-    name: Laundry Room
-    entities:
-      - binary_sensor.door_window_sensor_back_door
-      - binary_sensor.door_window_sensor_laundry_room_door
-      - light.laundry_room
-      - binary_sensor.laundry_room_motion
-      - sensor.motion_sensor_laundry_battery
-      - sensor.illumination_motion_sensor_laundry
-      - automation.laundry_motion_homeMode
-      - automation.laundry_motion_not_homeMode
-      - automation.laundry_motion_off
-      - switch.wemo_washing_machine
-      - sensor.washing_machine_watts
-      - sensor.washing_machine_power_up
-      - sensor.washing_machine_power_down
-      - input_boolean.stopwatch
-      - input_boolean.dummy
-      - input_boolean.washer_switch
-      - sensor.stopwatch
-      - sensor.washer_status
-      - automation.washer_start
-      - automation.washer_done
-      - automation.stopwatch_start
-      - automation.stopwatch_stop
-      - automation.stopwatch_update
-
 sensor:
   - platform: template
     sensors:

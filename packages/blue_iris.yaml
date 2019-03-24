@@ -47,21 +47,6 @@ homeassistant:
       friendly_name: White No Motion
       haaska_hidden: true
 
-group:
-  blue_iris_motion_card:
-   name: Camera Motion
-   entities:
-     - binary_sensor.motion_outdoor_shed
-     - binary_sensor.motion_outdoor_driveway
-     - binary_sensor.motion_outdoor_number12
-     - binary_sensor.motion_outdoor_swamp
-     - binary_sensor.motion_indoor_frontdoor
-     - binary_sensor.motion_outdoor_backdoor
-     - binary_sensor.motion_tablet_lv_camera
-     - binary_sensor.motion_tablet_mb_camera
-     - binary_sensor.motion_tablet_gb_camera
-     - binary_sensor.motion_master_bedroom
-
 #######################################################################################################################
 ###### Sets profile on blue iris   ####################################################################################
 #######################################################################################################################
@@ -176,6 +161,9 @@ automation:
       - condition: state
         entity_id: binary_sensor.door_window_sensor_front_door
         state: 'off'
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
     action:
       - service: light.turn_on
         data:
@@ -206,6 +194,9 @@ automation:
       - condition: state
         entity_id: binary_sensor.door_window_sensor_front_door
         state: 'off'
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
     action:
       - service: light.turn_on
         data:
@@ -239,6 +230,9 @@ automation:
         below: '8'
       - condition: template
         value_template: "{{ not is_state('sensor.dark_sky_summary', 'Foggy') }}"
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
     action:
       - service: light.turn_on
         data:
@@ -270,7 +264,10 @@ automation:
         value_template: "{{ not is_state('sensor.dark_sky_summary', 'Foggy') }}"
       - condition: numeric_state
         entity_id: sensor.dark_sky_wind_speed
-        below: '8'
+        below: '5'
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
     action:
       - service: light.turn_on
         data:

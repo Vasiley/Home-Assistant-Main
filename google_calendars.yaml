@@ -36,3 +36,10 @@
     ignore_availability: true
     name: addressbook#contacts@group.v.calendar.google.com
     track: true
+
+- cal_id: family08729806598867583625@group.calendar.google.com
+  entities:
+  - device_id: family
+    ignore_availability: true
+    name: Family
+    track: true

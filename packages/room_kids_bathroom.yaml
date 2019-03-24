@@ -57,37 +57,6 @@ homeassistant:
       friendly_name: Kids Bath Humidity Fan
       icon: mdi:fan
 
-group:
-  kids_bath_card:
-     control: hidden
-     name: Kids Bath
-     entities:
-      - light.kids_bathroom
-      - light.kids_bathroom_vanity
-      - binary_sensor.door_window_sensor_kids_bathroom_door
-      - switch.wemo_kids_bath_fan
-      - switch.wemo_kids_bathroom_scent
-      - sensor.temperature_kids_bathroom
-      - sensor.pressure_kids_bathroom
-      - sensor.humidity_kids_bathroom
-      - binary_sensor.motion_sensor_kids_bathroom
-      - binary_sensor.hue_motion_kids_bathroom
-      - sensor.illumination_kids_bathroom
-      - sensor.kids_motion_sensor_batt
-      - sensor.kids_humidity_sensor_batt
-      - sensor.kids_bathroom_dimmer_state
-      - sensor.kids_bathroom_dimmer_last_update
-      - sensor.kids_bathroom_dimmer_battery
-      - script.kids_shower_time_on
-      - script.kids_shower_time_off
-      - switch.kids_shower_time
-      - automation.kids_bath_light_left_on
-      - automation.kids_bath_shower_time_off
-      - automation.kids_bath_shower_time_on
-      - automation.motion_kids_bathroom_motion_on
-      - automation.motion_kids_bathroom_motion_off
-
-
 sensor:
       ######## Kids Bathroom
   - platform: rest

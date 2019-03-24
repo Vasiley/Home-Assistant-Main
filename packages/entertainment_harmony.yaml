@@ -32,6 +32,7 @@ input_select:
       - Philo
       - Plex
       - Tablo DVR
+      - You Tube TV
       - PowerOff
     icon: mdi:monitor
 
@@ -65,6 +66,8 @@ automation:
               35813072
             {% elif is_state("input_select.harmony", "Tablo DVR") %}
               35801439
+            {% elif is_state("input_select.harmony", "You Tube TV") %}
+              38933876
             {% elif is_state("input_select.harmony", "PowerOff") %}
               -1
             {% else %}

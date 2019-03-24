@@ -1,9 +1,3 @@
-group:
-  avg_temp_card:
-   name: Average Temperature
-   entities:
-     - sensor.house_avg_temperature  # added to ecobee package only
-     - sensor.house_avg_humidity # added to ecobee package only
 
 sensor:
   - platform: min_max

@@ -4,13 +4,6 @@ homeassistant:
       friendly_name: season
       icon: mdi:calendar-clock
 
-group:
-  season_card:
-   name: Season
-   entities:
-     - sensor.season
-
-
 sensor:
   - platform: season
     type: astronomical

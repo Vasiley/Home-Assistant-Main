@@ -46,28 +46,13 @@ homeassistant:
       haaska_name: Kids Bath Vanity
       friendly_name: Kids Bath Vanity
       icon: mdi:lightbulb
-
-
-
-group:
-  wemo_switches_card:
-   control: hidden
-   name: Wemo Equipment
-   entities:
-     - switch.wemo_unifi_shed_switch
-     - switch.wemo_8port_livingroom
-     - switch.wemo_driveway_camaera
-     - switch.wemo_washing_machine
-     - switch.wemo_kids_bath_fan
-     - switch.wemo_master_bath_fan
-     - switch.wemo_kids_bathroom_scent
-     - switch.wemo_livingroom_scent
-     - switch.wemo_ruths_room_wax
-     - switch.wemo_master_bedroom_mixer
-     - switch.wemo_master_bath_vanity
-     - switch.kids_bathroom_vanitity
+    switch.wemo_kids_fan:
+      haaska_name: Kids Fan
+      friendly_name: Kids Fan
+      icon: mdi:fan
 
 wemo:
+   discovery: false
    static:
      - 192.168.1.230  #Living Room Scent
      - 192.168.1.231  #master bedroom mixer
@@ -81,11 +66,11 @@ wemo:
      - 192.168.1.197  #master bath vanity
      - 192.168.1.198 #ruths room wax warmer
      - 192.168.1.199 #kids bathroom vanity
-
+     - 192.168.1.175 #kids fan
 light:
   - platform: switch
     name: Kids Vanity
     entity_id: switch.kids_bathroom_vanitity
   - platform: switch
     name: Master Bath Vanity
-    entity_id: switch.wemo_master_bath_vanity    
+    entity_id: switch.wemo_master_bath_vanity

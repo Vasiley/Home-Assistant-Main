@@ -6,21 +6,24 @@ homeassistant:
   unit_system: imperial
   time_zone: America/Chicago
   packages: !include_dir_named packages
+  auth_providers:
+    - type: homeassistant
+    - type: legacy_api_password
+      api_password: !secret http_password
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.1
+        - 192.168.1.0/24
+
 
 ####Zone files
 zone: !include zones.yaml
 
 map:
 http:
-   api_password: !secret http_password
    ssl_certificate: !secret ssl_certificate
    ssl_key: !secret ssl_key
    base_url: !secret http_base_url
-#   use_x_forwarded_for: True
-   trusted_networks:
-     - 127.0.0.1
-     - 192.168.1.0/24
-#     - 192.168.2.0/24
    ip_ban_enabled: True
    login_attempts_threshold: 5
 
@@ -76,7 +79,9 @@ xiaomi_aqara:
      - mac: !secret xiaomi_mac
        key: !secret xiaomi_key
        host: 192.168.1.11
-
+     - mac: !secret xiaomi_mac_2
+       key: !secret xiaomi_key_2
+       host: 192.168.1.178
 input_label:
   some_string1:
     name: Some String 1
@@ -95,3 +100,6 @@ speedtestdotnet:
     - ping
     - download
     - upload
+
+discovery:
+#stream:

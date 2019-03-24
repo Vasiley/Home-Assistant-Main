@@ -7,10 +7,3 @@ homeassistant:
     switch.backdoor:
       friendly_name: Back Door Camera
       icon: mdi:cctv
-
-group:
-  unifi_poe_card:
-   name: Unifi Poe Switches
-   control: hidden
-   entities:
-     - switch.backdoor

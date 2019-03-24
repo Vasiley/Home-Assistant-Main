@@ -115,6 +115,7 @@ automation:
         data:
           entity_id:
             - light.herbs_lamp
+            - light.living_room_lamp_2
             - light.living_room_lamp_5
           color_temp: 200
           brightness: 175

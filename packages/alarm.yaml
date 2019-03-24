@@ -11,16 +11,6 @@ homeassistant:
       friendly_name: Motion Counts
       unit_of_measurement: '#'
 
-group:
-  alarm_panel_card:
-   name: Alarm
-   entities:
-     - alarm_control_panel.ha_alarm
-     - sensor.blue_iris_profile
-     - sensor.open_door_count
-     - sensor.open_window_count
-     - sensor.motion_count
-
 ##############################################################################
 ###### see home mode package for setting of the mode house is in      ########
 ######   ie sleep home or away  (sets cameras thermostat and some lights  ####

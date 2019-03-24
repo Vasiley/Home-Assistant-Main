@@ -13,17 +13,6 @@ homeassistant:
       friendly_name: Master Closet Light Off
       haaska_hidden: true
 
-
-group:
-  master_closet_card:
-   name: Master Closet
-   control: hidden
-   entities:
-     - light.hue_master_closet
-     - binary_sensor.door_window_sensor_master_closet
-     - automation.master_closet_on
-     - automation.master_closet_off
-
 automation:
   - alias: 'master_closet_on'
     initial_state: 'on'

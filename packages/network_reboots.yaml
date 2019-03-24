@@ -26,20 +26,6 @@ homeassistant:
     automation.reboot_swamp_camera:
       friendly_name: Swamp Cam Auto Reboot
 
-group:
-  equip_reboots_card:
-   control: hidden
-   name: Equipment Reboots
-   entities:
-     - script.webswitch_reboot
-     - script.network_reboot
-     - script.driveway_cam_powercycle
-     - automation.reboot_driveway_camera
-     - script.shed_cam_powercycle
-     - automation.reboot_shed_camera
-     - script.swamp_cam_powercycle
-     - automation.reboot_swamp_camera
-
 input_boolean:
   boolean_network_reboot:
     initial: off
@@ -170,7 +156,7 @@ automation:
       conditions:
         - condition: state
           entity_id: input_boolean.boolean_network_reboot
-          state: 'off'                          
+          state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.swamp_cam_powercycle

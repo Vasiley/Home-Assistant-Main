@@ -30,32 +30,6 @@ homeassistant:
     sensor.ruths_blinds_wifi_signal:
       icon: mdi:signal
 
-group:
-  ruths_room_card:
-   control: hidden
-   name: Ruths Room
-   entities:
-     - group.ruths_blinds_card
-     - binary_sensor.door_window_sensor_ruths_room_door
-     - binary_sensor.door_window_sensor_ruths_room
-     - sensor.ruths_window_sensor_batt
-
-  ruths_blinds_card:
-   control: hidden
-   name: Ruths Blinds
-   entities:
-     - input_select.ruths_blinds_status
-     - sensor.ruths_blinds_state
-     - sensor.ruths_blinds_wifi_signal
-     - script.ruths_blinds_open
-     - script.ruths_blinds_halfway
-     - script.ruths_blinds_closed
-     - automation.blinds_open_ruths
-     - automation.blinds_halfway_ruths
-     - automation.blinds_closed_ruths
-     - sensor.esp_ruths_blinds
-     - sensor.ruths_blinds_wifi_signal
-
 input_select:
   ruths_blinds_status:
     name: Ruths Blinds

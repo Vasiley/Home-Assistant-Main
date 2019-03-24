@@ -127,6 +127,8 @@ script:
             - light.kids_hallway
           color_temp: "{{ states('input_number.home_mode_color_temp_value') | int }}"
           brightness_pct: "{{ states('input_number.home_mode_brightness_value') | int }}"
+      - service: script.turn_on
+        entity_id: script.led_john_deeer_bookshelf
       - delay: '00:00:01'
       - service: light.turn_off
         entity_id:

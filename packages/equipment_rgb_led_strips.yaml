@@ -2,7 +2,7 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Kitchen Under Cabinets'
+        package: 'Led strips'
 
     light.kitchen_under_cabinet:
       friendly_name: Kitchen Under Cabinets
@@ -10,9 +10,12 @@ homeassistant:
     light.kitchen_pantry:
       friendly_name: Pantry Lights
       haaska_hidden: true
-    sensor.kitchen_led_dimmer_battery:
-      icon: mdi:battery
-      friendly_name: Kitchen Led Dimmer
+    light.john_deere_bookshelf:
+      friendly_name: John Deere Bookshelf
+      haaska_hidden: true
+    light.spice_cabinet:
+      friendly_name: Spice Cabinet
+      haaska_hidden: true
     input_number.led_animation_speed:
       friendly_name: Kitchen Cabinets Speed
       haaska_hidden: true
@@ -31,20 +34,7 @@ homeassistant:
     automation.kitchen_lights_on_white_with_dimmer:
       friendly_name: Kitchen Leds White
       haaska_hidden: true
-    sensor.kitchen_undercabinet_led_dimmer_state:
-      icon: mdi:clock
-    sensor.kitchen_led_dimmer_state:
-      icon: mdi:remote
 
-group:
-  kitchen_leds_card:
-#   control: hidden
-   name: Kitchen Under Cabinets
-   entities:
-     - light.kitchen_under_cabinet
-     - script.led_white
-     - script.led_yellow
-     - script.led_off
 
 light:
 ################## Microwave side
@@ -84,69 +74,41 @@ light:
       - Lightning
       - Breathe
 
+  - platform: mqtt
+    schema: json
+    name: john_deere_bookshelf
+    state_topic: "diy/esps/johndeere_bookshelf"
+    command_topic: "diy/esps/johndeere_bookshelf/set"
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list:
+      - Solid
+      - Blink
+      - Flash
+      - Rainbow
+      - Chase
+      - Fire flicker
+      - Lightning
+      - Breathe
 
-###### Master Closet Dimmer
-sensor:
-  - platform: rest
-    resource: !secret dimmer_rest_46
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Kitchen Led Dimmer Battery'
-  - platform: rest
-    resource: !secret dimmer_rest_46
-    value_template: '{{ value_json.state.buttonevent }}'
-    scan_interval: 1
-    name: 'Kitchen Led Dimmer State'
-
-  - platform: rest
-    name: Kitchen_dimmer_test
-    resource: !secret dimmer_rest_46
-    scan_interval: 2
-    value_template: >-
-      {% set last_updated = as_timestamp(value_json.state.lastupdated ~ '-00:00')|int %}
-      {% if as_timestamp(now())|int - last_updated > 10 %}
-        idle
-      {% else %}
-        {% set button_event = value_json.state.buttonevent|string %}
-        {{ ('hold' if button_event[3]|int % 2 == 1 else 'click') ~ '_' ~ button_event[0] }}
-      {% endif %}
-
-  - platform: template
-    sensors:
-      kitchen_undercabinet_led_dimmer_state:
-        friendly_name: 'Kitchen Dimmer Last Button Push'
-        value_template: >-
-                      {% if states('sensor.kitchen_led_dimmer_state_2')[0] == "1" %}
-                        On
-                      {% elif states('sensor.kitchen_led_dimmer_state_2')[0] == "4" %}
-                        Off
-                      {% else %}
-                        None
-                      {% endif %}
-  - platform: template
-    sensors:
-      kitchen_pantry_dimmer_state:
-        friendly_name: 'Kitchen Pantry Last Button Push'
-        value_template: >-
-                      {% if states('sensor.kitchen_led_dimmer_state_2')[0] == "2" %}
-                        On
-                      {% elif states('sensor.kitchen_led_dimmer_state_2')[0] == "3" %}
-                        Off
-                      {% else %}
-                        None
-                      {% endif %}
-  - platform: rest
-    resource: !secret dimmer_rest_46
-    value_template: '{{ value_json.state.lastupdated }}'
-    scan_interval: 10
-    name: 'Kitchen Led Dimmer last update'
-  - platform: template
-    sensors:
-      kitchen_led_dimmer_last_update:
-        friendly_name: Kitchen Led Last Used'
-        value_template: >-
-         {{as_timestamp(strptime(states('sensor.kitchen_led_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+  - platform: mqtt
+    schema: json
+    name: spice_cabinet
+    state_topic: "diy/esp/spice_cabinet"
+    command_topic: "diy/esp/spice_cabinet/set"
+    brightness: true
+    rgb: true
+    effect: true
+    effect_list:
+      - Solid
+      - Blink
+      - Flash
+      - Rainbow
+      - Chase
+      - Fire flicker
+      - Lightning
+      - Breathe
 
 automation:
   - alias: Kitchen Pantry Lights On with Dimmer
@@ -185,37 +147,41 @@ automation:
       - service: script.turn_on
         entity_id: script.led_pantry_off
 
-  - alias: Kitchen Leds White
+  - alias: Kitchen Cabinet Lights On with Dimmer
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: input_boolean.boolean_home
-        to: 'on'
+        entity_id: sensor.kitchen_dimmer_test
+        to: 'click_1'
     action:
       - service: script.turn_on
-        entity_id: script.led_off
-      - delay: '00:00:10'
-      - service: script.turn_on
-        entity_id: script.led_white
-      - delay: '00:10:00'
-      - service: script.turn_on
-        entity_id: script.led_off
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.led_yellow
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.led_white
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+                script.led_yellow
+              {% else %}
+                script.led_white
+              {% endif %}
 
-##############################################
-  - alias: Kitchen Leds Yellow
+  - alias: Kitchen Pantry Lights Off with Dimmer
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id:
-          - input_boolean.boolean_early_morning
-          - input_boolean.boolean_evening_time
-        to: 'on'
+        entity_id: sensor.kitchen_dimmer_test
+        to: 'click_4'
     action:
       - service: script.turn_on
         entity_id: script.led_off
-      - delay: '00:00:10'
-      - service: script.turn_on
-        entity_id: script.led_yellow
 
 #############################################################
   - alias: Kitchen Leds off
@@ -228,7 +194,9 @@ automation:
         to: 'on'
     action:
       - service: script.turn_on
-        entity_id: script.led_off
+        entity_id:
+          - script.led_off
+          - script.led_john_deeer_bookshelf_off
 
 script:
   led_white:
@@ -237,8 +205,8 @@ script:
         data:
           entity_id: light.kitchen_under_cabinet
           effect: Solid
-          brightness: 220
-          rgb_color: [200,200,200]
+          brightness: 255
+          rgb_color: [255, 215, 255]
 
   led_pantry_white:
     sequence:
@@ -246,20 +214,29 @@ script:
         data:
           entity_id: light.kitchen_pantry
           effect: Solid
-          brightness: 220
-          rgb_color: [200,200,200]
+          brightness: 255
+          rgb_color: [ 255,255,255]
       - delay: '00:10:00'
       - service: light.turn_off
         entity_id: light.kitchen_pantry
-        
+
+  led_john_deeer_bookshelf:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.john_deere_bookshelf
+          effect: Solid
+          brightness: 190
+          rgb_color: [255, 215, 255]
+
   led_yellow:
     sequence:
       - service: light.turn_on
         data:
           entity_id: light.kitchen_under_cabinet
           effect: Solid
-          brightness: 220
-          rgb_color: [200,200,0]
+          brightness: 255
+          rgb_color: [255,200,0]
 
   led_pantry_yellow:
     sequence:
@@ -267,8 +244,8 @@ script:
         data:
           entity_id: light.kitchen_pantry
           effect: Solid
-          brightness: 220
-          rgb_color: [200,200,0]
+          brightness: 255
+          rgb_color: [255,208,71]
       - delay: '00:10:00'
       - service: light.turn_off
         entity_id: light.kitchen_pantry
@@ -282,3 +259,8 @@ script:
     sequence:
       - service: light.turn_off
         entity_id: light.kitchen_pantry
+
+  led_john_deeer_bookshelf_off:
+    sequence:
+      - service: light.turn_off
+        entity_id: light.john_deere_bookshelf

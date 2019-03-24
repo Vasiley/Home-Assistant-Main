@@ -48,26 +48,6 @@ homeassistant:
       friendly_name: Update Pi-Hole
       icon: mdi:package-variant
 
-
-group:
-  Ads_Blocked_card:
-   name: Ads Blocked
-   control: hidden
-   entities:
-     - switch.pihole
-     - sensor.ads_blocked_today
-     - sensor.ads_percentage_today
-     - sensor.dns_queries_today
-     - sensor.domains_being_blocked
-     - sensor.ads_blocked_today
-     - sensor.unique_domains
-     - sensor.queries_forwarded
-     - sensor.queries_cached
-     - sensor.pihole_dns
-     - sensor.pihole_blocking
-     - sensor.pi_hole_version
-     - script.pihole_update
-
 ###############################################################################
 #### PI Hole sensors                                                       ####
 ###############################################################################

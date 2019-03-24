@@ -23,40 +23,6 @@ homeassistant:
       friendly_name: Kitchen Hub Lux Level
       icon: mdi:theme-light-dark
 
-group:
- kitchen_card:
-   control: hidden
-   name: Kitchen
-   entities:
-      - light.kitchen_under_cabinet
-      - light.kitchen
-      - light.kitchen_table
-      - light.kitchen_white
-      - script.led_white
-      - script.led_yellow
-      - script.led_off
-      - automation.kitchen_lights_off_with_dimmer
-      - automation.kitchen_lights_on_white_with_dimmer
-      - automation.led_animation_speed
-      - automation.kitchen_leds_low_light_on_when_in_home_mode
-      - automation.kitchen_leds_low_light_off
-      - automation.motion_kitchen_main_light_on
-      - automation.motion_kitchen_off
-      - sensor.Kitchen_dimmer_test
-      - binary_sensor.kitchen_motion
-      - sensor.illumination_motion_sensor_kitchen
-      - sensor.kitchen_battery_motion
-      - input_select.kitchen_blinds_status
-      - sensor.kitchen_blinds_state
-      - script.blinds_closed
-      - script.blinds_halfway
-      - script.blinds_open
-      - binary_sensor.door_window_sensor_kitchen_sink
-      - sensor.kitchen_sink_window_sensor_batt
-      - binary_sensor.door_window_sensor_kitchen_table
-      - sensor.kitchen_table_window_sensor_batt
-      - sensor.illumination_xiaomi_hub_kitchen
-
 sensor:
   - platform: template
     sensors:
@@ -64,39 +30,6 @@ sensor:
         entity_id: sun.sun
         friendly_name: 'Kitchen Motion Sensor'
         value_template: "{{ state_attr('binary_sensor.kitchen_motion', 'battery_level') }}"
-  - platform: rest
-    resource: !secret dimmer_rest_9
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-  - platform: rest
-    resource: !secret dimmer_rest_9
-    value_template: '{{ value_json.state.buttonevent }}'
-    scan_interval: 1
-    name: 'Kitchen Table Dimmer State'
-  - platform: template
-    sensors:
-      kitchen_table_dimmer_state:
-        friendly_name: 'Kitchen Table Dimmer Last Button Push'
-        value_template: >-
-                      {% if states('sensor.kitchen_table_dimmer_state_2')[0] == "1" %}
-                        On
-                      {% elif states('sensor.kitchen_table_dimmer_state_2')[0] == "4" %}
-                        Off
-                      {% else %}
-                        None
-                      {% endif %}
-  - platform: rest
-    resource: !secret dimmer_rest_9
-    value_template: '{{ value_json.state.lastupdated }}'
-    scan_interval: 10
-    name: 'kitchen table dimmer last update'
-  - platform: template
-    sensors:
-      kitchen_table_dimmer_last_update:
-        friendly_name: 'Kitchen Table Last Used'
-        value_template: >-
-          {{as_timestamp(strptime(states('sensor.kitchen_table_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
 
 automation:
   - alias: Motion Kitchen off

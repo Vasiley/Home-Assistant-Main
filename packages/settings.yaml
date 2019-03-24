@@ -4,26 +4,6 @@ homeassistant:
       customize: &customize
         package: 'settings'
 
-
-group:
-  setting_view:
-   view: yes
-   name: Setting's
-   icon: mdi:settings
-   entities:
-     - group.setting_evening_mode_settings_card
-     - group.setting_movie_mode_settings_card
-     - group.setting_sleep_mode_settings_card
-     - group.setting_earlymorning_mode_settings_card
-     - group.setting_home_mode_settings_card
-     - group.setting_nap_mode_settings_card
-     - group.setting_alarm_mode_settings_card
-     - group.ha_server_automations
-     - group.bi_server_automations
-     - group.setting_humdity_settings_card
-     - group.input_boolean_main_modes_card
-     - group.input_boolean_sub_modes_card
-
 ################  EVENING MODE #################################################
   setting_evening_mode_settings_card:
    name: Evening Mode

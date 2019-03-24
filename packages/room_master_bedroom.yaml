@@ -39,42 +39,6 @@ homeassistant:
       haaska_name: Bedroom Fan
       icon: mdi:fan
 
-group:
-  master_bedroom_card:
-     control: hidden
-     name: Master Bedroom
-     entities:
-      - light.dawns_bedside_lamp
-      - light.herbs_bedside_lamp
-      - light.master_table_lamps
-      - light.light_bulb_2
-      - switch.wemo_master_bedroom_mixer
-      - input_select.master_ceiling_fan_speeds
-      - script.master_fan_auto
-      - binary_sensor.gang_1
-      - binary_sensor.master_motion
-      - sensor.master_bedroom_temperature
-      - sensor.motion_sensor_master_battery
-      - sensor.illumination_master_bedroom
-      - sensor.bedroom_wallpanel_battery
-      - sensor.bedroom_wallpanel_brightness
-      - binary_sensor.master_bedroom_occupancy
-      - switch.fan_on
-      - switch.dawn_day
-      - switch.dawn_night
-      - automation.motion_master_lights_on
-      - automation.motion_master_bedroom_motion_off
-      - input_select.master_blinds_status
-      - sensor.master_blinds_state
-      - binary_sensor.door_window_sensor_master_bedroom_door
-      - sensor.master_door_sensor_batt
-      - binary_sensor.door_window_sensor_master_closet
-      - sensor.master_closet_door_sensor_batt
-      - binary_sensor.door_window_sensor_dawns_side
-      - sensor.dawns_side_window_sensor_batt
-      - binary_sensor.door_window_sensor_herbs_side
-      - sensor.herbs_side_window_sensor_batt
-
 sensor:
   - platform: template
     sensors:

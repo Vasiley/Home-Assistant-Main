@@ -65,39 +65,6 @@ homeassistant:
     automation.blue_iris_cpu_overload:
       friendly_name: BI Svr Automation for Cpu Load
 
-group:
-  blue_iris_info_card:
-   name: Blue Iris Svr Info
-   entities:
-    - sensor.blue_iris_workstation
-    - sensor.glances_cpu_load
-    - sensor.glances_disk_overview
-    - sensor.glances_disk_percent_free
-    - sensor.glances_z_black_disk_overview
-    - sensor.glances_z_black_disk_percent_free
-    - sensor.glances_usb_disk_overview
-    - sensor.glances_usb_disk_percent_free
-    - sensor.glances_usb_disk_overview_4t
-    - sensor.glances_usb_disk_percent_free_4t
-    - sensor.glances_ram_overview
-    - sensor.glances_ram_percent
-    - sensor.glances_swap_overview
-    - sensor.glances_swap_percent
-    - sensor.glances_total
-
-  bi_server_automations:
-   control: hidden
-   name: BI Server Alerts
-   entities:
-    - script.blue_iris_dash_usage
-    - input_number.bi_ram_alert_value
-    - input_number.bi_disk_alert_value
-    - input_number.bi_usb_disk_alert_value
-    - input_number.bi_cpu_alert_value
-    - automation.blue_iris_ram_overload
-    - automation.blue_iris_disk_overload
-    - automation.blue_iris_cpu_overload
-
 input_number:
   bi_ram_alert_value:
     name: BI Ram Alert Setpoint

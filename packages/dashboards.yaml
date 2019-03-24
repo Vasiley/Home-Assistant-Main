@@ -103,18 +103,6 @@ homeassistant:
     automation.power_lost_to_dashboards:
       friendly_name: Power Lost To Dashboard
       haaska_hidden: true
-group:
-  gabbies_room_dashboard:
-   control: hidden
-   name: Gabbies Room Dashboard
-   entities:
-     - sensor.dashboard_tablet_gabbies
-     - sensor.current_dash_gabbies
-     - sensor.gabbies_room_wallpanel_battery
-     - sensor.gabbies_room_wallpanel_charging
-     - binary_sensor.gabbies_screen_on
-     - binary_sensor.gabbies_dash_ac_power
-     - binary_sensor.gabbies_room_motion
 
   lv_room_dashboard:
    control: hidden

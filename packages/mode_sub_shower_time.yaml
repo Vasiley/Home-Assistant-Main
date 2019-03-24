@@ -8,7 +8,6 @@ homeassistant:
     input_boolean.boolean_shower_time:
       friendly_name: Shower Time
       hasska_hidden: true
-
     automation.master_bath_shower_time_off:
       haaska_hidden: true
       hidden: false
@@ -41,59 +40,22 @@ input_boolean:
     initial: off
 
 automation:
-  # - alias: Master Bath Shower Time Warmup On
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.master_bathroom_dimmer_state
-  #       to: 'Preshower warmup'
-  #   action:
-  #     - service: tts.google_say
-  #       data:
-  #         entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-  #         message: 'Disabling  Master Bedroom Speakers and turning on preshower warmup'
-  #     - delay: '00:00:30'
-  #     - service: switch.turn_off
-  #       entity_id: switch.wemo_master_bedroom_mixer
-  #     - service: script.turn_on
-  #       entity_id: script.bath_heater_on
-
-  - alias: Master Bath Shower Time Warmup Off
+  - alias: Master Bath Shower Time On
     initial_state: 'on'
     trigger:
-      - platform: numeric_state
-        entity_id: sensor.bathroom_temperature
-        above: '75'
+      - platform: state
+        entity_id: sensor.master_bathroom_dimmer_state_2
+        to: 'click_1'
     action:
       - service: script.turn_on
-        entity_id: script.bath_heater_off
-      - service: switch.turn_on
-        entity_id: switch.wemo_master_bedroom_mixer
-      - service: tts.google_say
-        data:
-          entity_id: media_player.master_bedroom_cast
-          message: 'Renabling Master Bedroom Speakers'
-      - service: tts.google_say
-        data:
-          entity_id: media_player.ha_speaker, media_player_master_bedroom_cast_card
-          message: 'The Bathroom is warm time for a shower'
-
-  # - alias: Master Bath Shower Time On
-  #   initial_state: 'on'
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.master_bathroom_dimmer_state
-  #       to: 'On'
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.bath_time_on
+        entity_id: script.bath_time_on
 
   - alias: Master Bath Shower Time Off
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: sensor.master_bathroom_dimmer_state
-        to: 'Off'
+        entity_id: sensor.master_bathroom_dimmer_state_2
+        to: 'click_4'
     action:
       - service: switch.turn_on
         entity_id: switch.wemo_master_bedroom_mixer

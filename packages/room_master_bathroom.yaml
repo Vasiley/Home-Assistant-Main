@@ -78,109 +78,16 @@ homeassistant:
     sensor.master_bath_motion_sensor_batt:
       icon: mdi:battery
       unit_of_measurement: '%'
-
-group:
-   master_bath_card:
-      control: hidden
-      name: Master Bath
-      entities:
-       - light.bathroom_vanity
-       - light.bathroom
-       - binary_sensor.door_window_sensor_master_bath_door
-       - sensor.humidity_master_bathroom
-       - sensor.temperature_master_bathroom
-       - sensor.pressure_master_bathroom
-       - binary_sensor.motion_sensor_master_bath
-       - sensor.illumination_master_bath
-       - sensor.master_bath_motion_sensor_batt
-       - switch.wemo_master_bath_fan
-       - switch.getting_dressed
-       - switch.master_bath
-       - sensor.master_humidity_sensor_batt
-       - sensor.master_bathroom_dimmer_state
-       - sensor.master_bathroom_dimmer_last_update
-       - sensor.master_bathroom_dimmer_battery
-       - script.bath_time_on
-       - script.bath_time_off
-       - script.getting_dressed_on
-       - script.getting_dressed_off
-       - switch.shower_time
-       - group.master_bath_automations_card
-       - group.master_bathroom_heater
-
-   master_bath_automations_card:
-     control: hidden
-     name: Master Bath Automations
-     entities:
-       - automation.master_bath_light_left_on
-       - automation.master_bath_shower_time_off
-       - automation.master_bath_shower_time_on
-       - automation.master_bath_shower_time_warmup_on
-       - automation.master_bath_shower_time_warmup_off
-       - automation.motion_bathroom_home_mode_off
-       - automation.motion_bathroom_home_mode_on
-       - automation.motion_bathroom_evening_mode_on
-       - automation.motion_bathroom_sleep_off
-       - automation.motion_bathroom_sleep_on
-       - automation.master_bath_getting_dressed
-       - automation.master_bath_humidity_fan_on
-       - automation.master_bath_humidity_fan_off
-
-sensor:
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.state.buttonevent }}'
-    scan_interval: 1
-    name: 'Master Bathroom Dimmer State'
-  - platform: template
-    sensors:
-      master_bathroom_dimmer_state:
-        friendly_name: 'Master Bath Dimmer Last Button Push'
-        value_template: >-
-                      {% if states('sensor.master_bathroom_dimmer_state_2')[0] == "1" %}
-                        On
-                      {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "2" %}
-                        Preshower warmup
-                      {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "3" %}
-                        Getting Dressed
-                      {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "4" %}
-                        Off
-                      {% else %}
-                        None
-                      {% endif %}
-
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.state.lastupdated }}'
-    scan_interval: 10
-    name: 'Master Bathroom Dimmer Last Update'
-
-  - platform: template
-    sensors:
-      master_bathroom_dimmer_last_update:
-        friendly_name: 'Master Bath Last Used'
-        value_template: >-
-          {{ as_timestamp(strptime(states('sensor.master_bathroom_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
-
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Master Bathroom Dimmer Battery'
-
-  - platform: template
-    sensors:
-      master_bath_motion_sensor_batt:
-        friendly_name: 'Master Bathroom Motion Sensor'
-        value_template: "{{ state_attr('binary_sensor.motion_sensor_master_bath', 'battery_level') }}"
-
-
-  - platform: template
-    sensors:
-      master_humidity_sensor_batt:
-        friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
-        value_template: "{{ state_attr('sensor.humidity_master_bathroom', 'battery_level') }}"
+    switch.heater_lasko_power:
+      haaska_name: Master Bathroom Heater Power
+      icon: mdi:power
+    switch.heater_lasko_oscillate:
+      haaska_name: Bathroom heater Oscillate
+      icon: mdi:rotate-3d
+    script.bath_heater_on:
+      friendly_name: Master Bath Heater On
+    script.bath_heater_off:
+      friendly_name: Master Bath Heater Off
 
 automation:
   - alias: Motion Bathroom Home Mode On
@@ -338,6 +245,43 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.wemo_master_bath_fan
+
+  - alias: master bath heater state on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.heater_lasko_power
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_power
+
+  - alias: master bath heater state off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.heater_lasko_power
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_power
+
+script:
+  bath_heater_on:
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_power
+      - delay: '00:00:05'
+      - service: switch.turn_on
+        entity_id: switch.heater_lasko_oscillate
+
+  bath_heater_off:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_oscillate
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.heater_lasko_power
 
 switch:
   - platform: template

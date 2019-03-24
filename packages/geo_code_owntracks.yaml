@@ -15,15 +15,6 @@ homeassistant:
       haaska_hidden: true
       icon: mdi:account
 
-group:
-  family:
-    entities:
-      - sensor.herb
-      - sensor.dawn
-      - sensor.gabbie_status
-      - sensor.mom
-      - sensor.tristan
-
 owntracks:
   max_gps_accuracy: 200
   mqtt_topic: "owntracks/#"

@@ -14,19 +14,6 @@ homeassistant:
       friendly_name: Kids Hallway Light Level
       icon: mdi:theme-light-dark
 
-
-group:
-  kids_hallway_card:
-    control: hidden
-    name: Kids Hallway
-    entities:
-      - light.kids_hallway
-      - sensor.motion_sensor_hallway_battery
-      - binary_sensor.kids_hallway_motion
-      - sensor.illumination_motion_sensor_kids_hallway
-      - automation.motion_kids_hallway_motion_on
-      - automation.motion_kids_hallway_motion_off
-
 sensor:
   - platform: template
     sensors:

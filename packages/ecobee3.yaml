@@ -16,33 +16,6 @@ ecobee:
   api_key: !secret ecobee_api_key
   hold_temp: True
 
-group:
-  room_occupancy_card:
-   name: Occupancy
-   entities:
-     - binary_sensor.thermostat_occupancy
-     - binary_sensor.gabbies_room_occupancy
-     - binary_sensor.master_bedroom_occupancy
-     - binary_sensor.living_room_occupancy
-  ecobee_sensors_card:
-   name: Ecobee Temp Sensors
-   entities:
-     - sensor.master_bedroom_temperature
-     - sensor.living_room_temperature
-     - sensor.gabbies_room_temperature
-     - sensor.thermostat_humidity
-     - sensor.thermostat_temperature
-  climate_temp_card:
-   name: Climate
-   entities:
-     - climate.thermostat
-     - sensor.set_hold_mode
-     - sensor.operating_mode
-     - sensor.hvac_fan
-     - sensor.house_avg_temperature
-     - sensor.house_avg_humidity
-     - sensor.pws_Temp_f
-
 ######  ecobee3 Mode Sensors
 sensor:
   - platform: template

@@ -17,22 +17,6 @@ homeassistant:
     camera.camera_mail:
       friendly_name: Mail Scan's
 
-group:
-  mailscan_card:
-   name: Mail Scans
-   entities:
-    - camera.camera_mail
-
-  usps_mail_card:
-   name: Mail
-   entities:
-     - sensor.usps_mail
-     - sensor.usps_packages
-#     - sensor.packages_in_transit
-     - sensor.deliveries_today
-#     - sensor.fedex
-     - sensor.ups
-
 ############### Mail Sensor   ###############################
 sensor:
   - platform: mqtt
@@ -47,39 +31,6 @@ sensor:
     username: !secret ups_username
     password: !secret ups_password
     scan_interval: 1800
-  # - platform: fedex
-  #   username: !secret fedex_username
-  #   password: !secret fedex_password
-  #   scan_interval: 1800
-  # - platform: template
-
-  #     packages_in_transit:
-  #       friendly_name: "Packages in Transit"
-  #       value_template: >
-  #         {% macro in_transit(sensor) %}
-  #           {{sensor.state|int - delivered(sensor)|int}}
-  #         {% endmacro %}
-  #         {% macro delivered(sensor) %}
-  #           {% if 'delivered' in sensor.attributes %}
-  #             {{sensor.attributes.delivered}}
-  #           {% else %}
-  #              0
-  #           {% endif %}
-  #         {% endmacro %}
-  #         {{in_transit(states.sensor.ups)|int + in_transit(states.sensor.fedex)|int}}
-
-      # deliveries_today:
-      #   friendly_name: "Today's Deliveries"
-      #   value_template: >
-      #     {% macro delivered(sensor) %}
-      #       {% if 'out_for_delivery' in sensor.attributes %}
-      #         {{sensor.attributes.out_for_delivery}}
-      #       {% else %}
-      #          0
-      #       {% endif %}
-      #     {% endmacro %}
-      #     {{delivered(states.sensor.ups)|int + delivered(states.sensor.fedex)|int}}
-############################################################
 
 automation:
   - alias: Tell me I got Mail

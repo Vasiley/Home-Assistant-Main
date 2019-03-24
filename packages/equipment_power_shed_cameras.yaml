@@ -16,16 +16,6 @@ homeassistant:
       friendly_name: Swamp Camera
       icon: mdi:cctv
 
-
-group:
-  shed_cameras_power:
-    control: hidden
-    name: Shed Cameras Power
-    entities:
-      - switch.shed_cam
-      - switch.swamp_cam
-
-
 switch:
   - platform: command_line
     switches:

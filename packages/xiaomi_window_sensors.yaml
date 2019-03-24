@@ -73,28 +73,6 @@ homeassistant:
       icon: mdi:window-open
       unit_of_measurement: '#'
 
-group:
-  window_sensors_card:
-   name: Windows
-   entities:
-    - binary_sensor.door_window_sensor_ruths_room
-    - binary_sensor.door_window_sensor_gabbies_room
-    - binary_sensor.door_window_sensor_kitchen_sink
-    - binary_sensor.door_window_sensor_kitchen_table
-    - binary_sensor.door_window_sensor_dawns_side
-    - binary_sensor.door_window_sensor_herbs_side
-    - binary_sensor.door_window_sensor_livingroom_front
-
-  window_sensors_batt_card:
-   name: Windows Battery Levels
-   entities:
-    - sensor.ruths_window_sensor_batt
-    - sensor.gabbies_window_sensor_batt
-    - sensor.kitchen_sink_window_sensor_batt
-    - sensor.kitchen_table_window_sensor_batt
-    - sensor.dawns_side_window_sensor_batt
-    - sensor.herbs_side_window_sensor_batt
-    - sensor.livingroom_front_window_sensor_batt
 
 sensor:
   - platform: template

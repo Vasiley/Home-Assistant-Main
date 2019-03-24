@@ -7,12 +7,6 @@ homeassistant:
       friendly_name: Alerts
       icon: mdi:alert-outline
 
-group:
-  alerts_card:
-   name: Alerts
-   entities:
-     - sensor.nws_alerts
-
 ### You first need to find either your NWS Zone ID or County ID. I’m not sure which is better but I used my Zone ID here.
 ### You can find your Zone ID by going to https://alerts.weather.gov/ 7, scroll down to your state and click on the “zone list” then look for the entry for your county.
 ### I recommond useing both

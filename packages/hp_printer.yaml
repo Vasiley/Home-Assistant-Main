@@ -10,7 +10,7 @@ homeassistant:
       icon: mdi:printer
     sensor.hp_uptime:
       friendly_name: Hp printer Uptime
-      icon: mdi:printer  
+      icon: mdi:printer
     sensor.cyan_ink_level:
       entity_picture: /local/cyan.jpeg
     sensor.magenta_ink_level:
@@ -21,23 +21,6 @@ homeassistant:
       entity_picture: /local/lightblack.jpeg
     sensor.yellow_ink_level:
       entity_picture: /local/yellow.jpeg
-
-
-group:
-  hp_printer_card:
-   control: hidden
-   name: Printers
-   entities:
-#     - sensor.printer_uptime
-     - sensor.hp_uptime
-     - sensor.black_ink_level
-     - sensor.yellow_ink_level
-     - sensor.cyan_ink_level
-     - sensor.magenta_ink_level
-     - sensor.photo_black_ink_level
-     - script.printer_powercycle
-
-
 
 sensor:
   - platform: snmp

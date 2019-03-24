@@ -28,33 +28,6 @@ homeassistant:
     sensor.next_birthday_date_time:
       icon: mdi:calendar-clock
 
-group:
-  google_calender_card:
-   name: Calender
-   entities:
-#     - calendar.dawns_calender
-     - sensor.next_appt_message
-     - sensor.next_appt_description
-     - sensor.next_appt_date_time
-     - sensor.days_to_next_appointment
-#     - calendar.main_calender
-     - sensor.next_holiday
-     - sensor.next_holiday_date_time
-     - sensor.days_to_next_holiday
-#     - calendar.holidays_in_united_states
-#     - calendar.contacts
-     - sensor.next_birthday
-     - sensor.next_birthday_date_time
-     - sensor.days_to_next_birthday
-#     - sensor.date
-#     - sensor.time
-#     - automation.birthday_countdown_30_days
-#     - automation.random_birthday_wishes
-#     - automation.holiday_countdown_30_days
-#     - automation.holiday
-#     - automation.dr_appointment_reminder_3_days
-#     - automation.dr_appontments
-
 google:
   client_id: !secret google_client_id
   client_secret: !secret google_client_secret

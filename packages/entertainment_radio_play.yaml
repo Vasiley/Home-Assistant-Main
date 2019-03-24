@@ -10,16 +10,6 @@ homeassistant:
       friendly_name: Stop Playing
       icon: mdi:stop
 
-group:
- residence_radio:
-  name: Radio
-  entities:
-    - input_select.radio_station
-    - input_select.chromecast_radio
-    - input_number.volume_radio
-    - script.radio
-    - script.radio_stop
-
 input_number:
   volume_radio:
     name: Volume
@@ -113,7 +103,7 @@ script:
             {% elif is_state("input_select.chromecast_radio", "Everywhere") %}
                group.media_player_whole_house
             {% else %}
-               group.media_player_whole_house   
+               group.media_player_whole_house
             {% endif %}
           media_content_id: >
             {% if is_state("input_select.radio_station", "80's Rock") %} http://19763.live.streamtheworld.com:3690/977_80_SC?DIST=TuneIn&TGT=TuneIn&maxServers=2&ua=RadioTime&ttag=RadioTime

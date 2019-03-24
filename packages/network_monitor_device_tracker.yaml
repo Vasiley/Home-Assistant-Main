@@ -3,15 +3,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'network_monitor_devices'
-######### Speedtest ###############################
-    # sensor.speedtest_download:
-    #   entity_picture: /local/speedtest.png
-    # sensor.speedtest_upload:
-    #   entity_picture: /local/speedtest.png
-    # sensor.speedtest_ping:
-    #   entity_picture: /local/ping.jpg
-
-########### Camera's ##################################
     binary_sensor.driveway_camera_connect:
       friendly_name: Driveway Camera
       icon: mdi:cctv
@@ -98,6 +89,10 @@ homeassistant:
       friendly_name: Xiaomi Gateway
       icon: mdi:black-mesa
       haaska_hidden: true
+    binary_sensor.xiaomi_gateway_2:
+      friendly_name: Xiaomi Gateway 2
+      icon: mdi:black-mesa
+      haaska_hidden: true
 
 ############### Servers     ##########################################
     binary_sensor.server_blue_iris:
@@ -110,6 +105,10 @@ homeassistant:
       haaska_hidden: true
     binary_sensor.kids_workstation:
       friendly_name: Kids Workstation
+      icon: mdi:server-network
+      haaska_hidden: true
+    binary_sensor.server_pi_falcon_player:
+      friendly_name: Falcon Player
       icon: mdi:server-network
       haaska_hidden: true
 ############### Alexa'es   ##########################################
@@ -171,11 +170,6 @@ homeassistant:
       friendly_name: Tablo
       icon: mdi:theater
       haaska_hidden: true
-##################### NAS ############################################
-    binary_sensor.network_harddrive:
-      friendly_name: Network Nas
-      icon: mdi:harddisk
-      haaska_hidden: true
 ################ Network Equipment ####################################
     # binary_sensor.cable_modem:
     #   friendly_name: Cable Modem
@@ -205,8 +199,8 @@ homeassistant:
       friendly_name: AP UniFi AC PRO
       icon: mdi:access-point
       haaska_hidden: true
-    binary_sensor.ap_master:
-      friendly_name: AP UniFi
+    binary_sensor.nano_hd:
+      friendly_name: AP Nano HD
       icon: mdi:access-point
       haaska_hidden: true
 ########## Wemos         ########################
@@ -258,6 +252,9 @@ homeassistant:
       friendly_name: Ruths Room Wax Warmer
       icon: mdi:power-settings
       haaska_hidden: true
+    binary_sensor.wemo_kids_fan:
+      friendly_name: Kids Fan
+      icon: mdi:power-settings
 ############## Dashboards ################
     binary_sensor.dash_master:
       friendly_name: Dashboard Tablet Bedroom
@@ -272,12 +269,20 @@ homeassistant:
       icon: mdi:tablet-android
       haaska_hidden: true
 ############ ESP Controllers  ###########################################
-    binary_sensor.led_kitchen_cabinets:
+    binary_sensor.espkitchencabinets:
       friendly_name: Kitchen Led Controller
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.kids_room_controller:
-      friendly_name: Kids Room Controller
+    binary_sensor.espjohndeerecabinet:
+      friendly_name: John Deer Led Controller
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.esppantry:
+      friendly_name: Pantry Led Controller
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.esp_spicecabinet:
+      friendly_name: Spice Cabinet
       icon: mdi:zip-box
       haaska_hidden: true
     binary_sensor.dawns_controller:
@@ -288,7 +293,7 @@ homeassistant:
       friendly_name: Front Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.esp_blinds_rear_couch:
+    binary_sensor.esp_couch_blinds:
       friendly_name: Couch Blinds
       icon: mdi:zip-box
       haaska_hidden: true
@@ -312,7 +317,14 @@ homeassistant:
       friendly_name: Kitchen Table Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-
+    binary_sensor.esp_kids_tv_state:
+      friendly_name: Kids Tv State
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.esp_blinds_kids_room:
+      friendly_name: Kids Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
 ############## Misc Devices ###############################################
     binary_sensor.game_console_ps4:
       friendly_name: Ps4
@@ -364,172 +376,10 @@ homeassistant:
      icon: mdi:fan
      haaska_hidden: true
 
-group:
-  clients_online_card:
-    name: Clients Online
-    entities:
-      - sensor.clients
-
-  wifi_signal_card:
-   name: Wifi Signals
-   entities:
-     - sensor.blinds_controller_wifi_signal
-     - sensor.sink_blinds_controller_wifi_signal
-     - sensor.dawns_controller_wifi_signal
-     - sensor.dawns_blinds_controller_wifi_signal
-     - sensor.front_blinds_controller_wifi_signal
-     - sensor.master_blinds_controller_dawns_wifi_signal
-     - sensor.master_blinds_controller_herbs_wifi_signal
-     - sensor.ruths_blinds_wifi_signal
-     - sensor.kids_controller_wifi_signal
-
-  wink_connections_card:
-   name: Wink Connections
-   entities:
-     - binary_sensor.gang
-     - binary_sensor.gang_1
-
-  hubs_card:
-   name: Hub's & Bridges
-   entities:
-     - binary_sensor.harmony_hub
-     - binary_sensor.hue_hub
-     - binary_sensor.wink_hub
-     - binary_sensor.broadlink_mini
-     - binary_sensor.broadlink_pro
-     - binary_sensor.xiaomi_gateway
-
-  cameras_status_card:
-    name: Cameras
-    entities:
-     - binary_sensor.number12_camera_connect
-     - binary_sensor.driveway_camera_connect
-     - binary_sensor.shed_camera_connect
-     - binary_sensor.backdoor_camera_connect
-     - binary_sensor.frontdoor_camera_connect
-     - binary_sensor.swamp_camera_connect
-     - binary_sensor.masterbedroom_camera_connect
-
-  NetworkDrives_status_card:
-   name: Nas Drives
-   entities:
-     - binary_sensor.network_harddrive
-
-  esp_led_devices_card:
-   name: Esp Controller's Leds/Power
-   entities:
-     - binary_sensor.led_kitchen_cabinets
-     - binary_sensor.kids_room_controller
-     - binary_sensor.dawns_controller
-
-  esp_blind_devices_card:
-   name: Esp Controller's Blinds
-   entities:
-     - binary_sensor.esp_blinds_master_dawns_side
-     - binary_sensor.esp_blinds_master_herbs_side
-     - binary_sensor.esp_blinds_kitchen_table
-     - binary_sensor.esp_blinds_kitchen_sink
-     - binary_sensor.esp_blinds_rear_couch
-     - binary_sensor.esp_blinds_front_tv
-     - binary_sensor.esp_blinds_ruths
-
-  etc_devices_card:
-   name: Mobile Devices
-   entities:
-     - binary_sensor.herbs_laptop
-     - binary_sensor.herbs_iphone
-     - binary_sensor.dawns_phone
-     - binary_sensor.tristans_phone1
-     - binary_sensor.tristans_phone2
-     - binary_sensor.gabbies_phone
-     - binary_sensor.ruths_tablet
-     - binary_sensor.gabbies_laptop
-
-  servers_status_card:
-   name: Servers
-   entities:
-     - binary_sensor.server_blue_iris
-     - binary_sensor.server_homeassistant_fishtank
-     - binary_sensor.kids_workstation
-
-  alexa_status_card:
-   name: Alexa
-   entities:
-     - binary_sensor.alexa_master_dot
-     - binary_sensor.alexa_gabbies_room_dot
-     - binary_sensor.alexa_living_room_echo
-     - binary_sensor.alexa_kitchen_echo
-
-  network_equipment_status_card:
-   name: Networking Devices
-   entities:
-#     - binary_sensor.cable_modem
-     - binary_sensor.unifi_gateway
-     - binary_sensor.unificloudkey
-     - binary_sensor.switch_ubnt_poe_16
-     - binary_sensor.switch_ubnt_poe_lv
-     - binary_sensor.switch_ubnt_poe_8_shed
-     - binary_sensor.ac_pro
-     - binary_sensor.ap_master
-
-  media_player_status_card:
-   name: Media Players
-   entities:
-     - binary_sensor.ruths_ruko
-     - binary_sensor.livingroom_roku
-     - binary_sensor.kids_room_roku
-     - binary_sensor.media_player_onkyo_lv
-     - binary_sensor.samsung_tv
-     - binary_sensor.chromecast_master
-     - binary_sensor.chromecast_livingroom
-     - binary_sensor.chromecast_kids_room
-     - binary_sensor.chromecast_radio
-     - binary_sensor.tablo
-
-  wemos_status_card:
-   name: Wemos
-   entities:
-     - binary_sensor.wemo_master_bath_fan
-     - binary_sensor.wemo_kids_bathroom_fan
-     - binary_sensor.wemo_shed_switch_network
-     - binary_sensor.master_bedroom_mixer
-     - binary_sensor.wemo_kids_bathroom_scent
-     - binary_sensor.wemo_washing_machine
-     - binary_sensor.wemo_lv_scent
-     - binary_sensor.wemo_driveway_reboot
-     - binary_sensor.wemo_fish_tan_pumps
-     - binary_sensor.wemo_kids_bathroom_vanity
-     - binary_sensor.wemo_master_bath_vanity
-     - binary_sensor.wemo_ruths_room_wax_warmer
-
-  dashboard_status_card:
-   name: Dashboards
-   entities:
-     - binary_sensor.dash_master
-     - binary_sensor.dash_living_room
-     - binary_sensor.dash_gabbies_room
-
-  misc_devices_card:
-   name: Misc Devices
-   entities:
-    - binary_sensor.game_console_ps4
-    - binary_sensor.game_console_ps3
-    - binary_sensor.game_console_xboxone
-    - binary_sensor.game_console_xboxone_x
-    - binary_sensor.voip_nettalk
-    - binary_sensor.webswitch_network
-    - binary_sensor.printer_hp
-    - binary_sensor.ecobee
-    - binary_sensor.rockrobo
-    - binary_sensor.living_room_purifer
-    - binary_sensor.master_bedroom_purifer
 
 sensor:
   ############## Public Ip
   - platform: dnsip
-
-
-
 
 #################### ALL CLIENTS ###################
   - platform: template
@@ -655,7 +505,13 @@ binary_sensor:
       xiaomi_gateway:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.xiaomi_gateway", "home") }}'
-#################### servers ###################
+  - platform: template
+    sensors:
+      xiaomi_gateway_2:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.xiaomi_gateway_2", "home") }}'
+
+################### servers ###################
 
   - platform: template
     sensors:
@@ -672,6 +528,11 @@ binary_sensor:
       kids_workstation:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.kids_workstation", "home") }}'
+  - platform: template
+    sensors:
+      server_pi_falcon_player:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.server_pi_falcon_player", "home") }}'
 
 #################### alexa's ###################
 
@@ -759,14 +620,7 @@ binary_sensor:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.tablo", "home") }}'
 
-#################### NAS  ###################
-
-  - platform: template
-    sensors:
-      network_harddrive:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.network_harddrive", "home") }}'
-
+#######################################
 #################### Network Devices  ###################
   - platform: template
     sensors:
@@ -800,9 +654,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.ac_pro", "home") }}'
   - platform: template
     sensors:
-      ap_master:
+      nano_hd:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.ac_master", "home") }}'
+        value_template: '{{ is_state("device_tracker.nano_hd", "home") }}'
 #################### Wemo Devices  ###################
 
   - platform: template
@@ -866,7 +720,11 @@ binary_sensor:
       wemo_ruths_room_wax_warmer:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.wemo_ruths_room_wax_warmer", "home") }}'
-
+  - platform: template
+    sensors:
+      wemo_kids_fan:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.wemo_kids_fan", "home") }}'
 
 #################### Dashboards Devices  ###################
 
@@ -889,15 +747,24 @@ binary_sensor:
 #################### Esp Devices  ###################
   - platform: template
     sensors:
-      led_kitchen_cabinets:
+      espkitchencabinets:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.led_kitchen_cabinets", "home") }}'
-
+        value_template: '{{ is_state("device_tracker.espkitchencabinets", "home") }}'
   - platform: template
     sensors:
-      kids_room_controller:
+      esppantry:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.esp_kids_room_relay", "home") }}'
+        value_template: '{{ is_state("device_tracker.esppantry", "home") }}'
+  - platform: template
+    sensors:
+      esp_spicecabinet:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.esp_spicecabinet", "home") }}'
+  - platform: template
+    sensors:
+      espjohndeerecabinet:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.espjohndeerecabinet", "home") }}'
   - platform: template
     sensors:
       dawns_controller:
@@ -910,9 +777,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.esp_blinds_front_tv", "home") }}'
   - platform: template
     sensors:
-      esp_blinds_rear_couch:
+      esp_couch_blinds:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.esp_blinds_rear_couch", "home") }}'
+        value_template: '{{ is_state("device_tracker.esp_couch_blinds", "home") }}'
   - platform: template
     sensors:
       esp_blinds_kitchen_sink:
@@ -938,6 +805,16 @@ binary_sensor:
       esp_blinds_kitchen_table:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.esp_blinds_kitchen_table", "home") }}'
+  - platform: template
+    sensors:
+      esp_blinds_kids_room:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.esp_blinds_kids_room", "home") }}'
+  - platform: template
+    sensors:
+      esp_kids_tv_state:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.esp_kids_tv_state", "home") }}'
 
 ################### Misc Devices  ##########################
   - platform: template
@@ -1004,7 +881,11 @@ device_tracker:
       switch_ubnt_poe_16: 192.168.1.2
       switch_ubnt_poe_8_shed: 192.168.1.4
       ac_pro: 192.168.1.9
-      ac_master: 192.168.1.8
+      nano_hd: 192.168.1.10
+      xboxone_ping: 192.168.1.56
+#      esp_kids_tv_state_ping: 192.168.2.58
+    consider_home: 180
+    interval_seconds: 90
 
   - platform: unifi
     host: 192.168.1.6
@@ -1012,8 +893,6 @@ device_tracker:
     password: !secret unifi_password
     verify_ssl: false
     site_id: default
-
-
 
 #### Notify if device goes offline
 
@@ -1046,10 +925,12 @@ automation:
           - binary_sensor.broadlink_pro
           - binary_sensor.broadlink_mini
           - binary_sensor.xiaomi_gateway
+          - binary_sensor.xiaomi_gateway_2
 #         Servers
           - binary_sensor.server_blue_iris
           - binary_sensor.server_homeassistant_fishtank
           - binary_sensor.kids_workstation
+          - binary_sensor.server_pi_falcon_player
 #         alexa
           - binary_sensor.alexa_master_dot
           - binary_sensor.alexa_gabbies_room_dot
@@ -1066,17 +947,14 @@ automation:
           - binary_sensor.chromecast_radio
           - binary_sensor.chromecast_kids_room
           - binary_sensor.tablo
-#         NAS
-          - binary_sensor.network_harddrive
 #         Network Equipment
-#          - binary_sensor.cable_modem
           - binary_sensor.unifi_gateway
           - binary_sensor.switch_ubnt_poe_lv
           - binary_sensor.unificloudkey
           - binary_sensor.switch_ubnt_poe_16
           - binary_sensor.switch_ubnt_poe_8_shed
           - binary_sensor.ac_pro
-          - binary_sensor.ap_master
+          - binary_sensor.nano_hd
 #         wemos
           - binary_sensor.wemo_master_bath_fan
           - binary_sensor.wemo_kids_bathroom_fan
@@ -1090,21 +968,27 @@ automation:
           - binary_sensor.wemo_kids_bathroom_vanity
           - binary_sensor.wemo_master_bath_vanity
           - binary_sensor.wemo_ruths_room_wax_warmer
+          - binary_sensor.wemo_kids_fan
 #         Dashboards
           - binary_sensor.dash_master
           - binary_sensor.dash_living_room
           - binary_sensor.dash_gabbies_room
 #         esp
-          - binary_sensor.led_kitchen_cabinets
+          - binary_sensor.espkitchencabinets
+          - binary_sensor.esppantry
+          - binary_sensor.esp_spicecabinet
+          - binary_sensor.espjohndeerecabinet
           - binary_sensor.kids_room_controller
           - binary_sensor.dawns_controller
           - binary_sensor.esp_blinds_front_tv
-          - binary_sensor.esp_blinds_rear_couch
+          - binary_sensor.esp_couch_blinds
           - binary_sensor.esp_blinds_master_dawns_side
           - binary_sensor.esp_blinds_master_herbs_side
           - binary_sensor.esp_blinds_ruths
           - binary_sensor.esp_blinds_kitchen_table
           - binary_sensor.esp_blinds_kitchen_sink
+          - binary_sensor.esp_blinds_kids_room
+#          - binary_sensor.esp_kids_tv_state
 #         misc devices
           - binary_sensor.game_console_ps4
           - binary_sensor.game_console_ps3
@@ -1134,7 +1018,7 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >
-            {% if trigger.to_state.state | lower == "offline" %}
+            {% if trigger.to_state.state | lower == "off" %}
               {{ trigger.to_state.attributes.friendly_name }} has gone offline!
             {% else %}
               {{ trigger.to_state.attributes.friendly_name }} has come online!

@@ -20,16 +20,6 @@ homeassistant:
       friendly_name: Cycle TIme
       icon: mdi:timer
 
-
-group:
-
-  washing_machine_card_frontend:
-   name: Washing Machine
-   entities:
-    - sensor.washer_status
-    - sensor.stopwatch
-    - switch.wemo_washing_machine
-
 input_boolean:
   washer_switch:
     initial: off

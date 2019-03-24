@@ -13,25 +13,6 @@ homeassistant:
       device_class: battery
       unit_of_measurement: '%'
 
-######### Enties Created by Xiaomi Vibration Sensors
-# sensor.activity_safe
-# sensor.coordination_safe
-# binary_sensor.safe_vibration
-#
-# As of now 11/23/2018 the binary sensor is always off (hope that will improve)
-
-group:
-  medicine_safe_card:
-   name: Medicine Safe
-   entities:
-    - input_boolean.boolean_safe_tamper
-    - binary_sensor.safe_vibration
-    - sensor.activity_safe
-    - sensor.coordination_safe
-    - sensor.vibration_sensor_batt
-    - alert.medicine_safe_alert
-
-
 input_boolean:
   boolean_safe_tamper:
     initial: off

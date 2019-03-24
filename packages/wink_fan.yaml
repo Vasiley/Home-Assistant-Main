@@ -78,18 +78,6 @@ homeassistant:
       haaska_hidden: false
       haaska_name: Master Bedroom Light
 
-group:
-  livingroomfan_card:
-   control: hidden
-   name: Living Room Fan
-   entities:
-     - fan.living_room_fan
-     - switch.fan_override
-     - script.living_room_fan_auto
-     - input_select.living_room_ceiling_fan_speeds
-     - binary_sensor.gang
-     - script.refresh_wink
-
 input_select:
   master_ceiling_fan_speeds:
     name: Master Ceiling Speeds

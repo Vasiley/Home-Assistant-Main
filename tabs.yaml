@@ -1,341 +1,291 @@
-  default_view:
-   view: yes
-   name: Home
-   icon: mdi:home-assistant
-   entities:
-     - group.medicine_safe_card
-     - group.House_mode
-     - group.alarm_panel_card
-     - group.alarm_clock
-     - light.lamps
-     - light.kitchen
-     - light.master_hallway
-     - light.kitchen_table
-     - light.laundry_room
-     - light.kids_hallway
-     - light.kids_bathroom
-     - light.kids_bathroom_vanity
-     - light.master
-     - light.carport
-     - light.light_bulb
-     - light.bathroom_vanity
-     - light.bathroom
-     - light.light_bulb_2
-     - light.gabbies_light
-     - light.kids_main
-     - light.hue_master_closet
-     - light.gateway_light_xiaomi_lv
-     - group.Family
-     - group.climate_temp_card
-     - group.master_bathroom_heater_broadlink_card
-     - group.usps_mail_card
-     - group.livingroomfan_card
-     - group.washing_machine_card_frontend
-     - group.entertainment_card
-     - group.blinds_card
-     - script.media_player_source
-     - group.google_calender_card
-     - group.kitchen_leds_card
-     - weather.yweather
-     - group.air_puirfier_card
-     - group.vacuum_card
-     - group.dryer_card_frontend
-  devicesview:
-   view: yes
-   name: Equipment
-   entities:
-     - group.equip_reboots_card
-     - group.wemo_switches_card
-     - group.unifi_poe_card
-     - group.DigitalLoggers_card
-     - group.shed_cameras_power
-     - group.hp_printer_card
-     - group.main_tank_power
-
-  softwareview:
-   view: yes
-   name: Software
-   entities:
-     - group.Ads_Blocked_card
-     - group.homeass_version_card
-     - group.hassctl_card
-     - group.fail2ban_card
-
-  serversview:
-   view: yes
-   name: Servers
-   entities:
-     - group.linux_server_card
-     - group.blue_iris_info_card
-     - group.Fish_tank_server_info
-     - group.kids_workstation_info_card
-
-  media:
-   view: yes
-   name: Media Players
-   entities:
-     - group.Samsung_tv_media_player_card
-     - group.stereo_avr_card
-     - group.stereo_avr_card_zone_2
-     - group.stereo_avr_card_zone_3
-     - group.media_player_rz_810
-     - group.Ruths_roku_media_player_card
-     - group.media_player_roku_kids_bedroom_card
-     - group.media_player_living_room_card
-     - group.media_player_plex_server_card
-     - group.media_player_kodi_card
-     - group.sensor_plex
-     - group.residence_radio
-     - group.media_player_ha_speaker_card
-     - group.media_player_master_bedroom_cast_card
-     - group.media_player_onkyo_cast_card
-     - group.media_player_kids_room_card
-#     - group.media_player_whole_house
-     - group.media_player_home_group
-
-  weather_view:
-   view: yes
-   name: Weather
-   entities:
-     - group.alerts_card
-     - group.Conditions_card
-     - group.ForecastWeather_card
-     - group.daily_forecast_card
-     - group.animated_radar_card
-     - group.still_image_radar_card
-
-  roomsensors:
-   view: yes
-   name: Sensors
-   entities:
-     - group.temperature_Info
-     - group.ecobee_sensors_card
-     - group.Motion_card
-     - group.battery
-     - group.humidity
-     - group.room_occupancy_card
-     - group.Dimmers_status_card
-     - group.blue_iris_motion_card
-     - group.lux_card
-     - group.window_sensors_card
-     - group.window_sensors_batt_card
-     - group.door_sensors_card
-     - group.door_sensors_batt_card
-
-  mycameras:
-   view: yes
-   name: Cameras
-   entities:
-     - group.camera12_card
-     - group.camera_driveway_card
-     - group.camera_swamp_card
-     - group.camera_yard_card
-     - group.camera_backdoor_card
-     - group.camera_livingroom_card
-     - group.camera_tablet_card
-     - group.camera_master_bedroom_tablet_cam_card
-     - group.camera_master_bedroom_cam_card
-     - group.camera_gabbie_cam_card
-     - group.camera_master_bedroom_cam_card
-
-  roomview:
-   view: yes
-   name: Rooms
-   entities:
-     - group.master_bath_card
-     - group.master_bedroom_card
-     - group.carport_lights_card
-     - group.haaska_sensor_display_card
-     - group.livingroom_card
-     - group.kitchen_card
-     - group.laundry_room_card
-     - group.master_hallway_card
-     - group.kids_bath_card
-     - group.kids_hallway_card
-     - group.ruths_room_card
-     - group.gabbies_room_card
-     - group.master_closet_card
-
-  fun_Stuff:
-   view: yes
-   name: Fun Stuff
-   entities:
-     - group.Effects
-     - group.hue_scenes_card
-     - group.Routines
-     - group.smellgood_card
-     - group.theme_input_select_card
-
-  fish_tank:
-   view: yes
-   name: Small Tank
-   entities:
-     - group.Fish_tank_server_info
-     - group.Fish_tank_server_ext_info
-     - group.water_sensors
-     - group.controls
-     - group.fish_leds_card
-
-  # xmas_tree_main_view:
-  #  view: yes
-  #  name: Xmas Tree
-  #  entities:
-  #    - group.xams_tree_power
-  #    - group.xmas_tree_automations
-
-  dashboard:
-   view: yes
-   name: Dashboards
-   entities:
-     - group.lv_room_dashboard
-     - group.master_bedroom_dashboard
-     - group.gabbies_room_dashboard
-     - group.all_dashboards
-
-  network_equipment_status:
-   view: yes
-   name: Network Equipment Online
-   entities:
-     - group.clients_online_card
-     - group.network_equipment_status_card
-     - group.cameras_status_card
-     - group.hubs_card
-     - group.esp_led_devices_card
-     - group.esp_blind_devices_card
-     - group.etc_devices_card
-     - group.NetworkDrives_status_card
-     - group.servers_status_card
-     - group.alexa_status_card
-     - group.media_player_status_card
-     - group.wemos_status_card
-     - group.dashboard_status_card
-     - group.misc_devices_card
-     - group.wink_connections_card
-     - group.wifi_signal_card
-
-  network__services_status:
-    view: yes
-    name: Network Services Online
-    entities:
-      - group.services_online_card
-
-  routines:
-    control: hidden
-    entities:
-     - script.lamps_on
-     - script.herbearly_on
-     - script.bright_on
-     - script.gone_on
-     - scene.all_on
-     - scene.all_off
-     - script.alarm_repeat
-     - script.alarm_flashonoff
-     - script.start_washer
-     - script.nap_time
-     - script.movie_time
-     - script.evening_time
-     - switch.daytime_sleep
-
-  effects:
-    control: hidden
-    entities:
-     - script.knightrider_off
-     - script.knightrider_on
-     - script.rerunknightrider_on
-
-  temperature_Info:
-   name: Temperature
-   entities:
-     - sensor.hallway_temperature
-     - sensor.master_temperature
-#     - sensor.bathroom_temperature
-     - sensor.temperature_kids_bathroom
-     - sensor.gabbies_room_temperature
-     - sensor.temperature_master_bathroom
-     - sensor.living_room_purifer_temp
-     - sensor.master_bdrm_purifer_temp
-
-
-  battery:
-   name: Battery
-   entities:
-### Master Bath
-     - sensor.master_humidity_sensor_batt # Xiaomi Humidity/temp sensor
-     - sensor.master_bathroom_dimmer_battery # Hue Dimmer Battery
-     - sensor.master_bath_motion_sensor_batt # Xiaomi Motion Sensor
-     - sensor.master_closet_dimmer_battery #Xiaomi Door Window Sensor
-### Master bedroom
-     - sensor.bedroom_wallpanel_battery # Wall Hung Tablet running hadashboard and wallpanel
-     - sensor.vibration_sensor_batt #Xiaomi Vibration sensor used on wifes medicene safe
-     - sensor.motion_sensor_master_battery # Xiaomi Motion Sensor
-### Master Hallway
-     - sensor.motion_sensor_hallway_battery
-### laundry Room
-     - sensor.motion_sensor_laundry_battery # Xiaomi Motion Sensor
-### Kitchen
-     - sensor.kitchen_battery_motion # Xiaomi Motion Sensor
-     - sensor.kitchen_table_dimmer_battery
-     - sensor.kitchen_led_dimmer_battery
-### Kids Hallway
-     - sensor.motion_sensor_kids_hall_battery # Xiaomi Motion Sensor
-### Ruths Room
-### Kids Bathroom
-     - sensor.motion_sensor_bathroom_battery # Xiaomi Motion Sensor
-     - sensor.kids_bathroom_dimmer_battery # Hue Dimmer
-### Kids Bedroom
-     - sensor.motion_sensor_gabbies_room_battery # Xiaomi Motion Sensor
-     - sensor.gabbies_room_wallpanel_battery # Wall Hung Tablet running hadashboard and wallpanel
-     - sensor.kids_motion_sensor_batt # Xiaomi Motion Sensor
-     - sensor.kids_humidity_sensor_batt # Xiaomi Humidity/temp sensor
-     - sensor.motion_sensor_kids_bathroom_battery #hue motion battery
-
-  humidity:
-   name: Humidity
-   entities:
-     - sensor.thermostat_humidity
-     - sensor.ha_humidity
-     - sensor.humidity_kids_bathroom
-     - sensor.humidity_master_bathroom
-     - sensor.living_room_purifer_humd
-     - sensor.master_bdrm_purifer_humd
-
-  motion_card:
-   name: Motion
-   entities:
-     - binary_sensor.kitchen_motion # Xiaomi Motion Sensor
-     - binary_sensor.hallway_motion
-     - binary_sensor.laundry_room_motion # Xiaomi Motion Sensor
-     - binary_sensor.kids_hallway_motion
-     - binary_sensor.master_motion # Xiaomi Motion Sensor
-     - binary_sensor.bedroom_motion
-     - binary_sensor.gabbies_room_motion # Xiaomi Motion Sensor
-     - binary_sensor.motion_sensor_kids_bathroom # Xiaomi Motion Sensor
-     - binary_sensor.hue_motion_kids_bathroom #hue
-     - binary_sensor.motion_sensor_master_bath # Xiaomi Motion Sensor
-
-  lux_card:
-   name: House Light Levels
-   entities:
-     - sensor.bedroom_wallpanel_brightness
-     - sensor.illumination_master_bedroom # Xiaomi Motion Sensor
-     - sensor.master_hallway_motion_sensor_lux
-     - sensor.illumination_motion_sensor_kitchen # Xiaomi Motion Sensor
-     - sensor.illumination_motion_sensor_laundry # Xiaomi Motion Sensor
-     - sensor.illumination_gabbies_room_motion_sensor # Xiaomi Motion Sensor
-     - sensor.illumination_motion_sensor_kids_hallway # Xiaomi Motion Sensor
-     - sensor.illumination_xiaomi_hub_kitchen # Xiaomi Gateway
-     - sensor.illumination_kids_bathroom # Xiaomi Motion Sensor
-     - sensor.illumination_master_bath # Xiaomi Motion Sensor
-
-  dimmers_status_card:
-   name: Dimmers
-   entities:
-     - sensor.master_bathroom_dimmer_last_update
-     - sensor.master_bathroom_dimmer_state
-     - sensor.kitchen_table_dimmer_last_update
-     - sensor.kitchen_table_dimmer_state
-     - sensor.kids_bathroom_dimmer_last_update
-     - sensor.kids_bathroom_dimmer_state
-     - sensor.kitchen_led_dimmer_state
-     - sensor.kitchen_blinds_state
-     - sensor.kitchen_led_dimmer_last_update
+#   default_view:
+#    view: yes
+#    name: Home
+#    icon: mdi:home-assistant
+#    entities:
+#      - group.medicine_safe_card
+#      - group.House_mode
+#      - group.alarm_panel_card
+#      - group.alarm_clock
+#      - light.lamps
+#      - light.kitchen
+#      - light.master_hallway
+#      - light.kitchen_table
+#      - light.laundry_room
+#      - light.kids_hallway
+#      - light.kids_bathroom
+#      - light.kids_bathroom_vanity
+#      - light.master
+#      - light.carport
+#      - light.light_bulb
+#      - light.bathroom_vanity
+#      - light.bathroom
+#      - light.light_bulb_2
+#      - light.gabbies_light
+#      - light.kids_main
+#      - light.hue_master_closet
+#      - light.gateway_light_xiaomi_lv
+#      - group.Family
+#      - group.climate_temp_card
+#      - group.master_bathroom_heater_broadlink_card
+#      - group.usps_mail_card
+#      - group.livingroomfan_card
+#      - group.washing_machine_card_frontend
+#      - group.blinds_card
+#      - group.google_calender_card
+#      - group.kitchen_leds_card
+#      - group.air_puirfier_card
+#      - group.vacuum_card
+#      - group.dryer_card_frontend
+#   devicesview:
+#    view: yes
+#    name: Equipment
+#    entities:
+#      - group.equip_reboots_card
+#      - group.wemo_switches_card
+#      - group.unifi_poe_card
+#      - group.DigitalLoggers_card
+#      - group.shed_cameras_power
+#      - group.hp_printer_card
+#      - group.main_tank_power
+#
+#   softwareview:
+#    view: yes
+#    name: Software
+#    entities:
+#      - group.Ads_Blocked_card
+#      - group.homeass_version_card
+#      - group.hassctl_card
+#      - group.fail2ban_card
+#
+#   serversview:
+#    view: yes
+#    name: Servers
+#    entities:
+#      - group.linux_server_card
+#      - group.blue_iris_info_card
+#      - group.Fish_tank_server_info
+#      - group.kids_workstation_info_card
+#
+#   weather_view:
+#    view: yes
+#    name: Weather
+#    entities:
+#      - group.alerts_card
+#      - group.Conditions_card
+#      - group.ForecastWeather_card
+#      - group.daily_forecast_card
+#      - group.animated_radar_card
+#      - group.still_image_radar_card
+#
+#   roomsensors:
+#    view: yes
+#    name: Sensors
+#    entities:
+#      - group.temperature_Info
+#      - group.ecobee_sensors_card
+#      - group.Motion_card
+#      - group.battery
+#      - group.humidity
+#      - group.room_occupancy_card
+#      - group.Dimmers_status_card
+#      - group.blue_iris_motion_card
+#      - group.lux_card
+#      - group.window_sensors_card
+#      - group.window_sensors_batt_card
+#      - group.door_sensors_card
+#      - group.door_sensors_batt_card
+#
+#   roomview:
+#    view: yes
+#    name: Rooms
+#    entities:
+#      - group.master_bath_card
+#      - group.master_bedroom_card
+#      - group.carport_lights_card
+#      - group.haaska_sensor_display_card
+#      - group.livingroom_card
+#      - group.kitchen_card
+#      - group.laundry_room_card
+#      - group.master_hallway_card
+#      - group.kids_bath_card
+#      - group.kids_hallway_card
+#      - group.ruths_room_card
+#      - group.gabbies_room_card
+#      - group.master_closet_card
+#
+#   fun_Stuff:
+#    view: yes
+#    name: Fun Stuff
+#    entities:
+#      - group.Effects
+#      - group.hue_scenes_card
+#      - group.Routines
+#      - group.smellgood_card
+#      - group.theme_input_select_card
+#
+#   fish_tank:
+#    view: yes
+#    name: Small Tank
+#    entities:
+#      - group.Fish_tank_server_info
+#      - group.Fish_tank_server_ext_info
+#      - group.water_sensors
+#      - group.controls
+#      - group.fish_leds_card
+#
+#   dashboard:
+#    view: yes
+#    name: Dashboards
+#    entities:
+#      - group.lv_room_dashboard
+#      - group.master_bedroom_dashboard
+#      - group.gabbies_room_dashboard
+#      - group.all_dashboards
+#
+#   network_equipment_status:
+#    view: yes
+#    name: Network Equipment Online
+#    entities:
+#      - group.clients_online_card
+#      - group.network_equipment_status_card
+#      - group.cameras_status_card
+#      - group.hubs_card
+#      - group.esp_led_devices_card
+#      - group.esp_blind_devices_card
+#      - group.etc_devices_card
+#      - group.NetworkDrives_status_card
+#      - group.servers_status_card
+#      - group.alexa_status_card
+#      - group.media_player_status_card
+#      - group.wemos_status_card
+#      - group.dashboard_status_card
+#      - group.misc_devices_card
+#      - group.wink_connections_card
+#      - group.wifi_signal_card
+#
+#   network__services_status:
+#     view: yes
+#     name: Network Services Online
+#     entities:
+#       - group.services_online_card
+#
+#   routines:
+#     control: hidden
+#     entities:
+#      - script.lamps_on
+#      - script.herbearly_on
+#      - script.bright_on
+#      - script.gone_on
+#      - scene.all_on
+#      - scene.all_off
+#      - script.alarm_repeat
+#      - script.alarm_flashonoff
+#      - script.start_washer
+#      - script.nap_time
+#      - script.movie_time
+#      - script.evening_time
+#      - switch.daytime_sleep
+#
+#   effects:
+#     control: hidden
+#     entities:
+#      - script.knightrider_off
+#      - script.knightrider_on
+#      - script.rerunknightrider_on
+#
+#   temperature_Info:
+#    name: Temperature
+#    entities:
+#      - sensor.hallway_temperature
+#      - sensor.master_temperature
+#      - sensor.temperature_kids_bathroom
+#      - sensor.gabbies_room_temperature
+#      - sensor.temperature_master_bathroom
+#      - sensor.living_room_purifer_temp
+#      - sensor.master_bdrm_purifer_temp
+#
+#
+#   battery:
+#    name: Battery
+#    entities:
+# ### Master Bath
+#      - sensor.master_humidity_sensor_batt # Xiaomi Humidity/temp sensor
+#      - sensor.master_bathroom_dimmer_battery # Hue Dimmer Battery
+#      - sensor.master_bath_motion_sensor_batt # Xiaomi Motion Sensor
+#      - sensor.master_closet_dimmer_battery #Xiaomi Door Window Sensor
+# ### Master bedroom
+#      - sensor.bedroom_wallpanel_battery # Wall Hung Tablet running hadashboard and wallpanel
+#      - sensor.vibration_sensor_batt #Xiaomi Vibration sensor used on wifes medicene safe
+#      - sensor.motion_sensor_master_battery # Xiaomi Motion Sensor
+# ### Master Hallway
+#      - sensor.motion_sensor_hallway_battery
+# ### laundry Room
+#      - sensor.motion_sensor_laundry_battery # Xiaomi Motion Sensor
+# ### Kitchen
+#      - sensor.kitchen_battery_motion # Xiaomi Motion Sensor
+#      - sensor.kitchen_table_dimmer_battery
+#      - sensor.kitchen_led_dimmer_battery
+# ### Kids Hallway
+#      - sensor.motion_sensor_kids_hall_battery # Xiaomi Motion Sensor
+# ### Ruths Room
+# ### Kids Bathroom
+#      - sensor.motion_sensor_bathroom_battery # Xiaomi Motion Sensor
+#      - sensor.kids_bathroom_dimmer_battery # Hue Dimmer
+# ### Kids Bedroom
+#      - sensor.motion_sensor_gabbies_room_battery # Xiaomi Motion Sensor
+#      - sensor.gabbies_room_wallpanel_battery # Wall Hung Tablet running hadashboard and wallpanel
+#      - sensor.kids_motion_sensor_batt # Xiaomi Motion Sensor
+#      - sensor.kids_humidity_sensor_batt # Xiaomi Humidity/temp sensor
+#      - sensor.motion_sensor_kids_bathroom_battery #hue motion battery
+#
+#   humidity:
+#    name: Humidity
+#    entities:
+#      - sensor.thermostat_humidity
+#      - sensor.ha_humidity
+#      - sensor.humidity_kids_bathroom
+#      - sensor.humidity_master_bathroom
+#      - sensor.living_room_purifer_humd
+#      - sensor.master_bdrm_purifer_humd
+#
+#   motion_card:
+#    name: Motion
+#    entities:
+#      - binary_sensor.kitchen_motion # Xiaomi Motion Sensor
+#      - binary_sensor.hallway_motion
+#      - binary_sensor.laundry_room_motion # Xiaomi Motion Sensor
+#      - binary_sensor.kids_hallway_motion
+#      - binary_sensor.master_motion # Xiaomi Motion Sensor
+#      - binary_sensor.bedroom_motion
+#      - binary_sensor.gabbies_room_motion # Xiaomi Motion Sensor
+#      - binary_sensor.motion_sensor_kids_bathroom # Xiaomi Motion Sensor
+#      - binary_sensor.hue_motion_kids_bathroom #hue
+#      - binary_sensor.motion_sensor_master_bath # Xiaomi Motion Sensor
+#
+#   lux_card:
+#    name: House Light Levels
+#    entities:
+#      - sensor.bedroom_wallpanel_brightness
+#      - sensor.illumination_master_bedroom # Xiaomi Motion Sensor
+#      - sensor.master_hallway_motion_sensor_lux
+#      - sensor.illumination_motion_sensor_kitchen # Xiaomi Motion Sensor
+#      - sensor.illumination_motion_sensor_laundry # Xiaomi Motion Sensor
+#      - sensor.illumination_gabbies_room_motion_sensor # Xiaomi Motion Sensor
+#      - sensor.illumination_motion_sensor_kids_hallway # Xiaomi Motion Sensor
+#      - sensor.illumination_xiaomi_hub_kitchen # Xiaomi Gateway
+#      - sensor.illumination_kids_bathroom # Xiaomi Motion Sensor
+#      - sensor.illumination_master_bath # Xiaomi Motion Sensor
+#
+#   dimmers_status_card:
+#    name: Dimmers
+#    entities:
+#      - sensor.master_bathroom_dimmer_last_update
+#      - sensor.master_bathroom_dimmer_state
+#      - sensor.kitchen_table_dimmer_last_update
+#      - sensor.kitchen_table_dimmer_state
+#      - sensor.kids_bathroom_dimmer_last_update
+#      - sensor.kids_bathroom_dimmer_state
+#      - sensor.kitchen_led_dimmer_state
+#      - sensor.kitchen_blinds_state
+#      - sensor.kitchen_led_dimmer_last_update

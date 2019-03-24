@@ -23,19 +23,9 @@ homeassistant:
     switch.network_switch_home_assistant_server:
       friendly_name: HASS Server
       icon: mdi:server-network
-
-
-group:
-  DigitalLoggers_card:
-   control: hidden
-   name: Network Switch
-   entities:
-     - switch.network_switch_charter_modem
-     - switch.network_switch_unifi_router
-     - switch.network_switch_unifi_switch
-     - switch.network_switch_home_assistant_server
-     - switch.network_switch_blue_iris_server
-     - switch.network_switch_blue_iris_monitor
+    switch.network_switch_pi_falcon_player:
+      friendly_name: Falcon Player
+      icon: mdi:server-network
 
 switch:
   - platform: digitalloggers

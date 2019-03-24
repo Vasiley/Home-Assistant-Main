@@ -6,20 +6,6 @@ homeassistant:
     light.master_hallway_1:
       haaska_hidden: true     #hide single bulb its referred to as room name
 
-
-group:
-  master_hallway_card:
-    control: hidden
-    name: Master Hallway
-    entities:
-      - light.master_hallway
-      - sensor.motion_sensor_hallway_battery
-      - binary_sensor.hallway_motion
-      - sensor.hallway_temperature
-      - sensor.master_hallway_motion_sensor_lux
-      - automation.motion_master_hallway_motion_on
-      - automation.motion_master_hallway_motion_off
-
 automation:
   - alias: Motion Master Hallway Motion On
     initial_state: 'on'

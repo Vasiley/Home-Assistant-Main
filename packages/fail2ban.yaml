@@ -1,11 +1,3 @@
-group:
-  fail2ban_card:
-   name: Hackers
-   entities:
-     - sensor.hacks_failed_hassiptables
-     - sensor.hacks_failed_ssh
-     - sensor.total_bans_ip
-     - sensor.total_bans_ssh
 
 sensor:
   - platform: fail2ban
