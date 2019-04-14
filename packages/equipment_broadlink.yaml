@@ -31,7 +31,7 @@ media_player:
     unique_id: kids_room_tv
     device_code: 1000
     controller_send_service: switch.broadlink_send_packet_192_168_1_160
-    power_sensor: binary_sensor.esp_kids_tv_state
+    power_sensor: binary_sensor.esp_kids_tv_state_ping
 
 binary_sensor:
   - platform: template

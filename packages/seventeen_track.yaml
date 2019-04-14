@@ -1,0 +1,11 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: '17 track'
+
+sensor:
+  - platform: seventeentrack
+    username: !secret seventeentrack_EMAIL_ADDRESS
+    password: !secret seventeentrack_YOUR_PASSWORD

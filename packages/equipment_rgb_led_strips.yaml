@@ -111,12 +111,22 @@ light:
       - Breathe
 
 automation:
-  - alias: Kitchen Pantry Lights On with Dimmer
+################  Pantry lights ######################################  
+  - alias: Kitchen Pantry Lights On
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.kitchen_dimmer_test
         to: 'click_2'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_top
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_middle
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_bottom
+        to: 'on'
     action:
       - service: script.turn_on
         data_template:
@@ -137,17 +147,63 @@ automation:
                 script.led_pantry_white
               {% endif %}
 
-  - alias: Kitchen Pantry Lights Off with Dimmer
+  - alias: Kitchen Pantry Lights Off
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: sensor.kitchen_dimmer_test
         to: 'click_3'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_top
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_middle
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_pantry_bottom
+        to: 'off'
     action:
       - service: script.turn_on
         entity_id: script.led_pantry_off
 
-  - alias: Kitchen Cabinet Lights On with Dimmer
+############## Spice Cabinet ##########################################
+  - alias: Kitchen Spice Cabinets Lights On
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_spice_cabinet
+        to: 'on'
+    action:
+      - service: script.turn_on
+        data_template:
+          entity_id: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                script.led_spice_cabinet_yellow
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+                script.led_spice_cabinet_yellow
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+                script.led_spice_cabinet_yellow
+              {% elif is_state("input_boolean.boolean_early_morning", "on") %}
+                script.led_spice_cabinet_yellow
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+                script.led_spice_cabinet_white
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+                script.led_pantry_yellow
+              {% else %}
+                script.led_pantry_white
+              {% endif %}
+
+  - alias: Kitchen spice cabinet Lights Off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_spice_cabinet
+        to: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.led_spice_cabinet_off
+############## under cabinet leds  ####################
+  - alias: Kitchen UnderCabinet Lights On with Dimmer
     initial_state: 'on'
     trigger:
       - platform: state
@@ -173,7 +229,7 @@ automation:
                 script.led_white
               {% endif %}
 
-  - alias: Kitchen Pantry Lights Off with Dimmer
+  - alias: Kitchen UnderCabinet Lights Off with Dimmer
     initial_state: 'on'
     trigger:
       - platform: state
@@ -216,15 +272,21 @@ script:
           effect: Solid
           brightness: 255
           rgb_color: [ 255,255,255]
-      - delay: '00:10:00'
-      - service: light.turn_off
-        entity_id: light.kitchen_pantry
 
   led_john_deeer_bookshelf:
     sequence:
       - service: light.turn_on
         data:
           entity_id: light.john_deere_bookshelf
+          effect: Solid
+          brightness: 190
+          rgb_color: [255, 215, 255]
+
+  led_spice_cabinet_white:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.spice_cabinet
           effect: Solid
           brightness: 190
           rgb_color: [255, 215, 255]
@@ -246,9 +308,16 @@ script:
           effect: Solid
           brightness: 255
           rgb_color: [255,208,71]
-      - delay: '00:10:00'
-      - service: light.turn_off
-        entity_id: light.kitchen_pantry
+
+  led_spice_cabinet_yellow:
+    sequence:
+      - service: light.turn_on
+        data:
+          entity_id: light.spice_cabinet
+          effect: Solid
+          brightness: 255
+          rgb_color: [255,208,71]
+
 
   led_off:
     sequence:
@@ -264,3 +333,8 @@ script:
     sequence:
       - service: light.turn_off
         entity_id: light.john_deere_bookshelf
+
+  led_spice_cabinet_off:
+    sequence:
+      - service: light.turn_off
+        entity_id: light.spice_cabinet

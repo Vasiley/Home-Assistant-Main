@@ -10,7 +10,7 @@ homeassistant:
 
 media_player:
   - platform: samsungtv
-    host: 192.168.1.14
+    host: 192.168.1.82
     port: 8001
     name: Smart Tv
 

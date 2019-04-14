@@ -114,17 +114,18 @@ script:
             entity_id: light.lamps
             color_temp: 426
             brightness: 125
-        - service: light.turn_off
-          entity_id:
-            - light.living_room_lamp_1
-            - light.living_room_lamp_3
-            - light.living_room_lamp_4
+        # - delay: '00:00:30'
+        # - service: light.turn_off
+        #   entity_id:
+        #     - light.living_room_lamp_1
+        #     - light.living_room_lamp_3
+        #     - light.living_room_lamp_4
         - service: script.turn_on
           entity_id: script.blinds_halfway
         - service: script.turn_on
           entity_id: script.vas_dashboard
         - service: script.turn_on
-          entity_id: script.led_john_deeer_bookshelf_off                
+          entity_id: script.led_john_deeer_bookshelf_off
         - service: media_player.volume_set
           data_template:
             entity_id: media_player.ha_speaker

@@ -3,25 +3,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Kids Bathroom Room'
-    sensor.kids_bathroom_dimmer_battery:
-      icon: mdi:battery
-      friendly_name: Kids Bathroom Dimmer
-    sensor.kids_bathroom_dimmer_last_update:
-      icon: mdi:clock
-    sensor.kids_bathroom_dimmer_state:
-      icon: mdi:remote
-    sensor.kids_motion_sensor_batt:
-      icon: mdi:battery
-      unit_of_measurement: '%'
-    sensor.humidity_kids_bathroom:
-      friendly_name: Kids Bathroom Humidity
-      haaska_hidden: true
-    sensor.temperature_kids_bathroom:
-      friendly_name: Kids Bathroom Temperature
-      haaska_hidden: true
-    binary_sensor.motion_sensor_kids_bathroom:
-      haaska_hidden: true
-
     sensor.kids_humidity_sensor_batt:
       haaska_hidden: true
       friendly_name: Kids Bathroom Humidity Sensor
@@ -59,41 +40,6 @@ homeassistant:
 
 sensor:
       ######## Kids Bathroom
-  - platform: rest
-    resource: !secret dimmer_rest_27
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'kids_bathroom_dimmer_battery'
-  - platform: rest
-    resource: !secret dimmer_rest_27
-    value_template: '{{ value_json.state.buttonevent }}'
-    scan_interval: 1
-    name: 'Kids Bathroom Dimmer State'
-  - platform: template
-    sensors:
-      kids_bathroom_dimmer_state:
-        friendly_name: 'Kids Bath Dimmer Last Button Push'
-        value_template: >-
-                      {% if states('sensor.kids_bathroom_dimmer_state_2')[0] == "1" %}
-                        On
-                      {% elif states('sensor.kids_bathroom_dimmer_state_2')[0] == "4" %}
-                        Off
-                      {% else %}
-                        None
-                      {% endif %}
-  - platform: rest
-    resource: !secret dimmer_rest_27
-    value_template: '{{ value_json.state.lastupdated }}'
-    scan_interval: 10
-    name: 'Kids Bathroom Dimmer Last Update'
-  - platform: template
-    sensors:
-      kids_bathroom_dimmer_last_update:
-        friendly_name: 'Kids Bathroom Last Used'
-        value_template: >-
-          {{ as_timestamp(strptime(states('sensor.kids_bathroom_dimmer_last_update_2')[:19], '%Y-%m-%dT%X'))|timestamp_custom('%a, %B %d') }}
-
   - platform: template
     sensors:
       kids_motion_sensor_batt:
@@ -205,7 +151,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: light.kids_bathroom_vanity
+        entity_id: light.wemo_kids_bathroom_vanity
         to: 'on'
         for: '01:00:00'
     action:

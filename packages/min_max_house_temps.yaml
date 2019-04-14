@@ -5,7 +5,7 @@ sensor:
     name: House Avg Temperature
     entity_ids:
       - sensor.hallway_temperature
-      - sensor.gabbies_room_temperature  #Ecobee sensor
+      - sensor.kids_room_temperature  #Ecobee sensor
       - sensor.master_bedroom_temperature
       - sensor.living_room_temperature #Ecobee sensor
       - sensor.thermostat_temperature #Ecobee thermostat

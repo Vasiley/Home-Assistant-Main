@@ -2,203 +2,236 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'Gabbies Room'
+        package: 'kids_room Room'
+############# xiaomi_aqara #############
+# Door sensor
+    binary_sensor.door_window_sensor_kids_bedroom_door:
+      haaska_hidden: true
+      friendly_name: Kids Bedroom Door
+      device_class: door
+    sensor.kids_room_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kids Bedroom Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+# Motion Sensor
+    sensor.motion_sensor_kids_room_battery:
+      icon: mdi:battery
+      unit_of_measurement: '%'
+      friendly_name: Kids Room Motion Battery
+    sensor.illumination_kids_room_motion_sensor:
+      friendly_name: Kids Room Light Level
+      icon: mdi:theme-light-dark
+# Window Sensor
+    sensor.kids_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kids Bedroom Window Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_kids_room:
+      haaska_hidden: true
+      friendly_name: kids_room Window Sensor
+      device_class: window
+    sensor.kids_room_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: kids_room Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+
+############### Lights ##################################
     light.kids_main:
       haaska_name: Kids Light
       friendly_name: Kids Light
-    light.gabbies_light:
+    light.kids_room_light:
       haaska_name: Kids Lamp
       friendly_name: Kids Lamp
-    binary_sensor.gabbies_room_motion:
+    automation.kids_light_on:
+      friendly_name: Kids Room Light On
+      haaska_hidden: true
+    automation.kids_light_off:
+      friendly_name: Kids Light Off
+      haaska_hidden: true
+
+############## camera ############################
+    binary_sensor.kids_room_motion:
       haaska_hidden: true
       device_class: motion
-      friendly_name: Gabbies Room Motion
-    sensor.motion_sensor_gabbies_room_battery:
-      icon: mdi:battery
-      unit_of_measurement: '%'
-    sensor.illumination_gabbies_room_motion_sensor:
-      friendly_name: Gabbies Room Light Level
-      icon: mdi:theme-light-dark
-    sensor.gabbie_status:
-      friendly_name: Gabbie
-      icon: mdi:human-child
-      haaska_hidden: true
+      friendly_name: Kids Room Camera Motion
+
     sensor.kids_room_mode:
       friendly_name: Kids Room Mode
       icon: mdi:human-child
       haaska_hidden: true
+
+################## tv ##############################
     sensor.esp_kids_tv_state_wifi_signal:
       icon: mdi:signal
       friendly_name: Kids Tv State
-    sensor.esp_kids_blinds_wifi_signal:
-      icon: mdi:signal
-      friendly_name: Kids Blinds WIFI
-    input_boolean.boolean_gabbie_home:
-      friendly_name: Gabbie Home
-      haaska_hidden: true
-      icon: mdi:human-child
-      persistent: true
-    input_boolean.boolean_gabbie_awake:
-      friendly_name: Gabbie Awake
-      haaska_hidden: true
-      icon: mdi:sleep-off
-      persistent: true
-    input_boolean.boolean_gabbie_sleep:
-      friendly_name: Gabbie Sleep
-      haaska_hidden: true
-      icon: mdi:sleep
-      persistent: true
-    script.gabbies_bedtime:
-      friendly_name: Gabbies Bedtime
-      icon: mdi:sleep
-      haaska_name: Gabbies Bedtime
-    script.gabbies_awake:
-      friendly_name: Gabbie Awake
-      icon: mdi:sleep-off
-      haaska_name: Gabbie Awake
     script.watch_roku:
       friendly_name: Watch TV
       haaska_name: Watch TV
-    automation.gabbie_going_sleep:
-      friendly_name: Gabbie Going Asleep
+    script.reset_watchdog:
+      friendly_name: still watching tv
+      haaska_name: Still watching Tv
+
+############## Blinds ###########################
+    sensor.esp_kids_blinds_wifi_signal:
+      icon: mdi:signal
+      friendly_name: Kids Blinds WIFI
+    script.kids_room_blinds_closed:
+      friendly_name: Blinds Closed Kids Room
+      icon: mdi:blinds
       haaska_hidden: true
-    automation.gabbie_waking_up:
-      friendly_name: Gabbie Waking Up
+    script.kids_room_blinds_halfway:
+      friendly_name: Blinds Halfway Kids Room
+      icon: mdi:blinds
       haaska_hidden: true
-    automation.gabbie_home:
-      friendly_name: Gabbie Home
-      haaska_hidden: true
-    automation.gabbie_not_home:
-      friendly_name: Gabbie Gone
-      haaska_hidden: true
-    automation.kids_light_on:
-      friendly_name: Gabbies Light On
-      haaska_hidden: true
-    automation.kids_light_off:
-      friendly_name: Gabbies Light Off
+    script.kids_room_blinds_open:
+      friendly_name: Blinds Open Kids Room
+      icon: mdi:blinds
       haaska_hidden: true
 
+############## motion controls ############################
+    input_boolean.boolean_motion:
+      friendly_name: Kids Motion On/Off Status
+      haaska_hidden: true
+      icon: mdi:sleep
+      persistent: true
+    script.motion_disabled:
+      friendly_name: Kids Motion Disabled
+      icon: mdi:sleep
+      haaska_name: Kids Motion Disabled
+    script.motion_enabled:
+      friendly_name: Kids Motion Enabled
+      icon: mdi:sleep-off
+      haaska_name: Kids Motion Enabled
+    automation.motion_off:
+      friendly_name: Motion Off
+      haaska_hidden: true
+    automation.motion_on:
+      friendly_name: Motion On
+      haaska_hidden: true
+
+input_select:
+  kids_room_blinds_status:
+    name: Kids Room Blinds
+    options:
+     - Open
+     - Halfway
+     - Closed
 
 input_boolean:
-  boolean_gabbie_home:
+  boolean_motion:
+    initial: on
+  boolean_kids_tv_watchdog:
     initial: off
-  boolean_gabbie_sleep:
+  yes_still_awake:
     initial: off
-  boolean_gabbie_awake:
-    initial: off
+
+device_tracker:
+  - platform: ping
+    hosts:
+      esp_kids_tv_state_ping: 192.168.2.58
+    # consider_home: 60
+    # interval_seconds: 30
+    # count: 2
 
 sensor:
   - platform: template
     sensors:
-      gabbie_status:
-        value_template: '{% if is_state("input_boolean.boolean_gabbie_home", "on") %}Home{% else %}Gone{% endif %}'
+      motion_sensor_kids_room_battery:
+        friendly_name: 'Kids Room Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.kids_room_motion', 'battery_level') }}"
   - platform: template
     sensors:
-      kids_room_mode:
-        value_template: '{% if is_state("input_boolean.boolean_gabbie_sleep", "on") %}Sleep{% else %}Awake{% endif %}'
+      kids_room_sensor_batt:
+        friendly_name: 'Kids Bedroom Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kids_bedroom_door.attributes.battery_level }}"
   - platform: template
     sensors:
-      motion_sensor_gabbies_room_battery:
-        friendly_name: 'Gabbies Room Motion Sensor'
-        value_template: "{{ state_attr('binary_sensor.gabbies_room_motion', 'battery_level') }}"
+      kids_room_window_sensor_batt:
+        friendly_name: 'kids_room Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kids_room.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      kids_window_sensor_batt:
+        friendly_name: 'Kids Room Window Sensor'
+        value_template: "{{ state_attr('binary_sensor.door_window_sensor_kids_room', 'battery_level') }}"
+
+##################### Blinds #####################################################
   - platform: mqtt
     state_topic: "esp_kids_tv_state/Wifi Connect/wifi"
     unit_of_measurement: 'dbm'
     name: esp_kids_tv_state_wifi_signal
-
-
+  - platform: mqtt
+    state_topic: "esp_blindskids/Wifi Connect/wifi"
+    unit_of_measurement: 'dbm'
+    name: esp_kids_blinds_wifi_signal
+  - platform: template
+    sensors:
+      kids_room_blinds_state:
+        friendly_name: 'Kids Room Blinds Status'
+        value_template: "{{ states('input_select.kids_room_blinds_status') }}"
 
 automation:
-  - alias: 'gabbie_home'
+###################### motion on and off for lights ###############################
+  - alias: 'motion_off'
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: input_boolean.boolean_gabbie_home
-        to: 'on'
-    condition:
-      - condition: state
-        entity_id: input_boolean.ha_start
-        state: 'off'
-    action:
-      - service: tts.google_say
-        data:
-          entity_id:
-            - media_player.ha_speaker
-            - media_player.kodi
-          message: 'Welcome Home Gabbie'
-
-  - alias: 'gabbie_not_home'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.boolean_gabbie_home
+        entity_id: input_boolean.boolean_motion
         to: 'off'
-    condition:
-      - condition: state
-        entity_id: input_boolean.ha_start
-        state: 'off'
-    action:
-       - service: tts.google_say
-         data:
-           entity_id:
-             - media_player.ha_speaker
-             - media_player.kids_room_cast
-           message: 'Goodbye Gabbie'
-
-  - alias: 'gabbie_going_sleep'
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.boolean_gabbie_sleep
-        to: 'on'
       - platform: time
         at: '21:00:00'
-    condition:
-      - condition: state
-        entity_id: input_boolean.ha_start
-        state: 'off'
+      - platform: state
+        entity_id: sensor.kids_room_dimmer
+        to: 'click_4'
     action:
        - service: tts.google_say
          data:
            entity_id:
-             - media_player.ha_speaker
              - media_player.kids_room_cast
-           message: 'Goodnight Gabbie'
+           message: 'Motion Disabled'
        - service: script.turn_on
-         entity_id: script.gabbies_bedtime
+         entity_id: script.motion_disabled
+       - service: input_boolean.turn_off
+         entity_id: input_boolean.boolean_motion
 
-  - alias: 'gabbie_waking_up'
+  - alias: 'motion_on'
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: input_boolean.boolean_gabbie_awake
+        entity_id: input_boolean.boolean_motion
         to: 'on'
       - platform: time
         at: '08:00:00'
-    condition:
-      - condition: state
-        entity_id: input_boolean.ha_start
-        state: 'off'
+      - platform: state
+        entity_id: sensor.kids_room_dimmer
+        to: 'click_1'
     action:
       - service: tts.google_say
         data:
           entity_id:
-            - media_player.ha_speaker
             - media_player.kids_room_cast
-          message: 'Goodmorning Gabbie'
+          message: 'Motion is Enabled'
       - service: script.turn_on
-        entity_id: script.gabbies_awake
+        entity_id: script.motion_enabled
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_motion
 
-
+################# kids light controls ##########################################
   - alias: 'kids_light_on'
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.gabbies_room_motion
+        entity_id: binary_sensor.kids_room_motion
         to: 'on'
+      - platform: state
+        entity_id: sensor.kids_room_dimmer
+        to: 'click_2'
     condition:
       - condition: state
-        entity_id: input_boolean.boolean_gabbie_awake
+        entity_id: input_boolean.boolean_motion
         state: 'on'
     action:
        - service: light.turn_on
@@ -227,12 +260,15 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.gabbies_room_motion
+        entity_id: binary_sensor.kids_room_motion
         to: 'off'
         for: '00:05:00'
+      - platform: state
+        entity_id: sensor.kids_room_dimmer
+        to: 'click_3'
     condition:
       - condition: state
-        entity_id: input_boolean.boolean_gabbie_awake
+        entity_id: input_boolean.boolean_motion
         state: 'on'
     action:
        - service: light.turn_off
@@ -240,6 +276,7 @@ automation:
            - light.gabbies_light
            - light.kids_main
 
+############ when kids turn on xbox tv changes input and vice verse when turned off
   - alias: 'kids_room_xbox_on'
     initial_state: 'on'
     trigger:
@@ -267,11 +304,115 @@ automation:
           entity_id: media_player.kids_room_tv
           source: HDMI
 
+############### automations for tv watchdog ###################################
+  - alias: 'start_watchdog'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: media_player.kids_room_tv
+        to: 'on'
+        for: '00:02:00'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_kids_tv_watchdog
+
+  - alias: 'stop_watchdog'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: media_player.kids_room_tv
+        to: 'off'
+        for: '00:00:60'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_kids_tv_watchdog
+
+  - alias: 'kids_room_tv_watchdog'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_kids_tv_watchdog
+        to: 'on'
+        for: '01:00:00'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.kids_room_cast
+          message: 'Are you still watching tv you have 5 minutes to respond'
+      - delay: '00:05:00'
+      - service: script.turn_on
+        data_template:
+          entity_id: >
+             {% if is_state("input_boolean.yes_still_awake", "on") %}
+               script.reset_watchdog
+             {% else %}
+               script.kids_tv_off
+             {% endif %}
+
+################ automations for kids room blinds #################################
+  - alias: Blinds Open kids room
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_room_blinds_state
+        to: 'Open'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Home'
+    condition:
+      - condition: state
+        entity_id: sensor.house_mode_state
+        state: 'Home'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_room_blinds_open
+
+  - alias: Blinds Halfway kids room
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_room_blinds_state
+        to: 'Halfway'
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+      - platform: state
+        entity_id: input_boolean.boolean_evening_time
+        to: 'on'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_room_blinds_halfway
+
+  - alias: Blinds Closed kids room
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_room_blinds_state
+        to: 'Closed'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Sleep'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Nap Time'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Away'
+      - platform: state
+        entity_id: sensor.house_mode_state
+        to: 'Movie Time'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_room_blinds_closed
+
+
 script:
-  gabbies_bedtime:
+################### scripts for motion controls ###################################
+  motion_disabled:
     sequence:
       - service: light.turn_on
-        entity_id: light.gabbies_light
+        entity_id: light.kids_room_light
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_gabbie_sleep
       - service: input_boolean.turn_off
@@ -282,14 +423,14 @@ script:
       - service: light.turn_off
         data:
           entity_id:
-            - light.gabbies_light
+            - light.kids_room_light
             - light.kids_main
           transition: 45
 
-  gabbies_awake:
+  motion_enabled:
     sequence:
       - service: light.turn_on
-        entity_id: light.gabbies_light
+        entity_id: light.kids_room_light
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_gabbie_sleep
       - service: input_boolean.turn_on
@@ -297,11 +438,12 @@ script:
       - delay: '00:00:10'
       - service: light.turn_off
         data:
-          entity_id: light.gabbies_light
+          entity_id: light.kids_room_light
           transition: 180
       - service: switch.turn_off
         entity_id: switch.wemo_kids_fan
 
+##############3 watch roku script ###########################################
   watch_roku:
     sequence:
       - service: media_player.turn_on
@@ -311,3 +453,57 @@ script:
         data:
           entity_id: media_player.kids_room_tv
           source: HDMI
+################# Kids Tv Watchdog Scripts ########################################
+  reset_watchdog:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.yes_still_awake
+      - delay: '00:00:10'
+      - service: input_boolean.turn_off
+        entity_id:
+          - input_boolean.boolean_kids_tv_watchdog
+          - input_boolean.yes_still_awake
+      - delay: '00:02:00'
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_kids_tv_watchdog
+
+  kids_tv_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.yes_still_awake
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_kids_tv_watchdog
+      - service: media_player.turn_off
+        entity_id: media_player.kids_room_tv
+
+######################## Kids Bedroom Blinds Scripts ################################
+  kids_room_blinds_closed:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kids_room_blinds_status
+          option: 'Closed'
+      - service: shell_command.kids_room_blinds_closed
+
+  kids_room_blinds_halfway:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kids_room_blinds_status
+          option: 'Halfway'
+      - service: shell_command.kids_room_blinds_halfway
+
+  kids_room_blinds_open:
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.kids_room_blinds_status
+          option: 'Open'
+      - service: shell_command.kids_room_blinds_open
+
+shell_command:
+  kids_room_blinds_open: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,14,0"
+  kids_room_blinds_halfway: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,14,50"
+  kids_room_blinds_closed: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,14,160"

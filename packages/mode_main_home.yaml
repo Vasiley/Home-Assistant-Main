@@ -121,7 +121,6 @@ script:
       - service: light.turn_on
         data_template:
           entity_id:
-            - light.lamps
             - light.kitchen
             - light.master_hallway
             - light.kids_hallway
@@ -135,6 +134,8 @@ script:
           - light.master_hallway
           - light.kitchen
           - light.kids_hallway
+      - service: light.turn_on
+        entity_id: light.lamps
       - service: media_player.volume_set
         data_template:
           entity_id: media_player.ha_speaker

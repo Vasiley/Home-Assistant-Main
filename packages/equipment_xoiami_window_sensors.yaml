@@ -4,22 +4,13 @@ homeassistant:
       customize: &customize
         package: 'Window Sensors'
 
-    binary_sensor.door_window_sensor_ruths_room:
+    binary_sensor.door_window_sensor_ruths_room_window:
       haaska_hidden: true
       friendly_name: Ruths Window Sensor
       device_class: window
     sensor.ruths_window_sensor_batt:
       haaska_hidden: true
       friendly_name: Ruths Window Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
-    binary_sensor.door_window_sensor_gabbies_room:
-      haaska_hidden: true
-      friendly_name: Gabbies Window Sensor
-      device_class: window
-    sensor.gabbies_window_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Gabbies Window Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
     binary_sensor.door_window_sensor_kitchen_sink:
@@ -67,6 +58,15 @@ homeassistant:
       friendly_name: LV Front Window Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
+    binary_sensor.door_window_sensor_lv_rear_dawns_side:
+      haaska_hidden: true
+      friendly_name: LV Rear Dawns Side Window
+      device_class: window
+    sensor.door_window_sensor_lv_rear_dawns_side_batt:
+      haaska_hidden: true
+      friendly_name: LV Rear Dawns Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
     sensor.open_window_count:
       haaska_hidden: true
       friendly_name: Open Window Count
@@ -75,21 +75,19 @@ homeassistant:
 
 
 sensor:
+############################### kids room ###############################################################
+  - platform: template
+    sensors:
+      kitchen_sink_window_sensor_batt:
+        friendly_name: 'kitchen_sink_window_sensor_batt'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kitchen_sink.attributes.battery_level }}"
+
+
   - platform: template
     sensors:
       ruths_window_sensor_batt:
         friendly_name: 'Ruths Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      gabbies_window_sensor_batt:
-        friendly_name: 'Gabbies Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_gabbies_room.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      kitchen_sink_window_sensor_batt:
-        friendly_name: 'Gabbies Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_kitchen_sink.attributes.battery_level }}"
+        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_window.attributes.battery_level }}"
   - platform: template
     sensors:
       kitchen_table_window_sensor_batt:
@@ -110,9 +108,16 @@ sensor:
       livingroom_front_window_sensor_batt:
         friendly_name: 'Living Room Front Window Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      door_window_sensor_lv_rear_dawns_side_batt:
+        friendly_name: 'Living Room Front Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_lv_rear_dawns_side.attributes.battery_level }}"
+
 
   - platform: template
     sensors:
       open_window_count:
+        entity_id: sensor.time
         value_template: >-
           {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'window') | list | count }}

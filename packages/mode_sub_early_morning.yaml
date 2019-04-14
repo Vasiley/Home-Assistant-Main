@@ -114,11 +114,9 @@ automation:
       - service: light.turn_on
         data:
           entity_id:
-            - light.herbs_lamp
-            - light.living_room_lamp_2
-            - light.living_room_lamp_5
-          color_temp: 200
-          brightness: 175
+            - light.lamps
+          # color_temp: 200
+          # brightness: 175
       - service: rest_command.no_motion
       - service: rest_command.no_motion
       - service: climate.set_hold_mode

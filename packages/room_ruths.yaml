@@ -32,7 +32,7 @@ homeassistant:
 
 input_select:
   ruths_blinds_status:
-    name: Ruths Blinds
+    name: Ruths Room Blinds
     options:
      - Open
      - Halfway
@@ -43,6 +43,14 @@ sensor:
     state_topic: "ruthsblinds/Blinds Wifi/wifi"
     unit_of_measurement: 'dbm'
     name: Ruths Blinds Wifi Signal
+
+  - platform: template
+    sensors:
+      ruths_blinds_state:
+        friendly_name: 'Ruths Room Blinds Status'
+        value_template: "{{ states('input_select.ruths_blinds_status') }}"
+
+
 
 automation:
   - alias: Blinds Open Ruths

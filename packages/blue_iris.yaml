@@ -35,7 +35,10 @@ homeassistant:
       friendly_name: Master Bedroom Camera
       device_class: motion
     binary_sensor.motion_tablet_gb_camera:
-      friendly_name: Gabbies Bedroom Camera
+      friendly_name: Kids Room Dash Bedroom Camera
+      device_class: motion
+    binary_sensor.motion_kids_bedroom:
+      friendly_name: Kids Room Camera
       device_class: motion
     automation.flash_red_motion_shed:
       friendly_name: Motion Front Door Outside
@@ -141,6 +144,12 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
 
+  - platform: mqtt
+    state_topic: "blue_iris/kids_room_cam/state"
+    name: motion_kids_bedroom
+    payload_on: "on"
+    payload_off: "off"
+
   ######################################################
 # Flash Door lamp when motion at shed camera and backdoor
 ######################################################
@@ -151,6 +160,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_shed
         to: 'on'
+        for: '00:00:05'
     condition:
       - condition: state
         entity_id: input_boolean.boolean_home
@@ -184,6 +194,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_driveway
         to: 'on'
+        for: '00:00:05'
     condition:
       - condition: state
         entity_id: input_boolean.boolean_home
@@ -218,6 +229,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_backdoor
         to: 'on'
+        for: '00:00:05'
     condition:
       - condition: state
         entity_id: input_boolean.boolean_home
@@ -253,6 +265,7 @@ automation:
       - platform: state
         entity_id: binary_sensor.motion_outdoor_swamp
         to: 'on'
+        for: '00:00:05'
     condition:
       - condition: state
         entity_id: input_boolean.boolean_home

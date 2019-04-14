@@ -115,8 +115,6 @@ automation:
                 script.led_yellow
               {% elif is_state("input_boolean.boolean_movie_time", "on") %}
                 script.led_yellow
-              {% elif is_state("input_boolean.boolean_sleep", "on") %}
-                script.led_yellow
               {% elif is_state("input_boolean.boolean_early_morning", "on") %}
                 script.led_yellow
               {% elif is_state("input_boolean.boolean_home", "on") %}

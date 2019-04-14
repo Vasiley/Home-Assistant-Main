@@ -21,7 +21,13 @@ homeassistant:
     sensor.dark_sky_precip_probability:
       friendly_name: Percip Probability
       haaska_hidden: true
-
+    sensor.dark_sky_daytime_high_temperature_0d:
+      friendly_name: High Today
+      haaska_hidden: true
+    sensor.dark_sky_overnight_low_temperature_0d:
+      friendly_name: Low Today
+      haaska_hidden: true
+        
 camera:
   - platform: generic
     still_image_url: !secret radar
@@ -51,8 +57,6 @@ sensor:
       - daily_summary
       - temperature
       - apparent_temperature
-      - temperature_min
-      - temperature_max
       - humidity
       - precip_probability
       - precip_intensity

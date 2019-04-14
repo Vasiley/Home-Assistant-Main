@@ -6,10 +6,10 @@ homeassistant:
       friendly_name: Dawn
 
 camera:
-  - platform: generic
-    still_image_url: http://192.168.1.80:81/image/cam2
-    stream_source: http://192.168.1.80:81/h264/cam2/temp.m3u8
-    name: test
+  # - platform: generic
+  #   still_image_url: http://192.168.1.80:81/image/cam2
+  #   stream_source: !secret blue_iris_new_stream
+  #   name: test
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
@@ -73,6 +73,13 @@ camera:
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam9/video.mjpeg
     name: Gabbie Cam
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    authentication: basic
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam10/video.mjpeg
+    name: Kids Room Cam
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
     authentication: basic

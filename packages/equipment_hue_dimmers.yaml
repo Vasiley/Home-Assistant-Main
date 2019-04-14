@@ -8,11 +8,38 @@ homeassistant:
     sensor.kitchen_led_dimmer_battery:
       icon: mdi:battery
       friendly_name: Kitchen Led Dimmer
+      haaska_hidden: true
     sensor.kitchen_undercabinet_led_dimmer_state:
       icon: mdi:clock
+      haaska_hidden: true
     sensor.kitchen_led_dimmer_state:
       icon: mdi:remote
+      haaska_hidden: true
+    sensor.humidity_kids_bathroom:
+      friendly_name: Kids Bathroom Humidity
+      haaska_hidden: true
+    sensor.temperature_kids_bathroom:
+      friendly_name: Kids Bathroom Temperature
+      haaska_hidden: true
+    binary_sensor.motion_sensor_kids_bathroom:
+      haaska_hidden: true
 
+################# Kids room dimmer ###################
+    sensor.kids_room_dimmer_state_2:
+      icon: mdi:remote
+      haaska_hidden: true
+    sensor.kids_room_dimmer_battery:
+      icon: mdi:battery
+      friendly_name: Kids Room Dimmer Battery
+      haaska_hidden: true
+    sensor.kids_room_dimmer_last_used:
+      icon: mdi:clock
+      friendly_name: Kids room Dimmer Last Update
+      haaska_hidden: true
+    sensor.kids_room_dimmer_last_update:
+      icon: mdi:clock
+    sensor.kids_room_dimmer_state:
+      icon: mdi:remote
 ###### Hue Dimmer for Led Controls Kitchen ################
 sensor:
   - platform: rest
@@ -180,3 +207,55 @@ sensor:
       master_humidity_sensor_batt:
         friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
         value_template: "{{ state_attr('sensor.humidity_master_bathroom', 'battery_level') }}"
+
+####################### kids room ###########################################################
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'kids_room_dimmer_battery'
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.buttonevent }}'
+    scan_interval: 1
+    name: 'Kids room Dimmer State'
+  - platform: template
+    sensors:
+      kids_room_dimmer_state_2:
+        friendly_name: 'Kids room Dimmer Last Button Push'
+        value_template: >-
+                      {% if states('sensor.kids_room_dimmer_state')[0] == "1" %}
+                        Motion On
+                      {% elif states('sensor.kids_room_dimmer_state')[0] == "2" %}
+                        Lights On
+                      {% elif states('sensor.kids_room_dimmer_state')[0] == "3" %}
+                        Lights Off
+                      {% elif states('sensor.kids_room_dimmer_state')[0] == "4" %}
+                        Motion Off
+                      {% else %}
+                        None
+                      {% endif %}
+  - platform: rest
+    name: Kids Room Dimmer
+    resource: !secret dimmer_rest_27
+    scan_interval: 2
+    value_template: >-
+      {% set last_updated = as_timestamp(value_json.state.lastupdated ~ '-00:00')|int %}
+      {% if as_timestamp(now())|int - last_updated > 10 %}
+        idle
+      {% else %}
+        {% set button_event = value_json.state.buttonevent|string %}
+        {{ ('hold' if button_event[3]|int % 2 == 1 else 'click') ~ '_' ~ button_event[0] }}
+      {% endif %}
+  - platform: rest
+    resource: !secret dimmer_rest_27
+    value_template: '{{ value_json.state.lastupdated }}'
+    scan_interval: 10
+    name: 'Kids room Dimmer Last Update'
+  - platform: template
+    sensors:
+      kids_room_dimmer_last_used:
+        friendly_name: 'Kids room Last Used'
+        value_template: >-
+          {{ as_timestamp(strptime(states('sensor.kids_room_dimmer_last_update')[:19], '%Y-%m-%dT%X'))|timestamp_custom('%a, %B %d') }}

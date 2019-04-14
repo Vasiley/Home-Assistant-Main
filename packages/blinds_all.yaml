@@ -24,10 +24,7 @@ homeassistant:
       icon: mdi:signal
       friendly_name: Couch Blinds WIFI
       haaska_hidden: true
-    sensor.kids_room_blinds_controller_wifi_signal:
-      icon: mdi:signal
-      friendly_name: Kids Room Blinds WIFI
-      haaska_hidden: true
+
     script.blinds_closed_kitchen:
       friendly_name: Blinds Closed Kitchen
       icon: mdi:blinds
@@ -52,18 +49,7 @@ homeassistant:
       friendly_name: Blinds Open Master
       icon: mdi:blinds
       haaska_hidden: true
-    script.kids_room_blinds_closed:
-      friendly_name: Blinds Closed Kids Room
-      icon: mdi:blinds
-      haaska_hidden: true
-    script.kids_room_blinds_halfway:
-      friendly_name: Blinds Halfway Kids Room
-      icon: mdi:blinds
-      haaska_hidden: true
-    script.kids_room_blinds_open:
-      friendly_name: Blinds Open Kids Room
-      icon: mdi:blinds
-      haaska_hidden: true
+
     script.blinds_closed:
       friendly_name: All Blinds Closed
       icon: mdi:blinds
@@ -124,12 +110,8 @@ input_select:
      - Open
      - Halfway
      - Closed
-  kids_room_blinds_status:
-    name: Kids Room Blinds
-    options:
-     - Open
-     - Halfway
-     - Closed
+
+
 
 sensor:
   - platform: template
@@ -152,16 +134,6 @@ sensor:
       master_blinds_state:
         friendly_name: 'Master Blinds Status'
         value_template: "{{ states('input_select.master_blinds_status') }}"
-  - platform: template
-    sensors:
-      ruths_blinds_state:
-        friendly_name: 'Master Blinds Status'
-        value_template: "{{ states('input_select.ruths_blinds_status') }}"
-  - platform: template
-    sensors:
-      kids_room_blinds_state:
-        friendly_name: 'Kids Room Blinds Status'
-        value_template: "{{ states('input_select.kids_room_blinds_status') }}"
 
   - platform: mqtt
     state_topic: "kitchenblinds/Blinds Wifi/wifi"
@@ -193,10 +165,7 @@ sensor:
     unit_of_measurement: 'dbm'
     name: Master Blinds Controller Herbs Wifi Signal
 
-  - platform: mqtt
-    state_topic: "esp_blinds_kids_room/Wifi Connect/wifi"
-    unit_of_measurement: 'dbm'
-    name: esp_kids_blinds_wifi_signal
+
 
 
 automation:
@@ -431,61 +400,7 @@ automation:
       - service: script.turn_on
         entity_id: script.master_blinds_closed
 
-################ automations for kids room blinds #################################
-  - alias: Blinds Open kids room
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kids_room_blinds_state
-        to: 'Open'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Home'
-    condition:
-      - condition: state
-        entity_id: sensor.house_mode_state
-        state: 'Home'
-    action:
-      - service: script.turn_on
-        entity_id: script.kids_room_blinds_open
 
-  - alias: Blinds Halfway kids room
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kids_room_blinds_state
-        to: 'Halfway'
-      - platform: state
-        entity_id: input_boolean.boolean_early_morning
-        to: 'on'
-      - platform: state
-        entity_id: input_boolean.boolean_evening_time
-        to: 'on'
-    action:
-      - service: script.turn_on
-        entity_id: script.kids_room_blinds_halfway
-
-  - alias: Blinds Closed kids room
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.kids_room_blinds_state
-        to: 'Closed'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Sleep'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Nap Time'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Away'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Movie Time'
-    action:
-      - service: script.turn_on
-        entity_id: script.kids_room_blinds_closed
 
 
 script:
@@ -699,30 +614,7 @@ script:
       - service: shell_command.master1_blinds_front_open
       - service: shell_command.master2_blinds_front_open
 
-######################## Kids Bedroom Blinds  ################################
-  kids_room_blinds_closed:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Closed'
-      - service: shell_command.kids_room_blinds_closed
 
-  kids_room_blinds_halfway:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Halfway'
-      - service: shell_command.kids_room_blinds_halfway
-
-  kids_room_blinds_open:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Open'
-      - service: shell_command.kids_room_blinds_open
 
 shell_command:
   kitchen_blinds_closed: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,0,35"
@@ -746,6 +638,3 @@ shell_command:
   master2_blinds_front_closed: "curl -sS -X GET http://192.168.2.20/control?cmd=Servo,1,14,180"
   master2_blinds_front_halfway: "curl -sS -X GET http://192.168.2.20/control?cmd=Servo,1,14,90"
   master2_blinds_front_open: "curl -sS -X GET http://192.168.2.20/control?cmd=Servo,1,14,0"
-  kids_room_blinds_open: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,14,180"
-  kids_room_blinds_halfway: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,90,"
-  kids_room_blinds_closed: "curl -sS -X GET http://192.168.2.61/control?cmd=Servo,1,14,0"

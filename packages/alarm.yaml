@@ -31,7 +31,7 @@ automation:
       - platform: state
         entity_id:
           - binary_sensor.motion_sensor_kids_bathroom
-          - binary_sensor.gabbies_room_motion
+          - binary_sensor.kids_room_motion
           - binary_sensor.kids_hallway_motion
           - binary_sensor.laundry_room_motion
           - binary_sensor.kitchen_motion
@@ -41,6 +41,8 @@ automation:
           - binary_sensor.motion_tablet_camera
           - binary_sensor.motion_master_bedroom
           - binary_sensor.motion_frontdoor
+          - binary_sensor.motion_kids_room_cam
+          - binary_sensor.motion_sensor_kids_bathroom
         to: 'on'
     condition:
       condition: or
@@ -64,7 +66,7 @@ automation:
           volume_level: '{{ states.input_number.alarm_mode_chromecast_masterbedroom.state }}'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast, media_player.kids_room_cast
           message: >
             There is motion in the {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }}
       - service: light.turn_on
@@ -91,7 +93,7 @@ automation:
           - binary_sensor.door_window_sensor_front_door
           - binary_sensor.door_window_sensor_back_door
           - binary_sensor.door_window_sensor_shed_door
-          - binary_sensor.door_window_sensor_gabbies_room
+          - binary_sensor.door_window_sensor_kids_room
           - binary_sensor.door_window_sensor_ruths_room
           - binary_sensor.door_window_sensor_kitchen_sink
           - binary_sensor.door_window_sensor_kitchen_table
@@ -113,7 +115,7 @@ automation:
         entity_id: alarm_control_panel.ha_alarm
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast, media_player.kids_room_cast
           message: >
             The {{ states[trigger.entity_id.split(".")[0]][ trigger.entity_id.split(".")[1]].name }} just opened!
 
@@ -122,12 +124,18 @@ automation:
           gw_mac: !secret xiaomi_mac
           ringtone_id: 1
           ringtone_vol: 100
+      - service: xiaomi_aqara.play_ringtone
+        data:
+          gw_mac: !secret xiaomi_mac_2
+          ringtone_id: 1
+          ringtone_vol: 100
       - service: light.turn_on
         data:
-          entity_id: light.kitchen_under_cabinet
-          # effect: solid
-          brightness: 255
-          effect: "police all"
+          entity_id: group.all_lights
+          flash: short
+      - service: script.turn_on
+        data:
+          entity_id: script.police_lights_on
       - service: notify.pushbullet
         data:
           message: 'An alarm has been Triggered!'
@@ -141,5 +149,6 @@ sensor:
   - platform: template
     sensors:
       motion_count:
+        entity_id: sensor.time
         value_template: >-
           {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'motion') | list | count }}

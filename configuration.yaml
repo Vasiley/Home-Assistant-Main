@@ -31,7 +31,7 @@ sun:
 
 sensor: !include sensors.yaml
 
-group: !include tabs.yaml
+#group: !include tabs.yaml
 
 mqtt:
   broker: 192.168.1.153
@@ -50,6 +50,7 @@ mqtt_eventstream:
   ignore_event:
     - call_service
     - state_changed
+
 
 intent_script: !include intent_scripts.yaml
 alexa:
@@ -102,4 +103,4 @@ speedtestdotnet:
     - upload
 
 discovery:
-#stream:
+stream:

@@ -21,7 +21,7 @@ group:
       - binary_sensor.door_window_sensor_master_bedroom_door
       - binary_sensor.door_window_sensor_master_closet
       - binary_sensor.door_window_sensor_shed_door
-      - binary_sensor.door_window_sensor_gabbies_room
+      - binary_sensor.door_window_sensor_kids_room
       - binary_sensor.door_window_sensor_ruths_room
       - binary_sensor.door_window_sensor_kitchen_sink
       - binary_sensor.door_window_sensor_kitchen_table
@@ -133,7 +133,7 @@ automation:
           - binary_sensor.door_window_sensor_shed_door
           - binary_sensor.master_motion
           - binary_sensor.motion_tablet_camera
-          - binary_sensor.door_window_sensor_gabbies_room
+          - binary_sensor.door_window_sensor_kids_room
           - binary_sensor.door_window_sensor_ruths_room
           - binary_sensor.door_window_sensor_kitchen_sink
           - binary_sensor.door_window_sensor_kitchen_table

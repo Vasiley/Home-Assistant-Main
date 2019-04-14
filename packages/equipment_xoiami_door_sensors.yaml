@@ -58,15 +58,6 @@ homeassistant:
       friendly_name: Master Bath Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
-    binary_sensor.door_window_sensor_kids_bedroom_door:
-      haaska_hidden: true
-      friendly_name: Kids Bedroom Door
-      device_class: door
-    sensor.kids_room_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Kids Bedroom Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
     binary_sensor.door_window_sensor_kids_bathroom_door:
       haaska_hidden: true
       friendly_name: Kids Bathroom Door
@@ -136,11 +127,7 @@ sensor:
       master_bath_sensor_batt:
         friendly_name: 'Master Bath Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_master_bath_door.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      kids_room_sensor_batt:
-        friendly_name: 'Kids Bedroom Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_kids_bedroom_door.attributes.battery_level }}"
+
   - platform: template
     sensors:
       kids_bathroom_sensor_batt:
@@ -151,9 +138,11 @@ sensor:
       ruths_room_sensor_batt:
         friendly_name: 'Ruths Room Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_door.attributes.battery_level }}"
+
 ###### counter for open doors ###################
   - platform: template
     sensors:
       open_door_count:
+        entity_id: sensor.time
         value_template: >-
           {{ states.binary_sensor | selectattr('state', 'eq', 'on') | selectattr('attributes.device_class', 'eq', 'door') | list | count }}

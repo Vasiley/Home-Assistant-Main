@@ -30,13 +30,9 @@ automation:
         data:
           entity_id: alarm_control_panel.ha_alarm
           code: !secret alarm_code
-      - service: light.turn_on
+      - service: script.turn_on
         data:
-          entity_id: light.kitchen_under_cabinet
-          effect: "solid"
-          brightness: 255
-      # - service: light.turn_off
-      #   entity_id: light.kitchen_under_cabinet
+          entity_id: script.police_lights_off
       - service: light.turn_off
         entity_id: light.light_bulb
       - service: automation.turn_off

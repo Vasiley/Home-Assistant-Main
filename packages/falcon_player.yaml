@@ -1,0 +1,64 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'falcon_player'
+
+sensor:
+  - platform: mqtt
+    name: "FPP Repeat Status"
+    state_topic: "HA/falcon/player/FPP/playlist/repeat/status"
+  - platform: mqtt
+    name: "FPP Status"
+    state_topic: "HA/falcon/player/FPP/status"
+  - platform: mqtt
+    name: "FPP Version"
+    state_topic: "HA/falcon/player/FPP/version"
+  - platform: mqtt
+    name: "Playlist Playing"
+    state_topic: "HA/falcon/player/FPP/playlist/name/status"
+  - platform: template
+    sensors:
+      current_playlist:
+        value_template: >-
+          {% if is_state("sensor.playlist_playing", "police lights") %}
+             Police Lights
+          {% else %}
+             None
+          {% endif %}
+
+
+######## for alarm purpose undercabinet lights and bookself lights run a sequence for police lights
+script:
+  police_lights_on:
+    sequence:
+      - delay: '00:00:01'
+      - service: automation.turn_off
+        entity_id: automation.motion_kitchen_main_light_on
+      - service: light.turn_off
+        entity_id:
+          - light.kitchen_under_cabinet
+          - light.john_deere_bookshelf
+      - service: mqtt.publish
+        data:
+          topic: "HA/falcon/player/FPP/playlist/name/set"
+          payload: 'police lights'
+      - service: mqtt.publish
+        data:
+          topic: "HA/falcon/player/FPP/playlist/repeat/set"
+          payload: '5'
+
+  police_lights_off:
+    sequence:
+      - delay: '00:00:01'
+      - service: automation.turn_on
+        entity_id: automation.motion_kitchen_main_light_on
+      - service: light.turn_on
+        entity_id:
+          - light.kitchen_under_cabinet
+          - light.john_deere_bookshelf
+      - service: mqtt.publish
+        data:
+          topic: "HA/falcon/player/FPP/playlist/repeat/set"
+          payload: '0'              
