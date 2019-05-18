@@ -4,15 +4,8 @@ homeassistant:
       customize: &customize
         package: 'Door Sensors'
 
-    binary_sensor.door_window_sensor_front_door:
-      haaska_hidden: true
-      friendly_name: Front Door
-      device_class: door
-    sensor.front_door_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Front Door Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
+
+
     binary_sensor.door_window_sensor_back_door:
       haaska_hidden: true
       friendly_name: Back Door
@@ -20,24 +13,6 @@ homeassistant:
     sensor.back_door_sensor_batt:
       haaska_hidden: true
       friendly_name: Back Door Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
-    binary_sensor.door_window_sensor_master_closet:
-      friendly_name: Master Closet
-      haaska_hidden: true
-      device_class: door
-    sensor.master_closet_door_sensor_batt:
-      friendly_name: Master Closet Sensor Battery
-      haaska_hidden: true
-      unit_of_measurement: '%'
-      icon: mdi:battery
-    binary_sensor.door_window_sensor_shed_door:
-      haaska_hidden: true
-      friendly_name: Shed Door
-      device_class: door
-    sensor.shed_door_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Shed Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
     binary_sensor.door_window_sensor_master_bedroom_door:
@@ -58,24 +33,6 @@ homeassistant:
       friendly_name: Master Bath Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
-    binary_sensor.door_window_sensor_kids_bathroom_door:
-      haaska_hidden: true
-      friendly_name: Kids Bathroom Door
-      device_class: door
-    sensor.kids_bathroom_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Kids Bathroom Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
-    binary_sensor.door_window_sensor_ruths_room_door:
-      haaska_hidden: true
-      friendly_name: Ruths Room Door
-      device_class: door
-    sensor.ruths_room_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Ruths Room Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
     binary_sensor.door_window_sensor_laundry_room_door:
       haaska_hidden: true
       friendly_name: Laundry Room Door
@@ -94,11 +51,6 @@ homeassistant:
 sensor:
   - platform: template
     sensors:
-      front_door_sensor_batt:
-        friendly_name: 'Front Door Sensor Battery'
-        value_template: "{{ state_attr('binary_sensor.door_window_sensor_front_door', 'battery_level') }}"
-  - platform: template
-    sensors:
       laundry_room_door_sensor_batt:
         friendly_name: 'Laundry Room Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_laundry_room_door.attributes.battery_level }}"
@@ -107,16 +59,8 @@ sensor:
       back_door_sensor_batt:
         friendly_name: 'Back Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_back_door.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      master_closet_door_sensor_batt:
-        friendly_name: 'Master Closet Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_master_closet.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      shed_door_sensor_batt:
-        friendly_name: 'Back Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_shed_door.attributes.battery_level }}"
+
+
   - platform: template
     sensors:
       master_door_sensor_batt:
@@ -128,16 +72,7 @@ sensor:
         friendly_name: 'Master Bath Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_master_bath_door.attributes.battery_level }}"
 
-  - platform: template
-    sensors:
-      kids_bathroom_sensor_batt:
-        friendly_name: 'Kids Bathroom Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_kids_bathroom_door.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      ruths_room_sensor_batt:
-        friendly_name: 'Ruths Room Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_door.attributes.battery_level }}"
+
 
 ###### counter for open doors ###################
   - platform: template

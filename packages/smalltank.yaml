@@ -5,21 +5,6 @@ homeassistant:
       customize: &customize
         package: 'small_tank'
 
-    sensor.fish_tank_cpu_use:
-      friendly_name: Fish Tank Cpu
-      icon: mdi:desktop-tower
-    sensor.fish_tank_disk_use:
-      friendly_name: Fish Tank Disk
-      icon:  mdi:harddisk
-    sensor.fish_tank_ram_free:
-      friendly_name: Ram Free
-      icon: mdi:memory
-    sensor.fish_tank_ram_used:
-      friendly_name: Ram Used
-      icon: mdi:memory
-    sensor.fish_tank_ha_uptime:
-      friendly_name: Fish Tank Ha Uptime
-      icon: mdi:home-assistant
     sensor.hood_temperature:
       friendly_name: Hood Temperature
       icon: mdi:temperature-fahrenheit
@@ -48,22 +33,6 @@ homeassistant:
       icon: mdi:thermometer-lines
       friendly_name: Small Tank Temp Warning
       hasska_hidden: true
-    sensor.small_tank_server_temperature:
-      friendly_name: Small Tank Server Temperature
-      icon: mdi:temperature-fahrenheit
-      hasska_hidden: true
-    sensor.small_tank_link:
-      friendly_name: Small Tank Server Link
-      icon: mdi:link-variant
-      hasska_hidden: true
-    sensor.small_tank_signal:
-      friendly_name: Small Tank Signal Strength
-      icon: mdi:signal
-      hasska_hidden: true
-    sensor.small_tank_power:
-      friendly_name: Small Tank Power
-      icon: mdi:power-plug
-      hasska_hidden: true
     sensor.small_tank_water_level:      #Reads that water level is ok
       icon: mdi:gauge
       friendly_name: Small Tank Water Level
@@ -86,35 +55,6 @@ history_graph:
     refresh: 180
 
 sensor:
-  - platform: mqtt
-    state_topic: "small_tank/sensor/cpu_used/state"
-    name: Fish Tank Cpu Use
-    unit_of_measurement: "%"
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/disk_used_home/state"
-    name: Fish Tank Disk Use
-    unit_of_measurement: "%"
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/ram_available/state"
-    name: Fish Tank Ram Free
-    unit_of_measurement: "Mb"
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/ram_used/state"
-    name: Fish Tank Ram Used
-    unit_of_measurement: "Mb"
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/hass_uptime/state"
-    name: Fish Tank Ha Uptime
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/server_cpu_temperature/state"
-    name: Small Tank Server Temperature
-    unit_of_measurement: '°F'
-
   - platform: mqtt
     state_topic: "small_tank/sensor/dht_sensor_temperature/state"
     name: Hood Temperature
@@ -146,18 +86,7 @@ sensor:
     state_topic: "small_tank/sensor/water_level/state"
     name: Small Tank Water Level
 
-  - platform: mqtt
-    state_topic: "small_tank/sensor/signal_strength/state"
-    name: small_tank_signal
-    unit_of_measurement: 'dBm'
 
-  - platform: mqtt
-    state_topic: "small_tank/sensor/link_quality/state"
-    name: small_tank_link
-
-  - platform: mqtt
-    state_topic: "small_tank/sensor/check_charger/state"
-    name: small_tank_power
 
 binary_sensor:
   - platform: mqtt

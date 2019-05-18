@@ -4,6 +4,28 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Shed'
+
+    binary_sensor.door_window_sensor_shed_door:
+      haaska_hidden: true
+      friendly_name: Shed Door
+      device_class: door
+    sensor.shed_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Shed Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    switch.wall_switch_shed_main_light:
+      haaska_name: Shed Light
+      friendly_name: Shed Light
+      icon: mdi:lightbulb
+
+sensor:
+  - platform: template
+    sensors:
+      shed_door_sensor_batt:
+        friendly_name: 'Shed Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_shed_door.attributes.battery_level }}"
+
 automation:
   - alias: 'shed_opened_no_alarm_set'
     initial_state: 'on'
@@ -30,4 +52,21 @@ automation:
       - service: notify.pushbullet
         data:
           message: 'Shed Door Has Been Opened'
-                     
+
+  - alias: 'shed_light_left_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.wall_switch_shed_main_light
+        to: 'on'
+        for: '00:30:00'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'The Shed Light Has Been Left On Turning off now'
+      - service: switch.turn_off
+        entity_id: switch.wall_switch_shed_main_light
+      - service: notify.pushbullet
+        data:
+          message: 'Shed Light Turning Off Now after being left on'

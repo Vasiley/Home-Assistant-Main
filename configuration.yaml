@@ -71,7 +71,7 @@ rest_command: !include restcommands.yaml
 config:
 
 wink:
-
+  local_control: true
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
@@ -103,4 +103,3 @@ speedtestdotnet:
     - upload
 
 discovery:
-stream:

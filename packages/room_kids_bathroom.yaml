@@ -3,6 +3,34 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Kids Bathroom Room'
+
+#################### Hue ##################################
+    sensor.motion_sensor_kids_bathroom_battery:
+      haaska_hidden: true
+      friendly_name: Kids Hue Motion Battery
+      icon: mdi:battery
+      unit_of_measurement: '%'
+    binary_sensor.hue_motion_kids_bathroom:
+      haaska_hidden: true
+      device_class: motion
+      friendly_name: Hue Back up Motion
+##############3 Xiaomi ###########################################
+    sensor.kids_motion_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kids Bathroom Xiaomi Motion Battery
+      icon: mdi:battery
+      unit_of_measurement: '%'
+
+    binary_sensor.door_window_sensor_kids_bathroom_door:
+      haaska_hidden: true
+      friendly_name: Kids Bathroom Door
+      device_class: door
+    sensor.kids_bathroom_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Kids Bathroom Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+
     sensor.kids_humidity_sensor_batt:
       haaska_hidden: true
       friendly_name: Kids Bathroom Humidity Sensor
@@ -39,7 +67,15 @@ homeassistant:
       icon: mdi:fan
 
 sensor:
-      ######## Kids Bathroom
+      ######## Hue ######################
+  - platform: rest
+    resource: !secret MS_rest_49
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: motion_sensor_kids_bathroom_battery
+
+########## xiaomi ############################
   - platform: template
     sensors:
       kids_motion_sensor_batt:
@@ -52,6 +88,19 @@ sensor:
         friendly_name: 'Kids Bathroom Humidity Sensor Battery Level'
         value_template: "{{ state_attr('sensor.humidity_kids_bathroom', 'battery_level') }}"
 
+  - platform: template
+    sensors:
+      kids_bathroom_sensor_batt:
+        friendly_name: 'Kids Bathroom Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_kids_bathroom_door.attributes.battery_level }}"
+
+binary_sensor:
+###################### Hue ###################
+  - platform: rest
+    resource: !secret MS_rest_49
+    value_template: '{{ value_json.state.presence }}'
+    scan_interval: 2
+    name: hue_motion_kids_bathroom
 
 automation:
   - alias: Motion Kids Bathroom Motion On
@@ -107,7 +156,7 @@ automation:
               {% endif %}
 
 
-  - alias: Motion Kids Bathroom Motion On
+  - alias: Motion Kids Bathroom Motion Off
     initial_state: 'on'
     trigger:
       - platform: state

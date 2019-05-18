@@ -3,13 +3,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'hue equipment'
-    binary_sensor.hue_motion_kids_bathroom:
-      haaska_hidden: true
-      device_class: motion
-      friendly_name: Hue Back up Motion
-    sensor.motion_sensor_kids_bathroom_battery:
-      haaska_hidden: true
-      friendly_name: Kids Hue Motion Battery
     sensor.motion_sensor_hallway_battery:
       icon: mdi:battery
       friendly_name: Master Hallway Motion Sensor
@@ -18,16 +11,11 @@ homeassistant:
       device_class: motion
     sensor.master_hallway_motion_sensor_lux:
       friendly_name: Master Hallway Light Level
-      icon: mdi:theme-light-dark      
+      icon: mdi:theme-light-dark
 
 
 sensor:
-  - platform: rest
-    resource: !secret MS_rest_49
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Kids Bathroom Battery'
+
   - platform: rest
     resource: !secret MS_rest_11
     value_template: '{{ value_json.config.battery }}'
@@ -49,11 +37,7 @@ sensor:
     name: 'Master Hallway Motion Sensor Lux'
 
 binary_sensor:
-  - platform: rest
-    resource: !secret MS_rest_49
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: hue_motion_kids_bathroom
+
   - platform: rest
     resource: !secret MS_rest_12
     value_template: '{{ value_json.state.presence }}'

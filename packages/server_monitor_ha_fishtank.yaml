@@ -1,0 +1,206 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'server_small_tank'
+
+    sensor.fish_tank_cpu_use:
+      friendly_name: Fish Tank Cpu
+      icon: mdi:desktop-tower
+    sensor.fish_tank_disk_use:
+      friendly_name: Fish Tank Disk
+      icon:  mdi:harddisk
+    sensor.fish_tank_ram_free:
+      friendly_name: Ram Free
+      icon: mdi:memory
+    sensor.fish_tank_ram_used:
+      friendly_name: Ram Used
+      icon: mdi:memory
+    sensor.fish_tank_ha_uptime:
+      friendly_name: Fish Tank Ha Uptime
+      icon: mdi:home-assistant
+    sensor.small_tank_server_temperature:
+      friendly_name: Small Tank Server Temperature
+      icon: mdi:temperature-fahrenheit
+      hasska_hidden: true
+    sensor.small_tank_link:
+      friendly_name: Small Tank Server Link
+      icon: mdi:link-variant
+      hasska_hidden: true
+    sensor.small_tank_signal:
+      friendly_name: Small Tank Signal Strength
+      icon: mdi:signal
+      hasska_hidden: true
+    sensor.small_tank_power:
+      friendly_name: Small Tank Power
+      icon: mdi:power-plug
+      hasska_hidden: true
+
+sensor:
+  - platform: mqtt
+    state_topic: "small_tank/sensor/cpu_used/state"
+    name: Fish Tank Cpu Use
+    unit_of_measurement: "%"
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/disk_used_home/state"
+    name: Fish Tank Disk Use
+    unit_of_measurement: "%"
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ram_available/state"
+    name: Fish Tank Ram Free
+    unit_of_measurement: "Mb"
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ram_used/state"
+    name: Fish Tank Ram Used
+    unit_of_measurement: "Mb"
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/hass_uptime/state"
+    name: Fish Tank Ha Uptime
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/server_cpu_temperature/state"
+    name: Small Tank Server Temperature
+    unit_of_measurement: '°F'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/signal_strength/state"
+    name: small_tank_signal
+    unit_of_measurement: 'dBm'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/link_quality/state"
+    name: small_tank_link
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/check_charger/state"
+    name: small_tank_power
+
+  - platform: template
+    sensors:
+      ha_fish_tank_temp_int:
+        value_template: "{{ states('sensor.small_tank_server_temperature')| round(0)}}"
+
+input_number:
+  ha_fish_tank_server_ram_alert_value:
+    name: Fish Tank ram Alert Setpoint
+    initial: 780
+    min: 100
+    max: 1000
+    step: 5
+  ha_fish_tank_server_disk_alert_value:
+    name: Fish Tank Disk Alert Setpoint
+    initial: 75
+    min: 0
+    max: 100
+    step: 5
+
+  ha_fish_tank_server_cpu_alert_value:
+    name: Fish Tank CPU Alert Setpoint
+    initial: 80
+    min: 0
+    max: 100
+    step: 5
+
+  ha_fish_tank_server_temp_alert_value:
+    name: Fish Tank Temp Alert Setpoint
+    initial: 130
+    min: 70
+    max: 180
+    step: 5
+
+input_boolean:
+  boolean_ha_temp_warning:
+    name: Ha Temp Boolean
+    initial: off
+
+automation:
+############# Ram usuage high on BI server #####################################
+  - alias: ha_fish_tank_server_ram_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.fish_tank_ram_used') > states('input_number.ha_fish_tank_server_ram_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+          message: 'Ram Usage On Fish Tank  server is Excessive'
+      - service: script.ha_fish_tank_server_ram_usage
+
+############# Disk usuage high on BI server #####################################
+  - alias: ha_fish_tank_server_disk_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.fish_tank_disk_use') > states('input_number.ha_fish_tank_server_disk_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+          message: 'Disk Usage On Fish Tank  Server is Excessive'
+      - service: script.ha_fish_tank_server_dash_usage
+
+####################### High Cpu Usage #########################################
+  - alias: ha_fish_tank_server_cpu_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.fish_tank_cpu_use') > states('input_number.ha_fish_tank_server_cpu_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+          message: 'Cpu Usage On Fish Tank  server is Excessive'
+      - service: script.ha_fish_tank_server_dash_usage
+
+########################### temp warning ################################
+  - alias: ha_fish_tank_server_temp_high_boolean
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.ha_fish_tank_temp_int') > states('input_number.ha_fish_tank_server_temp_alert_value') }}"
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_ha_temp_warning
+        
+  - alias: ha_fish_tank_server_temp_low_boolean
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.ha_fish_tank_temp_int') < states('input_number.ha_fish_tank_server_temp_alert_value') }}"
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_ha_temp_warning
+
+  - alias: ha_fish_tank_server_temp_high
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_ha_temp_warning
+        to: 'on'
+        for: '00:05:00'
+    action:
+      - service: tts.google_say
+        entity_id:
+          - media_player.ha_speaker
+        data_template:
+          message: 'Temp On Fish Tank server is Excessive {{ states.sensor.small_tank_server_temperature.state }} degrees'
+      - service: script.ha_fish_tank_server_dash_usage
+
+
+script:
+  ha_fish_tank_server_dash_usage:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_dash_wake_up   # in dashboard package
+      - service: shell_command.server_alert_dash_lv # in dashboard package
+      - delay: '00:05:00'
+      - service: shell_command.lv_room_vas   # in dashboard package

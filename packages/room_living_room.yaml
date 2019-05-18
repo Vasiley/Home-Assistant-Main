@@ -4,6 +4,102 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'living_room'
+    sensor.front_blinds_controller_wifi_signal:
+      icon: mdi:signal
+      haaska_hidden: true
+    sensor.couch_blinds_controller_wifi_signal:
+      icon: mdi:signal
+      friendly_name: Couch Blinds WIFI
+      haaska_hidden: true
+    binary_sensor.door_window_sensor_front_door:
+      haaska_hidden: true
+      friendly_name: Front Door
+      device_class: door
+    sensor.front_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Front Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_livingroom_front:
+      haaska_hidden: true
+      friendly_name: LV Front Window Sensor
+      device_class: window
+    sensor.livingroom_front_window_sensor_batt:
+      haaska_hidden: true
+      friendly_name: LV Front Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_lv_window_dawn:
+      haaska_hidden: true
+      friendly_name: LV Rear Dawns Side Window
+      device_class: window
+    sensor.door_window_sensor_lv_window_dawn_batt:
+      haaska_hidden: true
+      friendly_name: LV Rear Dawns Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_lv_window_herb:
+      haaska_hidden: true
+      friendly_name: LV Rear Herbs Side Window
+      device_class: window
+    sensor.door_window_sensor_lv_window_herb_batt:
+      haaska_hidden: true
+      friendly_name: LV Rear Herbs Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+
+light:
+  - platform: group
+    name: Living Room Pedestal Lamps
+    entities:
+      - light.living_room_lamp_1
+      - light.living_room_lamp_3
+      - light.living_room_lamp_4
+      - light.living_room_lamp_2
+      - light.living_room_lamp_5
+
+sensor:
+  - platform: template
+    sensors:
+      livingroom_front_window_sensor_batt:
+        friendly_name: 'Living Room Front Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
+
+  - platform: template
+    sensors:
+      door_window_sensor_lv_window_dawn_batt:
+        value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
+
+  - platform: template
+    sensors:
+      door_window_sensor_lv_window_herb_batt:
+        value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
+
+  - platform: template
+    sensors:
+      front_door_sensor_batt:
+        friendly_name: 'Front Door Sensor Battery'
+        value_template: "{{ state_attr('binary_sensor.door_window_sensor_front_door', 'battery_level') }}"
+
+  - platform: template
+    sensors:
+      lv_room_rear_blinds_state:
+        friendly_name: 'Couch Blinds Status'
+        value_template: "{{ states('input_select.lv_room_rear_blinds_status') }}"
+  - platform: template
+    sensors:
+      lv_room_front_blinds_state:
+        friendly_name: 'Front Blinds Status'
+        value_template: "{{ states('input_select.lv_room_front_blinds_status') }}"
+  - platform: mqtt
+    state_topic: "esp_couch_blinds/couch_blinds_wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Couch Blinds Controller Wifi Signal
+
+  - platform: mqtt
+    state_topic: "lv_room_blindstv_cntlr/lv_front_wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Front Blinds Controller Wifi Signal
 
 automation:
   - alias: Motion Turn on Living Room light Sleep On

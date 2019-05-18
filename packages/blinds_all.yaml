@@ -4,25 +4,12 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'blinds'
-    sensor.kitchen_blinds_controller_wifi_signal:
-      icon: mdi:signal
-      haaska_hidden: true
-      friendly_name: Kitchen Table Blinds WIFI
-    sensor.sink_blinds_controller_wifi_signal:
-      icon: mdi:signal
-      haaska_hidden: true
-    sensor.front_blinds_controller_wifi_signal:
-      icon: mdi:signal
-      haaska_hidden: true
+
     sensor.master_blinds_controller_dawns_wifi_signal:
       icon: mdi:signal
       haaska_hidden: true
     sensor.master_blinds_controller_herbs_wifi_signal:
       icon: mdi:signal
-      haaska_hidden: true
-    sensor.couch_blinds_controller_wifi_signal:
-      icon: mdi:signal
-      friendly_name: Couch Blinds WIFI
       haaska_hidden: true
 
     script.blinds_closed_kitchen:
@@ -114,46 +101,17 @@ input_select:
 
 
 sensor:
-  - platform: template
-    sensors:
-      kitchen_blinds_state:
-        friendly_name: 'Kitchen Blinds Status'
-        value_template: "{{ states('input_select.kitchen_blinds_status') }}"
-  - platform: template
-    sensors:
-      lv_room_rear_blinds_state:
-        friendly_name: 'Couch Blinds Status'
-        value_template: "{{ states('input_select.lv_room_rear_blinds_status') }}"
-  - platform: template
-    sensors:
-      lv_room_front_blinds_state:
-        friendly_name: 'Front Blinds Status'
-        value_template: "{{ states('input_select.lv_room_front_blinds_status') }}"
+
+
   - platform: template
     sensors:
       master_blinds_state:
         friendly_name: 'Master Blinds Status'
         value_template: "{{ states('input_select.master_blinds_status') }}"
 
-  - platform: mqtt
-    state_topic: "kitchenblinds/Blinds Wifi/wifi"
-    unit_of_measurement: 'dbm'
-    name: Kitchen Blinds Controller Wifi Signal
 
-  - platform: mqtt
-    state_topic: "Kit_sink_blinds_controll/Blinds Sink Wifi/wifi"
-    unit_of_measurement: 'dbm'
-    name: Sink Blinds Controller Wifi Signal
 
-  - platform: mqtt
-    state_topic: "esp_couch_blinds/couch_blinds_wifi/wifi"
-    unit_of_measurement: 'dbm'
-    name: Couch Blinds Controller Wifi Signal
 
-  - platform: mqtt
-    state_topic: "lv_room_blindstv_cntlr/lv_front_wifi/wifi"
-    unit_of_measurement: 'dbm'
-    name: Front Blinds Controller Wifi Signal
 
   - platform: mqtt
     state_topic: "master_blinds1/master_blinds1_wifi/wifi"
@@ -407,6 +365,9 @@ script:
 ########################### All Blinds ####################################
   blinds_closed:
     sequence:
+      - service: script.turn_on
+        entity_id:
+          - script.kids_room_blinds_closed
       - service: input_select.select_option
         data:
           entity_id: input_select.kitchen_blinds_status
@@ -429,19 +390,12 @@ script:
           option: 'Closed'
       - service: shell_command.master1_blinds_front_closed
       - service: shell_command.master2_blinds_front_closed
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Closed'
-      - service: shell_command.ruths_blinds_closed
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Closed'
-      - service: shell_command.kids_room_blinds_closed
 
   blinds_halfway:
     sequence:
+      - service: script.turn_on
+        entity_id:
+          - script.kids_room_blinds_halfway
       - service: input_select.select_option
         data:
           entity_id: input_select.kitchen_blinds_status
@@ -464,19 +418,12 @@ script:
           option: 'Halfway'
       - service: shell_command.master1_blinds_front_halfway
       - service: shell_command.master2_blinds_front_halfway
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Halfway'
-      - service: shell_command.ruths_blinds_halfway
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Halfway'
-      - service: shell_command.kids_room_blinds_halfway
 
   blinds_open:
     sequence:
+      - service: script.turn_on
+        entity_id:
+          - script.kids_room_blinds_open
       - service: input_select.select_option
         data:
           entity_id: input_select.kitchen_blinds_status
@@ -499,16 +446,7 @@ script:
           option: 'Open'
       - service: shell_command.master1_blinds_front_open
       - service: shell_command.master2_blinds_front_open
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Open'
-      - service: shell_command.ruths_blinds_open
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.kids_room_blinds_status
-          option: 'Open'
-      - service: shell_command.kids_room_blinds_open
+
 
 ########################### Kitchen Blinds ####################################
   blinds_closed_kitchen:
@@ -629,9 +567,9 @@ shell_command:
   lv_blinds_herb_closed: "curl -sS -X GET http://192.168.2.55/control?cmd=Servo,2,15,180"
   lv_blinds_herb_halfway: "curl -sS -X GET http://192.168.2.55/control?cmd=Servo,2,15,90"
   lv_blinds_herb_open: "curl -sS -X GET http://192.168.2.55/control?cmd=Servo,2,15,0"
-  lv_blinds_front_closed: "curl -sS -X GET http://192.168.2.21/control?cmd=Servo,1,4,180"
-  lv_blinds_front_halfway: "curl -sS -X GET http://192.168.2.21/control?cmd=Servo,1,4,90"
-  lv_blinds_front_open: "curl -sS -X GET http://192.168.2.21/control?cmd=Servo,1,4,0"
+  lv_blinds_front_closed: "curl -sS -X GET http://192.168.2.59/control?cmd=Servo,1,14,180"
+  lv_blinds_front_halfway: "curl -sS -X GET http://192.168.2.59/control?cmd=Servo,1,14,90"
+  lv_blinds_front_open: "curl -sS -X GET http://192.168.2.59/control?cmd=Servo,1,14,0"
   master1_blinds_front_closed: "curl -sS -X GET http://192.168.2.26/control?cmd=Servo,1,14,180"
   master1_blinds_front_halfway: "curl -sS -X GET http://192.168.2.26/control?cmd=Servo,1,14,75"
   master1_blinds_front_open: "curl -sS -X GET http://192.168.2.26/control?cmd=Servo,1,14,0"

@@ -40,6 +40,17 @@ homeassistant:
       haaska_name: Master Bedroom Purifier Led Off
     script.master_bdrm_purifer_led_on:
       haaska_name: Master Bedroom Purifier Led On
+    sensor.kids_bdrm_purifer_aqi_current:
+      hasska_hidden: true
+      friendly_name: Kids Bedroom AQI
+      icon: mdi:crosshairs
+    sensor.kids_bdrm_purifer_temp:
+      hasska_hidden: true
+      friendly_name: Kids Purifier Bedroom Temperature
+    sensor.kids_bdrm_purifer_humd:
+      hasska_hidden: true
+      friendly_name: Kids Bedroom Humidity
+      icon: mdi:water-percent
 
 input_select:
   air_puirfier_master:
@@ -58,15 +69,28 @@ input_select:
       - Silent
       - Favorite
       - Idle
+  air_puirfier_kids:
+    name: Kids Purifer Mode
+    options:
+      - Select Input
+      - Auto
+      - Silent
+      - Favorite
+      - Idle
+
 fan:
   - platform: xiaomi_miio
     host:  192.168.1.60
+    token: !secret xiaomi_purifer_mstr_bdrm
+    name: Master Bedroom Purifer
+  - platform: xiaomi_miio
+    host:  192.168.1.62
     token: !secret xiaomi_purifer_lv
     name: Living Room Purifer
   - platform: xiaomi_miio
-    host:  192.168.1.62
-    token: !secret xiaomi_purifer_mstr_bdrm
-    name: Master Bedroom Purifer
+    host:  192.168.1.182
+    token: !secret xiaomi_purifer_kids_room
+    name: Kids Bedroom Purifer
 
 sensor:
   - platform: template
@@ -93,6 +117,17 @@ sensor:
       master_bdrm_purifer_aqi_current:
         value_template: '{{ states.fan.master_bedroom_purifer.attributes["aqi"] }}'
         unit_of_measurement: '%'
+      kids_bdrm_purifer_mode:
+        value_template: '{{ states.fan.kids_bedroom_purifer.attributes["mode"] }}'
+      kids_bdrm_purifer_temp:
+        value_template: '{{ states.fan.kids_bedroom_purifer.attributes["temperature"] }}'
+        unit_of_measurement: '°C'
+      kids_bdrm_purifer_humd:
+        value_template: '{{ states.fan.kids_bedroom_purifer.attributes["humidity"] }}'
+        unit_of_measurement: '%'
+      kids_bdrm_purifer_aqi_current:
+        value_template: '{{ states.fan.kids_bedroom_purifer.attributes["aqi"] }}'
+        unit_of_measurement: '%'
 
   - platform: min_max
     type: mean
@@ -100,6 +135,7 @@ sensor:
     entity_ids:
       - sensor.living_room_purifer_aqi_current
       - sensor.master_bdrm_purifer_aqi_current
+      - sensor.kids_bdrm_purifer_aqi_current
 
 script:
   living_room_purifer_led_off:
@@ -118,6 +154,14 @@ script:
     sequence:
       - service: fan.xiaomi_miio_set_led_on
         entity_id: fan.master_bedroom_purifer
+  kids_bdrm_purifer_led_off:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_off
+        entity_id: fan.kids_bedroom_purifer
+  kids_bdrm_purifer_led_on:
+    sequence:
+      - service: fan.xiaomi_miio_set_led_on
+        entity_id: fan.kids_bedroom_purifer
 ##### service call not working need to open pr
   living_room_purifer_led_dim:
     sequence:
@@ -247,6 +291,50 @@ automation:
             {% elif is_state("sensor.master_bdrm_purifer_mode", "idle") %}
                Idle
             {% elif is_state("sensor.master_bdrm_purifer_mode", "silent") %}
+               Silent
+            {% else %}
+               Auto
+            {% endif %}
+
+  - alias: kids_purifer_mode_select
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_select.air_puirfier_kids
+    action:
+      - service: fan.set_speed
+        entity_id: fan.kids_bedroom_purifer
+        data_template:
+          speed: >-
+            {% if is_state("input_select.air_puirfier_kids", "Auto") %}
+              Auto
+            {% elif is_state("input_select.air_puirfier_kids", "Silent") %}
+              Silent
+            {% elif is_state("input_select.air_puirfier_kids", "Favorite") %}
+              Cast
+            {% elif is_state("input_select.air_puirfier_kids", "Idle") %}
+              Idle
+            {% else %}
+              Auto
+            {% endif %}
+  - alias: kids_purifer_update_input_select
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.kids_bdrm_purifer_mode
+    action:
+      - service: input_select.select_option
+        entity_id: input_select.air_puirfier_master
+        data_template:
+          option: >-
+            {% if is_state("sensor.kids_bdrm_purifer_mode", "favorite") %}
+               Favorite
+            {% elif is_state("sensor.kids_bdrm_purifer_mode", "auto") %}
+               Auto
+            {% elif is_state("sensor.kids_bdrm_purifer_mode", "idle") %}
+               Idle
+            {% elif is_state("sensor.kids_bdrm_purifer_mode", "silent") %}
                Silent
             {% else %}
                Auto

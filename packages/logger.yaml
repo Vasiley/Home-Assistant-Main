@@ -1,6 +1,8 @@
 logger:
   default: critical
   logs:
+    pubnub: critical
+    urllib3.connectionpool: error
     homeassistant.components.rest: warn
     homeassistant.components.zha: warn
     homeassistant.components.camera: warn
@@ -43,7 +45,6 @@ logger:
     roku: warn
     dlipower.dlipower: error
     myusps: warn
-    pubnub: warn
     homeassistant.components.http.ban: debug
     requests.packages.urllib3.connectionpool: fatal
     urllib3.connectionpool.py: fatal

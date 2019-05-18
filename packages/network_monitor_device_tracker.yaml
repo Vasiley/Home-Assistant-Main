@@ -211,6 +211,10 @@ homeassistant:
       friendly_name: AP Nano HD
       icon: mdi:access-point
       haaska_hidden: true
+    binary_sensor.ap_kids_room:
+      friendly_name: Kids Room AP
+      icon: mdi:access-point
+      haaska_hidden: true
 ########## Wemos         ########################
     binary_sensor.wemo_master_bath_fan:
       friendly_name: Wemos Master Bath Fan
@@ -317,10 +321,6 @@ homeassistant:
       friendly_name: Master Herbs Side Blinds
       icon: mdi:zip-box
       haaska_hidden: true
-    binary_sensor.esp_blinds_ruths:
-      friendly_name: Ruths Blinds
-      icon: mdi:zip-box
-      haaska_hidden: true
     binary_sensor.esp_blinds_kitchen_table:
       friendly_name: Kitchen Table Blinds
       icon: mdi:zip-box
@@ -331,6 +331,10 @@ homeassistant:
       haaska_hidden: true
     binary_sensor.esp_blinds_kids_room:
       friendly_name: Kids Blinds
+      icon: mdi:zip-box
+      haaska_hidden: true
+    binary_sensor.esp_beer:
+      friendly_name: Beer Cooler
       icon: mdi:zip-box
       haaska_hidden: true
 ############## Misc Devices ###############################################
@@ -383,11 +387,20 @@ homeassistant:
      friendly_name: Master Bedroom Purifer
      icon: mdi:fan
      haaska_hidden: true
+    binary_sensor.kids_bedroom_purifer:
+     friendly_name: Kids Bedroom Purifer
+     icon: mdi:fan
+     haaska_hidden: true
+
 
 
 sensor:
   ############## Public Ip
   - platform: dnsip
+  # Resolve IP address of home-assistant.io via Google DNS
+    hostname: vasiley.dns1.us
+    name: Vasiley HA
+    resolver: 8.8.8.8
 
 #################### ALL CLIENTS ###################
   - platform: template
@@ -675,6 +688,11 @@ binary_sensor:
       nano_hd:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.nano_hd", "home") }}'
+  - platform: template
+    sensors:
+      ap_kids_room:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.ap_kids_room", "home") }}'
 #################### Wemo Devices  ###################
 
   - platform: template
@@ -815,11 +833,6 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.esp_blinds_master1", "home") }}'
   - platform: template
     sensors:
-      esp_blinds_ruths:
-        device_class: connectivity
-        value_template: '{{ is_state("device_tracker.esp_blinds_ruths", "home") }}'
-  - platform: template
-    sensors:
       esp_blinds_kitchen_table:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.esp_blinds_kitchen_table", "home") }}'
@@ -833,6 +846,11 @@ binary_sensor:
       esp_kids_tv_state:
         device_class: connectivity
         value_template: '{{ is_state("device_tracker.esp_kids_tv_state", "home") }}'
+  - platform: template
+    sensors:
+      esp_beer:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.esp_beer", "home") }}'
 
 ################### Misc Devices  ##########################
   - platform: template
@@ -890,6 +908,11 @@ binary_sensor:
       master_bedroom_purifer:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.master_bedroom_purifer', 'home') }}"
+  - platform: template
+    sensors:
+      kids_bedroom_purifer:
+        device_class: connectivity
+        value_template: "{{ is_state('device_tracker.kids_bedroom_purifer', 'home') }}"
 
 device_tracker:
   - platform: ping
@@ -899,6 +922,7 @@ device_tracker:
       switch_ubnt_poe_kids_room: 192.168.1.3
       switch_ubnt_poe_16: 192.168.1.2
       switch_ubnt_poe_8_shed: 192.168.1.4
+      ap_kids_room: 192.168.1.8
       ac_pro: 192.168.1.9
       nano_hd: 192.168.1.10
       xboxone_ping: 192.168.1.56
@@ -975,6 +999,7 @@ automation:
           - binary_sensor.switch_ubnt_poe_8_shed
           - binary_sensor.ac_pro
           - binary_sensor.nano_hd
+          - binary_sensor.ap_kids_room
 #         wemos
           - binary_sensor.wemo_master_bath_fan
           - binary_sensor.wemo_kids_bathroom_fan
@@ -1004,11 +1029,10 @@ automation:
           - binary_sensor.esp_couch_blinds
           - binary_sensor.esp_blinds_master_dawns_side
           - binary_sensor.esp_blinds_master_herbs_side
-          - binary_sensor.esp_blinds_ruths
           - binary_sensor.esp_blinds_kitchen_table
           - binary_sensor.esp_blinds_kitchen_sink
           - binary_sensor.esp_blinds_kids_room
-#          - binary_sensor.esp_kids_tv_state
+          - binary_sensor.esp_beer
 #         misc devices
           - binary_sensor.game_console_ps4
           - binary_sensor.game_console_ps3
@@ -1021,6 +1045,7 @@ automation:
           - binary_sensor.rockrobo
           - binary_sensor.living_room_purifer
           - binary_sensor.master_bedroom_purifer
+          - binary_sensor.kids_bedroom_purifer
 
     condition:
       condition: and
@@ -1043,3 +1068,13 @@ automation:
             {% else %}
               {{ trigger.to_state.attributes.friendly_name }} has come online!
             {% endif %}
+      - service: persistent_notification.create
+        data_template:
+          title: "Device Needs Attention"
+          message: >
+            {% if trigger.to_state.state | lower == "off" %}
+              {{ trigger.to_state.attributes.friendly_name }} has gone offline!
+            {% else %}
+              {{ trigger.to_state.attributes.friendly_name }} has come online!
+            {% endif %}
+          notification_id: device_offline

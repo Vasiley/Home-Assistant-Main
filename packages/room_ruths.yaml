@@ -2,131 +2,36 @@ homeassistant:
   customize:
     package.node_anchors:
       customize: &customize
-        package: 'ruths_blinds'
-    automation.blinds_open_ruths:
-      friendly_name: Ruths Blinds Open
+        package: 'ruths_room'
+############ xioomi window sensor #################
+    binary_sensor.door_window_sensor_ruths_room:
       haaska_hidden: true
-    automation.blinds_halfway_ruths:
-      friendly_name: Ruths Blinds Halfway
+      friendly_name: Ruths Window Sensor
+      device_class: window
+    sensor.ruths_window_sensor_batt:
       haaska_hidden: true
-    automation.blinds_closed_ruths:
-      friendly_name: Ruths Blinds Closed
+      friendly_name: Ruths Window Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+############## xiaomi door sensor ###################
+    binary_sensor.door_window_sensor_ruths_room_door:
       haaska_hidden: true
-    script.ruths_blinds_closed:
-      friendly_name: Blinds Closed Ruths
-      icon: mdi:blinds
-      haaska_hidden: false
-      haaska_name: Ruths Blinds Closed
-    script.ruths_blinds_halfway:
-      friendly_name: Blinds Halfway Ruths
-      icon: mdi:blinds
-      haaska_hidden: false
-      haaska_name: Ruths Blinds Halfway
-    script.ruths_blinds_open:
-      friendly_name: Blinds Open Ruths
-      icon: mdi:blinds
-      haaska_hidden: false
-      haaska_name: Ruths Blinds Open
-    sensor.ruths_blinds_wifi_signal:
-      icon: mdi:signal
-
-input_select:
-  ruths_blinds_status:
-    name: Ruths Room Blinds
-    options:
-     - Open
-     - Halfway
-     - Closed
+      friendly_name: Ruths Room Door
+      device_class: door
+    sensor.ruths_room_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Ruths Room Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
 
 sensor:
-  - platform: mqtt
-    state_topic: "ruthsblinds/Blinds Wifi/wifi"
-    unit_of_measurement: 'dbm'
-    name: Ruths Blinds Wifi Signal
-
   - platform: template
     sensors:
-      ruths_blinds_state:
-        friendly_name: 'Ruths Room Blinds Status'
-        value_template: "{{ states('input_select.ruths_blinds_status') }}"
-
-
-
-automation:
-  - alias: Blinds Open Ruths
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.ruths_blinds_state
-        to: 'Open'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Home'
-      - platform: numeric_state
-        entity_id: sensor.pws_Temp_f
-        below: 85
-    condition:
-      - condition: state
-        entity_id: sensor.house_mode_state
-        state: 'Home'
-    action:
-      - service: script.turn_on
-        entity_id: script.ruths_blinds_open
-
-  - alias: Blinds Halfway ruths
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.ruths_blinds_state
-        to: 'Halfway'
-      - platform: numeric_state
-        entity_id: sensor.pws_Temp_f
-        above: 90
-    action:
-      - service: script.turn_on
-        entity_id: script.ruths_blinds_halfway
-
-  - alias: Blinds Closed ruths
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: sensor.ruths_blinds_state
-        to: 'Closed'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Sleep'
-      - platform: state
-        entity_id: sensor.house_mode_state
-        to: 'Away'
-    action:
-      - service: script.turn_on
-        entity_id: script.ruths_blinds_closed
-
-script:
-  ruths_blinds_closed:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Closed'
-      - service: shell_command.ruths_blinds_closed
-
-  ruths_blinds_halfway:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Halfway'
-      - service: shell_command.ruths_blinds_halfway
-
-  ruths_blinds_open:
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.ruths_blinds_status
-          option: 'Open'
-      - service: shell_command.ruths_blinds_open
-shell_command:
-  ruths_blinds_closed: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,180"
-  ruths_blinds_halfway: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,100"
-  ruths_blinds_open: "curl -sS -X GET http://192.168.2.27/control?cmd=Servo,1,12,30"
+      ruths_window_sensor_batt:
+        friendly_name: 'Ruths Window Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_window.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      ruths_room_sensor_batt:
+        friendly_name: 'Ruths Room Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_door.attributes.battery_level }}"

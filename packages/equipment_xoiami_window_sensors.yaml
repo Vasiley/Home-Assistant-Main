@@ -4,15 +4,7 @@ homeassistant:
       customize: &customize
         package: 'Window Sensors'
 
-    binary_sensor.door_window_sensor_ruths_room_window:
-      haaska_hidden: true
-      friendly_name: Ruths Window Sensor
-      device_class: window
-    sensor.ruths_window_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Ruths Window Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
+
     binary_sensor.door_window_sensor_kitchen_sink:
       haaska_hidden: true
       friendly_name: Kitchen Sink Window Sensor
@@ -49,24 +41,6 @@ homeassistant:
       friendly_name: Herbs Side Window Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
-    binary_sensor.door_window_sensor_livingroom_front:
-      haaska_hidden: true
-      friendly_name: LV Front Window Sensor
-      device_class: window
-    sensor.livingroom_front_window_sensor_batt:
-      haaska_hidden: true
-      friendly_name: LV Front Window Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
-    binary_sensor.door_window_sensor_lv_rear_dawns_side:
-      haaska_hidden: true
-      friendly_name: LV Rear Dawns Side Window
-      device_class: window
-    sensor.door_window_sensor_lv_rear_dawns_side_batt:
-      haaska_hidden: true
-      friendly_name: LV Rear Dawns Window Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
     sensor.open_window_count:
       haaska_hidden: true
       friendly_name: Open Window Count
@@ -83,11 +57,7 @@ sensor:
         value_template: "{{ states.binary_sensor.door_window_sensor_kitchen_sink.attributes.battery_level }}"
 
 
-  - platform: template
-    sensors:
-      ruths_window_sensor_batt:
-        friendly_name: 'Ruths Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_ruths_room_window.attributes.battery_level }}"
+
   - platform: template
     sensors:
       kitchen_table_window_sensor_batt:
@@ -103,16 +73,7 @@ sensor:
       herbs_side_window_sensor_batt:
         friendly_name: 'Herbs Side Window Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_herbs_side.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      livingroom_front_window_sensor_batt:
-        friendly_name: 'Living Room Front Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_livingroom_front.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      door_window_sensor_lv_rear_dawns_side_batt:
-        friendly_name: 'Living Room Front Window Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_lv_rear_dawns_side.attributes.battery_level }}"
+
 
 
   - platform: template

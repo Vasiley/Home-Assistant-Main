@@ -1,0 +1,20 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'alert_kids_room'
+
+
+alert:
+  offline_notify_kids_room:
+    name: Device is Offline
+    done_message: Device is Back Online
+    entity_id: binary_sensor.kids_bedroom_purifer
+#      - binary_sensor.chromecast_kids_room
+    state: 'off'
+    repeat: 30
+    can_acknowledge: true
+    skip_first: true
+    notifiers:
+      - pushbullet

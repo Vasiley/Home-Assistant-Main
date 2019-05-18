@@ -1,0 +1,165 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Kids Workstation Glances'
+    sensor.kids_glances_usb_disk_overview:
+      friendly_name: Plex Drive Overview
+      icon: mdi:harddisk
+    sensor.kids_glances_usb_disk_percent_free:
+      friendly_name: Plex Drive Used
+      icon: mdi:harddisk
+
+sensor:
+  - platform: glances
+    host: !secret glances_kids_workstation
+    version: 3
+    name: Kids Glances
+    resources:
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'memory_use_percent'
+      - 'memory_use'
+      - 'memory_free'
+      - 'swap_use_percent'
+      - 'swap_use'
+      - 'swap_free'
+      - 'cpu_use_percent'
+      - 'cpu_temp'
+
+################## Glances Custom usb Hard Drive Display ##########################
+
+  - platform: template
+    sensors:
+      kids_glances_usb_disk_overview:
+        value_template: "{{((states.sensor.kids_glances_usb_disk_used.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.kids_glances_usb_disk_total.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.184:61208/api/3/fs
+    name: 'kids_glances_usb_disk_total'
+    value_template: '{{ value_json[1].size }}'
+    scan_interval: 3600
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.184:61208/api/3/fs
+    name: 'kids_glances_usb_disk_percent_free'
+    value_template: '{{ value_json[1].percent }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.184:61208/api/3/fs
+    name: 'kids_glances_usb_disk_used'
+    value_template: '{{ value_json[1].used }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+input_number:
+  kids_workstation_ram_alert_value:
+    name: Kids Workstation Ram Alert Setpoint
+    initial: 85
+    min: 0
+    max: 100
+    step: 5
+
+  kids_workstation_disk_alert_value:
+    name: kids workstation Disk Alert Setpoint
+    initial: 75
+    min: 0
+    max: 100
+    step: 5
+
+  kids_workstation_cpu_alert_value:
+    name: kids workstation CPU Alert Setpoint
+    initial: 80
+    min: 0
+    max: 100
+    step: 5
+
+  kids_workstation_temp_alert_value:
+    name: kids workstation Temp Alert Setpoint
+    initial: 140
+    min: 70
+    max: 180
+    step: 5
+
+automation:
+############# Ram usuage high on BI server #####################################
+  - alias: kids_workstation_ram_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.kids_glances_ram_used') > states('input_number.kids_workstation_ram_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.kids_room_cast
+            - media_player.ha_speaker
+          message: 'Ram Usage On kids workstation server is Excessive'
+      - service: script.kids_workstation_ram_usage
+
+############# Disk usuage high on BI server #####################################
+  - alias: kids_workstation_disk_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.kids_glances_disk_used_2') > states('input_number.kids_workstation_disk_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
+          message: 'Disk Usage On kids workstation Server is Excessive'
+      - service: script.kids_workstation_dash_usage
+
+####################### High Cpu Usage #########################################
+  - alias: kids_workstation_cpu_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.kids_glances_cpu_used') > states('input_number.kids_workstation_cpu_alert_value') }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: numeric_state                           #takes care of unkown values
+          entity_id: 'sensor.kids_glances_cpu_load'
+          above: '1'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
+          message: 'Cpu Usage On kids workstation server is Excessive'
+      - service: script.kids_workstation_dash_usage
+
+  - alias: kids_workstation_temp_high
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.kids_glances_cpu_temp') > states('input_number.kids_workstation_temp_alert_value') }}"
+    action:
+      - service: tts.google_say
+        entity_id:
+          - media_player.ha_speaker
+          - media_player.kids_room_cast
+        data_template:
+          message: 'Temp On kids workstation server is Excessive {{ states.sensor.kids_glances_cpu_temp.state }} degrees'
+      - service: script.kids_workstation_dash_usage
+
+
+script:
+  kids_workstation_dash_usage:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.kids_room_dash_wake_up   # in dashboard package
+      - service: shell_command.kids_server_alert_dash # in dashboard package
+      - delay: '00:05:00'
+      - service: shell_command.gabbies_dash   # in dashboard package

@@ -1,0 +1,64 @@
+homeassistant:
+  customize:
+
+    package.node_anchors:
+      customize: &customize
+        package: 'small_tank_ups'
+    sensor.small_tank_ups_battery_charge:
+      friendly_name: UPS Small Tank
+      icon: mdi:battery
+    sensor.small_tank_ups_battery_status:
+      friendly_name: UPS Small Tank Status
+      icon: mdi:lan-connect
+    sensor.small_tank_ups_input_voltage:
+      friendly_name: Small Tank Ups Input Voltage
+      icon: mdi:flash
+    sensor.small_tank_ups_input_nomial_voltage:
+      friendly_name: Small Tank Ups Nominal Voltage
+      icon: mdi:flash
+    sensor.small_tank_ups_time_left:
+      friendly_name: Small Tank Ups Time Left
+      icon: mdi:timer
+    sensor.small_tank_ups_time_on_battery:
+      friendly_name: Small Tank Ups Time On Battery
+      icon: mdi:timer
+    sensor.small_tank_ups_load:
+      friendly_name: Small Tank Ups Load
+      icon: mdi:loading
+
+
+sensor:
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_status/state"
+    name: Small Tank Ups Battery Status
+
+  - platform:
+     mqtt
+    state_topic: "small_tank/sensor/ups_battery/state"
+    name: Small Tank Ups Battery Charge
+    unit_of_measurement: '%'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_input_voltage/state"
+    name: Small Tank Ups Input Voltage
+    unit_of_measurement: 'v'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_nominal_input_voltage/state"
+    name: Small Tank Ups Input Nomial Voltage
+    unit_of_measurement: 'v'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_time_left/state"
+    name: Small Tank Ups Time Left
+    unit_of_measurement: 'minutes'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_time_on_battery/state"
+    name: Small Tank Ups Time On Battery
+    unit_of_measurement: 'minutes'
+
+  - platform: mqtt
+    state_topic: "small_tank/sensor/ups_load/state"
+    name: Small Tank Ups Load
+    unit_of_measurement: '%'

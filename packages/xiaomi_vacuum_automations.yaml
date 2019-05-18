@@ -32,7 +32,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: time
-        at: '13:00:00'
+        at: '10:30:00'
     condition:
       condition: time
       weekday:

@@ -43,8 +43,14 @@ homeassistant:
     automation.flash_red_motion_shed:
       friendly_name: Motion Front Door Outside
       haaska_hidden: true
+    automation.flash_green_motion_truck:
+      friendly_name: Motion Truck Outside
+      haaska_hidden: true
     automation.flash_blue_motion_backdoor:
       friendly_name: Motion Back Door Outside
+      haaska_hidden: true
+    automation.flash_blue_motion_swamp:
+      friendly_name: Motion Swamp Outside
       haaska_hidden: true
     automation.white_no_motion:
       friendly_name: White No Motion

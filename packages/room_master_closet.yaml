@@ -3,6 +3,15 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Master Closet'
+    binary_sensor.door_window_sensor_master_closet:
+      friendly_name: Master Closet
+      haaska_hidden: true
+      device_class: door
+    sensor.master_closet_door_sensor_batt:
+      friendly_name: Master Closet Sensor Battery
+      haaska_hidden: true
+      unit_of_measurement: '%'
+      icon: mdi:battery
     light.hue_master_closet:
       friendly_name: Master Closet Light
       haaska_name: Master Closet Light
@@ -12,6 +21,13 @@ homeassistant:
     automation.master_closet_off:
       friendly_name: Master Closet Light Off
       haaska_hidden: true
+
+sensor:
+  - platform: template
+    sensors:
+      master_closet_door_sensor_batt:
+        friendly_name: 'Master Closet Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_master_closet.attributes.battery_level }}"
 
 automation:
   - alias: 'master_closet_on'

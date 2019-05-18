@@ -89,6 +89,13 @@ script:
         entity_id: automation.motion_bathroom_sleep_off
       - service: automation.turn_off
         entity_id: automation.motion_master_bedroom_motion_off
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'Disabling Master Bedroom Speakers, Hope you have a good bath'
+      - delay: '00:00:10'    
+      - service: switch.turn_off
+        entity_id: switch.wemo_master_bedroom_mixer
       - service: switch.turn_on
         entity_id: switch.master_bath_heater
       - service: light.turn_on
@@ -119,6 +126,13 @@ script:
         entity_id: automation.motion_bathroom_sleep_off
       - service: automation.turn_on
         entity_id: automation.motion_master_bedroom_motion_off
+      - service: switch.turn_on
+        entity_id: switch.wemo_master_bedroom_mixer
+      - delay: '00:00:05'
+      - service: tts.google_say
+        data:
+          entity_id: media_player.master_bedroom_cast
+          message: 'Renabling Master Bedroom Speakers, Hope you had a good bath'
       - service: light.turn_off
         entity_id: light.master_bath_vanity
       - service: light.turn_off

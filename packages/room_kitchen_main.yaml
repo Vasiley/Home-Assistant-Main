@@ -3,6 +3,21 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Kitchen Mains'
+    sensor.kitchen_blinds_controller_wifi_signal:
+      icon: mdi:signal
+      haaska_hidden: true
+      friendly_name: Kitchen Table Blinds WIFI
+    sensor.sink_blinds_controller_wifi_signal:
+      icon: mdi:signal
+      haaska_hidden: true
+    sensor.beer_cooler_wifi_signal:
+      icon: mdi:signal
+      haaska_hidden: true
+    sensor.beer_cooler_temp:
+      device_class: temperature
+      friendly_name: Beer Cooler Temp
+      haaska_hidden: true
+      
     binary_sensor.kitchen_motion:
       friendly_name: Kitchen Motion
       device_class: motion
@@ -26,10 +41,32 @@ homeassistant:
 sensor:
   - platform: template
     sensors:
+      kitchen_blinds_state:
+        friendly_name: 'Kitchen Blinds Status'
+        value_template: "{{ states('input_select.kitchen_blinds_status') }}"
+  - platform: template
+    sensors:
       kitchen_battery_motion:
         entity_id: sun.sun
         friendly_name: 'Kitchen Motion Sensor'
         value_template: "{{ state_attr('binary_sensor.kitchen_motion', 'battery_level') }}"
+
+  - platform: mqtt
+    state_topic: "kitchenblinds/Blinds Wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Kitchen Blinds Controller Wifi Signal
+  - platform: mqtt
+    state_topic: "Kit_sink_blinds_controll/Blinds Sink Wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Sink Blinds Controller Wifi Signal
+  - platform: mqtt
+    state_topic: "esp_beer/beer wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Beer Cooler Wifi Signal
+  - platform: mqtt
+    state_topic: "esp_beer/beer temp/temp"
+    unit_of_measurement: '°F'
+    name: Beer Cooler Temp
 
 automation:
   - alias: Motion Kitchen off

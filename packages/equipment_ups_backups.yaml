@@ -1,0 +1,104 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'main_ups'
+    automation.commerical_power_back_up:
+      friendly_name: Power Up Automation
+      haaska_hidden: true
+    automation.commerical_power_down_nofication:
+      friendly_name: Power Out Notify
+      haaska_hidden: true
+    automation.commerical_power_up_nofication:
+      friendly_name: Power Up Notify
+      haaska_hidden: true
+
+apcupsd:
+
+sensor:
+  - platform: apcupsd
+    resources:
+      - status
+      - linev
+      - loadpct
+      - bcharge
+      - timeleft
+      - nompower
+      - tonbatt
+
+  - platform: nut
+    name: kids_room_ups
+    host: 192.168.1.184
+    port: 3493
+    resources:
+      - ups.status
+      - input.voltage
+      - ups.load
+      - battery.charge
+      - battery.runtime
+      - ups.realpower.nominal    # wattage of ups shown real time minutes with sensor.kids_room_ups_time_left
+
+
+  - platform: template
+    sensors:
+      kids_room_ups_time_left:
+        value_template: "{{ states('sensor.kids_room_ups_battery_runtime') | int / 60 }}"
+        unit_of_measurement: 'Minutes'
+
+
+  - platform: template
+    sensors:
+      kids_room_ups_status_template:
+        value_template: "{{ 'ONLINE' if is_state('sensor.kids_room_ups_status_data', 'OL' ) else 'ONBATT' }}"
+
+automation:
+
+  - alias: 'commerical_power_down_nofication'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.ups_status
+        to: 'ONBATT'
+        from: 'ONLINE'
+        for: '00:05:00'
+    action:
+      - service: notify.pushbullet
+        data:
+          message: 'Power is out'
+
+  - alias: 'commerical_power_up_nofication'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.ups_status
+        to: 'ONLINE'
+        from: 'ONBATT'
+        for: '00:05:00'
+    action:
+      - service: notify.pushbullet
+        data:
+          message: 'Power is up'
+
+############# power up after power outage #####################################
+  - alias: 'commerical_power_back_up'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.ups_status
+        from: 'ONBATT'
+        to: 'ONLINE'
+        for: '00:10:00'
+    action:
+      - service: switch.turn_on
+        entity_id:
+          - switch.wemo_unifi_shed_switch
+          - switch.wemo_unifi_shed_switch
+          - switch.wemo_8port_livingroom
+          - switch.wemo_driveway_camaera
+          - switch.wemo_washing_machine
+          - switch.wemo_master_bedroom_mixer
+      - service: fan.turn_on
+        entity_id:
+          - fan.living_room_purifer
+          - fan.master_bedroom_purifer
+          - fan.kids_bedroom_purifer
