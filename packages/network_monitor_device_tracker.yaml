@@ -935,6 +935,7 @@ device_tracker:
     password: !secret unifi_password
     verify_ssl: false
     site_id: default
+    detection_time: 60
 
 #### Notify if device goes offline
 

@@ -1,0 +1,81 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'master_bedroom_device_watchdog'
+
+input_boolean:
+  boolean_master_bedroom_netork_watchdog:
+    initial: off
+  boolean_master_bedroom_hadashboard_status:
+    initial: off
+
+automation:
+############################## HADASHBOAD WATCHDOG ##########################################
+  - alias: 'master_bedroom_hadashboard_notify_down'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.current_dash_master
+        to: 'unknown'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "Dashboard Is Offline"
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_master_bedroom_hadashboard_status
+
+  - alias: 'master_bedroom_hadashboard_notify_up'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.current_dash_master
+        from: 'unknown'
+        to: 'Master Dash'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_home
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "Dashboard Is Online"
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.boolean_master_bedroom_hadashboard_status
+
+  - alias: 'master_bedroom_annouce_hadashboard_issue_on_motion'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_master_bedroom
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_hadashboard_status
+        state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "Your Hadashboard is Offline"

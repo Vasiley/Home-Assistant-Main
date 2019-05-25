@@ -1,0 +1,37 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'kids_room_ups'
+
+sensor:
+  - platform: nut
+    name: kids_room_ups
+    host: 192.168.1.184
+    port: 3493
+    resources:
+      - ups.status
+      - input.voltage
+      - ups.load
+      - battery.charge
+      - battery.runtime
+      - ups.realpower.nominal    # wattage of ups shown real time minutes with sensor.kids_room_ups_time_left
+
+
+  - platform: template
+    sensors:
+      kids_room_ups_time_left:
+        value_template: "{{ (states('sensor.kids_room_ups_battery_runtime') | int / 60) | round(1)}}"
+        unit_of_measurement: 'Minutes'
+
+  - platform: template
+    sensors:
+      kids_room_ups_status_template:
+        value_template: >-
+          {% if is_state("sensor.kids_room_ups_status_data", "OL") %}
+            ONLINE
+          {% elif is_state("sensor.kids_room_ups_status_data", "OL CHRG") %}
+            Charging
+          {% else %}
+            ONBATT
+          {% endif %}

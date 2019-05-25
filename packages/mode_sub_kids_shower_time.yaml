@@ -47,6 +47,7 @@ automation:
       - platform: state
         entity_id: switch.kids_bathroom_vanitity
         to: 'off'
+        for: '00:01:00'
       - platform: state
         entity_id: input_boolean.boolean_kids_shower_time
         to: 'on'

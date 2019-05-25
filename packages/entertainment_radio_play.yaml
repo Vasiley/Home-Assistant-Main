@@ -65,32 +65,32 @@ automation:
             {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.onkyo_cast, media_player.master_bedroom_cast, media_player.kids_room_cast
             {% endif %}
           volume_level: '{{ states.input_number.volume_radio.state }}'
-      # - service: media_player.volume_set
-      #   data_template:
-      #     entity_id: >
-      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
-      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
-      #       {% endif %}
-      #     volume_level: '.5'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+            {% endif %}
+          volume_level: '.5'
 
 script:
   radio:
     alias: Play Radio on Chromecast Audio
     sequence:
-      # - service: media_player.volume_set
-      #   data_template:
-      #     entity_id: >
-      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
-      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
-      #       {% endif %}
-      #     volume_level: '.85'
-      # - service: media_player.select_source
-      #   data_template:
-      #     entity_id: >-
-      #       {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.stereo
-      #       {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
-      #       {% endif %}
-      #     source: 'Cast'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: >
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %}  media_player.stereo
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+            {% endif %}
+          volume_level: '.85'
+      - service: media_player.select_source
+        data_template:
+          entity_id: >-
+            {% if is_state("input_select.chromecast_radio", "Livingroom") %} media_player.stereo
+            {% elif is_state("input_select.chromecast_radio", "Everywhere") %} media_player.stereo
+            {% endif %}
+          source: 'Cast'
       - service: media_player.play_media
         data_template:
           entity_id: >-

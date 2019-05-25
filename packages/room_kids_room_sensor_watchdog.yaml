@@ -1,0 +1,56 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'kids_room_sensor_watchdog'
+
+input_boolean:
+  boolean_kids_sensor_watchdog:
+    initial: off
+
+automation:
+  - alias: 'notify_sensor_battery_low'
+    initial_state: 'true'
+    trigger:
+      - platform: numeric_state
+        entity_id:
+          - sensor.kids_window_sensor_batt
+          - sensor.motion_sensor_kids_room_battery
+          - sensor.kids_room_sensor_batt
+          - sensor.kids_room_dimmer_battery
+        below: 30
+      - platform: state
+        entity_id:
+          - sensor.kids_window_sensor_batt
+          - sensor.motion_sensor_kids_room_battery
+          - sensor.kids_room_sensor_batt
+          - sensor.kids_room_dimmer_battery
+        to: unknown        
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_kids_sensor_watchdog
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.kids_room_cast
+          message: "There is a problem with a sensor battery in your room"
+      - service: shell_command.kids_sensor_dash
+
+  - alias: 'kids_annouce_sensor_issue'
+    initial_state: 'true'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.kids_room_motion
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.motion_kids_bedroom
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_kids_sensor_watchdog
+        state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.kids_room_cast
+          message: "There is a problem with a sensor in your room"
+      - service: shell_command.kids_sensor_dash

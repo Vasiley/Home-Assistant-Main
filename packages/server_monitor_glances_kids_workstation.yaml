@@ -140,19 +140,19 @@ automation:
           message: 'Cpu Usage On kids workstation server is Excessive'
       - service: script.kids_workstation_dash_usage
 
-  - alias: kids_workstation_temp_high
-    initial_state: 'on'
-    trigger:
-      - platform: template
-        value_template: "{{ states('sensor.kids_glances_cpu_temp') > states('input_number.kids_workstation_temp_alert_value') }}"
-    action:
-      - service: tts.google_say
-        entity_id:
-          - media_player.ha_speaker
-          - media_player.kids_room_cast
-        data_template:
-          message: 'Temp On kids workstation server is Excessive {{ states.sensor.kids_glances_cpu_temp.state }} degrees'
-      - service: script.kids_workstation_dash_usage
+  # - alias: kids_workstation_temp_high
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: template
+  #       value_template: "{{ states('sensor.kids_glances_cpu_temp') > states('input_number.kids_workstation_temp_alert_value') }}"
+  #   action:
+  #     - service: tts.google_say
+  #       entity_id:
+  #         - media_player.ha_speaker
+  #         - media_player.kids_room_cast
+  #       data_template:
+  #         message: 'Temp On kids workstation server is Excessive {{ states.sensor.kids_glances_cpu_temp.state }} degrees'
+  #     - service: script.kids_workstation_dash_usage
 
 
 script:

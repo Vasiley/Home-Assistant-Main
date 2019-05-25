@@ -70,3 +70,17 @@ automation:
       - service: notify.pushbullet
         data:
           message: 'Shed Light Turning Off Now after being left on'
+
+  - alias: 'shed_light_turn_on'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.door_window_sensor_shed_door
+        to: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: 'The Shed Light Has Been turned on'
+      - service: switch.turn_on
+        entity_id: switch.wall_switch_shed_main_light
