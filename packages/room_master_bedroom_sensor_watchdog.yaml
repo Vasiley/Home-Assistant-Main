@@ -1,0 +1,65 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'master_bedroom_sensor_watchdog'
+
+input_boolean:
+  boolean_master_sensor_watchdog:
+    initial: off
+
+automation:
+  - alias: 'notify_sensor_battery_low_master'
+    initial_state: 'true'
+    trigger:
+      - platform: numeric_state
+        entity_id:
+          - sensor.vibration_sensor_batt
+          - sensor.motion_sensor_master_battery
+          - sensor.master_door_sensor_batt
+          - sensor.master_closet_door_sensor_batt
+          - sensor.dawns_side_window_sensor_batt
+          - sensor.herbs_side_window_sensor_batt
+        below: 30
+      - platform: state
+        entity_id:
+          - sensor.master_bedroom_temperature
+          - sensor.vibration_sensor_batt
+          - sensor.motion_sensor_master_battery
+          - sensor.master_door_sensor_batt
+          - sensor.master_closet_door_sensor_batt
+          - sensor.dawns_side_window_sensor_batt
+          - sensor.herbs_side_window_sensor_batt
+        to: 'unknown'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "There is a problem with a sensor battery in your room"
+      - service: shell_command.master_dash_wake_up
+      - delay: '00:00:10'
+      - service: shell_command.master_battery_alert_dash
+
+  - alias: 'master_annouce_sensor_issue'
+    initial_state: 'true'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_master_bedroom
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.master_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "There is a problem with a sensor in your room"
+      - service: shell_command.master_dash_wake_up
+      - delay: '00:00:10'              
+      - service: shell_command.master_dash

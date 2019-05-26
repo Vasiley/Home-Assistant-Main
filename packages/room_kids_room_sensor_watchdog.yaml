@@ -21,11 +21,12 @@ automation:
         below: 30
       - platform: state
         entity_id:
+          - sensor.kids_room_temperature
           - sensor.kids_window_sensor_batt
           - sensor.motion_sensor_kids_room_battery
           - sensor.kids_room_sensor_batt
           - sensor.kids_room_dimmer_battery
-        to: unknown        
+        to: unknown
     action:
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_kids_sensor_watchdog

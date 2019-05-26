@@ -61,4 +61,4 @@ script:
       - service: mqtt.publish
         data:
           topic: "HA/falcon/player/FPP/playlist/repeat/set"
-          payload: '0'              
+          payload: '0'

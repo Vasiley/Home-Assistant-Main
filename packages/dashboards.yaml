@@ -189,6 +189,8 @@ sensor:
                Master BackDoor Dash
           {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_swamp?skin=default" %}
                Swamp Dash
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_network?skin=default" %}
+               Master Network
           {% else %}
                Unknown
           {% endif %}
@@ -488,6 +490,8 @@ shell_command:
    gabbies_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/gabbies?skin=default'}\""
    master_dash_frontdoor_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_cameras?skin=default'}\""
    master_dash: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_bedroom?skin=default'}\""
+   master_network_alert_dash: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_network?skin=default'}\""
+   master_battery_alert_dash: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_batterys?skin=default'}\""
    lv_room_dash_wake_up: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d '{'wake': true}'"
    server_alert_dash_lv: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/network?skin=default'}\""
    kids_server_alert_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/kids_server?skin=default'}\""
