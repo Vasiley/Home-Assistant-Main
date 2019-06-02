@@ -555,9 +555,9 @@ script:
 
 
 shell_command:
-  kitchen_blinds_closed: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,0,35"
-  kitchen_blinds_halfway: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,0,70"
-  kitchen_blinds_open: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,0,105"
+  kitchen_blinds_closed: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,14,35"
+  kitchen_blinds_halfway: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,14,70"
+  kitchen_blinds_open: "curl -sS -X GET http://192.168.2.23/control?cmd=Servo,1,14,105"
   kitchen_blinds_sink_closed: "curl -sS -X GET http://192.168.2.24/control?cmd=Servo,1,14,35"
   kitchen_blinds_sink_halfway: "curl -sS -X GET http://192.168.2.24/control?cmd=Servo,1,14,100"
   kitchen_blinds_sink_open: "curl -sS -X GET http://192.168.2.24/control?cmd=Servo,1,14,150"

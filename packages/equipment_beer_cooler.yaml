@@ -1,0 +1,101 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'beer_cooler'
+
+    sensor.beer_cooler_wifi_signal:
+      icon: mdi:signal
+      haaska_hidden: true
+    sensor.beer_cooler_temp:
+      device_class: temperature
+      friendly_name: Beer Cooler Temp
+      haaska_hidden: true
+    sensor.beer_cooler_watts:
+      friendly_name: Beer Cooler Watts
+      icon: mdi:power-plug
+    script.beer_cooler_defrost:
+      friendly_name: Beer Cooler Defrost
+      icon: mdi:power-plug
+      haaska_name: Beer Cooler Defrost
+    script.beer_cooler:
+      friendly_name: Beer Cooler
+      icon: mdi:power-plug
+      haaska_name: Beer Cooler
+    input_boolean.boolean_beer_cooler_defrost:
+      friendly_name: Defrost Mode ON
+      icon: mdi:temperature-fahrenheit
+
+input_boolean:
+  boolean_beer_cooler_defrost:
+    initial: off
+
+sensor:
+  - platform: mqtt
+    state_topic: "esp_beer/beer wifi/wifi"
+    unit_of_measurement: 'dbm'
+    name: Beer Cooler Wifi Signal
+  - platform: mqtt
+    state_topic: "esp_beer/beer temp/temp"
+    unit_of_measurement: '°F'
+    name: Beer Cooler Temp
+  - platform: template
+    sensors:
+      beer_cooler_watts:
+        value_template: '{{ states.switch.wemo_beer_cooler.attributes["current_power_w"] | replace(" W", "") | float }}'
+        unit_of_measurement: 'W'
+
+automation:
+  - alias: beer_cooler_no_connection
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: sensor.beer_cooler_temp
+        to: 'unknown'
+        for:
+          minutes: 10
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_beer_cooler_defrost
+        state: 'off'
+    action:
+      - service: switch.turn_off
+        data:
+          entity_id: switch.wemo_beer_cooler
+      - delay: '00:10:00'
+      - service: switch.turn_on
+        data:
+          entity_id: switch.wemo_beer_cooler
+
+  - alias: beer_cooler_in_defrost_mode
+    trigger:
+      platform: time_pattern
+      minutes: 5
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_beer_cooler_defrost
+        state: 'on'
+    action:
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.ha_speaker
+          message: "A friendly reminder Beer cooler is still in defrost mode"
+
+script:
+  beer_cooler_defrost:
+    sequence:
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.boolean_beer_cooler_defrost
+      - service: switch.turn_off
+        data:
+          entity_id: switch.wemo_beer_cooler
+
+  beer_cooler:
+    sequence:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.boolean_beer_cooler_defrost
+      - service: switch.turn_on
+        data:
+          entity_id: switch.wemo_beer_cooler

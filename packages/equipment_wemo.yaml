@@ -6,8 +6,8 @@ homeassistant:
     switch.wemo_unifi_shed_switch:
       friendly_name: Unifi 8 port shed switch
       icon: mdi:power-settings
-    switch.wemo_8port_livingroom:
-      friendly_name: Unifi 8 port Living Room switch
+    switch.wemo_beer_cooler:
+      friendly_name: Beer Cooler
       icon: mdi:power-settings
     switch.wemo_driveway_camaera:
       friendly_name: Driveway Camera
@@ -62,7 +62,7 @@ wemo:
      - 192.168.1.31   #Shed Cam Reboot
      - 192.168.1.53  #Master Fan
      - 192.168.1.176 #kids bathroom fan
-     - 192.168.1.152  #8 port living room
+     - 192.168.1.152  #beer cooler
      - 192.168.1.197  #master bath vanity
      - 192.168.1.198 #ruths room wax warmer
      - 192.168.1.199 #kids bathroom vanity

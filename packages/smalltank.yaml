@@ -29,6 +29,10 @@ homeassistant:
       icon: mdi:water-pump
       friendly_name: Wave Maker
       hasska_hidden: true
+    binary_sensor.small_tank_cpu_fan:
+      icon: mdi:thermometer-lines
+      friendly_name: Cpu Fan
+      hasska_hidden: true      
     sensor.small_tank_temp_ok:
       icon: mdi:thermometer-lines
       friendly_name: Small Tank Temp Warning
@@ -121,7 +125,7 @@ binary_sensor:
 
   - platform: mqtt
     state_topic: "small_tank/switch/relay_four/state"
-    name: relay_four
+    name: small_tank_cpu_fan
     payload_on: "on"
     payload_off: "off"
 

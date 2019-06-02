@@ -191,6 +191,10 @@ sensor:
                Swamp Dash
           {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_network?skin=default" %}
                Master Network
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_batterys?skin=default" %}
+               Master Batterys
+          {% elif states.sensor.current_url_master.state == "http://192.168.1.153:5050/master_bath_controls?skin=default" %}
+               Master Bathroom
           {% else %}
                Unknown
           {% endif %}
@@ -305,6 +309,19 @@ automation:
         hours: '/1'
         minutes: 00
         seconds: 00
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_refresh
@@ -320,6 +337,18 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_frontdoor_cam
@@ -334,6 +363,18 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_backdoor_cam
@@ -348,6 +389,18 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_swamp_cam
@@ -362,6 +415,18 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_driveway_cam
@@ -389,6 +454,18 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_home
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.boolean_master_sensor_watchdog
+        state: 'off'
     action:
       - service: script.turn_on
         entity_id: script.dash_reset_after_motion
@@ -439,7 +516,7 @@ script:
       - delay: '00:00:01'
       - service: shell_command.lv_room_dash_refresh
       - service: shell_command.master_dash_refresh
-#      - service: shell_command.kids_room_dash_refresh
+      - service: shell_command.kids_room_dash_refresh
   dash_frontdoor_cam:
     sequence:
       - delay: '00:00:01'

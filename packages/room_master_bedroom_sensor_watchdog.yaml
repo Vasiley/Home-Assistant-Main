@@ -55,11 +55,14 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_master_sensor_watchdog
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_sleep
+        state: 'off'
     action:
       - service: tts.google_say
         data_template:
           entity_id: media_player.master_bedroom_cast
           message: "There is a problem with a sensor in your room"
       - service: shell_command.master_dash_wake_up
-      - delay: '00:00:10'              
+      - delay: '00:00:10'
       - service: shell_command.master_dash

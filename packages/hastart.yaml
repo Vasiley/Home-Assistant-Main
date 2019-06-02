@@ -42,5 +42,7 @@ automation:
       - delay: '00:05:00'
       - service: automation.turn_on
         entity_id: automation.notify_device_status
+      - service: switch.turn_on
+        entity_id: switch.wemo_beer_cooler
       - service: input_boolean.turn_off
         entity_id: input_boolean.ha_start

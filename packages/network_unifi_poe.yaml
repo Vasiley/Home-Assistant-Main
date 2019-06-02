@@ -7,3 +7,21 @@ homeassistant:
     switch.backdoor:
       friendly_name: Back Door Camera
       icon: mdi:cctv
+    switch.livingroom_camera:
+      friendly_name: Living Room Camera
+      icon: mdi:cctv
+    switch.master_bedroom_camera:
+      friendly_name: Master Bedroom Camera
+      icon: mdi:cctv
+    switch.kids_room_camera:
+      friendly_name: Kids Room Camera
+      icon: mdi:cctv
+    switch.fish_tank_ha:
+      friendly_name: Fish Tank Ha
+      icon: mdi:server
+    switch.fpp:
+      friendly_name: Falcon Player
+      icon: mdi:server
+    switch.swamp_camera:
+      friendly_name: Swamp Camera
+      icon: mdi:cctv

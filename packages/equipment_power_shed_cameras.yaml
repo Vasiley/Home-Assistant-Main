@@ -6,14 +6,11 @@ homeassistant:
     switch.shed_camera_outlet_one:
       friendly_name: Shed Camera
       icon: mdi:cctv
-    switch.swamp_camera_outlet_two:
+    switch.outlet_two:
       friendly_name: Swamp Camera
       icon: mdi:cctv
     switch.shed_cam:
       friendly_name: Shed Camera
-      icon: mdi:cctv
-    switch.swamp_cam:
-      friendly_name: Swamp Camera
       icon: mdi:cctv
 
 switch:
@@ -24,7 +21,7 @@ switch:
         command_off: !secret netbooter_outlet1_off
   - platform: command_line
     switches:
-      swamp_camera_outlet_two:
+      outlet_two:
         command_on: !secret netbooter_outlet2_on
         command_off: !secret netbooter_outlet2_off
 
@@ -41,15 +38,15 @@ switch:
           data:
             entity_id: switch.shed_camera_outlet_one
 
-  - platform: template
-    switches:
-      swamp_cam:
-        value_template: "{{ is_state('binary_sensor.swamp_camera_connect', 'on') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.swamp_camera_outlet_two
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.swamp_camera_outlet_two
+  # - platform: template
+  #   switches:
+  #     swamp_cam:
+  #       value_template: "{{ is_state('binary_sensor.swamp_camera_connect', 'on') }}"
+  #       turn_on:
+  #         service: switch.turn_on
+  #         data:
+  #           entity_id: switch.swamp_camera_outlet_two
+  #       turn_off:
+  #         service: switch.turn_off
+  #         data:
+  #           entity_id: switch.swamp_camera_outlet_two

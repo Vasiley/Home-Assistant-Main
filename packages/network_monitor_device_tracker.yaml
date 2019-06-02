@@ -391,8 +391,10 @@ homeassistant:
      friendly_name: Kids Bedroom Purifer
      icon: mdi:fan
      haaska_hidden: true
-
-
+    binary_sensor.master_bedroom_fan:
+      friendly_name: Master Ceiling Fan
+      icon: mdi:fan
+      haaska_hidden: true
 
 sensor:
   ############## Public Ip
@@ -913,6 +915,11 @@ binary_sensor:
       kids_bedroom_purifer:
         device_class: connectivity
         value_template: "{{ is_state('device_tracker.kids_bedroom_purifer', 'home') }}"
+  - platform: template
+    sensors:
+      master_bedroom_fan:
+        device_class: connectivity
+        value_template: "{{ is_state('binary_sensor.gang_1', 'on') }}"
 
 device_tracker:
   - platform: ping
@@ -1047,6 +1054,7 @@ automation:
           - binary_sensor.living_room_purifer
           - binary_sensor.master_bedroom_purifer
           - binary_sensor.kids_bedroom_purifer
+          - binary_sensor.master_bedroom_fan
 
     condition:
       condition: and

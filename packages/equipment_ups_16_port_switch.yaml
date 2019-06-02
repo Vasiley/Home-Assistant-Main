@@ -3,30 +3,30 @@ homeassistant:
 
     package.node_anchors:
       customize: &customize
-        package: 'small_tank_ups'
+        package: '16_port_ups'
     sensor.small_tank_ups_battery_charge:
-      friendly_name: UPS Small Tank
+      friendly_name: UPS 16 Port
       icon: mdi:battery
     sensor.small_tank_ups_battery_status:
-      friendly_name: UPS Small Tank Status
+      friendly_name: UPS 16 Port Status
       icon: mdi:lan-connect
     sensor.small_tank_ups_input_voltage:
-      friendly_name: Small Tank Ups Input Voltage
+      friendly_name: 16 Port Ups Input Voltage
       icon: mdi:flash
     sensor.small_tank_ups_input_nomial_voltage:
-      friendly_name: Small Tank Ups Nominal Voltage
+      friendly_name: 16 Port Ups Nominal Voltage
       icon: mdi:flash
     sensor.small_tank_ups_time_left:
-      friendly_name: Small Tank Ups Time Left
+      friendly_name: 16 Port Ups Time Left
       icon: mdi:timer
     sensor.small_tank_ups_time_on_battery:
-      friendly_name: Small Tank Ups Time On Battery
+      friendly_name: 16 Port Ups Time On Battery
       icon: mdi:timer
     sensor.small_tank_ups_load:
-      friendly_name: Small Tank Ups Load
+      friendly_name: 16 Port Ups Load
       icon: mdi:loading
 
-
+########### hooked up to small tank for sensor data
 sensor:
   - platform: mqtt
     state_topic: "small_tank/sensor/ups_status/state"

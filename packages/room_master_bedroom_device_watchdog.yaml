@@ -28,7 +28,7 @@ automation:
           - binary_sensor.esp_blinds_master_herbs_side
           - binary_sensor.master_bedroom_purifer
           - binary_sensor.dawns_controller
-
+          - binary_sensor.master_bedroom_fan
     condition:
       condition: and
       conditions:
@@ -74,6 +74,9 @@ automation:
       - condition: state
         entity_id: input_boolean.boolean_master_bedroom_netork_watchdog
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_sleep
+        state: 'off'                
     action:
       - service: tts.google_say
         data_template:

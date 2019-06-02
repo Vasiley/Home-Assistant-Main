@@ -23,9 +23,6 @@ homeassistant:
     switch.network_switch_home_assistant_server:
       friendly_name: HASS Server
       icon: mdi:server-network
-    switch.network_switch_pi_falcon_player:
-      friendly_name: Falcon Player
-      icon: mdi:server-network
 
 switch:
   - platform: digitalloggers
