@@ -13,6 +13,9 @@ homeassistant:
     script.swamp_cam_powercycle:
       friendly_name: Swamp Cam Reboot
       icon: mdi:access-point-network
+    script.master_fan_powercycle:
+      friendly_name: Master Fan Reboot
+      icon: mdi:power
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
@@ -25,6 +28,8 @@ homeassistant:
       friendly_name: Shed Cam Auto Reboot
     automation.reboot_swamp_camera:
       friendly_name: Swamp Cam Auto Reboot
+    automation.reboot_master_fan:
+      friendly_name: Master Fan Auto Reboot
 
 input_boolean:
   boolean_network_reboot:
@@ -83,10 +88,10 @@ script:
   shed_cam_powercycle:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.shed_camera_outlet_one
+        entity_id: switch.shed
       - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.shed_camera_outlet_one
+        entity_id: switch.shed
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -103,6 +108,18 @@ script:
         data:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Swamp Camera'
+
+  master_fan_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.wemo_master_bedroom_ceiling_fan
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.wemo_master_bedroom_ceiling_fan
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Rebooting Master Fan'
 
 automation:
   - alias: reboot_driveway_camera
@@ -155,3 +172,20 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.swamp_cam_powercycle
+
+  - alias: reboot_master_fan
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.master_bedroom_fan
+        to: 'unavailable'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.master_fan_powercycle

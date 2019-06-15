@@ -14,7 +14,10 @@ media_player:
     port: 8001
     name: Smart Tv
 
-# sensor:
-#   - platform: plex
-#     host: 192.168.1.80
-#     token: !secret plex_token
+  - platform: plex
+
+
+sensor:
+  - platform: plex
+    host: 192.168.1.184
+    token: !secret plex_token

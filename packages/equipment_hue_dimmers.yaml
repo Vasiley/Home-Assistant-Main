@@ -140,73 +140,69 @@ sensor:
 
 ###### Hue Dimmer for Master Bath ################
 
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.state.buttonevent }}'
-    scan_interval: 1
-    name: 'Master Bath Dimmer State Rest'
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    scan_interval: 1
-    name: 'Master Bathroom Dimmer State'
-    value_template: >-
-      {% set last_updated = as_timestamp(value_json.state.lastupdated ~ '-00:00')|int %}
-      {% if as_timestamp(now())|int - last_updated > 10 %}
-        idle
-      {% else %}
-        {% set button_event = value_json.state.buttonevent|string %}
-        {{ ('hold' if button_event[3]|int % 2 == 1 else 'click') ~ '_' ~ button_event[0] }}
-      {% endif %}
+  # - platform: rest
+  #   resource: !secret dimmer_rest_33
+  #   value_template: '{{ value_json.state.buttonevent }}'
+  #   scan_interval: 1
+  #   name: 'Master Bath Dimmer State Rest'
+  # - platform: rest
+  #   resource: !secret dimmer_rest_33
+  #   scan_interval: 1
+  #   name: 'Master Bathroom Dimmer State'
+  #   value_template: >-
+  #     {% set last_updated = as_timestamp(value_json.state.lastupdated ~ '-00:00')|int %}
+  #     {% if as_timestamp(now())|int - last_updated > 10 %}
+  #       idle
+  #     {% else %}
+  #       {% set button_event = value_json.state.buttonevent|string %}
+  #       {{ ('hold' if button_event[3]|int % 2 == 1 else 'click') ~ '_' ~ button_event[0] }}
+  #     {% endif %}
+  #
+  # - platform: template
+  #   sensors:
+  #     master_bathroom_dimmer_last_button_push:
+  #       friendly_name: 'Master Bath Dimmer Last Button Push'
+  #       value_template: >-
+  #         {% if states('sensor.master_bathroom_dimmer_state_2')[0] == "1" %}
+  #           Shower Time
+  #         {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "2" %}
+  #           Getting Dressed
+  #         {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "3" %}
+  #           Getting Dressed Off
+  #         {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "4" %}
+  #           Shower Time OFf
+  #         {% else %}
+  #           None
+  #         {% endif %}
+  #
+  # - platform: rest
+  #   resource: !secret dimmer_rest_33
+  #   value_template: '{{ value_json.state.lastupdated }}'
+  #   scan_interval: 10
+  #   name: 'Master Bathroom Dimmer Last Update'
+  #
+  # - platform: template
+  #   sensors:
+  #     master_bathroom_dimmer_last_update:
+  #       friendly_name: 'Master Bath Last Used'
+  #       value_template: >-
+  #         {{ as_timestamp(strptime(states('sensor.master_bathroom_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
+  #
+  # - platform: rest
+  #   resource: !secret dimmer_rest_33
+  #   value_template: '{{ value_json.config.battery }}'
+  #   unit_of_measurement: '%'
+  #   scan_interval: 1800
+  #   name: 'Master Bathroom Dimmer Battery'
+  #
+  # - platform: template
+  #   sensors:
+  #     master_bath_motion_sensor_batt:
+  #       friendly_name: 'Master Bathroom Motion Sensor'
+  #       value_template: "{{ state_attr('binary_sensor.motion_sensor_master_bath', 'battery_level') }}"
+  #
+  #
 
-  - platform: template
-    sensors:
-      master_bathroom_dimmer_last_button_push:
-        friendly_name: 'Master Bath Dimmer Last Button Push'
-        value_template: >-
-          {% if states('sensor.master_bathroom_dimmer_state_2')[0] == "1" %}
-            Shower Time
-          {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "2" %}
-            Getting Dressed
-          {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "3" %}
-            Getting Dressed Off
-          {% elif states('sensor.master_bathroom_dimmer_state_2')[0] == "4" %}
-            Shower Time OFf
-          {% else %}
-            None
-          {% endif %}
-
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.state.lastupdated }}'
-    scan_interval: 10
-    name: 'Master Bathroom Dimmer Last Update'
-
-  - platform: template
-    sensors:
-      master_bathroom_dimmer_last_update:
-        friendly_name: 'Master Bath Last Used'
-        value_template: >-
-          {{ as_timestamp(strptime(states('sensor.master_bathroom_dimmer_last_update_2')[:19], "%Y-%m-%dT%X"))|timestamp_custom("%a, %B %d")}}
-
-  - platform: rest
-    resource: !secret dimmer_rest_33
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Master Bathroom Dimmer Battery'
-
-  - platform: template
-    sensors:
-      master_bath_motion_sensor_batt:
-        friendly_name: 'Master Bathroom Motion Sensor'
-        value_template: "{{ state_attr('binary_sensor.motion_sensor_master_bath', 'battery_level') }}"
-
-
-  - platform: template
-    sensors:
-      master_humidity_sensor_batt:
-        friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
-        value_template: "{{ state_attr('sensor.humidity_master_bathroom', 'battery_level') }}"
 
 ####################### kids room ###########################################################
   - platform: rest

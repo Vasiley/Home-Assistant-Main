@@ -111,7 +111,6 @@ script:
         data:
           entity_id: fan.living_room_fan
       - delay: '00:00:05'
-      - service: wink.refresh_state_from_wink
       - service: rest_command.no_motion
       - service: rest_command.no_motion
       - service: switch.turn_on

@@ -25,3 +25,6 @@ homeassistant:
     switch.swamp_camera:
       friendly_name: Swamp Camera
       icon: mdi:cctv
+    switch.shed_camera:
+      friendly_name: Shed Camera
+      icon: mdi:cctv

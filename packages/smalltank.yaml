@@ -32,7 +32,7 @@ homeassistant:
     binary_sensor.small_tank_cpu_fan:
       icon: mdi:thermometer-lines
       friendly_name: Cpu Fan
-      hasska_hidden: true      
+      hasska_hidden: true
     sensor.small_tank_temp_ok:
       icon: mdi:thermometer-lines
       friendly_name: Small Tank Temp Warning
@@ -48,16 +48,11 @@ homeassistant:
     binary_sensor.small_tank_warning:                    #binary sensor that tank temp and water level is bad High level Alarm
       friendly_name: Small Tank Warning
       haaska_hidden: true
-
-history_graph:
-  tank_temps:
-    name: Tank Graph
-    entities:
-      - sensor.small_tank_water_temperature
-      - sensor.hood_temperature
-    hours_to_show: 72
-    refresh: 180
-
+    switch.small_tank_feeding_time:
+      friendly_name: Small Tank Feeding Time
+      haaska_name: Feeding Time
+      icon: mdi:fish
+      
 sensor:
   - platform: mqtt
     state_topic: "small_tank/sensor/dht_sensor_temperature/state"
@@ -128,6 +123,14 @@ binary_sensor:
     name: small_tank_cpu_fan
     payload_on: "on"
     payload_off: "off"
+
+switch:
+  - platform: mqtt
+    command_topic: "small_tank/input_boolean/boolean_feeding_time_on/set"
+    state_topic: "small_tank/input_boolean/boolean_feeding_time_on/state"
+    name: small_tank_feeding_time
+    state_on: "on"
+    state_off: "off"
 
 
 automation:

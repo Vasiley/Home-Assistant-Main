@@ -152,3 +152,61 @@ automation:
     action:
       - service: light.turn_off
         entity_id: light.living_room_lamp_5
+
+  - alias: living_room_dimmer_on
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_dimmer
+        to: 'on'
+      - platform: template
+        value_template: "{{ state_attr('binary_sensor.living_room_dimmer', 'level') != state_attr('light.lamps', 'brightness') }}"
+    condition:
+      condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.living_room_dimmer
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        data_template:
+          entity_id: >-
+             {% if is_state("input_boolean.boolean_evening_time", "on") %}
+               switch.circadian_lighting_circadian_lamps_evening
+             {% elif is_state("input_boolean.boolean_home", "on") %}
+               switch.circadian_lighting_circadian_lamps
+             {% else %}
+              switch.circadian_lighting_circadian_lamps
+             {% endif %}
+      - service: light.turn_on
+        entity_id:
+          - light.living_room_pedestal_lamps
+          - light.lamps
+          - light.living_room_main
+        data_template:
+          brightness: "{{ state_attr('binary_sensor.living_room_dimmer', 'level')}}"
+
+  - alias: living_room_dimmer_off
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_dimmer
+        to: 'off'
+    action:
+      - service: switch.turn_on
+        data_template:
+          entity_id: >-
+               {% if is_state("input_boolean.boolean_evening_time", "on") %}
+                 switch.circadian_lighting_circadian_lamps_evening
+               {% elif is_state("input_boolean.boolean_home", "on") %}
+                 switch.circadian_lighting_circadian_lamps
+               {% else %}
+                switch.circadian_lighting_circadian_lamps
+               {% endif %}
+      - service: light.turn_off
+        entity_id:
+          - light.living_room_main
+      - service: light.turn_on
+        entity_id:
+          - light.living_room_pedestal_lamps
+          - light.lamps

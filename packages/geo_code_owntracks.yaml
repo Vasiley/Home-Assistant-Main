@@ -23,23 +23,23 @@ sensor:
   - platform: google_geocode
     name: Dawn
     api_key: !secret family_geo_locate
-    origin: device_tracker.dawn_baby
+    origin: device_tracker.dawn_baby_2
     scan_interval: 30
 #    options: full
   - platform: google_geocode
     name: Herb
     api_key: !secret family_geo_locate
-    origin: device_tracker.lsp_herb
+    origin: device_tracker.lsp_herb_2
     scan_interval: 30
       #    options: both
   - platform: google_geocode
     name: Mom
     api_key: !secret family_geo_locate
-    origin: device_tracker.homeassistant_mom
+    origin: device_tracker.homeassistant_mom_2
     scan_interval: 90
 
   - platform: google_geocode
     name: Tristan
     api_key: !secret family_geo_locate
-    origin: device_tracker.tristan_tw
+    origin: device_tracker.tristan_tw_2
     scan_interval: 90

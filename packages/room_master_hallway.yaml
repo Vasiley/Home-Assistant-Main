@@ -6,18 +6,25 @@ homeassistant:
     light.master_hallway_1:
       haaska_hidden: true     #hide single bulb its referred to as room name
 
+sensor:
+  - platform: template
+    sensors:
+      master_hallway_hue_motion_sensor_batt:
+        friendly_name: 'Master Hall Hue Motion Sensor Battery'
+        value_template: "{{ state_attr('binary_sensor.master_hallway_sensor_motion', 'battery_level') }}"
+
 automation:
   - alias: Motion Master Hallway Motion On
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.hallway_motion
+        entity_id: binary_sensor.master_hallway_sensor_motion
         to: 'on'
     condition:
       condition: and
       conditions:
       - condition: numeric_state
-        entity_id: sensor.master_hallway_motion_sensor_lux
+        entity_id: sensor.master_hallway_sensor_light_level
         below: '10000'
     action:
       - service: light.turn_on
@@ -60,7 +67,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.hallway_motion
+        entity_id: binary_sensor.master_hallway_sensor_motion
         to: 'off'
         for: '00:01:00'
     action:

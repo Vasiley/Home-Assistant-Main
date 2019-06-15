@@ -5,7 +5,7 @@ homeassistant:
         package: 'Kids Bathroom Room'
 
 #################### Hue ##################################
-    sensor.motion_sensor_kids_bathroom_battery:
+    sensor.kids_hue_motion_sensor_batt:
       haaska_hidden: true
       friendly_name: Kids Hue Motion Battery
       icon: mdi:battery
@@ -67,15 +67,21 @@ homeassistant:
       icon: mdi:fan
 
 sensor:
-      ######## Hue ######################
-  - platform: rest
-    resource: !secret MS_rest_49
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: motion_sensor_kids_bathroom_battery
+#       ######## Hue ######################
+#   - platform: rest
+#     resource: !secret MS_rest_49
+#     value_template: '{{ value_json.config.battery }}'
+#     unit_of_measurement: '%'
+#     scan_interval: 1800
+#     name: motion_sensor_kids_bathroom_battery
 
 ########## xiaomi ############################
+  - platform: template
+    sensors:
+      kids_hue_motion_sensor_batt:
+        friendly_name: 'Kids Hue Bathroom Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.kids_bathroom_sensor_motion', 'battery_level') }}"
+
   - platform: template
     sensors:
       kids_motion_sensor_batt:
@@ -94,13 +100,13 @@ sensor:
         friendly_name: 'Kids Bathroom Door Sensor Battery Level'
         value_template: "{{ states.binary_sensor.door_window_sensor_kids_bathroom_door.attributes.battery_level }}"
 
-binary_sensor:
-###################### Hue ###################
-  - platform: rest
-    resource: !secret MS_rest_49
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: hue_motion_kids_bathroom
+# binary_sensor:
+# ###################### Hue ###################
+#   - platform: rest
+#     resource: !secret MS_rest_49
+#     value_template: '{{ value_json.state.presence }}'
+#     scan_interval: 2
+#     name: hue_motion_kids_bathroom
 
 automation:
   - alias: Motion Kids Bathroom Motion On
@@ -110,7 +116,7 @@ automation:
         entity_id: binary_sensor.motion_sensor_kids_bathroom
         to: 'on'
       - platform: state
-        entity_id: binary_sensor.hue_motion_kids_bathroom
+        entity_id: binary_sensor.kids_bathroom_sensor_motion
         to: 'on'
     condition:
       condition: and
@@ -165,7 +171,7 @@ automation:
         for:
           minutes: 3
       - platform: state
-        entity_id: binary_sensor.hue_motion_kids_bathroom
+        entity_id: binary_sensor.kids_bathroom_sensor_motion
         to: 'off'
         for:
           minutes: 3

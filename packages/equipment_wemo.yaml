@@ -50,6 +50,10 @@ homeassistant:
       haaska_name: Kids Fan
       friendly_name: Kids Fan
       icon: mdi:fan
+    switch.wemo_master_bedroom_ceiling_fan:
+      haaska_name: Master Ceiling Fan
+      friendly_name: Master Celing Fan
+      icon: mdi:fan
 
 wemo:
    discovery: false
@@ -67,6 +71,8 @@ wemo:
      - 192.168.1.198 #ruths room wax warmer
      - 192.168.1.199 #kids bathroom vanity
      - 192.168.1.175 #kids fan
+     - 192.168.1.187 #master bedroom celing Fan
+
 light:
   - platform: switch
     name: Kids Vanity

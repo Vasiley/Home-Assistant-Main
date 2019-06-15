@@ -85,11 +85,7 @@ script:
         entity_id:
             - light.kids_bathroom
             - light.kids_vanity
-      - service: tts.google_say
-        data:
-          entity_id:
-            - media_player.ha_speaker
-          message: 'No More Stinky Kid'
+
 switch:
   - platform: template
     switches:

@@ -205,7 +205,7 @@ automation:
         entity_id: input_boolean.boolean_motion
         to: 'on'
       - platform: time
-        at: '08:00:00'
+        at: '09:00:00'
       - platform: state
         entity_id: sensor.kids_room_dimmer
         to: 'click_1'

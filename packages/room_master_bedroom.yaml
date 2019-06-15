@@ -38,6 +38,10 @@ homeassistant:
       friendly_name: Dawns controls Night
       haaska_name: Bedroom Fan
       icon: mdi:fan
+    light.master_bedroom_fan:
+      friendly_name: Master Bedroom Main Light
+      haaska_name: Main Light
+      icon: mdi:lightbulb
 
 sensor:
   - platform: template
@@ -45,7 +49,16 @@ sensor:
       motion_sensor_master_battery:
         friendly_name: 'Master Bedroom Motion Sensor'
         value_template: "{{ state_attr('binary_sensor.master_motion', 'battery_level') }}"
-
+  - platform: template
+    sensors:
+      master_bath_motion_sensor_batt:
+        friendly_name: 'Master Bathroom Motion Sensor'
+        value_template: "{{ state_attr('binary_sensor.motion_sensor_master_bath', 'battery_level') }}"
+  - platform: template
+    sensors:
+      master_humidity_sensor_batt:
+        friendly_name: 'Master Bathroom Humidity Sensor Battery Level'
+        value_template: "{{ state_attr('sensor.humidity_master_bathroom', 'battery_level') }}"
   - platform: mqtt
     state_topic: "dawns/Wifi Connect/wifi"
     unit_of_measurement: 'dbm'
@@ -88,7 +101,7 @@ automation:
       - service: light.turn_on
         data_template:
           entity_id:
-            - light.light_bulb_2
+            - light.master_bedroom_fan
             - light.master_table_lamps
           color_temp: >-
              {% if is_state("input_boolean.boolean_evening_time", "on") %}
@@ -124,9 +137,9 @@ automation:
         for: '00:03:00'
     action:
       - service: light.turn_off
-        entity_id: light.light_bulb_2
-      - service: light.turn_off
-        entity_id: light.master_table_lamps
+        entity_id:
+          - light.master_table_lamps
+          - light.master_bedroom_fan
 
   - alias: Master Bedroom Sleep mode
     initial_state: 'on'

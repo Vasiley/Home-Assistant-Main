@@ -70,8 +70,6 @@ rest_command: !include restcommands.yaml
 
 config:
 
-wink:
-  local_control: true
 ffmpeg:
   ffmpeg_bin: /usr/bin/ffmpeg
 
@@ -102,4 +100,15 @@ speedtestdotnet:
     - download
     - upload
 
-discovery:
+ssdp:
+
+zeroconf:
+
+zha:
+  usb_path: /dev/ttyUSB1
+  database_path: /root/.homeassistant/zigbee.db
+  device_config:
+    00:22:a3:00:00:16:c9:63-1:
+      type: 'light'
+    00:22:a3:00:00:16:c8:2a-1:
+      type: 'light'

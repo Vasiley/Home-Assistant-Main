@@ -2,6 +2,7 @@ logger:
   default: critical
   logs:
     pubnub: critical
+#    homeassistant.components.homekit_controller.config_flow: debug
     urllib3.connectionpool: error
     homeassistant.components.rest: warn
     homeassistant.components.zha: warn
@@ -25,7 +26,6 @@ logger:
     homeassistant.components.discovery: warn
     homeassistant.components.light: warn
     homeassistant.components.ecobee: warn
-    homeassistant.components.wink: warn
     homeassistant.custom_components: warn
     homeassistant.components.camera.usps: warn
     homeassistant.components.usps: warn

@@ -34,10 +34,6 @@ homeassistant:
       Haaska_hidden: false
       haaska_name: Master Breeze
 
-    script.refresh_wink:
-      friendly_name: " Refresh Wink"
-      icon: mdi:update
-
     switch.fan_override:
       friendly_name: Fan Auto
       icon: mdi:fan
@@ -58,26 +54,6 @@ homeassistant:
       icon: mdi:speedometer
       haaska_hidden: true
 
-    binary_sensor.gang:
-      friendly_name: Fan Connection
-      icon: mdi:nfc
-      haaska_hidden: true
-
-    binary_sensor.gang_1:
-      friendly_name: Master Fan Connection
-      icon: mdi:nfc
-      haaska_hidden: true
-
-    light.light_bulb:
-      friendly_name: Living Room Light
-      haaska_hidden: false
-      haaska_name: Living Room Light
-
-    light.light_bulb_2:
-      friendly_name: Master Bedroom Light
-      haaska_hidden: false
-      haaska_name: Master Bedroom Light
-
 input_select:
   master_ceiling_fan_speeds:
     name: Master Ceiling Speeds
@@ -86,7 +62,8 @@ input_select:
       - High
       - Medium
       - Low
-      - Lowest
+      - Auto
+      - Smart
 
   living_room_ceiling_fan_speeds:
     name: Living Room Ceiling Fan Speeds
@@ -95,7 +72,8 @@ input_select:
       - High
       - Medium
       - Low
-      - Lowest
+      - Auto
+      - Smart
 
 sensor:
   - platform: template
@@ -121,16 +99,18 @@ automation:
         entity_id: fan.master_bedroom_fan
         data_template:
           speed: >-
-            {% if is_state("input_select.master_ceiling_fan_speeds", "high") %}
-              High
-            {% elif is_state("input_select.master_ceiling_fan_speeds", "medium") %}
-              Medium
-            {% elif is_state("input_select.master_ceiling_fan_speeds", "low") %}
-              Low
-            {% elif is_state("input_select.master_ceiling_fan_speeds", "lowest") %}
-              Lowest
+            {% if is_state("input_select.master_ceiling_fan_speeds", "High") %}
+              high
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "Medium") %}
+              medium
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "Low") %}
+              low
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "Auto") %}
+              auto
+            {% elif is_state("input_select.master_ceiling_fan_speeds", "Smart") %}
+              smart
             {% else %}
-              Medium
+              medium
             {% endif %}
   - alias: master_ceiling_update_input_select
     initial_state: 'on'
@@ -148,8 +128,10 @@ automation:
                Medium
             {% elif is_state("sensor.fan_speed_master", "low") %}
                Low
-            {% elif is_state("sensor.fan_speed_master", "lowest") %}
-               Lowest
+            {% elif is_state("sensor.fan_speed_master", "auto") %}
+               Auto
+            {% elif is_state("sensor.fan_speed_master", "smart") %}
+               Smart
             {% else %}
                Medium
             {% endif %}
@@ -171,8 +153,10 @@ automation:
               medium
             {% elif is_state("input_select.living_room_ceiling_fan_speeds", "Low") %}
               low
-            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "Lowest") %}
-              lowest
+            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "auto") %}
+              Auto
+            {% elif is_state("input_select.living_room_ceiling_fan_speeds", "smart") %}
+              Smart
             {% else %}
               medium
             {% endif %}
@@ -262,9 +246,7 @@ script:
         data:
           entity_id: fan.master_bedroom_fan
           speed: 'auto'
-  refresh_wink:
-    sequence:
-      - service: wink.refresh_state_from_wink
+
 switch:
   - platform: template
     switches:

@@ -1,45 +1,45 @@
-homeassistant:
-  customize:
-    package.node_anchors:
-      customize: &customize
-        package: 'hue equipment'
-    sensor.motion_sensor_hallway_battery:
-      icon: mdi:battery
-      friendly_name: Master Hallway Motion Sensor
-    binary_sensor.hallway_motion:
-      friendly_name: Hallway Motion
-      device_class: motion
-    sensor.master_hallway_motion_sensor_lux:
-      friendly_name: Master Hallway Light Level
-      icon: mdi:theme-light-dark
-
-
-sensor:
-
-  - platform: rest
-    resource: !secret MS_rest_11
-    value_template: '{{ value_json.config.battery }}'
-    unit_of_measurement: '%'
-    scan_interval: 1800
-    name: 'Motion Sensor Hallway Battery'
-
-  - platform: rest
-    resource: !secret MS_rest_11
-    value_template: '{{ value_json.state.temperature | float / 100 }}'
-    unit_of_measurement: °C
-    name: 'Hallway Temperature'
-
-  - platform: rest
-    resource: !secret MS_rest_13
-    value_template: '{{ value_json.state.lightlevel }}'
-    unit_of_measurement: Lux
-    scan_interval: 5
-    name: 'Master Hallway Motion Sensor Lux'
-
-binary_sensor:
-
-  - platform: rest
-    resource: !secret MS_rest_12
-    value_template: '{{ value_json.state.presence }}'
-    scan_interval: 2
-    name: hallway_motion
+# homeassistant:
+#   customize:
+#     package.node_anchors:
+#       customize: &customize
+#         package: 'hue equipment'
+#     sensor.motion_sensor_hallway_battery:
+#       icon: mdi:battery
+#       friendly_name: Master Hallway Motion Sensor
+#     binary_sensor.hallway_motion:
+#       friendly_name: Hallway Motion
+#       device_class: motion
+#     sensor.master_hallway_motion_sensor_lux:
+#       friendly_name: Master Hallway Light Level
+#       icon: mdi:theme-light-dark
+#
+#
+# sensor:
+#
+#   - platform: rest
+#     resource: !secret MS_rest_11
+#     value_template: '{{ value_json.config.battery }}'
+#     unit_of_measurement: '%'
+#     scan_interval: 1800
+#     name: 'Motion Sensor Hallway Battery'
+#
+#   - platform: rest
+#     resource: !secret MS_rest_11
+#     value_template: '{{ value_json.state.temperature | float / 100 }}'
+#     unit_of_measurement: °C
+#     name: 'Hallway Temperature'
+#
+#   - platform: rest
+#     resource: !secret MS_rest_13
+#     value_template: '{{ value_json.state.lightlevel }}'
+#     unit_of_measurement: Lux
+#     scan_interval: 5
+#     name: 'Master Hallway Motion Sensor Lux'
+#
+# binary_sensor:
+#
+#   - platform: rest
+#     resource: !secret MS_rest_12
+#     value_template: '{{ value_json.state.presence }}'
+#     scan_interval: 2
+#     name: hallway_motion
