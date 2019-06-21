@@ -29,7 +29,7 @@ automation:
           - binary_sensor.master_bedroom_purifer
           - binary_sensor.dawns_controller
           - binary_sensor.master_bedroom_fan
-
+          - binary_sensor.master_bedroom_zha_plug
     condition:
       condition: and
       conditions:

@@ -1,6 +1,7 @@
 homeassistant:
   customize:
 
+
     package.node_anchors:
       customize: &customize
         package: 'mode_shower_time'
@@ -84,16 +85,14 @@ script:
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_shower_time
       - service: automation.turn_off
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_sleep_off
+        entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_off
         entity_id: automation.motion_master_bedroom_motion_off
       - service: tts.google_say
         data:
           entity_id: media_player.master_bedroom_cast
           message: 'Disabling Master Bedroom Speakers, Hope you have a good bath'
-      - delay: '00:00:10'    
+      - delay: '00:00:10'
       - service: switch.turn_off
         entity_id: switch.wemo_master_bedroom_mixer
       - service: switch.turn_on
@@ -113,7 +112,7 @@ script:
           brightness: 255
       - service: light.turn_on
         data:
-          entity_id: light.light_bulb_2
+          entity_id: light.master_bedroom_fan
 
   bath_time_off:
     sequence:
@@ -121,9 +120,7 @@ script:
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_shower_time
       - service: automation.turn_on
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_off
+        entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_on
         entity_id: automation.motion_master_bedroom_motion_off
       - service: switch.turn_on

@@ -400,6 +400,14 @@ homeassistant:
      friendly_name: Master Bedroom Fan
      icon: mdi:fan
      haaska_hidden: true
+    binary_sensor.kitchen_zha_plug:
+     friendly_name: Kitchen Blinds Reboot
+     icon: mdi:power-plug
+     haaska_hidden: true
+    binary_sensor.master_bedroom_zha_plug:
+     friendly_name: Master Bedroom ZHA
+     icon: mdi:power-plug
+     haaska_hidden: true
 
 sensor:
   ############## Public Ip
@@ -932,6 +940,16 @@ binary_sensor:
       living_room_fan:
         device_class: connectivity
         value_template: "{{ is_state('zha.king_of_fans_inc_hbuniversalcfremote_2', 'online') }}"
+  - platform: template
+    sensors:
+      kitchen_zha_plug:
+        device_class: connectivity
+        value_template: "{{ is_state('zha.ledvance_plug', 'online') }}"
+  - platform: template
+    sensors:
+      master_bedroom_zha_plug:
+        device_class: connectivity
+        value_template: "{{ is_state('zha.ledvance_plug_2', 'online') }}"
 
 device_tracker:
   - platform: ping
@@ -1069,6 +1087,8 @@ automation:
 #       ZHA
           - binary_sensor.master_bedroom_fan
           - binary_sensor.living_room_fan
+          - binary_sensor.kitchen_zha_plug
+          - binary_sensor.master_bedroom_zha_plug
 
     condition:
       condition: and

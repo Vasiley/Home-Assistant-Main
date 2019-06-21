@@ -8,41 +8,20 @@ homeassistant:
       haaska_hidden: true
       hidden: false
       persistence: true
-    automation.motion_bathroom_home_mode_off:
+    automation.motion_master_bath_lights_on:
       haaska_hidden: true
       hidden: false
-      persistence: true
-    automation.motion_bathroom_home_mode_on:
+      friendly_name: Master Bath Lights On
+    automation.motion_master_bathroom_motion_off:
       haaska_hidden: true
       hidden: false
-      persistence: true
-    automation.motion_bathroom_evening_mode_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.motion_bathroom_sleep_off:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
-    automation.motion_bathroom_sleep_on:
-      haaska_hidden: true
-      hidden: false
-      persistence: true
+      friendly_name: Master Bath Lights Off
     automation.master_bath_humidity_fan_on:
       friendly_name: Master Vent On
       haaska_hidden: true
     automation.master_bath_humidity_fan_off:
       friendly_name: Master Vent Off
       haaska_hidden: true
-    sensor.master_bathroom_dimmer_state:
-      icon: mdi:remote
-      haaska_hidden: true
-      persistence: false
-    sensor.master_bathroom_dimmer_last_update:
-      icon: mdi:clock
-    sensor.master_bathroom_dimmer_battery:
-      icon: mdi:battery
-      friendly_name: Master Bath Dimmer
     binary_sensor.bathroom_motion:
       friendly_name: Bathroom Motion
       device_class: motion
@@ -90,122 +69,57 @@ homeassistant:
       friendly_name: Master Bath Heater Off
 
 automation:
-  - alias: Motion Bathroom Home Mode On
+  - alias: motion_master_bath_lights_on
     initial_state: 'on'
     trigger:
       - platform: state
         entity_id: binary_sensor.motion_sensor_master_bath
         to: 'on'
-    condition:
-      condition: and
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
     action:
       - service: light.turn_on
-        data:
-          entity_id: light.bathroom
-          color_temp: 154
-          brightness: 255
+        data_template:
+          entity_id:
+            - light.bathroom
+          color_temp: >-
+             {% if is_state("input_boolean.boolean_evening_time", "on") %}
+             {{ states('input_number.evening_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+             {{ states('input_number.movie_mode_color_temp_value') | int }}
+             {% elif is_state("input_boolean.boolean_home", "on") %}
+             {{ states('input_number.home_mode_color_temp_value') | int }}
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+              {{ states('input_number.nap_mode_color_temp_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_color_temp_value') | int }}
+             {% else %}
+               180
+             {% endif %}
+          brightness_pct: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+              {{ states('input_number.evening_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+              {{ states('input_number.movie_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+              {{ states('input_number.home_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+              {{ states('input_number.nap_mode_brightness_value') | int }}
+              {% elif is_state("input_boolean.boolean_sleep", "on") %}
+              {{ states('input_number.sleep_mode_brightness_value') | int }}
+              {% else %}
+                100
+              {% endif %}
 
-  - alias: Motion Bathroom Evening Mode On
+  - alias: motion_master_bathroom_motion_off
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_sensor_master_bath
-        to: 'on'
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom
-          color_temp: 392
-          brightness: 74
-
-  - alias: Motion Bathroom Home Mode off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_master_bath
+        entity_id: binary_sensor.master_motion
         to: 'off'
-        for:
-          minutes: 7
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: input_boolean.boolean_early_morning
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_home
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_movie_time
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.boolean_evening_time
-        state: 'on'
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'home'
+        for: '00:05:00'
     action:
       - service: light.turn_off
-        entity_id: light.bathroom
-
-  - alias: Motion Bathroom Sleep On
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_master_bath
-        to: 'on'
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'sleep'
-      - condition: state
-        entity_id: input_boolean.boolean_sleep
-        state: 'on'
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.bathroom
-          color_temp: 426
-          brightness: 50
-
-  - alias: Motion Bathroom Sleep Off
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.motion_sensor_master_bath
-        to: 'off'
-        for:
-          minutes: 5
-    condition:
-      condition: or
-      conditions:
-      - condition: state
-        entity_id: sensor.set_hold_mode
-        state: 'sleep'
-      - condition: state
-        entity_id: input_boolean.boolean_sleep
-        state: 'on'
-    action:
-      - service: light.turn_off
-        entity_id: light.bathroom
+        entity_id:
+          - light.bathroom
 
   - alias: Master Bath light left on
     initial_state: 'on'
@@ -255,6 +169,7 @@ automation:
     action:
       - service: switch.turn_on
         entity_id: switch.heater_lasko_power
+
 
   - alias: master bath heater state off
     initial_state: 'on'

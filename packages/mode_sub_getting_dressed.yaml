@@ -51,7 +51,7 @@ automation:
         to: 'off'
       - platform: state
         entity_id: sensor.master_bathroom_dimmer_state_2
-        to: 'click_3'        
+        to: 'click_3'
     action:
       - service: script.turn_on
         entity_id: script.getting_dressed_off
@@ -63,9 +63,7 @@ script:
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_getting_dressed
       - service: automation.turn_off
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_off
-        entity_id: automation.motion_bathroom_sleep_off
+        entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_off
         entity_id: automation.motion_master_bedroom_motion_off
       - service: light.turn_on
@@ -73,6 +71,7 @@ script:
           entity_id:
             - light.bathroom
             - light.master_bath_vanity
+            - light.master_bedroom_fan
           color_temp: 154
           brightness: 255
       - service: light.turn_on
@@ -82,7 +81,7 @@ script:
           brightness: 255
       - service: light.turn_on
         data:
-          entity_id: light.light_bulb_2
+          entity_id: light.master_bedroom_fan
 
 
   getting_dressed_off:
@@ -91,15 +90,13 @@ script:
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_getting_dressed
       - service: automation.turn_on
-        entity_id: automation.motion_bathroom_home_mode_off
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_off
+        entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_on
         entity_id: automation.motion_master_bedroom_motion_off
       - service: light.turn_off
-        entity_id: light.master_bath_vanity
-      - service: light.turn_off
-        entity_id: light.bathroom
+        entity_id:
+          - light.master_bath_vanity
+          - light.bathroom
 
 switch:
   - platform: template

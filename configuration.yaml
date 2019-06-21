@@ -112,3 +112,8 @@ zha:
       type: 'light'
     00:22:a3:00:00:16:c8:2a-1:
       type: 'light'
+
+hacs:
+  token: !secret my_github_access_token
+
+breaking_changes:  

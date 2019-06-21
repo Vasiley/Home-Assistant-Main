@@ -149,7 +149,7 @@ script:
 #      - wait_template: "{{ states.binary_sensor.motion_sensor_master_bath.state == 'off' }}"
       - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
-        entity_id: light.light_bulb_2
+        entity_id: light.master_bedroom_fan
       - service: light.turn_off
         data:
           entity_id: light.bathroom
@@ -159,10 +159,9 @@ script:
         data:
           entity_id: light.master_table_lamps
           transition: 45
+      - delay: '00:00:10'
       - service: rest_command.sleep
-      - service: rest_command.sleep
-      - service: automation.turn_on
-        entity_id: automation.motion_bathroom_sleep_on
+#      - service: rest_command.sleep      
       - service: switch.turn_off
         entity_id: switch.daytime_sleep
 # rest_command changes profile on blue iris
