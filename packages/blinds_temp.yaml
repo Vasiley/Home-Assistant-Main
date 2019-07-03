@@ -15,7 +15,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.pws_temp_f
+        entity_id: sensor.dark_sky_temperature
         above: 90
     condition:
       - condition: state
@@ -34,7 +34,7 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
-              It is {{ states("sensor.pws_temp_f") }} degrees I am closing blinds halfway
+              It is {{ states("sensor.dark_sky_temperature") }} degrees I am closing blinds halfway
       - service: script.turn_on
         entity_id: script.blinds_halfway
 
@@ -42,7 +42,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.pws_temp_f
+        entity_id: sensor.dark_sky_temperature
         above: 95
     condition:
       - condition: state
@@ -63,7 +63,7 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
-             It is {{ states("sensor.pws_temp_f") }} degrees I am closing blinds
+             It is {{ states("sensor.dark_sky_temperature") }} degrees I am closing blinds
       - service: script.turn_on
         entity_id: script.blinds_closed
 
@@ -73,7 +73,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.pws_temp_f
+        entity_id: sensor.dark_sky_temperature
         below: 90
     condition:
       - condition: state
@@ -94,7 +94,7 @@ automation:
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
           message: >-
-            It is {{ states("sensor.pws_temp_f") }} degrees I am setting blinds halfway
+            It is {{ states("sensor.dark_sky_temperature") }} degrees I am setting blinds halfway
       - service: script.turn_on
         entity_id: script.blinds_halfway
 
@@ -102,7 +102,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: numeric_state
-        entity_id: sensor.pws_temp_f
+        entity_id: sensor.dark_sky_temperature
         below: 85
     condition:
       - condition: state
@@ -120,7 +120,7 @@ automation:
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-          message: 'It is {{ states("sensor.pws_temp_f") }} degrees I am opening blinds'
+          message: 'It is {{ states("sensor.dark_sky_temperature") }} degrees I am opening blinds'
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_hot_outside
       - service: script.turn_on

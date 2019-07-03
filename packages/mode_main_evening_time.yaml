@@ -106,6 +106,8 @@ script:
         - service: input_boolean.turn_off
           data:
             entity_id: group.input_boolean_main_modes_card
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.boolean_active_outside
         - service: input_boolean.turn_on
           data:
             entity_id: input_boolean.boolean_evening_time
@@ -114,12 +116,6 @@ script:
             entity_id: light.lamps
             color_temp: 426
             brightness: 125
-        # - delay: '00:00:30'
-        # - service: light.turn_off
-        #   entity_id:
-        #     - light.living_room_lamp_1
-        #     - light.living_room_lamp_3
-        #     - light.living_room_lamp_4
         - service: script.turn_on
           entity_id: script.blinds_halfway
         - service: script.turn_on

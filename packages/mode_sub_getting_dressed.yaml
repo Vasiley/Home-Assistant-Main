@@ -6,7 +6,7 @@ homeassistant:
         package: 'mode_getting_dressed'
 
     input_boolean.boolean_getting_dressed:
-      friendly_name: Day Time Sleep
+      friendly_name: Getting Dressed
       hasska_hidden: true
 
     switch.getting_dressed:

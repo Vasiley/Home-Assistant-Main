@@ -38,22 +38,39 @@ automation:
       weekday:
         - sun
     action:
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
       - service: tts.google_say
         data:
           entity_id:
             - media_player.ha_speaker
             - media_player.master_bedroom_cast
           message: 'Susie needs to clean starting in 10 minutes'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"          
       - delay: '00:10:00'
       - service: script.turn_on
         entity_id: script.susie_clean_house
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - delay: '00:00:10'
       - service: tts.google_say
         data:
           entity_id:
             - media_player.ha_speaker
             - media_player.master_bedroom_cast
           message: 'Susie is starting to clean house'
-
+      - delay: '00:00:10'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 script:
   susie_clean_house:
     sequence:

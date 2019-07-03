@@ -104,6 +104,10 @@ automation:
         - condition: template
           value_template: "{{ (('Severe' in states.sensor.nws_alerts.attributes.title) or ('Tornado' in states.sensor.nws_alerts.attributes.title)) and 'Warning' in states.sensor.nws_alerts.attributes.title }}"
     action:
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
       - service: tts.google_say
         data_template:
           entity_id:
@@ -145,7 +149,11 @@ automation:
             {% else %}
               Attention!,,,Attention!,,,The National Weather Service Has issued a {{ states.sensor.nws_alerts.attributes.spoken_desc.split('\n\n-\n\n')[0] }}
             {% endif %}
-
+      - delay: '00:02:00'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
   - alias: NWS Announce Weather Alert for MBR
     initial_state: 'on'
     trigger:
@@ -159,6 +167,10 @@ automation:
         - condition: template
           value_template: "{{ 'Tornado' in states.sensor.nws_alerts.attributes.title and 'Warning' in states.sensor.nws_alerts.attributes.title }}"
     action:
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
       - service: tts.google_say
         data_template:
           entity_id:
@@ -174,7 +186,11 @@ automation:
             - media_player.master_bedroom_cast
             - media_player.kids_room_cast
           message: "Attention!,,,Attention!,,,The National Weather Service Has issued a Tornado Warning for our area."
-
+      - delay: '00:02:00'          
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 script:
   nws_popup_on_wx_alert:
     alias: NWS Weather Alert Pop Up

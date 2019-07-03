@@ -64,9 +64,6 @@ homeassistant:
       haaska_hidden: true
 
 ################## tv ##############################
-    sensor.esp_kids_tv_state_wifi_signal:
-      icon: mdi:signal
-      friendly_name: Kids Tv State
     script.watch_roku:
       friendly_name: Watch TV
       haaska_name: Watch TV
@@ -128,15 +125,6 @@ input_boolean:
   yes_still_awake:
     initial: off
 
-
-device_tracker:
-  - platform: ping
-    hosts:
-      esp_kids_tv_state_ping: 192.168.2.58
-    # consider_home: 60
-    # interval_seconds: 30
-    # count: 2
-
 sensor:
   - platform: template
     sensors:
@@ -160,10 +148,7 @@ sensor:
         value_template: "{{ state_attr('binary_sensor.door_window_sensor_kids_room', 'battery_level') }}"
 
 ##################### Blinds #####################################################
-  - platform: mqtt
-    state_topic: "esp_kids_tv_state/Wifi Connect/wifi"
-    unit_of_measurement: 'dbm'
-    name: esp_kids_tv_state_wifi_signal
+
   - platform: mqtt
     state_topic: "esp_blindskids/Wifi Connect/wifi"
     unit_of_measurement: 'dbm'
@@ -479,7 +464,11 @@ script:
         entity_id: input_boolean.boolean_kids_tv_watchdog
       - service: media_player.turn_off
         entity_id: media_player.kids_room_tv
-
+      - service: switch.turn_off
+        entity_id: switch.wemo_kids_tv_power
+      - delay: '00:00:30'          
+      - service: switch.turn_on
+        entity_id: switch.wemo_kids_tv_power
 ######################## Kids Bedroom Blinds Scripts ################################
   kids_room_blinds_closed:
     sequence:

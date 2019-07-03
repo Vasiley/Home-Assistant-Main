@@ -3,12 +3,47 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'kids_room_device_watchdog'
+    script.kids_blinds_powercycle:
+      friendly_name: Kids Blinds Reboot
+      icon: mdi:power
+    automation.reboot_kids_blinds:
+      friendly_name: Kids Blinds Reboot
 
 input_boolean:
   boolean_kids_netork_watchdog:
     initial: off
   boolean_kids_hadashboard_status:
     initial: off
+
+input_text:
+  kids_bedroom_device_watchdog:
+    name: Kids Bedroom Device Offline
+
+script:
+  kids_blinds_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.kids_room_blinds_reboot
+      - delay: '00:00:10'
+      - service: switch.turn_on
+        entity_id: switch.kids_room_blinds_reboot
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+      - wait_template: "{{ states.media_player.kids_room_cast.state == 'idle' }}"
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
+          message: 'Rebooting Kids Blinds'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 
 automation:
   - alias: Notify Device Status Kids Room
@@ -31,6 +66,7 @@ automation:
           - binary_sensor.dash_kids_room
           - binary_sensor.esp_blinds_kids_room
           - binary_sensor.kids_bedroom_purifer
+          - binary_sensor.kids_room_blinds_zha_plug
 
     condition:
       condition: and
@@ -60,9 +96,10 @@ automation:
             input_boolean.turn_off
           {% endif %}
         entity_id: input_boolean.boolean_kids_netork_watchdog
-      # - service: input_boolean.turn_on
-      #   entity_id: input_boolean.boolean_kids_netork_watchdog
-      # - service: shell_command.kids_network_alert_dash
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.kids_bedroom_device_watchdog
+          value: "{{ trigger.to_state.attributes.friendly_name }}"
 
   - alias: 'kids_annouce_device_issue'
     initial_state: 'on'
@@ -81,7 +118,7 @@ automation:
       - service: tts.google_say
         data_template:
           entity_id: media_player.kids_room_cast
-          message: "There is a problem with a device in your room"
+          message: "The {{ states('input_text.kids_bedroom_device_watchdog') }} is offline in your room"
       - service: shell_command.kids_network_alert_dash
 
   - alias: 'kids_clear_device_issue'
@@ -95,6 +132,10 @@ automation:
         data_template:
           entity_id: media_player.kids_room_cast
           message: "Thank You for Fixing Me Returning to main dash"
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.kids_bedroom_device_watchdog
+          value: "Nothing"                
       - service: shell_command.gabbies_dash
 
 ############################## HADASHBOAD WATCHDOG ##########################################
@@ -147,3 +188,20 @@ automation:
         data_template:
           entity_id: media_player.kids_room_cast
           message: "Your Hadashboard is Offline"
+
+  - alias: reboot_kids_blinds
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.esp_blinds_kids_room
+        to: 'off'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.kids_blinds_powercycle

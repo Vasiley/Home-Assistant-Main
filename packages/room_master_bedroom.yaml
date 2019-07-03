@@ -101,7 +101,6 @@ automation:
       - service: light.turn_on
         data_template:
           entity_id:
-            - light.master_bedroom_fan
             - light.master_table_lamps
           color_temp: >-
              {% if is_state("input_boolean.boolean_evening_time", "on") %}
@@ -126,6 +125,22 @@ automation:
               {{ states('input_number.nap_mode_brightness_value') | int }}
               {% else %}
                 100
+              {% endif %}
+      - service: light.turn_on
+        data_template:
+          entity_id:
+            - light.master_bedroom_fan
+          brightness: >-
+              {% if is_state("input_boolean.boolean_evening_time", "on") %}
+               100
+              {% elif is_state("input_boolean.boolean_movie_time", "on") %}
+               100
+              {% elif is_state("input_boolean.boolean_home", "on") %}
+               254
+              {% elif is_state("input_boolean.boolean_nap_time", "on") %}
+               100
+              {% else %}
+               254
               {% endif %}
 
   - alias: Motion Master Bedroom Motion Off

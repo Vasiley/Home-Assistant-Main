@@ -13,9 +13,6 @@ homeassistant:
     script.swamp_cam_powercycle:
       friendly_name: Swamp Cam Reboot
       icon: mdi:access-point-network
-    script.master_fan_powercycle:
-      friendly_name: Master Fan Reboot
-      icon: mdi:power
     script.webswitch_reboot:
       friendly_name: Webswitch Reboot
       icon: mdi:power-settings
@@ -28,8 +25,8 @@ homeassistant:
       friendly_name: Shed Cam Auto Reboot
     automation.reboot_swamp_camera:
       friendly_name: Swamp Cam Auto Reboot
-    automation.reboot_master_fan:
-      friendly_name: Master Fan Auto Reboot
+
+
 
 input_boolean:
   boolean_network_reboot:
@@ -39,19 +36,39 @@ script:
   #### reboot websitch clients  ####################
   webswitch_reboot:
     sequence:
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'WebSwitch Reboot'
       - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
+      - delay: '00:00:05'
       - service: rest_command.webswitch_reboot
 ###### reboot network equipment only    ########
   network_reboot:
     sequence:
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Network is going down Gabbie and Grandma chill it will be okay'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_network_reboot
       - service: rest_command.modem_reboot
@@ -61,10 +78,14 @@ script:
       - service: rest_command.switch1_reboot
       - delay: '00:07:00'
       - service: switch.turn_off
-        entity_id: switch.wemo_unifi_shed_switch
+        entity_id:
+          - switch.wemo_unifi_shed_switch
+          - switch.zha_16_port_unifi
       - delay: '00:00:01'
       - service: switch.turn_on
-        entity_id: switch.wemo_unifi_shed_switch
+        entity_id:
+          - switch.wemo_unifi_shed_switch
+          - switch.zha_16_port_unifi
       - delay: '00:00:10'
       - service: input_boolean.turn_off
         entity_id: input_boolean.boolean_network_reboot
@@ -80,10 +101,23 @@ script:
       - delay: '00:00:30'
       - service: switch.turn_on
         entity_id: switch.wemo_driveway_camaera
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+      - wait_template: "{{ states.media_player.kids_room_cast.state == 'idle' }}"
       - service: tts.google_say
         data:
-          entity_id: media_player.ha_speaker
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
           message: 'Rebooting Driveway Camera'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 
   shed_cam_powercycle:
     sequence:
@@ -92,10 +126,20 @@ script:
       - delay: '00:00:30'
       - service: switch.turn_on
         entity_id: switch.shed
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Shed Camera'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 
   swamp_cam_powercycle:
     sequence:
@@ -104,22 +148,20 @@ script:
       - delay: '00:00:30'
       - service: switch.turn_on
         entity_id: switch.swamp_camera
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Rebooting Swamp Camera'
-
-  master_fan_powercycle:
-    sequence:
-      - service: switch.turn_off
-        entity_id: switch.wemo_master_bedroom_ceiling_fan
-      - delay: '00:00:30'
-      - service: switch.turn_on
-        entity_id: switch.wemo_master_bedroom_ceiling_fan
-      - service: tts.google_say
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
         data:
-          entity_id: media_player.ha_speaker
-          message: 'Rebooting Master Fan'
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
 
 automation:
   - alias: reboot_driveway_camera
@@ -172,20 +214,3 @@ automation:
     action:
       - service: script.turn_on
         entity_id: script.swamp_cam_powercycle
-
-  - alias: reboot_master_fan
-    initial_state: 'on'
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.master_bedroom_fan
-        to: 'unavailable'
-        for: '00:01:00'
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.boolean_network_reboot
-          state: 'off'
-    action:
-      - service: script.turn_on
-        entity_id: script.master_fan_powercycle

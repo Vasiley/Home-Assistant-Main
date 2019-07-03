@@ -27,15 +27,17 @@ switch:
 
 media_player:
   - platform: smartir
-    name: kids room TV
+    name: Kids Room TV
     unique_id: kids_room_tv
     device_code: 1000
     controller_data: 192.168.1.160
 #    controller_send_service: switch.broadlink_send_packet_192_168_1_160
-    power_sensor: binary_sensor.esp_kids_tv_state_ping
+    power_sensor: binary_sensor.kids_tv_on
 
 binary_sensor:
   - platform: template
     sensors:
-      esp_kids_tv_state_ping:
-        value_template: "{{ is_state('device_tracker.esp_kids_tv_state', 'home') }}"
+      kids_tv_on:
+        friendly_name: "Kids Tv Is On"
+        value_template: >-
+          {{ state_attr('switch.wemo_kids_tv_power', 'state_detail') == 'on' }}

@@ -90,6 +90,7 @@ script:
         data:
           entity_id: input_boolean.boolean_sleep
       - delay: '00:00:03'
+      - service: rest_command.sleep
       - service: climate.set_hold_mode
         data:
           entity_id: climate.thermostat
@@ -98,6 +99,8 @@ script:
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment
+      - service: light.turn_off
+        entity_id: light.master_bedroom_fan          
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -149,8 +152,6 @@ script:
 #      - wait_template: "{{ states.binary_sensor.motion_sensor_master_bath.state == 'off' }}"
       - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
-        entity_id: light.master_bedroom_fan
-      - service: light.turn_off
         data:
           entity_id: light.bathroom
       - delay: '00:00:45'
@@ -161,7 +162,6 @@ script:
           transition: 45
       - delay: '00:00:10'
       - service: rest_command.sleep
-#      - service: rest_command.sleep      
       - service: switch.turn_off
         entity_id: switch.daytime_sleep
 # rest_command changes profile on blue iris

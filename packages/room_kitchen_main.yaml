@@ -54,7 +54,6 @@ sensor:
     unit_of_measurement: 'dbm'
     name: Sink Blinds Controller Wifi Signal
 
-
 automation:
   - alias: Motion Kitchen off
     initial_state: 'on'

@@ -84,10 +84,16 @@ script:
       - delay: '00:00:01'
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_shower_time
+      - service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat
+          operation_mode: 'off'
+      - service: fan.turn_off
+        entity_id: fan.master_bedroom_fan
       - service: automation.turn_off
         entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_off
-        entity_id: automation.motion_master_bedroom_motion_off
+        entity_id: automation.motion_master_bath_lights_on
       - service: tts.google_say
         data:
           entity_id: media_player.master_bedroom_cast
@@ -122,7 +128,7 @@ script:
       - service: automation.turn_on
         entity_id: automation.motion_master_bathroom_motion_off
       - service: automation.turn_on
-        entity_id: automation.motion_master_bedroom_motion_off
+        entity_id: automation.motion_master_bath_lights_on
       - service: switch.turn_on
         entity_id: switch.wemo_master_bedroom_mixer
       - delay: '00:00:05'
@@ -136,6 +142,14 @@ script:
         entity_id: light.bathroom
       - service: switch.turn_off
         entity_id: switch.master_bath_heater
+      - service: climate.set_operation_mode
+        data:
+          entity_id: climate.thermostat
+          operation_mode: 'auto'
+      - service: climate.set_hold_mode
+        data:
+          entity_id: climate.thermostat
+          hold_mode: "home"
 
 
 ######## for alexa to say turn on and turn Off

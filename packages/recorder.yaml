@@ -14,7 +14,6 @@ recorder:
       - tts
       - device_tracker
       - mqtt
-      - script
       - input_boolean
     entities:
       - sensor.dark_sky_summary
@@ -32,4 +31,4 @@ recorder:
 
 #  db_url: !secret recorder_db_url
   purge_interval: 2
-  purge_keep_days: 5
+  purge_keep_days: 2

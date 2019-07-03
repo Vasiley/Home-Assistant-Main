@@ -54,6 +54,10 @@ homeassistant:
       haaska_name: Master Ceiling Fan
       friendly_name: Master Celing Fan
       icon: mdi:fan
+    switch.wemo_kids_tv_power:
+      haaska_name: Kids Tv Power
+      friendly_name: Kids Tv Power
+      icon: mdi:power-settings  
 
 wemo:
    discovery: false
@@ -72,6 +76,7 @@ wemo:
      - 192.168.1.199 #kids bathroom vanity
      - 192.168.1.175 #kids fan
      - 192.168.1.187 #master bedroom celing Fan
+     - 192.168.1.188 #kids tv power
 
 light:
   - platform: switch
