@@ -146,15 +146,26 @@ script:
         data_template:
           entity_id: media_player.master_bedroom_cast
           volume_level: '{{ states.input_number.home_mode_chromecast_masterbedroom.state }}'
-      - delay: '00:00:20'
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+        timeout: '00:02:00'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Home Mode is Set Volume Set for Living Room'
+      - wait_template: "{{ states.media_player.master_bedroom_cast.state == 'idle' }}"
+        timeout: '00:02:00'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data:
           entity_id: media_player.master_bedroom_cast
           message: 'Home Mode Set Volume Set for Master Bedroom'
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+        timeout: '00:02:00'
+        continue_on_timeout: 'true'
+      - wait_template: "{{ states.media_player.master_bedroom_cast.state == 'idle' }}"
+        timeout: '00:02:00'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data:
           entity_id:

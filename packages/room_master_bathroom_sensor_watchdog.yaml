@@ -8,6 +8,10 @@ input_boolean:
   boolean_master_bath_sensor_watchdog:
     initial: off
 
+input_text:
+  master_bathroom_device_battery:
+    name: Master Bathroom Sensor
+
 automation:
   - alias: 'notify_sensor_battery_low_master_bath'
     initial_state: 'true'
@@ -23,11 +27,36 @@ automation:
           - sensor.master_humidity_sensor_batt
         to: 'unknown'
     action:
-      - service: input_boolean.turn_on
+      - service_template: >
+          {% if trigger.to_state.state | int < 30 %}
+            input_boolean.turn_on
+          {% elif trigger.to_state.state | lower == "unknown" %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
         entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.master_bathroom_device_battery
+          value: "{{ trigger.to_state.attributes.friendly_name }}"
+      - wait_template: "{{ states.media_player.master_bedroom_cast.state == 'idle' }}"
+        timeout: '00:01:00'
+        continue_on_timeout: 'true'
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+        timeout: '00:01:00'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.master_bedroom_cast
+          entity_id:
+            - media_player.master_bedroom_cast
+            - media_player.ha_speaker
+          message: "The {{ states('input_text.master_bathroom_device_battery') }} has a problem in your room"
+      - service: tts.google_say
+        data_template:
+          entity_id:
+            - media_player.master_bedroom_cast
+            - media_player.ha_speaker
           message: "There is a problem with a sensor battery in Bath room"
       - service: shell_command.master_dash_wake_up
       - delay: '00:00:10'
@@ -50,7 +79,27 @@ automation:
       - service: tts.google_say
         data_template:
           entity_id: media_player.master_bedroom_cast
-          message: "There is a problem with a sensor in Bath room"
+          message: "The {{ states('input_text.master_bathroom_device_battery') }} has a problem in your room"
       - service: shell_command.master_dash_wake_up
       - delay: '00:00:10'
       - service: shell_command.master_dash
+
+  - alias: 'master_bath_clear_sensor_issue'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_master_bath_sensor_watchdog
+        to: 'off'
+    action:
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.master_bathroom_device_battery
+          value: "All Good"
+      - service: shell_command.master_dash
+      - wait_template: "{{ states.media_player.master_bedroom_cast.state == 'idle' }}"
+        timeout: '00:02:00'
+        continue_on_timeout: 'true'
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.master_bedroom_cast
+          message: "Thank You for Fixing Me Returning to main dash"

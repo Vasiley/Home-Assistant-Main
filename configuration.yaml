@@ -105,7 +105,7 @@ ssdp:
 zeroconf:
 
 zha:
-  usb_path: /dev/ttyUSB1
+  usb_path: /dev/ttyUSB0
   database_path: /root/.homeassistant/zigbee.db
   device_config:
     00:22:a3:00:00:16:c9:63-1:
@@ -115,5 +115,6 @@ zha:
 
 hacs:
   token: !secret my_github_access_token
+  appdaemon: true
 
-breaking_changes:  
+breaking_changes:

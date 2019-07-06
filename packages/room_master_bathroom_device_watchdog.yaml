@@ -8,6 +8,10 @@ input_boolean:
   boolean_master_bathroom_netork_watchdog:
     initial: off
 
+input_text:
+  master_bathroom_device_watchdog:
+    name: Master Bathroom Device 
+
 automation:
   - alias: 'notify_master_bath_device_status'
     initial_state: 'on'
@@ -44,9 +48,10 @@ automation:
             input_boolean.turn_off
           {% endif %}
         entity_id: input_boolean.boolean_master_bathroom_netork_watchdog
-      # - service: input_boolean.turn_on
-      #   entity_id: boolean_master_bedroom_netork_watchdog
-      # - service: shell_command.master_network_alert_dash
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.master_bathroom_device_watchdog
+          value: "{{ trigger.to_state.attributes.friendly_name }}"
 
   - alias: 'master_bathroom_annouce_device_issue'
     initial_state: 'on'
@@ -65,7 +70,7 @@ automation:
       - service: tts.google_say
         data_template:
           entity_id: media_player.master_bedroom_cast
-          message: "There is a problem with a device in your Bath room"
+          message: "The {{ states('input_text.master_bathroom_device_watchdog') }} is offline in your room"
       - service: shell_command.master_network_alert_dash
 
   - alias: 'master_clear_device_issue'
@@ -79,4 +84,8 @@ automation:
         data_template:
           entity_id: media_player.master_bedroom_cast
           message: "Thank You for Fixing Me Returning to main dash"
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.master_bathroom_device_watchdog
+          value: "All Good"
       - service: shell_command.master_dash

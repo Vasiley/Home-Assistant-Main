@@ -4,7 +4,11 @@ homeassistant:
       customize: &customize
         package: 'Master Hallway'
     light.master_hallway_1:
-      haaska_hidden: true     #hide single bulb its referred to as room name
+      haaska_hidden: true
+    sensor.master_hallway_hue_motion_sensor_batt:
+      friendly_name: Master Hallway Hue Batt
+      haaska_hidden: true
+      unit_of_measurement: '%'
 
 sensor:
   - platform: template

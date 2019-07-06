@@ -127,11 +127,19 @@ automation:
 script:
   workday_off:
     sequence:
+      - delay: '00:00:01'
+      - wait_template: "{{ not is_state('media_player.ha_speaker','playing') }}"
+        timeout: '00:00:10'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker
-          message: 'Good Morning Herb how are you this morning The weather for today is{{states.sensor.dark_sky_daily_summary.state}}'
-      - delay: '00:00:19'
+          message: 'Good Morning Herb how are you this morning The weather for today is {{states.sensor.dark_sky_daily_summary.state}}'
+      - delay: '00:00:05'
+      - wait_template: "{{ not is_state('media_player.ha_speaker','playing') }}"
+        timeout: '00:00:30'
+        continue_on_timeout: 'true'
+      - delay: '00:00:05'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker
@@ -149,12 +157,24 @@ script:
 
   workday_on:
     sequence:
-      - delay: '00:00:19'
+      - delay: '00:00:01'
+      - wait_template: "{{ not is_state('media_player.ha_speaker','playing') }}"
+        timeout: '00:00:10'
+        continue_on_timeout: 'true'
+      - wait_template: "{{ not is_state('master_bedroom_cast','playing') }}"
+        timeout: '00:00:30'
+        continue_on_timeout: 'true'
       - service: tts.google_say
         data_template:
-          entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.master_bedroom_cast
           message: 'Good Morning how are you this morning The weather for today is{{states.sensor.dark_sky_daily_summary.state}}'
       - delay: '00:00:10'
+      - wait_template: "{{ not is_state('media_player.ha_speaker','playing') }}"
+        timeout: '00:00:10'
+        continue_on_timeout: 'true'
+      - delay: '00:00:05'
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker

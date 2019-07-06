@@ -57,3 +57,4 @@ google_calenders.yaml
 get_mail.py
 .ca-bundle
 .crt
+__pycache__
