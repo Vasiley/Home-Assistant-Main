@@ -580,3 +580,4 @@ shell_command:
    master_dash_driveway_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_driveway?skin=default'}\""
    kids_network_alert_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/kids_network?skin=default'}\""
    kids_sensor_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/kids_sensor?skin=default'}\""
+   wd_lv_laundry_mstr_hwwy: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/livingroom_dash_laundry_room_hallway'}\"" 

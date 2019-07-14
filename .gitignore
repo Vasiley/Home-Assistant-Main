@@ -18,7 +18,6 @@ known_devices.yaml
 *.conf
 compiled
 conf
-apps
 .uuid
 plex.conf
 phue.conf

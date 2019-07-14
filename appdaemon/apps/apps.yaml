@@ -1,0 +1,34 @@
+###### a simple test app ######
+hello_world:
+  module: hello
+  class: HelloWorld
+
+watchdog:
+  module: watchdog
+  class: Watchdog
+  state_normal: All good
+  state_offline: Something is wrong!
+  watchdogs:
+    - name: Master Hallway
+      entities:
+        - entity: sensor.master_hallway_hue_motion_sensor_batt
+          below: 30
+        - entity: binary_sensor.espjohndeerecabinet
+          state: off
+        - entity: binary_sensor.rockrobo
+          state: off
+        - entity: sensor.roborock_s2_battery
+          below: 30
+    - name: Laundry Room
+      entities:
+        - entity: sensor.motion_sensor_laundry_battery
+          below: 30
+          state: unknown
+        - entity: sensor.laundry_room_door_sensor_batt
+          below: 30
+          state: unknown
+        - entity: sensor.back_door_sensor_batt
+          below: 30
+          state: unknown
+        - entity: binary_sensor.wemo_washing_machine
+          state: off

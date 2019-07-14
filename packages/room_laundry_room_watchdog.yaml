@@ -1,0 +1,35 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'room_laundry_room_watchdog'
+    input_boolean.boolean_watchdog_laundry_room:
+      friendly_name: Silence Laundry Room Watchdog
+      icon: mdi:volume-off
+
+sensor:
+  - platform: template
+    sensors:
+      watchdog_laundry_room:
+        friendly_name: 'Laundry Room Issue'
+        value_template: "{{ state_attr('watchdog.laundry_room', 'friendly_names')|default([None], true)| join(' ')}}"
+
+input_boolean:
+  boolean_watchdog_laundry_room:
+    initial: off
+#######################################################
+# Appdaemon Watchdog for this Room                    #
+#######################################################
+    # - name: Laundry Room
+    #   entities:
+    #     - entity: sensor.motion_sensor_laundry_battery
+    #       below: 30
+    #       state: unknown
+    #     - entity: sensor.laundry_room_door_sensor_batt
+    #       below: 30
+    #       state: unknown
+    #     - entity: sensor.back_door_sensor_batt
+    #       below: 30
+    #       state: unknown
+    #     - entity: binary_sensor.wemo_washing_machine
+    #       state: off

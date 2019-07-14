@@ -12,13 +12,41 @@ homeassistant:
     sensor.illumination_motion_sensor_laundry:
       friendly_name: Laundry Room Light Level
       icon: mdi:theme-light-dark
+    binary_sensor.door_window_sensor_laundry_room_door:
+      haaska_hidden: true
+      friendly_name: Laundry Room Door
+      device_class: door
+    sensor.laundry_room_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Laundry Room Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
+    binary_sensor.door_window_sensor_back_door:
+      haaska_hidden: true
+      friendly_name: Back Door
+      device_class: door
+    sensor.back_door_sensor_batt:
+      haaska_hidden: true
+      friendly_name: Back Door Sensor Battery
+      unit_of_measurement: '%'
+      icon: mdi:battery
 
 sensor:
   - platform: template
     sensors:
       motion_sensor_laundry_battery:
         friendly_name: 'Laundry Room Motion Sensor'
-        value_template: "{{ state_attr('binary_sensor.laundry_room_motion', 'battery_level') }}"
+        value_template: "{{ (state_attr('binary_sensor.laundry_room_motion', 'battery_level') | round()) | int }}"
+  - platform: template
+    sensors:
+      laundry_room_door_sensor_batt:
+        friendly_name: 'Laundry Room Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_laundry_room_door.attributes.battery_level }}"
+  - platform: template
+    sensors:
+      back_door_sensor_batt:
+        friendly_name: 'Back Door Sensor Battery Level'
+        value_template: "{{ states.binary_sensor.door_window_sensor_back_door.attributes.battery_level }}"
 
 automation:
   - alias: Laundry Motion HomeMode

@@ -1,0 +1,16 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'roborock_s2'
+    sensor.roborock_s2:
+      friendly_name: Susie Battery
+      icon: mdi:battery        
+
+sensor:
+  - platform: template
+    sensors:
+      roborock_s2_battery:
+        friendly_name: 'Susie Battery'
+        value_template: "{{ state_attr('vacuum.susie', 'battery_level') }}"
+        unit_of_measurement: '%'

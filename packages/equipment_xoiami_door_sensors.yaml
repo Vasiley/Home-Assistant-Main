@@ -3,18 +3,6 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'Door Sensors'
-
-
-
-    binary_sensor.door_window_sensor_back_door:
-      haaska_hidden: true
-      friendly_name: Back Door
-      device_class: door
-    sensor.back_door_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Back Door Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
     binary_sensor.door_window_sensor_master_bedroom_door:
       haaska_hidden: true
       friendly_name: Master Bedroom Door
@@ -33,15 +21,7 @@ homeassistant:
       friendly_name: Master Bath Door Sensor Battery
       unit_of_measurement: '%'
       icon: mdi:battery
-    binary_sensor.door_window_sensor_laundry_room_door:
-      haaska_hidden: true
-      friendly_name: Laundry Room Door
-      device_class: door
-    sensor.laundry_room_door_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Laundry Room Sensor Battery
-      unit_of_measurement: '%'
-      icon: mdi:battery
+
     sensor.open_door_count:
       haaska_hidden: true
       friendly_name: Open Door Count
@@ -49,18 +29,6 @@ homeassistant:
       unit_of_measurement: '#'
 
 sensor:
-  - platform: template
-    sensors:
-      laundry_room_door_sensor_batt:
-        friendly_name: 'Laundry Room Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_laundry_room_door.attributes.battery_level }}"
-  - platform: template
-    sensors:
-      back_door_sensor_batt:
-        friendly_name: 'Back Door Sensor Battery Level'
-        value_template: "{{ states.binary_sensor.door_window_sensor_back_door.attributes.battery_level }}"
-
-
   - platform: template
     sensors:
       master_door_sensor_batt:

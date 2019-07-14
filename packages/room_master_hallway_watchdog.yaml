@@ -1,0 +1,28 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'master_hallway_device_watchdog'
+    input_boolean.boolean_watchdog_master_hallway:
+      friendly_name: Silence Master Hallway Watchdog
+      icon: mdi:volume-off
+
+sensor:
+  - platform: template
+    sensors:
+      watchdog_master_hallway:
+        friendly_name: 'Master Hallway Issue'
+        value_template: "{{ state_attr('watchdog.master_hallway', 'friendly_names')|default([None], true)| join(' ')}}"
+
+input_boolean:
+  boolean_watchdog_master_hallway:
+    initial: off
+
+
+#######################################################
+#    Appdaemon Watchdog for this Room                 #
+#######################################################
+  # - name: Master Hallway
+  #   entities:
+  #     - entity: sensor.master_hallway_hue_motion_sensor_batt
+  #       below: 30

@@ -116,5 +116,12 @@ zha:
 hacs:
   token: !secret my_github_access_token
   appdaemon: true
+  python_script: true
 
 breaking_changes:
+
+alexa_media:
+  accounts:
+    - email: !secret amazon_user
+      password: !secret amazon_password
+      url: amazon.com

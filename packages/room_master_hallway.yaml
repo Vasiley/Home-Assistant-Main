@@ -6,7 +6,7 @@ homeassistant:
     light.master_hallway_1:
       haaska_hidden: true
     sensor.master_hallway_hue_motion_sensor_batt:
-      friendly_name: Master Hallway Hue Batt
+      friendly_name: Master Hallway Hue Battery
       haaska_hidden: true
       unit_of_measurement: '%'
 

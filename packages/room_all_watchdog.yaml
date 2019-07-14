@@ -1,0 +1,167 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'room_all_device_watchdog'
+    automation.notify_device_status_watchdog:
+      friendly_name: Initial Message Of issue
+    automation.annouce_device_issue_with_motion:
+      friendly_name: Annoucement with Motion
+
+group:
+  watchdog_booleans:
+    control: hidden
+    entities:
+     - input_boolean.boolean_watchdog_dummy
+     - input_boolean.boolean_watchdog_laundry_room
+     - input_boolean.boolean_watchdog_master_hallway
+
+input_boolean:
+  boolean_watchdog_dummy:
+    initial: off
+
+automation:
+  - alias: notify_device_status_watchdog
+    initial_state: 'on'
+    trigger:
+      - platform: state                         # Double state changes allow for
+        entity_id:                              # devices to not alert for quick
+          - watchdog.master_hallway             # state changes for example
+          - watchdog.laundry_room               # device unplugged , battery changing
+        from: 'Something is wrong!'             # etc
+        to: 'All Good'
+        for: '00:01:00'
+      - platform: state
+        entity_id:
+          - watchdog.master_hallway
+          - watchdog.laundry_room
+        from: 'All Good'
+        to: 'Something is wrong!'
+        for: '00:01:00'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_network_reboot
+        state: 'off'
+    action:
+      - service: media_player.volume_mute
+        data_template:
+          entity_id: media_player.stereo
+          is_volume_muted: "{{ trigger.entity_id in ['watchdog.master_hallway', 'watchdog.laundry_room'] }}"
+      - delay: '00:00:05'
+      - service: tts.google_say
+        data_template:
+          entity_id: >
+            {% if trigger.to_state.attributes.friendly_name == 'Master Hallway' %}
+                 media_player.ha_speaker, media_player.master_bedroom_cast
+            {% elif trigger.to_state.attributes.friendly_name == 'Laundry Room' %}
+                 media_player.ha_speaker, media_player.master_bedroom_cast
+            {% else %}
+                 media_player.ha_speaker
+            {% endif %}
+          message: >
+            {% if trigger.to_state.state | lower == "something is wrong!" %}
+              {{ trigger.to_state.attributes.friendly_names }} has a problem Please Check Dashboard!
+            {% else %}
+              {{ trigger.from_state.attributes.friendly_names }} has been fixed!
+            {% endif %}
+      - delay: '00:00:10'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
+      - service_template: >
+           {% if is_state('watchdog.laundry_room', 'Something is wrong!') %}
+             shell_command.wd_lv_laundry_mstr_hwwy
+           {% elif is_state('watchdog.master_hallway', 'Something is wrong!') %}
+             shell_command.wd_lv_laundry_mstr_hwwy
+           {% else %}
+             shell_command.lv_room_vas
+           {% endif %}
+      - service: homeassistant.turn_off
+        data_template:
+          entity_id: >                                                        # if alert is silenced will turn voice alerts for future issues
+              {% if is_state('watchdog.laundry_room', 'All good') and is_state('watchdog.master_hallway', 'All good') %}
+                group.watchdog_booleans
+              {% elif is_state('watchdog.laundry_room', 'All good') %}
+                input_boolean.boolean_watchdog_laundry_room
+              {% elif is_state('watchdog.master_hallway', 'All good') %}
+                input_boolean.boolean_watchdog_master_hallway
+              {% else %}
+                input_boolean.boolean_watchdog_dummy
+              {% endif %}
+
+  - alias: 'annouce_device_issue_with_motion'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.motion_indoor_frontdoor
+        to: 'on'
+      - platform: state
+        entity_id: binary_sensor.laundry_room_motion
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.boolean_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.boolean_network_reboot
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: watchdog.master_hallway
+            state: 'Something is wrong!'
+          - condition: state
+            entity_id: watchdog.laundry_room
+            state: 'Something is wrong!'
+    action:
+      - service: media_player.volume_mute
+        data_template:
+          entity_id: >
+            {% if is_state('input_boolean.boolean_watchdog_laundry_room', 'on') %}
+              media_player.dummy
+            {% elif is_state('input_boolean.boolean_watchdog_master_hallway', 'on') %}
+              media_player.dummy
+            {% else %}
+              media_player.stereo
+            {% endif %}
+          is_volume_muted: >
+            {% if trigger.entity_id == 'binary_sensor.motion_indoor_frontdoor' %}
+              True
+            {% else %}
+              False
+            {% endif %}
+      - delay: '00:00:05'
+      - service: tts.google_say
+        data_template:
+          entity_id: >
+            {% if is_state('watchdog.laundry_room', 'Something is wrong!') and is_state('input_boolean.boolean_watchdog_laundry_room', 'off') %}
+               media_player.ha_speaker, media_player.master_bedroom_cast
+            {% elif is_state('watchdog.master_hallway','Something is wrong!') and is_state('input_boolean.boolean_watchdog_master_hallway', 'off') %}
+               media_player.ha_speaker, media_player.master_bedroom_cast
+            {% else %}
+              media_player.dummy
+            {% endif %}
+          message: >
+             {% if is_state('watchdog.master_hallway','Something is wrong!') %}
+             In the {{ state_attr('watchdog.master_hallway', 'friendly_name') }} the device {{ state_attr('watchdog.master_hallway', 'friendly_names')|default([], true)| join(' ') }} has a problem
+             {% elif is_state('watchdog.laundry_room','Something is wrong!') %}
+             In the {{ state_attr('watchdog.laundry_room', 'friendly_name') }} the device {{ state_attr('watchdog.laundry_room', 'friendly_names')|default([], true)| join(' ') }} has a problem
+             {% else %}
+             {% endif %}
+      - delay: '00:00:10'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
+      - service_template: >
+           {% if is_state('watchdog.laundry_room', 'Something is wrong!') %}
+             shell_command.wd_lv_laundry_mstr_hwwy
+           {% elif is_state('watchdog.master_hallway', 'Something is wrong!') %}
+             shell_command.wd_lv_laundry_mstr_hwwy
+           {% else %}
+             shell_command.lv_room_vas
+           {% endif %}

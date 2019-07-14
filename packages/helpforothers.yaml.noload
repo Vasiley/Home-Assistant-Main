@@ -216,3 +216,52 @@
 #         data_template:
 #           entity_id: input_number.slider11
 #           value: "{{ (state_attr('input_number.slider11', 'initial') | float ) - 1.0 }}"
+
+
+# - service: input_boolean.turn_on
+#   data_template:
+#     entity_id: >-
+#        {% if is_state('watchdog.master_hallway' , 'Something is wrong!') %}
+#          input_boolean.boolean_watchdog_master_hallway
+#        {% elif is_state('watchdog.laundry_room' , 'Something is wrong!') %}
+#          input_boolean.boolean_watchdog_laundry_room
+#        {% else %}
+#          input_boolean.boolean_watchdog_dummy
+#        {% endif %}
+# - service: input_boolean.turn_off
+#   data_template:
+#     entity_id: >-
+#       {% if ('states.input_boolean.boolean_watchdog.dummy.state' , 'on') %}
+#          input_boolean.boolean_watchdog_master_hallway, input_boolean.boolean_watchdog_laundry_room
+#       {% else %}
+#          input_boolean.boolean_watchdog_dummy
+#       {% endif %}
+# - service_template: >
+#     {% if is_state('watchdog.master_hallway' , 'Something is wrong!') %}
+#       input_boolean.turn_on
+#     {% elif is_state('watchdog.master_hallway' , 'All Good') %}
+#       input_boolean.turn_off
+#     {% else %}
+#       input_boolean.turn_off
+#     {% endif %}
+#   entity_id: input_boolean.boolean_master_hallway_watchdog
+# - service: input_text.set_value
+#   data_template:
+#     entity_id: input_text.master_hallway_device_watchdog
+#     value: >-
+
+#            # {% set friendly = namespace(names=[]) %}
+      # {% for watchdog in states.watchdog %}
+      # {% set issues = state_attr(watchdog.entity_id, 'entities') %}
+      # {% for entity in issues %}
+      # {% set friendly.names = friendly.names + [state_attr(entity, 'friendly_name')] %}
+      # {% endfor %}
+      # {%- endfor %}
+      # {{ friendly.names | join(', ') }}
+
+    #     {% set issues = state_attr('watchdog.master_hallway', 'entities') %}
+    #     {% set friendly = namespace(name=[]) %}
+    #     {% for entity in issues %}
+    #     {% set friendly.name = friendly.name + [state_attr(entity, 'friendly_name')] %}
+    #     {% endfor %}
+    #     {{ friendly.name | join(', ') }}
