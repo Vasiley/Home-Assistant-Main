@@ -405,11 +405,11 @@ automation:
       - service: script.turn_on
         entity_id: script.dash_swamp_cam
 ############# Back Door Camera #############################################
-  - alias: navigate_driveway_cameradash_camera_motion
+  - alias: navigate_truck_cameradash_camera_motion
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_outdoor_driveway
+        entity_id: binary_sensor.motion_outdoor_truck
         to: 'on'
     condition:
       - condition: state
@@ -429,7 +429,7 @@ automation:
         state: 'off'
     action:
       - service: script.turn_on
-        entity_id: script.dash_driveway_cam
+        entity_id: script.dash_truck_cam
 ############# Reset Dashboard ##########################################
   - alias: back_to_main_dash_motion
     initial_state: 'on'
@@ -538,12 +538,12 @@ script:
       - service: shell_command.lv_room_dash_wake_up
       - service: shell_command.master_dash_swamp_cam
       - service: shell_command.master_dash_wake_up
-  dash_driveway_cam:
+  dash_truck_cam:
     sequence:
       - delay: '00:00:01'
-      - service: shell_command.lv_room_driveway_cam
+      - service: shell_command.lv_room_truck_cam
       - service: shell_command.lv_room_dash_wake_up
-      - service: shell_command.master_dash_driveway_cam
+      - service: shell_command.master_dash_truck_cam
       - service: shell_command.master_dash_wake_up
   dash_reset_after_motion:
     sequence:
@@ -576,8 +576,8 @@ shell_command:
    master_dash_backdoor_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_backdoor?skin=default'}\""
    lv_room_swamp_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/swamp?skin=default'}\""
    master_dash_swamp_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_swamp?skin=default'}\""
-   lv_room_driveway_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/driveway?skin=default'}\""
-   master_dash_driveway_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_driveway?skin=default'}\""
+   lv_room_truck_cam: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/truck?skin=default'}\""
+   master_dash_truck_cam: "/usr/bin/curl -X POST http://192.168.2.40:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/master_truck?skin=default'}\""
    kids_network_alert_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/kids_network?skin=default'}\""
    kids_sensor_dash: "/usr/bin/curl -X POST http://192.168.2.42:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/kids_sensor?skin=default'}\""
-   wd_lv_laundry_mstr_hwwy: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/livingroom_dash_laundry_room_hallway'}\"" 
+   wd_lv_laundry_mstr_hwwy: "/usr/bin/curl -X POST http://192.168.2.41:2971/api/command -H \"Content-type: application/json\" -d \"{'url': 'http://192.168.1.153:5050/livingroom_dash_laundry_room_hallway'}\""

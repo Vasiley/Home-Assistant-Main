@@ -9,9 +9,9 @@ homeassistant:
     switch.wemo_beer_cooler:
       friendly_name: Beer Cooler
       icon: mdi:power-settings
-    switch.wemo_driveway_camaera:
-      friendly_name: Driveway Camera
-      icon: mdi:cctv
+    switch.wemo_rear_blinds:
+      friendly_name: Rear Blinds
+      icon: mdi:power-settings
     switch.wemo_washing_machine:
       friendly_name: Washing Machine switch
       haaska_hidden: true
@@ -57,7 +57,7 @@ homeassistant:
     switch.wemo_kids_tv_power:
       haaska_name: Kids Tv Power
       friendly_name: Kids Tv Power
-      icon: mdi:power-settings  
+      icon: mdi:power-settings
 
 wemo:
    discovery: false
@@ -65,7 +65,7 @@ wemo:
      - 192.168.1.230  #Living Room Scent
      - 192.168.1.231  #master bedroom mixer
      - 192.168.1.233  #washer
-     - 192.168.1.232  #Driveway Camera roboot
+     - 192.168.1.232  #rear blinds
      - 192.168.1.228  #Kids Bathroom scent
      - 192.168.1.31   #Shed Cam Reboot
      - 192.168.1.53  #Master Fan

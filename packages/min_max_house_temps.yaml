@@ -4,6 +4,7 @@ sensor:
     type: mean
     name: House Avg Temperature
     entity_ids:
+      - sensor.master_bath_temp
       - sensor.hallway_temperature
       - sensor.kids_room_temperature  #Ecobee sensor
       - sensor.master_bedroom_temperature
@@ -19,10 +20,11 @@ sensor:
     type: mean
     name: House Avg Humidity
     entity_ids:
+      - sensor.master_bath_humidity
       - sensor.thermostat_humidity
       - sensor.ha_humidity
       - sensor.humidity_kids_bathroom # Xiaomi humidity temp senso
       - sensor.humidity_master_bathroom # Xiaomi humidity temp senso
       - sensor.living_room_purifer_humd #Xiaomi Purifer 2s
       - sensor.master_bdrm_purifer_humd #Xiaomi Purifer 2s
-      - sensor.kids_bdrm_purifer_humd #Xiaomi Purifer 2s      
+      - sensor.kids_bdrm_purifer_humd #Xiaomi Purifer 2s

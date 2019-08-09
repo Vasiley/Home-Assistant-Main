@@ -84,10 +84,9 @@ script:
       - delay: '00:00:01'
       - service: input_boolean.turn_on
         entity_id: input_boolean.boolean_shower_time
-      - service: climate.set_operation_mode
+      - service: climate.turn_off
         data:
           entity_id: climate.thermostat
-          operation_mode: 'off'
       - service: fan.turn_off
         entity_id: fan.master_bedroom_fan
       - service: automation.turn_off
@@ -142,14 +141,17 @@ script:
         entity_id: light.bathroom
       - service: switch.turn_off
         entity_id: switch.master_bath_heater
-      - service: climate.set_operation_mode
+      - service: climate.turn_on
         data:
           entity_id: climate.thermostat
-          operation_mode: 'auto'
-      - service: climate.set_hold_mode
+      - service: climate.set_hvac_mode
         data:
           entity_id: climate.thermostat
-          hold_mode: "home"
+          hvac_mode: auto
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.thermostat
+          preset_mode: "home"
 
 
 ######## for alexa to say turn on and turn Off

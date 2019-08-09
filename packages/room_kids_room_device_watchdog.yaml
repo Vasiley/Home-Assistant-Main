@@ -7,7 +7,7 @@ homeassistant:
       friendly_name: Kids Blinds Reboot
       icon: mdi:power
     automation.reboot_kids_blinds:
-      friendly_name: Kids Blinds Reboot
+      friendly_name: Kids Blinds Auto Reboot
 
 input_boolean:
   boolean_kids_netork_watchdog:
@@ -55,8 +55,6 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - binary_sensor.number12_camera_connect
-          - binary_sensor.driveway_camera_connect
           - binary_sensor.camera_kids_room_camera_connect
           - binary_sensor.broadlink_mini
           - binary_sensor.xiaomi_gateway_2
@@ -66,7 +64,6 @@ automation:
           - binary_sensor.chromecast_kids_room
 #          - binary_sensor.ap_kids_room
           - binary_sensor.wemo_kids_fan
-          - binary_sensor.wemo_driveway_reboot
           - binary_sensor.dash_kids_room
           - binary_sensor.esp_blinds_kids_room
           - binary_sensor.kids_bedroom_purifer

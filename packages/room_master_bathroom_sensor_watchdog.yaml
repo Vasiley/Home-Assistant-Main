@@ -19,7 +19,7 @@ automation:
       - platform: numeric_state
         entity_id:
           - sensor.master_bath_motion_sensor_batt
-          - sensor.master_humidity_sensor_batt
+          - sensor.master_bath_humd_battery
         below: 30
       - platform: state
         entity_id:

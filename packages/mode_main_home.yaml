@@ -99,14 +99,14 @@ script:
       - service: automation.turn_on
         data:
           entity_id: automation.motion_master_bedroom
-      - service: climate.set_away_mode
+      # - service: climate.set_away_mode
+      #   data:
+      #     entity_id: climate.thermostat
+      #     away_mode: 'off'
+      - service: climate.set_preset_mode
         data:
           entity_id: climate.thermostat
-          away_mode: 'off'
-      - service: climate.set_hold_mode
-        data:
-          entity_id: climate.thermostat
-          hold_mode: "home"
+          preset_mode: "home"
       - service: fan.turn_on
         data:
           entity_id: fan.living_room_fan

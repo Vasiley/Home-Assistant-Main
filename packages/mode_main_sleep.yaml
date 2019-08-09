@@ -91,16 +91,16 @@ script:
           entity_id: input_boolean.boolean_sleep
       - delay: '00:00:03'
       - service: rest_command.sleep
-      - service: climate.set_hold_mode
+      - service: climate.set_preset_mode
         data:
           entity_id: climate.thermostat
-          hold_mode: "sleep"
+          preset_mode: "sleep"
       - delay: '00:00:02'
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment
       - service: light.turn_off
-        entity_id: light.master_bedroom_fan          
+        entity_id: light.master_bedroom_fan
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
@@ -144,18 +144,18 @@ script:
       - service: script.turn_on
         entity_id: script.led_off
       - delay: '00:00:10'
-      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
+#      - wait_template: "{{ states.binary_sensor.hallway_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.master_hallway
       - delay: '00:01:15'
 #      - wait_template: "{{ states.binary_sensor.motion_sensor_master_bath.state == 'off' }}"
-      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
+#      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.bathroom
       - delay: '00:00:45'
-      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
+#      - wait_template: "{{ states.binary_sensor.master_motion.state == 'off' }}"
       - service: light.turn_off
         data:
           entity_id: light.master_table_lamps

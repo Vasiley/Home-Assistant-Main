@@ -27,8 +27,6 @@ homeassistant:
       device_class: motion
     sensor.motion_sensor_bathroom_battery:
       icon: mdi:battery
-    sensor.bathroom_temperature:
-      friendly_name: Master Bath Temperature
     switch.master_bath_heater:
       friendly_name: Master Bath Heater
       haaska_name: Master Bath Heater
@@ -36,17 +34,6 @@ homeassistant:
     light.bathroom:
       persistence: false
 ######## Xiaomi ################
-    sensor.humidity_master_bathroom:
-      friendly_name: Master Bathroom Humidity
-      haaska_hidden: true
-    sensor.temperature_master_bathroom:
-      friendly_name: Master Bathroom Temperature
-      haaska_hidden: true
-    sensor.master_humidity_sensor_batt:
-      haaska_hidden: true
-      friendly_name: Master Bathroom Humidity Sensor
-      unit_of_measurement: '%'
-      icon: mdi:battery
     binary_sensor.motion_sensor_master_bath:
       haaska_hidden: true
       friendly_name: Master Bath Motion
@@ -147,7 +134,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: '{{ states.sensor.humidity_master_bathroom.state > states.input_number.target_humidity_master_bathroom.state }}'
+        value_template: '{{ states.sensor.master_bath_humidity.state > states.input_number.target_humidity_master_bathroom.state }}'
     action:
       - service: switch.turn_on
         entity_id: switch.wemo_master_bath_fan
@@ -155,7 +142,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: '{{ states.sensor.humidity_master_bathroom.state < states.input_number.target_humidity_master_bathroom.state }}'
+        value_template: '{{ states.sensor.master_bath_humidity.state < states.input_number.target_humidity_master_bathroom.state }}'
     action:
       - service: switch.turn_off
         entity_id: switch.wemo_master_bath_fan

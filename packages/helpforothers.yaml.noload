@@ -265,3 +265,16 @@
     #     {% set friendly.name = friendly.name + [state_attr(entity, 'friendly_name')] %}
     #     {% endfor %}
     #     {{ friendly.name | join(', ') }}
+
+#sensor:
+#  - platform: template
+#    sensors:
+#      template_last_motion:
+#        friendly_name: 'Last Motion'
+#        value_template: >
+#          {%- set sensors = [states.binary_sensor.theatre_room, states.binary_sensor.back_hallway, states.binary_sensor.front_hallway, states.binary_sensor.kitchen] %}
+#          {% for sensor in sensors %}
+#            {% if as_timestamp(sensor.last_changed) == as_timestamp(sensors | map(attribute='last_changed') | max) %}
+#              {{ sensor.name }}
+#            {% endif %}
+#          {% endfor %}

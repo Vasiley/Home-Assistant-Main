@@ -53,12 +53,6 @@ sensor:
     scan_interval: 3600
     unit_of_measurement: '%'
 
-  - platform: command_line
-    command: curl -sS -X GET http://192.168.1.184:61208/api/3/fs
-    name: 'kids_glances_usb_disk_used'
-    value_template: '{{ value_json[1].used }}'
-    scan_interval: 3600
-    unit_of_measurement: '%'
 input_number:
   kids_workstation_ram_alert_value:
     name: Kids Workstation Ram Alert Setpoint
@@ -109,7 +103,7 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.kids_glances_disk_used_2') > states('input_number.kids_workstation_disk_alert_value') }}"
+        value_template: "{{ states('sensor.kids_glances_disk_used') > states('input_number.kids_workstation_disk_alert_value') }}"
     action:
       - service: tts.google_say
         data:

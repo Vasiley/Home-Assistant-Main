@@ -15,8 +15,16 @@ homeassistant:
       friendly_name: Swamp Camera
       icon: mdi:cctv
       haaska_hidden: true
-    binary_sensor.number12_camera_connect:
-      friendly_name: Number12 Camera
+    binary_sensor.camera_truck_connect:
+      friendly_name: Truck Camera
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.camera_yard_connect:
+      friendly_name: Yard Camera
+      icon: mdi:cctv
+      haaska_hidden: true
+    binary_sensor.camera_park_entrance_connect:
+      friendly_name: Park Entrance Camera
       icon: mdi:cctv
       haaska_hidden: true
     binary_sensor.frontdoor_camera_connect:
@@ -240,8 +248,8 @@ homeassistant:
       friendly_name: Wemos living Room Scent
       icon: mdi:power-settings
       haaska_hidden: true
-    binary_sensor.wemo_driveway_reboot:
-      friendly_name: Driveway Camera Reboot
+    binary_sensor.wemo_rear_blinds_reboot:
+      friendly_name: Rear Blinds Reboot
       icon: mdi:power-settings
       haaska_hidden: true
     binary_sensor.wemo_fish_tan_pumps:
@@ -459,9 +467,19 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.camera_swamp", "home") }}'
   - platform: template
     sensors:
-      number12_camera_connect:
+      camera_truck_connect:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.camera_number12", "home") }}'
+        value_template: '{{ is_state("device_tracker.camera_truck", "home") }}'
+  - platform: template
+    sensors:
+      camera_yard_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.camera_yard", "home") }}'
+  - platform: template
+    sensors:
+      camera_park_entrance_connect:
+        device_class: connectivity
+        value_template: '{{ is_state("device_tracker.camera_park_entrance", "home") }}'
   - platform: template
     sensors:
       frontdoor_camera_connect:
@@ -754,9 +772,9 @@ binary_sensor:
         value_template: '{{ is_state("device_tracker.wemo_lv_scent", "home") }}'
   - platform: template
     sensors:
-      wemo_driveway_reboot:
+      wemo_rear_blinds_reboot:
         device_class: connectivity
-        value_template: '{{ is_state("device_tracker.wemo_driveway_reboot", "home") }}'
+        value_template: '{{ is_state("device_tracker.wemo_rear_blinds_reboot", "home") }}'
 
   - platform: template
     sensors:
@@ -1011,7 +1029,9 @@ automation:
       - platform: state
         entity_id:
           - binary_sensor.driveway_camera_connect
-          - binary_sensor.number12_camera_connect
+          - binary_sensor.camera_truck_connect
+          - binary_sensor.camera_yard_connect
+          - binary_sensor.camera_park_entrance_connect
           - binary_sensor.shed_camera_connect
           - binary_sensor.swamp_camera_connect
           - binary_sensor.frontdoor_camera_connect
@@ -1054,7 +1074,7 @@ automation:
           - binary_sensor.chromecast_livingroom
           - binary_sensor.chromecast_radio
           - binary_sensor.chromecast_kids_room
-          - binary_sensor.tablo
+#          - binary_sensor.tablo
 #         Network Equipment
           - binary_sensor.unifi_gateway
           - binary_sensor.switch_unifi_24_port
@@ -1073,7 +1093,7 @@ automation:
           - binary_sensor.wemo_kids_bathroom_scent
           - binary_sensor.wemo_washing_machine
           - binary_sensor.wemo_lv_scent
-          - binary_sensor.wemo_driveway_reboot
+          - binary_sensor.wemo_rear_blinds_reboot
           - binary_sensor.wemo_fish_tan_pumps
           - binary_sensor.wemo_kids_bathroom_vanity
           - binary_sensor.wemo_master_bath_vanity

@@ -11,10 +11,10 @@ camera:
   #   stream_source: !secret blue_iris_new_stream
   #   name: test
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam2/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
-    name: Number 12
+    name: Driveway
 
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam4/video.mjpeg
@@ -23,10 +23,22 @@ camera:
     name: Front Door Camera
 
   - platform: mjpeg
-    mjpeg_url: http://192.168.1.80:81/mjpg/cam6/video.mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam12/video.mjpeg
     username: !secret blue_iris_camera_stream_usrname
     password: !secret blue_iris_camera_stream_pass
-    name: Driveway
+    name: Truck
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam11/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Yard Shed
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.80:81/mjpg/cam13/video.mjpeg
+    username: !secret blue_iris_camera_stream_usrname
+    password: !secret blue_iris_camera_stream_pass
+    name: Park Entrance
 
   - platform: mjpeg
     mjpeg_url: http://192.168.1.80:81/mjpg/cam5/video.mjpeg

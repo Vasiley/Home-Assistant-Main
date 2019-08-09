@@ -22,7 +22,14 @@ input_boolean:
 #######################################################
 #    Appdaemon Watchdog for this Room                 #
 #######################################################
-  # - name: Master Hallway
-  #   entities:
-  #     - entity: sensor.master_hallway_hue_motion_sensor_batt
-  #       below: 30
+  # watchdogs:
+  #   - name: Master Hallway
+  #     entities:
+  #       - entity: sensor.master_hallway_hue_motion_sensor_batt
+  #         below: 30
+  #       - entity: binary_sensor.espjohndeerecabinet
+  #         state: off
+  #       - entity: binary_sensor.rockrobo
+  #         state: off
+  #       - entity: sensor.roborock_s2_battery
+  #         below: 30

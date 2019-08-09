@@ -5,7 +5,7 @@ homeassistant:
       customize: &customize
         package: 'ecobee'
 
-    sensor.set_hold_mode:
+    sensor.preset_mode:
       icon: mdi:home
     sensor.hvac_fan:
       haaska_hidden: true
@@ -22,24 +22,20 @@ sensor:
     sensors:
       operating_mode:
         friendly_name: 'Current Operation'
-        value_template: "{{ states.climate.thermostat.attributes.operation }}"
-  - platform: template
-    sensors:
-      set_hold_mode:
+        value_template: "{{ state_attr('climate.thermostat' , 'hvac_action') }}"
+      preset_mode:
         friendly_name: 'Current Mode'
-        value_template: "{{ states.climate.thermostat.attributes.hold_mode }}"
-  - platform: template
-    sensors:
+        value_template: "{{ state_attr('climate.thermostat' , 'preset_mode') }}"
       target_temp:
         friendly_name: 'Target Temperature'
-        value_template: "{{ states.climate.thermostat.attributes.target_temp_high }}"
-  - platform: template
-    sensors:
+        value_template: "{{ state_attr('climate.thermostat' , 'target_temp_high') }}"
+        device_class: temperature
+        unit_of_measurement: '°F'
       current_temp:
         friendly_name: 'Current Temperature'
-        value_template: "{{ states.climate.thermostat.attributes.current_temperature }}"
-  - platform: template
-    sensors:
+        value_template: "{{ state_attr('climate.thermostat' , 'current_temperature') }}"
+        device_class: temperature
+        unit_of_measurement: '°F'
       hvac_fan:
         friendly_name: 'Hvac Fan'
-        value_template: "{{ states.climate.thermostat.attributes.fan }}"
+        value_template: "{{ state_attr('climate.thermostat' , 'fan') }}"

@@ -1,0 +1,329 @@
+homeassistant:
+  customize:
+    package.node_anchors:
+      customize: &customize
+        package: 'Blue Iris Glances'
+    sensor.glances_cpu_load:
+      friendly_name: Cpu Load
+      icon: mdi:desktop-tower
+    sensor.glances_disk_overview:
+      friendly_name: Boot Disk Overview
+      icon: mdi:harddisk
+    sensor.glances_disk_percent_free:
+      friendly_name: Boot Drive Used
+      icon: mdi:harddisk
+
+    sensor.glances_z_black_disk_overview:
+      friendly_name: Black Disk Overview
+      icon: mdi:harddisk
+    sensor.glances_z_black_disk_percent_free:
+      friendly_name: Black Drive Used
+      icon: mdi:harddisk
+    sensor.glances_usb_disk_overview_4t:
+      friendly_name: Stored Clips Disk Overview
+      icon: mdi:harddisk
+    sensor.glances_usb_disk_percent_free_4t:
+      friendly_name: Stored Clips Drive Used
+      icon: mdi:harddisk
+    sensor.glances_ram_overview:
+      friendly_name: Ram Overview
+      icon: mdi:chip
+    sensor.glances_ram_percent:
+      friendly_name: Ram Used
+      icon: mdi:chip
+    sensor.glances_running:
+      friendly_name: Running Threads
+      icon: mdi:chart-line
+    sensor.glances_sleeping:
+      friendly_name: Sleeping
+      icon: mdi:chart-line
+    sensor.glances_swap_overview:
+      friendly_name: Swap Overview
+      icon: mdi:harddisk
+    sensor.glances_swap_percent:
+      friendly_name: Swap Use
+      icon: mdi:harddisk
+    sensor.glances_thread:
+      friendly_name: Threads
+      icon: mdi:chart-line
+    sensor.glances_total:
+      friendly_name: Total Threads
+      icon: mdi:chart-line
+    script.blue_iris_dash_usage:
+      friendly_name: BI Svr Notify Issue
+      icon: mdi:chip
+      haaska_hidden: true
+    automation.blue_iris_ram_overload:
+      friendly_name: BI Svr Automation for Excessive Ram
+    automation.blue_iris_disk_overload:
+      friendly_name: BI Svr Automation for Disk Space
+    automation.blue_iris_cpu_overload:
+      friendly_name: BI Svr Automation for Cpu Load
+
+input_number:
+  bi_ram_alert_value:
+    name: BI Ram Alert Setpoint
+    initial: 85
+    min: 0
+    max: 100
+    step: 5
+  bi_disk_alert_value:
+    name: BI Disk Alert Setpoint
+    initial: 75
+    min: 0
+    max: 100
+    step: 5
+  bi_usb_disk_alert_value:
+    name: BI UsB Disk Alert Setpoint
+    initial: 50
+    min: 0
+    max: 100
+    step: 5
+  bi_cpu_alert_value:
+    name: BI CPU Alert Setpoint
+    initial: 80
+    min: 0
+    max: 100
+    step: 5
+
+sensor:
+  - platform: glances
+    host: !secret glances_blue_iris_workstation
+    version: 3
+    resources:
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+      - 'cpu_use_percent'
+
+################# Glances Custom Ram Display  ##################################
+  - platform: template
+    sensors:
+      glances_ram_overview:
+        value_template: "{{(states.sensor.glances_ram_used.state|int/1024/1024+1)|round(0)}} MB / {{(states.sensor.glances_ram_total.state|int/1024/1024+1)|round(0)}} MB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/mem/total
+    name: 'glances_ram_total'
+    value_template: '{{ value_json.total }}'
+    scan_interval: 3600
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/mem
+    name: 'glances_ram_percent'
+    value_template: '{{ value_json.percent }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/mem
+    name: 'glances_ram_used'
+    value_template: '{{ value_json.used }}'
+    scan_interval: 3600
+
+################## Glances Custom C Hard Drive Display ##########################
+  - platform: template
+    sensors:
+      glances_disk_overview:
+        value_template: "{{((states.sensor.glances_disk_used_bi.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_disk_total.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_disk_total'
+    value_template: '{{ value_json[0].size }}'
+    scan_interval: 3600
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_disk_percent_free'
+    value_template: '{{ value_json[0].percent }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_disk_used_bi'
+    value_template: '{{ value_json[0].used }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+
+
+################## Glances Custom G Hard Drive Display ##########################
+  - platform: template
+    sensors:
+      glances_usb_disk_overview_4t:
+        value_template: "{{((states.sensor.glances_usb_disk_used_bi_4t.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_usb_disk_total_4t.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_usb_disk_total_4t'
+    value_template: '{{ value_json[2].size }}'
+    scan_interval: 3600
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_usb_disk_percent_free_4t'
+    value_template: '{{ value_json[2].percent }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_usb_disk_used_bi_4t'
+    value_template: '{{ value_json[2].used }}'
+    scan_interval: 604800
+    unit_of_measurement: '%'
+
+################## Glances Custom D Hard Drive Display ##########################
+  - platform: template
+    sensors:
+      glances_z_black_disk_overview:
+        value_template: "{{((states.sensor.glances_z_black_disk_used_bi.state|int)/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_z_black_disk_total.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_z_black_disk_total'
+    value_template: '{{ value_json[1].size }}'
+    scan_interval: 3600
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_z_black_disk_percent_free'
+    value_template: '{{ value_json[1].percent }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/fs
+    name: 'glances_z_black_disk_used_bi'
+    value_template: '{{ value_json[1].used }}'
+    scan_interval: 3600
+    unit_of_measurement: '%'
+
+################## Glances Swap Use Sensor ####################################
+  - platform: template
+    sensors:
+      glances_swap_overview:
+        value_template: "{{(states.sensor.glances_swap_used.state|int/1024/1024/1024)|round(0)}} GB / {{ ((states.sensor.glances_swap_total.state|int)/1024/1024/1024)|round(0)}} GB"
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/memswap/total
+    name: 'glances_swap_total'
+    value_template: '{{ value_json.total }}'
+    scan_interval: 604800
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/memswap
+    name: 'glances_swap_percent'
+    value_template: '{{ value_json.percent }}'
+    scan_interval: 604800
+    unit_of_measurement: '%'
+
+  - platform: command_line
+    command: curl -sS -X GET http://192.168.1.80:61208/api/3/memswap
+    name: 'glances_swap_used'
+    value_template: '{{ value_json.used }}'
+    scan_interval: 604800
+
+automation:
+############# Ram usuage high on BI server #####################################
+  - alias: blue_iris_ram_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.glances_ram_percent') > states('input_number.bi_ram_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Ram Usage On Blue Iris Server is Excessive'
+      - service: notify.pushbullet
+        data:
+          message: 'Ram Usage Is Excessive On Blue Iris Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "Blue Iris Server"
+          message: "Ram Usage On Blue Iris Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "Blue Iris Server Ram Alert"
+          message: "Check Blue Iris Server Ram Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Ram On Blue Iris Server"
+      - service: script.blue_iris_dash_ram_usage
+
+############# Disk usuage high on BI server #####################################
+  - alias: blue_iris_disk_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.glances_disk_used') > states('input_number.bi_disk_alert_value') }}"
+      - platform: template
+        value_template: "{{ states('glances_usb_disk_percent_free') > states('input_number.bi_usb_disk_alert_value') }}"
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Disk Usage On Blue Iris Server is Excessive'
+      - service: notify.pushbullet
+        data:
+          message: 'Disk Usage Is Excessive On Blue Iris Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "Blue Iris Server"
+          message: "Disk Usage On Blue Iris Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/home_assistant_group.serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "Blue Iris Server Disk Alert"
+          message: "Check Blue Iris Server Disk Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "Disk On Blue Iris Server"
+      - service: script.blue_iris_dash_usage
+
+####################### High Cpu Usage #########################################
+  - alias: blue_iris_cpu_overload
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.glances_cpu_load') > states('input_number.bi_ram_alert_value') }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: numeric_state                           #takes care of unkown values
+          entity_id: 'sensor.glances_cpu_load'
+          above: '1'
+    action:
+      - service: tts.google_say
+        data:
+          entity_id: media_player.ha_speaker
+          message: 'Cpu Usage On Blue Iris Server is Excessive'
+      - service: notify.pushbullet
+        data:
+          message: 'Disk Usage Is Excessive On Blue Iris Server'
+      - service: notify.chrome_push
+        data_template:
+          title: "Blue Iris Server"
+          message: "CPU Usage On Blue Iris Server - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          data:
+            url: "/lovelace/serversview"
+      - service: persistent_notification.create
+        data_template:
+          title: "Blue Iris Server CPU Alert"
+          message: "Check Blue Iris Server CPU Usage - {{ as_timestamp(now()) | timestamp_custom('%I:%M:%S %p %d%b%Y', true) }}"
+          notification_id: "CPU On Blue Iris Server"
+      - service: script.blue_iris_dash_usage
+
+
+script:
+  blue_iris_dash_usage:
+    sequence:
+      - delay: '00:00:01'
+      - service: shell_command.lv_room_dash_wake_up   # in dashboard package
+      - service: shell_command.server_alert_dash_lv # in dashboard package
+      - delay: '00:30:00'
+      - service: shell_command.lv_room_vas   # in dashboard package

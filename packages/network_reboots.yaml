@@ -4,8 +4,14 @@ homeassistant:
     package.node_anchors:
       customize: &customize
         package: 'network reboot'
-    script.driveway_cam_powercycle:
-      friendly_name: Driveway Cam Reboot
+    script.front_blinds_powercycle:
+      friendly_name: Front Blinds Reboot
+      icon: mdi:access-point-network
+    script.kitchen_blinds_powercycle:
+      friendly_name: Kitchen Blinds Reboot
+      icon: mdi:access-point-network
+    script.rear_blinds_powercycle:
+      friendly_name: Rear Blinds Reboot
       icon: mdi:access-point-network
     script.shed_cam_powercycle:
       friendly_name: Shed Cam Reboot
@@ -19,8 +25,12 @@ homeassistant:
     script.network_reboot:
       friendly_name: Network Reboot
       icon: mdi:power-settings
-    automation.reboot_driveway_camera:
-      friendly_name: Driveway Cam Auto Reboot
+    automation.reboot_front_blinds:
+      friendly_name: Front Blinds Auto Reboot
+    automation.reboot_kitchen_blinds:
+      friendly_name: Kitchen Blinds Auto Reboot
+    automation.reboot_rear_blinds:
+      friendly_name: Rear Blinds Auto Reboot      
     automation.reboot_shed_camera:
       friendly_name: Shed Cam Auto Reboot
     automation.reboot_swamp_camera:
@@ -94,13 +104,13 @@ script:
           entity_id: media_player.ha_speaker
           message: 'Network is back up'
 
-  driveway_cam_powercycle:
+  front_blinds_powercycle:
     sequence:
       - service: switch.turn_off
-        entity_id: switch.wemo_driveway_camaera
+        entity_id: switch.front_blinds_reboot
       - delay: '00:00:30'
       - service: switch.turn_on
-        entity_id: switch.wemo_driveway_camaera
+        entity_id: switch.front_blinds_reboot
       - service: media_player.volume_mute
         data:
           entity_id: media_player.stereo
@@ -112,7 +122,57 @@ script:
           entity_id:
             - media_player.ha_speaker
             - media_player.kids_room_cast
-          message: 'Rebooting Driveway Camera'
+          message: 'Rebooting Front Blinds'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
+
+  kitchen_blinds_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.kitchen_blinds_reboot
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.kitchen_blinds_reboot
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+      - wait_template: "{{ states.media_player.kids_room_cast.state == 'idle' }}"
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
+          message: 'Rebooting Kitchen Blinds'
+      - delay: '00:00:05'
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "False"
+
+  rear_blinds_powercycle:
+    sequence:
+      - service: switch.turn_off
+        entity_id: switch.wemo_rear_blinds
+      - delay: '00:00:30'
+      - service: switch.turn_on
+        entity_id: switch.wemo_rear_blinds
+      - service: media_player.volume_mute
+        data:
+          entity_id: media_player.stereo
+          is_volume_muted: "True"
+      - wait_template: "{{ states.media_player.ha_speaker.state == 'idle' }}"
+      - wait_template: "{{ states.media_player.kids_room_cast.state == 'idle' }}"
+      - service: tts.google_say
+        data:
+          entity_id:
+            - media_player.ha_speaker
+            - media_player.kids_room_cast
+          message: 'Rebooting Rear Blinds'
       - delay: '00:00:05'
       - service: media_player.volume_mute
         data:
@@ -164,11 +224,11 @@ script:
           is_volume_muted: "False"
 
 automation:
-  - alias: reboot_driveway_camera
+  - alias: reboot_front_blinds
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.driveway_camera_connect
+        entity_id: binary_sensor.esp_blinds_front_tv
         to: 'off'
         for: '00:01:00'
     condition:
@@ -179,7 +239,41 @@ automation:
           state: 'off'
     action:
       - service: script.turn_on
-        entity_id: script.driveway_cam_powercycle
+        entity_id: script.front_blinds_powercycle
+
+  - alias: reboot_kitchen_blinds
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.esp_blinds_kitchen_table
+        to: 'off'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.kitchen_blinds_powercycle
+
+  - alias: reboot_rear_blinds
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.wemo_rear_blinds_reboot
+        to: 'off'
+        for: '00:01:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.boolean_network_reboot
+          state: 'off'
+    action:
+      - service: script.turn_on
+        entity_id: script.rear_blinds_powercycle
 
   - alias: reboot_shed_camera
     initial_state: 'on'

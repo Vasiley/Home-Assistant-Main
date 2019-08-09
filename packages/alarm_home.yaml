@@ -16,10 +16,25 @@ automation:
         entity_id: input_boolean.boolean_sleep
         to: 'on'
       - platform: state
-        entity_id: sensor.set_hold_mode
+        entity_id: sensor.preset_mode
         to: 'sleep'
     action:
       - service: alarm_control_panel.alarm_arm_home
+        data:
+          entity_id: alarm_control_panel.ha_alarm
+          code: !secret alarm_code
+
+  - alias: 'Alarm disarm'
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_boolean.boolean_early_morning
+        to: 'on'
+      - platform: state
+        entity_id: sensor.preset_mode
+        to: 'home'
+    action:
+      - service: alarm_control_panel.alarm_disarm
         data:
           entity_id: alarm_control_panel.ha_alarm
           code: !secret alarm_code

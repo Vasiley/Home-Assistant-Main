@@ -63,10 +63,10 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_nap_time
-      - service: climate.set_hold_mode
+      - service: climate.set_preset_mode
         data:
           entity_id: climate.thermostat
-          hold_mode: "sleep"
+          preset_mode: "sleep"
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker

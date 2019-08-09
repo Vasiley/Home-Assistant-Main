@@ -10,14 +10,20 @@ homeassistant:
     binary_sensor.motion_outdoor_shed:
       friendly_name: Shed Camera
       device_class: motion
-    binary_sensor.motion_outdoor_driveway:
-      friendly_name: Driveway
+    binary_sensor.motion_outdoor_truck:
+      friendly_name: Truck
+      device_class: motion
+    binary_sensor.motion_outdoor_park_entrance:
+      friendly_name: Park Entrance
+      device_class: motion
+    binary_sensor.motion_outdoor_yard:
+      friendly_name: Yard
       device_class: motion
     binary_sensor.motion_indoor_frontdoor:
       friendly_name: Front Door
       device_class: motion
-    binary_sensor.motion_outdoor_number12:
-      friendly_name: Number 12
+    binary_sensor.motion_outdoor_driveway:
+      friendly_name: Driveway
       device_class: motion
     binary_sensor.motion_outdoor_backdoor:
       friendly_name: Back Door
@@ -79,8 +85,26 @@ sensor:
 #######################################################################################################################
 binary_sensor:
   - platform: mqtt
-    state_topic: "blue_iris/driveway_cam/state"
+    state_topic: "blue_iris/truck/state"
+    name: motion_outdoor_truck
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/number12_cam/state"
     name: motion_outdoor_driveway
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/park_entrance/state"
+    name: motion_outdoor_park_entrance
+    payload_on: "on"
+    payload_off: "off"
+
+  - platform: mqtt
+    state_topic: "blue_iris/yard/state"
+    name: motion_outdoor_yard
     payload_on: "on"
     payload_off: "off"
 
@@ -127,12 +151,6 @@ binary_sensor:
     payload_off: "off"
 
   - platform: mqtt
-    state_topic: "blue_iris/number12_cam/state"
-    name: motion_outdoor_number12
-    payload_on: "on"
-    payload_off: "off"
-
-  - platform: mqtt
     state_topic: "blue_iris/lv_dash_cam/state"
     name: motion_tablet_lv_camera
     payload_on: "on"
@@ -167,6 +185,10 @@ automation:
         entity_id: binary_sensor.motion_outdoor_shed
         to: 'on'
         for: '00:00:05'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_yard
+        to: 'on'
+        for: '00:00:05'
     condition:
       - condition: state
         entity_id: input_boolean.boolean_home
@@ -192,13 +214,13 @@ automation:
       - service: tts.google_say
         data_template:
           entity_id: media_player.ha_speaker, media_player.master_bedroom_cast
-          message: 'Somebody is at Front Door'
+          message: 'Somebody is In Yard'
 
   - alias: flash_green_motion_truck
     initial_state: 'on'
     trigger:
       - platform: state
-        entity_id: binary_sensor.motion_outdoor_driveway
+        entity_id: binary_sensor.motion_outdoor_truck
         to: 'on'
         for: '00:00:05'
     condition:
@@ -312,10 +334,13 @@ automation:
         entity_id: binary_sensor.motion_outdoor_backdoor
         to: 'off'
       - platform: state
-        entity_id: binary_sensor.motion_outdoor_driveway
+        entity_id: binary_sensor.motion_outdoor_truck
         to: 'off'
       - platform: state
         entity_id: binary_sensor.motion_outdoor_swamp
+        to: 'off'
+      - platform: state
+        entity_id: binary_sensor.motion_outdoor_yard
         to: 'off'
     condition:
       - condition: state

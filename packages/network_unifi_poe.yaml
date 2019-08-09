@@ -28,3 +28,9 @@ homeassistant:
     switch.shed_camera:
       friendly_name: Shed Camera
       icon: mdi:cctv
+    switch.truck_camera:
+      friendly_name: Truck Camera
+      icon: mdi:cctv
+    switch.yard_shed_camera:
+      friendly_name: Yard/Shed Camera
+      icon: mdi:cctv

@@ -22,7 +22,7 @@ homeassistant:
 
     script.gone_on:
       friendly_name: Away
-      icon: mdi:security-home
+      icon: mdi:security
     script.alarm_flashonoff:
       friendly_name: Flash On and Offline
       haaska_hidden: true
@@ -60,7 +60,7 @@ script:
       - service: input_boolean.turn_on
         data:
           entity_id: input_boolean.boolean_away
-      - delay: '00:00:00'
+      - delay: '00:00:01'
       - service: light.turn_off
         data:
           entity_id: group.all_lights
@@ -76,20 +76,16 @@ script:
       - service: remote.turn_off
         data:
           entity_id: remote.entertainment
-      - service: climate.set_away_mode
+      - service: climate.set_preset_mode
         data:
           entity_id: climate.thermostat
-          away_mode: 'on'
-      - service: climate.set_hold_mode
-        data:
-          entity_id: climate.thermostat
-          hold_mode: "away"
+          preset_mode: 'away'
       - service: tts.google_say
         data:
           entity_id: media_player.ha_speaker
           message: 'Away Mode is Activated Have a good day'
       - service: rest_command.lock_down
-      - service: rest_command.lock_down
+
   alarm_flashonoff:
     sequence:
       - service: light.turn_on

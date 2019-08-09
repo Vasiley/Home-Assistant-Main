@@ -84,6 +84,7 @@ input_number:
     max: 1.75
     step: .1
 
+
 automation:
   - alias: 'early_morning_on'
     initial_state: 'on'
@@ -119,10 +120,11 @@ automation:
           # brightness: 175
       - service: rest_command.no_motion
       - service: rest_command.no_motion
-      - service: climate.set_hold_mode
+      - service: climate.set_preset_mode
         data:
           entity_id: climate.thermostat
-          hold_mode: "home"
+          preset_mode: "home"
+
 
 script:
   workday_off:
